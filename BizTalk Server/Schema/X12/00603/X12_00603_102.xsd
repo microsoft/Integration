@@ -1,0 +1,2366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:btsedi="http://schemas.microsoft.com/BizTalk/2005/EdiSchemaEditorExtension" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" xmlns="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:appinfo>
+      <schemaEditorExtension:schemaInfo namespaceAlias="btsedi" extensionClass="Microsoft.BizTalk.Edi.SchemaEditorExtension.EdiSchemaExtension" standardName="EDI" xmlns:schemaEditorExtension="http://schemas.microsoft.com/BizTalk/2003/SchemaEditorExtensions" />
+      <b:schemaInfo version="1.0" document_type="102" standard="EDI" standards_version="00603" root_reference="X12_00603_102" displayroot_reference="X12_00603_102" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" X12ConditionDesignator_Check="No" />
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation xml:lang="en">copyright © Microsoft Corporation. All rights reserved.</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>Schema name: X12_6030_102</xs:documentation>
+  </xs:annotation>
+  <xs:element name="X12_00603_102">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="postfix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Associated Data" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ST">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Header" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ST01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Identifier Code_143" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="3" />
+                    <xs:maxLength value="3" />
+                    <xs:enumeration value="102" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ST02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="ST03">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Implementation Convention Preference_1705" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="ORI">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="ORI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Object Reference Identification" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="REF">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="REF" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Reference Information">
+                <b:Rule subjects="X12ConditionDesignatorX_Required" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="REF02" />
+                  <b:Subject name="REF03" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="unbounded" ref="OOI">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="OOI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Associated Object Type Identification" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="BDS">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="BDS" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Binary Data Structure" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SE">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Trailer" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SE01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Number of Included Segments_96" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SE02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ORI">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="ORI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Object Reference Identification" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ORI01">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Associated Object Reference Identification_1690" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="36" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="REF">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="REF" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Reference Information">
+          <b:Rule subjects="X12ConditionDesignatorX_Required" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="REF02" />
+            <b:Subject name="REF03" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="REF01" type="X12_ID_128">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification Qualifier_128" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="REF02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification_127" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="REF03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C040">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Reference Identifier">
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="C04003" />
+                  <b:Subject name="C04004" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="C04005" />
+                  <b:Subject name="C04006" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OOI">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="OOI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Associated Object Type Identification" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OOI01">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Object Identification Group_1694" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="OOI02" type="X12_ID_1691">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Object Type Qualifier_1691" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="OOI03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Object Attribute Identification_1692" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="256" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="OOI04" type="X12_ID_1693">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Controlling Agency Code_1693" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BDS">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="BDS" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Binary Data Structure" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="BDS01" type="X12_ID_1570">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Filter ID Code_1570" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BDS02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Length of Binary Data_784" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="BDS03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Binary Data_785" />
+              <b:maxLengthAllowed value="10000000000000000" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="1000000" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C040">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Reference Identifier">
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="C04003" />
+            <b:Subject name="C04004" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="C04005" />
+            <b:Subject name="C04006" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C04001" type="X12_ID_128">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification Qualifier_128" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="C04002">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification_127" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C04003" type="X12_ID_128">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification Qualifier_128" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C04004">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification_127" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C04005" type="X12_ID_128">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification Qualifier_128" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C04006">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Identification_127" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="X12_ID_128">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="00" />
+      <xs:enumeration value="01" />
+      <xs:enumeration value="01A" />
+      <xs:enumeration value="01B" />
+      <xs:enumeration value="01C" />
+      <xs:enumeration value="01D" />
+      <xs:enumeration value="01E" />
+      <xs:enumeration value="01G" />
+      <xs:enumeration value="01H" />
+      <xs:enumeration value="02" />
+      <xs:enumeration value="03" />
+      <xs:enumeration value="04" />
+      <xs:enumeration value="05" />
+      <xs:enumeration value="06" />
+      <xs:enumeration value="07" />
+      <xs:enumeration value="08" />
+      <xs:enumeration value="09" />
+      <xs:enumeration value="0A" />
+      <xs:enumeration value="0B" />
+      <xs:enumeration value="0D" />
+      <xs:enumeration value="0E" />
+      <xs:enumeration value="0F" />
+      <xs:enumeration value="0G" />
+      <xs:enumeration value="0H" />
+      <xs:enumeration value="0I" />
+      <xs:enumeration value="0J" />
+      <xs:enumeration value="0K" />
+      <xs:enumeration value="0L" />
+      <xs:enumeration value="0M" />
+      <xs:enumeration value="0N" />
+      <xs:enumeration value="0P" />
+      <xs:enumeration value="10" />
+      <xs:enumeration value="11" />
+      <xs:enumeration value="12" />
+      <xs:enumeration value="13" />
+      <xs:enumeration value="14" />
+      <xs:enumeration value="15" />
+      <xs:enumeration value="16" />
+      <xs:enumeration value="17" />
+      <xs:enumeration value="18" />
+      <xs:enumeration value="19" />
+      <xs:enumeration value="1A" />
+      <xs:enumeration value="1B" />
+      <xs:enumeration value="1C" />
+      <xs:enumeration value="1D" />
+      <xs:enumeration value="1E" />
+      <xs:enumeration value="1F" />
+      <xs:enumeration value="1G" />
+      <xs:enumeration value="1H" />
+      <xs:enumeration value="1I" />
+      <xs:enumeration value="1J" />
+      <xs:enumeration value="1K" />
+      <xs:enumeration value="1L" />
+      <xs:enumeration value="1M" />
+      <xs:enumeration value="1N" />
+      <xs:enumeration value="1O" />
+      <xs:enumeration value="1P" />
+      <xs:enumeration value="1Q" />
+      <xs:enumeration value="1R" />
+      <xs:enumeration value="1S" />
+      <xs:enumeration value="1T" />
+      <xs:enumeration value="1U" />
+      <xs:enumeration value="1V" />
+      <xs:enumeration value="1W" />
+      <xs:enumeration value="1X" />
+      <xs:enumeration value="1Y" />
+      <xs:enumeration value="1Z" />
+      <xs:enumeration value="20" />
+      <xs:enumeration value="21" />
+      <xs:enumeration value="22" />
+      <xs:enumeration value="23" />
+      <xs:enumeration value="24" />
+      <xs:enumeration value="25" />
+      <xs:enumeration value="26" />
+      <xs:enumeration value="27" />
+      <xs:enumeration value="28" />
+      <xs:enumeration value="29" />
+      <xs:enumeration value="2A" />
+      <xs:enumeration value="2B" />
+      <xs:enumeration value="2C" />
+      <xs:enumeration value="2D" />
+      <xs:enumeration value="2E" />
+      <xs:enumeration value="2F" />
+      <xs:enumeration value="2G" />
+      <xs:enumeration value="2H" />
+      <xs:enumeration value="2I" />
+      <xs:enumeration value="2J" />
+      <xs:enumeration value="2K" />
+      <xs:enumeration value="2L" />
+      <xs:enumeration value="2M" />
+      <xs:enumeration value="2N" />
+      <xs:enumeration value="2O" />
+      <xs:enumeration value="2P" />
+      <xs:enumeration value="2Q" />
+      <xs:enumeration value="2R" />
+      <xs:enumeration value="2S" />
+      <xs:enumeration value="2T" />
+      <xs:enumeration value="2U" />
+      <xs:enumeration value="2V" />
+      <xs:enumeration value="2W" />
+      <xs:enumeration value="2X" />
+      <xs:enumeration value="2Y" />
+      <xs:enumeration value="2Z" />
+      <xs:enumeration value="30" />
+      <xs:enumeration value="31" />
+      <xs:enumeration value="32" />
+      <xs:enumeration value="33" />
+      <xs:enumeration value="34" />
+      <xs:enumeration value="35" />
+      <xs:enumeration value="36" />
+      <xs:enumeration value="37" />
+      <xs:enumeration value="38" />
+      <xs:enumeration value="39" />
+      <xs:enumeration value="3A" />
+      <xs:enumeration value="3B" />
+      <xs:enumeration value="3C" />
+      <xs:enumeration value="3D" />
+      <xs:enumeration value="3E" />
+      <xs:enumeration value="3F" />
+      <xs:enumeration value="3G" />
+      <xs:enumeration value="3H" />
+      <xs:enumeration value="3I" />
+      <xs:enumeration value="3J" />
+      <xs:enumeration value="3K" />
+      <xs:enumeration value="3L" />
+      <xs:enumeration value="3M" />
+      <xs:enumeration value="3N" />
+      <xs:enumeration value="3O" />
+      <xs:enumeration value="3P" />
+      <xs:enumeration value="3Q" />
+      <xs:enumeration value="3R" />
+      <xs:enumeration value="3S" />
+      <xs:enumeration value="3T" />
+      <xs:enumeration value="3U" />
+      <xs:enumeration value="3V" />
+      <xs:enumeration value="3W" />
+      <xs:enumeration value="3X" />
+      <xs:enumeration value="3Y" />
+      <xs:enumeration value="3Z" />
+      <xs:enumeration value="40" />
+      <xs:enumeration value="41" />
+      <xs:enumeration value="42" />
+      <xs:enumeration value="43" />
+      <xs:enumeration value="44" />
+      <xs:enumeration value="45" />
+      <xs:enumeration value="46" />
+      <xs:enumeration value="47" />
+      <xs:enumeration value="48" />
+      <xs:enumeration value="49" />
+      <xs:enumeration value="4A" />
+      <xs:enumeration value="4B" />
+      <xs:enumeration value="4C" />
+      <xs:enumeration value="4D" />
+      <xs:enumeration value="4E" />
+      <xs:enumeration value="4F" />
+      <xs:enumeration value="4G" />
+      <xs:enumeration value="4H" />
+      <xs:enumeration value="4I" />
+      <xs:enumeration value="4J" />
+      <xs:enumeration value="4K" />
+      <xs:enumeration value="4L" />
+      <xs:enumeration value="4M" />
+      <xs:enumeration value="4N" />
+      <xs:enumeration value="4O" />
+      <xs:enumeration value="4P" />
+      <xs:enumeration value="4Q" />
+      <xs:enumeration value="4R" />
+      <xs:enumeration value="4S" />
+      <xs:enumeration value="4T" />
+      <xs:enumeration value="4U" />
+      <xs:enumeration value="4V" />
+      <xs:enumeration value="4W" />
+      <xs:enumeration value="4X" />
+      <xs:enumeration value="4Y" />
+      <xs:enumeration value="4Z" />
+      <xs:enumeration value="50" />
+      <xs:enumeration value="51" />
+      <xs:enumeration value="52" />
+      <xs:enumeration value="53" />
+      <xs:enumeration value="54" />
+      <xs:enumeration value="55" />
+      <xs:enumeration value="56" />
+      <xs:enumeration value="57" />
+      <xs:enumeration value="58" />
+      <xs:enumeration value="59" />
+      <xs:enumeration value="5A" />
+      <xs:enumeration value="5B" />
+      <xs:enumeration value="5C" />
+      <xs:enumeration value="5D" />
+      <xs:enumeration value="5E" />
+      <xs:enumeration value="5F" />
+      <xs:enumeration value="5G" />
+      <xs:enumeration value="5H" />
+      <xs:enumeration value="5I" />
+      <xs:enumeration value="5J" />
+      <xs:enumeration value="5K" />
+      <xs:enumeration value="5L" />
+      <xs:enumeration value="5M" />
+      <xs:enumeration value="5N" />
+      <xs:enumeration value="5O" />
+      <xs:enumeration value="5P" />
+      <xs:enumeration value="5Q" />
+      <xs:enumeration value="5R" />
+      <xs:enumeration value="5S" />
+      <xs:enumeration value="5T" />
+      <xs:enumeration value="5U" />
+      <xs:enumeration value="5V" />
+      <xs:enumeration value="5W" />
+      <xs:enumeration value="5X" />
+      <xs:enumeration value="5Y" />
+      <xs:enumeration value="5Z" />
+      <xs:enumeration value="60" />
+      <xs:enumeration value="61" />
+      <xs:enumeration value="63" />
+      <xs:enumeration value="64" />
+      <xs:enumeration value="65" />
+      <xs:enumeration value="66" />
+      <xs:enumeration value="67" />
+      <xs:enumeration value="68" />
+      <xs:enumeration value="69" />
+      <xs:enumeration value="6A" />
+      <xs:enumeration value="6B" />
+      <xs:enumeration value="6C" />
+      <xs:enumeration value="6D" />
+      <xs:enumeration value="6E" />
+      <xs:enumeration value="6F" />
+      <xs:enumeration value="6G" />
+      <xs:enumeration value="6H" />
+      <xs:enumeration value="6I" />
+      <xs:enumeration value="6J" />
+      <xs:enumeration value="6K" />
+      <xs:enumeration value="6L" />
+      <xs:enumeration value="6M" />
+      <xs:enumeration value="6N" />
+      <xs:enumeration value="6O" />
+      <xs:enumeration value="6P" />
+      <xs:enumeration value="6Q" />
+      <xs:enumeration value="6R" />
+      <xs:enumeration value="6S" />
+      <xs:enumeration value="6T" />
+      <xs:enumeration value="6U" />
+      <xs:enumeration value="6V" />
+      <xs:enumeration value="6W" />
+      <xs:enumeration value="6X" />
+      <xs:enumeration value="6Y" />
+      <xs:enumeration value="6Z" />
+      <xs:enumeration value="70" />
+      <xs:enumeration value="71" />
+      <xs:enumeration value="72" />
+      <xs:enumeration value="73" />
+      <xs:enumeration value="74" />
+      <xs:enumeration value="75" />
+      <xs:enumeration value="76" />
+      <xs:enumeration value="77" />
+      <xs:enumeration value="78" />
+      <xs:enumeration value="79" />
+      <xs:enumeration value="7A" />
+      <xs:enumeration value="7B" />
+      <xs:enumeration value="7C" />
+      <xs:enumeration value="7D" />
+      <xs:enumeration value="7E" />
+      <xs:enumeration value="7F" />
+      <xs:enumeration value="7G" />
+      <xs:enumeration value="7H" />
+      <xs:enumeration value="7I" />
+      <xs:enumeration value="7J" />
+      <xs:enumeration value="7K" />
+      <xs:enumeration value="7L" />
+      <xs:enumeration value="7M" />
+      <xs:enumeration value="7N" />
+      <xs:enumeration value="7O" />
+      <xs:enumeration value="7P" />
+      <xs:enumeration value="7Q" />
+      <xs:enumeration value="7R" />
+      <xs:enumeration value="7S" />
+      <xs:enumeration value="7T" />
+      <xs:enumeration value="7U" />
+      <xs:enumeration value="7W" />
+      <xs:enumeration value="7X" />
+      <xs:enumeration value="7Y" />
+      <xs:enumeration value="7Z" />
+      <xs:enumeration value="80" />
+      <xs:enumeration value="81" />
+      <xs:enumeration value="82" />
+      <xs:enumeration value="83" />
+      <xs:enumeration value="84" />
+      <xs:enumeration value="85" />
+      <xs:enumeration value="86" />
+      <xs:enumeration value="87" />
+      <xs:enumeration value="88" />
+      <xs:enumeration value="89" />
+      <xs:enumeration value="8A" />
+      <xs:enumeration value="8B" />
+      <xs:enumeration value="8C" />
+      <xs:enumeration value="8D" />
+      <xs:enumeration value="8E" />
+      <xs:enumeration value="8F" />
+      <xs:enumeration value="8G" />
+      <xs:enumeration value="8H" />
+      <xs:enumeration value="8I" />
+      <xs:enumeration value="8J" />
+      <xs:enumeration value="8K" />
+      <xs:enumeration value="8L" />
+      <xs:enumeration value="8M" />
+      <xs:enumeration value="8N" />
+      <xs:enumeration value="8O" />
+      <xs:enumeration value="8P" />
+      <xs:enumeration value="8Q" />
+      <xs:enumeration value="8R" />
+      <xs:enumeration value="8S" />
+      <xs:enumeration value="8U" />
+      <xs:enumeration value="8V" />
+      <xs:enumeration value="8W" />
+      <xs:enumeration value="8X" />
+      <xs:enumeration value="8Y" />
+      <xs:enumeration value="8Z" />
+      <xs:enumeration value="90" />
+      <xs:enumeration value="91" />
+      <xs:enumeration value="92" />
+      <xs:enumeration value="93" />
+      <xs:enumeration value="94" />
+      <xs:enumeration value="95" />
+      <xs:enumeration value="96" />
+      <xs:enumeration value="97" />
+      <xs:enumeration value="98" />
+      <xs:enumeration value="99" />
+      <xs:enumeration value="9A" />
+      <xs:enumeration value="9B" />
+      <xs:enumeration value="9C" />
+      <xs:enumeration value="9D" />
+      <xs:enumeration value="9E" />
+      <xs:enumeration value="9F" />
+      <xs:enumeration value="9G" />
+      <xs:enumeration value="9H" />
+      <xs:enumeration value="9I" />
+      <xs:enumeration value="9J" />
+      <xs:enumeration value="9K" />
+      <xs:enumeration value="9L" />
+      <xs:enumeration value="9M" />
+      <xs:enumeration value="9N" />
+      <xs:enumeration value="9P" />
+      <xs:enumeration value="9Q" />
+      <xs:enumeration value="9R" />
+      <xs:enumeration value="9S" />
+      <xs:enumeration value="9T" />
+      <xs:enumeration value="9U" />
+      <xs:enumeration value="9V" />
+      <xs:enumeration value="9W" />
+      <xs:enumeration value="9X" />
+      <xs:enumeration value="9Y" />
+      <xs:enumeration value="9Z" />
+      <xs:enumeration value="A0" />
+      <xs:enumeration value="A1" />
+      <xs:enumeration value="A2" />
+      <xs:enumeration value="A3" />
+      <xs:enumeration value="A4" />
+      <xs:enumeration value="A5" />
+      <xs:enumeration value="A6" />
+      <xs:enumeration value="A7" />
+      <xs:enumeration value="A8" />
+      <xs:enumeration value="A9" />
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AAA" />
+      <xs:enumeration value="AAB" />
+      <xs:enumeration value="AAC" />
+      <xs:enumeration value="AAD" />
+      <xs:enumeration value="AAE" />
+      <xs:enumeration value="AAF" />
+      <xs:enumeration value="AAG" />
+      <xs:enumeration value="AAH" />
+      <xs:enumeration value="AAI" />
+      <xs:enumeration value="AAJ" />
+      <xs:enumeration value="AAK" />
+      <xs:enumeration value="AAL" />
+      <xs:enumeration value="AAM" />
+      <xs:enumeration value="AAN" />
+      <xs:enumeration value="AAO" />
+      <xs:enumeration value="AAP" />
+      <xs:enumeration value="AAQ" />
+      <xs:enumeration value="AAR" />
+      <xs:enumeration value="AAS" />
+      <xs:enumeration value="AAT" />
+      <xs:enumeration value="AAU" />
+      <xs:enumeration value="AAV" />
+      <xs:enumeration value="AAW" />
+      <xs:enumeration value="AAX" />
+      <xs:enumeration value="AAY" />
+      <xs:enumeration value="AAZ" />
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="ABA" />
+      <xs:enumeration value="ABB" />
+      <xs:enumeration value="ABC" />
+      <xs:enumeration value="ABD" />
+      <xs:enumeration value="ABE" />
+      <xs:enumeration value="ABF" />
+      <xs:enumeration value="ABG" />
+      <xs:enumeration value="ABH" />
+      <xs:enumeration value="ABI" />
+      <xs:enumeration value="ABJ" />
+      <xs:enumeration value="ABK" />
+      <xs:enumeration value="ABL" />
+      <xs:enumeration value="ABM" />
+      <xs:enumeration value="ABN" />
+      <xs:enumeration value="ABO" />
+      <xs:enumeration value="ABP" />
+      <xs:enumeration value="ABQ" />
+      <xs:enumeration value="ABR" />
+      <xs:enumeration value="ABS" />
+      <xs:enumeration value="ABT" />
+      <xs:enumeration value="ABU" />
+      <xs:enumeration value="ABV" />
+      <xs:enumeration value="ABW" />
+      <xs:enumeration value="ABX" />
+      <xs:enumeration value="ABY" />
+      <xs:enumeration value="ABZ" />
+      <xs:enumeration value="AC" />
+      <xs:enumeration value="ACA" />
+      <xs:enumeration value="ACB" />
+      <xs:enumeration value="ACC" />
+      <xs:enumeration value="ACD" />
+      <xs:enumeration value="ACE" />
+      <xs:enumeration value="ACF" />
+      <xs:enumeration value="ACG" />
+      <xs:enumeration value="ACH" />
+      <xs:enumeration value="ACI" />
+      <xs:enumeration value="ACJ" />
+      <xs:enumeration value="ACK" />
+      <xs:enumeration value="ACL" />
+      <xs:enumeration value="ACM" />
+      <xs:enumeration value="ACN" />
+      <xs:enumeration value="ACO" />
+      <xs:enumeration value="ACP" />
+      <xs:enumeration value="ACQ" />
+      <xs:enumeration value="ACR" />
+      <xs:enumeration value="ACS" />
+      <xs:enumeration value="ACT" />
+      <xs:enumeration value="ACU" />
+      <xs:enumeration value="ACV" />
+      <xs:enumeration value="ACW" />
+      <xs:enumeration value="ACX" />
+      <xs:enumeration value="ACY" />
+      <xs:enumeration value="ACZ" />
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="ADA" />
+      <xs:enumeration value="ADB" />
+      <xs:enumeration value="ADC" />
+      <xs:enumeration value="ADD" />
+      <xs:enumeration value="ADE" />
+      <xs:enumeration value="ADF" />
+      <xs:enumeration value="ADG" />
+      <xs:enumeration value="ADH" />
+      <xs:enumeration value="ADI" />
+      <xs:enumeration value="ADJ" />
+      <xs:enumeration value="ADK" />
+      <xs:enumeration value="ADL" />
+      <xs:enumeration value="ADM" />
+      <xs:enumeration value="ADN" />
+      <xs:enumeration value="ADO" />
+      <xs:enumeration value="ADP" />
+      <xs:enumeration value="ADQ" />
+      <xs:enumeration value="ADR" />
+      <xs:enumeration value="ADS" />
+      <xs:enumeration value="ADT" />
+      <xs:enumeration value="ADU" />
+      <xs:enumeration value="ADV" />
+      <xs:enumeration value="ADW" />
+      <xs:enumeration value="ADX" />
+      <xs:enumeration value="ADY" />
+      <xs:enumeration value="ADZ" />
+      <xs:enumeration value="AE" />
+      <xs:enumeration value="AEA" />
+      <xs:enumeration value="AEB" />
+      <xs:enumeration value="AEC" />
+      <xs:enumeration value="AED" />
+      <xs:enumeration value="AEE" />
+      <xs:enumeration value="AEF" />
+      <xs:enumeration value="AEG" />
+      <xs:enumeration value="AEH" />
+      <xs:enumeration value="AEI" />
+      <xs:enumeration value="AEJ" />
+      <xs:enumeration value="AEK" />
+      <xs:enumeration value="AEL" />
+      <xs:enumeration value="AEM" />
+      <xs:enumeration value="AEN" />
+      <xs:enumeration value="AEO" />
+      <xs:enumeration value="AEP" />
+      <xs:enumeration value="AEQ" />
+      <xs:enumeration value="AER" />
+      <xs:enumeration value="AES" />
+      <xs:enumeration value="AET" />
+      <xs:enumeration value="AEU" />
+      <xs:enumeration value="AEV" />
+      <xs:enumeration value="AEW" />
+      <xs:enumeration value="AEX" />
+      <xs:enumeration value="AEY" />
+      <xs:enumeration value="AEZ" />
+      <xs:enumeration value="AF" />
+      <xs:enumeration value="AFA" />
+      <xs:enumeration value="AFB" />
+      <xs:enumeration value="AFC" />
+      <xs:enumeration value="AFD" />
+      <xs:enumeration value="AFE" />
+      <xs:enumeration value="AFF" />
+      <xs:enumeration value="AFG" />
+      <xs:enumeration value="AFH" />
+      <xs:enumeration value="AFI" />
+      <xs:enumeration value="AFJ" />
+      <xs:enumeration value="AFK" />
+      <xs:enumeration value="AFL" />
+      <xs:enumeration value="AFM" />
+      <xs:enumeration value="AFN" />
+      <xs:enumeration value="AFO" />
+      <xs:enumeration value="AFP" />
+      <xs:enumeration value="AFQ" />
+      <xs:enumeration value="AFR" />
+      <xs:enumeration value="AFS" />
+      <xs:enumeration value="AFT" />
+      <xs:enumeration value="AFU" />
+      <xs:enumeration value="AFV" />
+      <xs:enumeration value="AFW" />
+      <xs:enumeration value="AFX" />
+      <xs:enumeration value="AFY" />
+      <xs:enumeration value="AFZ" />
+      <xs:enumeration value="AG" />
+      <xs:enumeration value="AGA" />
+      <xs:enumeration value="AGB" />
+      <xs:enumeration value="AGC" />
+      <xs:enumeration value="AGD" />
+      <xs:enumeration value="AGH" />
+      <xs:enumeration value="AGI" />
+      <xs:enumeration value="AGJ" />
+      <xs:enumeration value="AGK" />
+      <xs:enumeration value="AGL" />
+      <xs:enumeration value="AGM" />
+      <xs:enumeration value="AGN" />
+      <xs:enumeration value="AGO" />
+      <xs:enumeration value="AGP" />
+      <xs:enumeration value="AGQ" />
+      <xs:enumeration value="AGR" />
+      <xs:enumeration value="AGS" />
+      <xs:enumeration value="AGT" />
+      <xs:enumeration value="AH" />
+      <xs:enumeration value="AHC" />
+      <xs:enumeration value="AI" />
+      <xs:enumeration value="AID" />
+      <xs:enumeration value="AIG" />
+      <xs:enumeration value="AIN" />
+      <xs:enumeration value="AJ" />
+      <xs:enumeration value="AK" />
+      <xs:enumeration value="AL" />
+      <xs:enumeration value="ALC" />
+      <xs:enumeration value="ALG" />
+      <xs:enumeration value="ALH" />
+      <xs:enumeration value="ALI" />
+      <xs:enumeration value="ALJ" />
+      <xs:enumeration value="ALL" />
+      <xs:enumeration value="ALR" />
+      <xs:enumeration value="ALS" />
+      <xs:enumeration value="ALT" />
+      <xs:enumeration value="ALV" />
+      <xs:enumeration value="ALX" />
+      <xs:enumeration value="ALY" />
+      <xs:enumeration value="AM" />
+      <xs:enumeration value="AN" />
+      <xs:enumeration value="ANI" />
+      <xs:enumeration value="ANT" />
+      <xs:enumeration value="AO" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="APC" />
+      <xs:enumeration value="API" />
+      <xs:enumeration value="AQ" />
+      <xs:enumeration value="AR" />
+      <xs:enumeration value="ARN" />
+      <xs:enumeration value="AS" />
+      <xs:enumeration value="ASL" />
+      <xs:enumeration value="ASP" />
+      <xs:enumeration value="AST" />
+      <xs:enumeration value="AT" />
+      <xs:enumeration value="ATC" />
+      <xs:enumeration value="ATH" />
+      <xs:enumeration value="AU" />
+      <xs:enumeration value="AV" />
+      <xs:enumeration value="AW" />
+      <xs:enumeration value="AX" />
+      <xs:enumeration value="AY" />
+      <xs:enumeration value="AZ" />
+      <xs:enumeration value="B1" />
+      <xs:enumeration value="B2" />
+      <xs:enumeration value="B3" />
+      <xs:enumeration value="B4" />
+      <xs:enumeration value="B5" />
+      <xs:enumeration value="B6" />
+      <xs:enumeration value="B7" />
+      <xs:enumeration value="B8" />
+      <xs:enumeration value="B9" />
+      <xs:enumeration value="BA" />
+      <xs:enumeration value="BAA" />
+      <xs:enumeration value="BAB" />
+      <xs:enumeration value="BAC" />
+      <xs:enumeration value="BAD" />
+      <xs:enumeration value="BAE" />
+      <xs:enumeration value="BAF" />
+      <xs:enumeration value="BAG" />
+      <xs:enumeration value="BAH" />
+      <xs:enumeration value="BAI" />
+      <xs:enumeration value="BAJ" />
+      <xs:enumeration value="BAK" />
+      <xs:enumeration value="BB" />
+      <xs:enumeration value="BC" />
+      <xs:enumeration value="BCI" />
+      <xs:enumeration value="BCN" />
+      <xs:enumeration value="BCP" />
+      <xs:enumeration value="BD" />
+      <xs:enumeration value="BDG" />
+      <xs:enumeration value="BDN" />
+      <xs:enumeration value="BE" />
+      <xs:enumeration value="BEN" />
+      <xs:enumeration value="BF" />
+      <xs:enumeration value="BG" />
+      <xs:enumeration value="BH" />
+      <xs:enumeration value="BI" />
+      <xs:enumeration value="BIC" />
+      <xs:enumeration value="BIN" />
+      <xs:enumeration value="BJ" />
+      <xs:enumeration value="BK" />
+      <xs:enumeration value="BKT" />
+      <xs:enumeration value="BL" />
+      <xs:enumeration value="BLT" />
+      <xs:enumeration value="BM" />
+      <xs:enumeration value="BMM" />
+      <xs:enumeration value="BN" />
+      <xs:enumeration value="BO" />
+      <xs:enumeration value="BOI" />
+      <xs:enumeration value="BP" />
+      <xs:enumeration value="BQ" />
+      <xs:enumeration value="BR" />
+      <xs:enumeration value="BS" />
+      <xs:enumeration value="BT" />
+      <xs:enumeration value="BU" />
+      <xs:enumeration value="BV" />
+      <xs:enumeration value="BW" />
+      <xs:enumeration value="BX" />
+      <xs:enumeration value="BY" />
+      <xs:enumeration value="BZ" />
+      <xs:enumeration value="C0" />
+      <xs:enumeration value="C1" />
+      <xs:enumeration value="C2" />
+      <xs:enumeration value="C3" />
+      <xs:enumeration value="C4" />
+      <xs:enumeration value="C5" />
+      <xs:enumeration value="C6" />
+      <xs:enumeration value="C7" />
+      <xs:enumeration value="C8" />
+      <xs:enumeration value="C9" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CAA" />
+      <xs:enumeration value="CAB" />
+      <xs:enumeration value="CAC" />
+      <xs:enumeration value="CAD" />
+      <xs:enumeration value="CAE" />
+      <xs:enumeration value="CAF" />
+      <xs:enumeration value="CAG" />
+      <xs:enumeration value="CAH" />
+      <xs:enumeration value="CAI" />
+      <xs:enumeration value="CAJ" />
+      <xs:enumeration value="CAK" />
+      <xs:enumeration value="CAL" />
+      <xs:enumeration value="CAM" />
+      <xs:enumeration value="CAT" />
+      <xs:enumeration value="CB" />
+      <xs:enumeration value="CBG" />
+      <xs:enumeration value="CC" />
+      <xs:enumeration value="CD" />
+      <xs:enumeration value="CDN" />
+      <xs:enumeration value="CDT" />
+      <xs:enumeration value="CE" />
+      <xs:enumeration value="CED" />
+      <xs:enumeration value="CEN" />
+      <xs:enumeration value="CER" />
+      <xs:enumeration value="CES" />
+      <xs:enumeration value="CF" />
+      <xs:enumeration value="CFI" />
+      <xs:enumeration value="CFR" />
+      <xs:enumeration value="CG" />
+      <xs:enumeration value="CH" />
+      <xs:enumeration value="CHR" />
+      <xs:enumeration value="CI" />
+      <xs:enumeration value="CID" />
+      <xs:enumeration value="CIN" />
+      <xs:enumeration value="CIR" />
+      <xs:enumeration value="CIT" />
+      <xs:enumeration value="CJ" />
+      <xs:enumeration value="CK" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="CLI" />
+      <xs:enumeration value="CM" />
+      <xs:enumeration value="CMN" />
+      <xs:enumeration value="CMP" />
+      <xs:enumeration value="CMT" />
+      <xs:enumeration value="CN" />
+      <xs:enumeration value="CNA" />
+      <xs:enumeration value="CNO" />
+      <xs:enumeration value="CNS" />
+      <xs:enumeration value="CNV" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="COL" />
+      <xs:enumeration value="CON" />
+      <xs:enumeration value="COT" />
+      <xs:enumeration value="CP" />
+      <xs:enumeration value="CPA" />
+      <xs:enumeration value="CPD" />
+      <xs:enumeration value="CPR" />
+      <xs:enumeration value="CPT" />
+      <xs:enumeration value="CQ" />
+      <xs:enumeration value="CR" />
+      <xs:enumeration value="CRN" />
+      <xs:enumeration value="CRS" />
+      <xs:enumeration value="CS" />
+      <xs:enumeration value="CSC" />
+      <xs:enumeration value="CSG" />
+      <xs:enumeration value="CSK" />
+      <xs:enumeration value="CST" />
+      <xs:enumeration value="CT" />
+      <xs:enumeration value="CTS" />
+      <xs:enumeration value="CU" />
+      <xs:enumeration value="CUB" />
+      <xs:enumeration value="CV" />
+      <xs:enumeration value="CVI" />
+      <xs:enumeration value="CVS" />
+      <xs:enumeration value="CW" />
+      <xs:enumeration value="CX" />
+      <xs:enumeration value="CY" />
+      <xs:enumeration value="CYC" />
+      <xs:enumeration value="CYI" />
+      <xs:enumeration value="CZ" />
+      <xs:enumeration value="D0" />
+      <xs:enumeration value="D1" />
+      <xs:enumeration value="D2" />
+      <xs:enumeration value="D3" />
+      <xs:enumeration value="D4" />
+      <xs:enumeration value="D5" />
+      <xs:enumeration value="D6" />
+      <xs:enumeration value="D7" />
+      <xs:enumeration value="D8" />
+      <xs:enumeration value="D9" />
+      <xs:enumeration value="DA" />
+      <xs:enumeration value="DAI" />
+      <xs:enumeration value="DAN" />
+      <xs:enumeration value="DB" />
+      <xs:enumeration value="DC" />
+      <xs:enumeration value="DD" />
+      <xs:enumeration value="DE" />
+      <xs:enumeration value="DEI" />
+      <xs:enumeration value="DF" />
+      <xs:enumeration value="DG" />
+      <xs:enumeration value="DH" />
+      <xs:enumeration value="DHH" />
+      <xs:enumeration value="DI" />
+      <xs:enumeration value="DID" />
+      <xs:enumeration value="DIN" />
+      <xs:enumeration value="DIS" />
+      <xs:enumeration value="DJ" />
+      <xs:enumeration value="DK" />
+      <xs:enumeration value="DL" />
+      <xs:enumeration value="DM" />
+      <xs:enumeration value="DN" />
+      <xs:enumeration value="DNR" />
+      <xs:enumeration value="DNS" />
+      <xs:enumeration value="DO" />
+      <xs:enumeration value="DOA" />
+      <xs:enumeration value="DOC" />
+      <xs:enumeration value="DOE" />
+      <xs:enumeration value="DOI" />
+      <xs:enumeration value="DOJ" />
+      <xs:enumeration value="DOL" />
+      <xs:enumeration value="DON" />
+      <xs:enumeration value="DOS" />
+      <xs:enumeration value="DOT" />
+      <xs:enumeration value="DP" />
+      <xs:enumeration value="DQ" />
+      <xs:enumeration value="DR" />
+      <xs:enumeration value="DRN" />
+      <xs:enumeration value="DS" />
+      <xs:enumeration value="DSC" />
+      <xs:enumeration value="DSI" />
+      <xs:enumeration value="DST" />
+      <xs:enumeration value="DT" />
+      <xs:enumeration value="DTS" />
+      <xs:enumeration value="DU" />
+      <xs:enumeration value="DUN" />
+      <xs:enumeration value="DV" />
+      <xs:enumeration value="DW" />
+      <xs:enumeration value="DX" />
+      <xs:enumeration value="DY" />
+      <xs:enumeration value="DZ" />
+      <xs:enumeration value="E00" />
+      <xs:enumeration value="E01" />
+      <xs:enumeration value="E02" />
+      <xs:enumeration value="E1" />
+      <xs:enumeration value="E2" />
+      <xs:enumeration value="E3" />
+      <xs:enumeration value="E4" />
+      <xs:enumeration value="E5" />
+      <xs:enumeration value="E6" />
+      <xs:enumeration value="E7" />
+      <xs:enumeration value="E8" />
+      <xs:enumeration value="E9" />
+      <xs:enumeration value="EA" />
+      <xs:enumeration value="EB" />
+      <xs:enumeration value="EC" />
+      <xs:enumeration value="ECA" />
+      <xs:enumeration value="ECB" />
+      <xs:enumeration value="ECC" />
+      <xs:enumeration value="ECD" />
+      <xs:enumeration value="ECE" />
+      <xs:enumeration value="ECF" />
+      <xs:enumeration value="ECJ" />
+      <xs:enumeration value="ECN" />
+      <xs:enumeration value="ED" />
+      <xs:enumeration value="EDA" />
+      <xs:enumeration value="EE" />
+      <xs:enumeration value="EF" />
+      <xs:enumeration value="EG" />
+      <xs:enumeration value="EH" />
+      <xs:enumeration value="EI" />
+      <xs:enumeration value="EID" />
+      <xs:enumeration value="EII" />
+      <xs:enumeration value="EJ" />
+      <xs:enumeration value="EK" />
+      <xs:enumeration value="EL" />
+      <xs:enumeration value="EM" />
+      <xs:enumeration value="EMM" />
+      <xs:enumeration value="EN" />
+      <xs:enumeration value="END" />
+      <xs:enumeration value="EO" />
+      <xs:enumeration value="EP" />
+      <xs:enumeration value="EPA" />
+      <xs:enumeration value="EPB" />
+      <xs:enumeration value="EPC" />
+      <xs:enumeration value="EPN" />
+      <xs:enumeration value="EQ" />
+      <xs:enumeration value="ER" />
+      <xs:enumeration value="ES" />
+      <xs:enumeration value="ESN" />
+      <xs:enumeration value="ET" />
+      <xs:enumeration value="EU" />
+      <xs:enumeration value="EV" />
+      <xs:enumeration value="EVI" />
+      <xs:enumeration value="EW" />
+      <xs:enumeration value="EX" />
+      <xs:enumeration value="EXP" />
+      <xs:enumeration value="EY" />
+      <xs:enumeration value="EZ" />
+      <xs:enumeration value="F1" />
+      <xs:enumeration value="F2" />
+      <xs:enumeration value="F3" />
+      <xs:enumeration value="F4" />
+      <xs:enumeration value="F5" />
+      <xs:enumeration value="F6" />
+      <xs:enumeration value="F7" />
+      <xs:enumeration value="F8" />
+      <xs:enumeration value="F9" />
+      <xs:enumeration value="FA" />
+      <xs:enumeration value="FAN" />
+      <xs:enumeration value="FB" />
+      <xs:enumeration value="FC" />
+      <xs:enumeration value="FCE" />
+      <xs:enumeration value="FCN" />
+      <xs:enumeration value="FD" />
+      <xs:enumeration value="FDA" />
+      <xs:enumeration value="FE" />
+      <xs:enumeration value="FEN" />
+      <xs:enumeration value="FF" />
+      <xs:enumeration value="FFL" />
+      <xs:enumeration value="FG" />
+      <xs:enumeration value="FH" />
+      <xs:enumeration value="FHC" />
+      <xs:enumeration value="FHO" />
+      <xs:enumeration value="FI" />
+      <xs:enumeration value="FIG" />
+      <xs:enumeration value="FJ" />
+      <xs:enumeration value="FK" />
+      <xs:enumeration value="FL" />
+      <xs:enumeration value="FLZ" />
+      <xs:enumeration value="FM" />
+      <xs:enumeration value="FMG" />
+      <xs:enumeration value="FMP" />
+      <xs:enumeration value="FN" />
+      <xs:enumeration value="FND" />
+      <xs:enumeration value="FO" />
+      <xs:enumeration value="FP" />
+      <xs:enumeration value="FQ" />
+      <xs:enumeration value="FR" />
+      <xs:enumeration value="FRC" />
+      <xs:enumeration value="FRN" />
+      <xs:enumeration value="FS" />
+      <xs:enumeration value="FSC" />
+      <xs:enumeration value="FSN" />
+      <xs:enumeration value="FT" />
+      <xs:enumeration value="FTN" />
+      <xs:enumeration value="FTP" />
+      <xs:enumeration value="FTZ" />
+      <xs:enumeration value="FU" />
+      <xs:enumeration value="FV" />
+      <xs:enumeration value="FW" />
+      <xs:enumeration value="FWC" />
+      <xs:enumeration value="FX" />
+      <xs:enumeration value="FY" />
+      <xs:enumeration value="FZ" />
+      <xs:enumeration value="G1" />
+      <xs:enumeration value="G2" />
+      <xs:enumeration value="G3" />
+      <xs:enumeration value="G4" />
+      <xs:enumeration value="G5" />
+      <xs:enumeration value="G6" />
+      <xs:enumeration value="G7" />
+      <xs:enumeration value="G8" />
+      <xs:enumeration value="G9" />
+      <xs:enumeration value="GA" />
+      <xs:enumeration value="GB" />
+      <xs:enumeration value="GC" />
+      <xs:enumeration value="GD" />
+      <xs:enumeration value="GDT" />
+      <xs:enumeration value="GE" />
+      <xs:enumeration value="GF" />
+      <xs:enumeration value="GG" />
+      <xs:enumeration value="GH" />
+      <xs:enumeration value="GI" />
+      <xs:enumeration value="GJ" />
+      <xs:enumeration value="GK" />
+      <xs:enumeration value="GL" />
+      <xs:enumeration value="GM" />
+      <xs:enumeration value="GN" />
+      <xs:enumeration value="GO" />
+      <xs:enumeration value="GP" />
+      <xs:enumeration value="GQ" />
+      <xs:enumeration value="GR" />
+      <xs:enumeration value="GS" />
+      <xs:enumeration value="GT" />
+      <xs:enumeration value="GU" />
+      <xs:enumeration value="GV" />
+      <xs:enumeration value="GW" />
+      <xs:enumeration value="GWS" />
+      <xs:enumeration value="GX" />
+      <xs:enumeration value="GY" />
+      <xs:enumeration value="GZ" />
+      <xs:enumeration value="H1" />
+      <xs:enumeration value="H2" />
+      <xs:enumeration value="H3" />
+      <xs:enumeration value="H5" />
+      <xs:enumeration value="H6" />
+      <xs:enumeration value="H7" />
+      <xs:enumeration value="H8" />
+      <xs:enumeration value="H9" />
+      <xs:enumeration value="HA" />
+      <xs:enumeration value="HB" />
+      <xs:enumeration value="HC" />
+      <xs:enumeration value="HCI" />
+      <xs:enumeration value="HD" />
+      <xs:enumeration value="HE" />
+      <xs:enumeration value="HF" />
+      <xs:enumeration value="HG" />
+      <xs:enumeration value="HH" />
+      <xs:enumeration value="HHT" />
+      <xs:enumeration value="HI" />
+      <xs:enumeration value="HJ" />
+      <xs:enumeration value="HK" />
+      <xs:enumeration value="HL" />
+      <xs:enumeration value="HM" />
+      <xs:enumeration value="HMB" />
+      <xs:enumeration value="HN" />
+      <xs:enumeration value="HO" />
+      <xs:enumeration value="HP" />
+      <xs:enumeration value="HPI" />
+      <xs:enumeration value="HQ" />
+      <xs:enumeration value="HR" />
+      <xs:enumeration value="HS" />
+      <xs:enumeration value="HT" />
+      <xs:enumeration value="HU" />
+      <xs:enumeration value="HUD" />
+      <xs:enumeration value="HV" />
+      <xs:enumeration value="HW" />
+      <xs:enumeration value="HX" />
+      <xs:enumeration value="HY" />
+      <xs:enumeration value="HZ" />
+      <xs:enumeration value="I1" />
+      <xs:enumeration value="I10" />
+      <xs:enumeration value="I2" />
+      <xs:enumeration value="I3" />
+      <xs:enumeration value="I4" />
+      <xs:enumeration value="I5" />
+      <xs:enumeration value="I7" />
+      <xs:enumeration value="I9" />
+      <xs:enumeration value="IA" />
+      <xs:enumeration value="IAC" />
+      <xs:enumeration value="IB" />
+      <xs:enumeration value="IC" />
+      <xs:enumeration value="ICD" />
+      <xs:enumeration value="ID" />
+      <xs:enumeration value="IE" />
+      <xs:enumeration value="IF" />
+      <xs:enumeration value="IFC" />
+      <xs:enumeration value="IFT" />
+      <xs:enumeration value="IG" />
+      <xs:enumeration value="IGR" />
+      <xs:enumeration value="IH" />
+      <xs:enumeration value="II" />
+      <xs:enumeration value="IID" />
+      <xs:enumeration value="IJ" />
+      <xs:enumeration value="IK" />
+      <xs:enumeration value="IL" />
+      <xs:enumeration value="IM" />
+      <xs:enumeration value="IMP" />
+      <xs:enumeration value="IMS" />
+      <xs:enumeration value="IN" />
+      <xs:enumeration value="INA" />
+      <xs:enumeration value="IND" />
+      <xs:enumeration value="IO" />
+      <xs:enumeration value="IP" />
+      <xs:enumeration value="IQ" />
+      <xs:enumeration value="IR" />
+      <xs:enumeration value="IRN" />
+      <xs:enumeration value="IRP" />
+      <xs:enumeration value="IS" />
+      <xs:enumeration value="ISC" />
+      <xs:enumeration value="ISN" />
+      <xs:enumeration value="ISS" />
+      <xs:enumeration value="IT" />
+      <xs:enumeration value="ITI" />
+      <xs:enumeration value="ITN" />
+      <xs:enumeration value="IU" />
+      <xs:enumeration value="IV" />
+      <xs:enumeration value="IW" />
+      <xs:enumeration value="IX" />
+      <xs:enumeration value="IZ" />
+      <xs:enumeration value="J0" />
+      <xs:enumeration value="J1" />
+      <xs:enumeration value="J2" />
+      <xs:enumeration value="J3" />
+      <xs:enumeration value="J4" />
+      <xs:enumeration value="J5" />
+      <xs:enumeration value="J6" />
+      <xs:enumeration value="J7" />
+      <xs:enumeration value="J8" />
+      <xs:enumeration value="J9" />
+      <xs:enumeration value="JA" />
+      <xs:enumeration value="JB" />
+      <xs:enumeration value="JC" />
+      <xs:enumeration value="JCS" />
+      <xs:enumeration value="JD" />
+      <xs:enumeration value="JE" />
+      <xs:enumeration value="JF" />
+      <xs:enumeration value="JH" />
+      <xs:enumeration value="JI" />
+      <xs:enumeration value="JK" />
+      <xs:enumeration value="JL" />
+      <xs:enumeration value="JM" />
+      <xs:enumeration value="JN" />
+      <xs:enumeration value="JO" />
+      <xs:enumeration value="JP" />
+      <xs:enumeration value="JQ" />
+      <xs:enumeration value="JR" />
+      <xs:enumeration value="JS" />
+      <xs:enumeration value="JT" />
+      <xs:enumeration value="JU" />
+      <xs:enumeration value="JV" />
+      <xs:enumeration value="JW" />
+      <xs:enumeration value="JX" />
+      <xs:enumeration value="JY" />
+      <xs:enumeration value="JZ" />
+      <xs:enumeration value="K0" />
+      <xs:enumeration value="K1" />
+      <xs:enumeration value="K2" />
+      <xs:enumeration value="K3" />
+      <xs:enumeration value="K4" />
+      <xs:enumeration value="K5" />
+      <xs:enumeration value="K6" />
+      <xs:enumeration value="K7" />
+      <xs:enumeration value="K8" />
+      <xs:enumeration value="K9" />
+      <xs:enumeration value="KA" />
+      <xs:enumeration value="KAS" />
+      <xs:enumeration value="KB" />
+      <xs:enumeration value="KC" />
+      <xs:enumeration value="KCS" />
+      <xs:enumeration value="KD" />
+      <xs:enumeration value="KE" />
+      <xs:enumeration value="KG" />
+      <xs:enumeration value="KH" />
+      <xs:enumeration value="KI" />
+      <xs:enumeration value="KII" />
+      <xs:enumeration value="KJ" />
+      <xs:enumeration value="KK" />
+      <xs:enumeration value="KL" />
+      <xs:enumeration value="KM" />
+      <xs:enumeration value="KN" />
+      <xs:enumeration value="KO" />
+      <xs:enumeration value="KP" />
+      <xs:enumeration value="KQ" />
+      <xs:enumeration value="KR" />
+      <xs:enumeration value="KRL" />
+      <xs:enumeration value="KRP" />
+      <xs:enumeration value="KS" />
+      <xs:enumeration value="KSR" />
+      <xs:enumeration value="KT" />
+      <xs:enumeration value="KU" />
+      <xs:enumeration value="KV" />
+      <xs:enumeration value="KW" />
+      <xs:enumeration value="KX" />
+      <xs:enumeration value="KY" />
+      <xs:enumeration value="KZ" />
+      <xs:enumeration value="L0" />
+      <xs:enumeration value="L1" />
+      <xs:enumeration value="L2" />
+      <xs:enumeration value="L3" />
+      <xs:enumeration value="L4" />
+      <xs:enumeration value="L5" />
+      <xs:enumeration value="L6" />
+      <xs:enumeration value="L7" />
+      <xs:enumeration value="L8" />
+      <xs:enumeration value="L9" />
+      <xs:enumeration value="LA" />
+      <xs:enumeration value="LAA" />
+      <xs:enumeration value="LAN" />
+      <xs:enumeration value="LB" />
+      <xs:enumeration value="LC" />
+      <xs:enumeration value="LD" />
+      <xs:enumeration value="LE" />
+      <xs:enumeration value="LEL" />
+      <xs:enumeration value="LEN" />
+      <xs:enumeration value="LF" />
+      <xs:enumeration value="LG" />
+      <xs:enumeration value="LH" />
+      <xs:enumeration value="LI" />
+      <xs:enumeration value="LIC" />
+      <xs:enumeration value="LJ" />
+      <xs:enumeration value="LK" />
+      <xs:enumeration value="LL" />
+      <xs:enumeration value="LM" />
+      <xs:enumeration value="LMI" />
+      <xs:enumeration value="LN" />
+      <xs:enumeration value="LO" />
+      <xs:enumeration value="LOI" />
+      <xs:enumeration value="LOP" />
+      <xs:enumeration value="LOS" />
+      <xs:enumeration value="LP" />
+      <xs:enumeration value="LPK" />
+      <xs:enumeration value="LQ" />
+      <xs:enumeration value="LR" />
+      <xs:enumeration value="LS" />
+      <xs:enumeration value="LSD" />
+      <xs:enumeration value="LT" />
+      <xs:enumeration value="LU" />
+      <xs:enumeration value="LV" />
+      <xs:enumeration value="LVO" />
+      <xs:enumeration value="LW" />
+      <xs:enumeration value="LX" />
+      <xs:enumeration value="LY" />
+      <xs:enumeration value="LZ" />
+      <xs:enumeration value="M0" />
+      <xs:enumeration value="M1" />
+      <xs:enumeration value="M2" />
+      <xs:enumeration value="M3" />
+      <xs:enumeration value="M5" />
+      <xs:enumeration value="M6" />
+      <xs:enumeration value="M7" />
+      <xs:enumeration value="M8" />
+      <xs:enumeration value="M9" />
+      <xs:enumeration value="MA" />
+      <xs:enumeration value="MB" />
+      <xs:enumeration value="MBS" />
+      <xs:enumeration value="MBX" />
+      <xs:enumeration value="MC" />
+      <xs:enumeration value="MCC" />
+      <xs:enumeration value="MCI" />
+      <xs:enumeration value="MCN" />
+      <xs:enumeration value="MD" />
+      <xs:enumeration value="MDC" />
+      <xs:enumeration value="MDL" />
+      <xs:enumeration value="MDN" />
+      <xs:enumeration value="ME" />
+      <xs:enumeration value="MF" />
+      <xs:enumeration value="MG" />
+      <xs:enumeration value="MH" />
+      <xs:enumeration value="MI" />
+      <xs:enumeration value="MII" />
+      <xs:enumeration value="MIN" />
+      <xs:enumeration value="MJ" />
+      <xs:enumeration value="MK" />
+      <xs:enumeration value="ML" />
+      <xs:enumeration value="MM" />
+      <xs:enumeration value="MN" />
+      <xs:enumeration value="MO" />
+      <xs:enumeration value="MP" />
+      <xs:enumeration value="MPN" />
+      <xs:enumeration value="MQ" />
+      <xs:enumeration value="MR" />
+      <xs:enumeration value="MRC" />
+      <xs:enumeration value="MRN" />
+      <xs:enumeration value="MS" />
+      <xs:enumeration value="MSL" />
+      <xs:enumeration value="MT" />
+      <xs:enumeration value="MU" />
+      <xs:enumeration value="MUI" />
+      <xs:enumeration value="MV" />
+      <xs:enumeration value="MW" />
+      <xs:enumeration value="MX" />
+      <xs:enumeration value="MY" />
+      <xs:enumeration value="MZ" />
+      <xs:enumeration value="MZO" />
+      <xs:enumeration value="N0" />
+      <xs:enumeration value="N1" />
+      <xs:enumeration value="N2" />
+      <xs:enumeration value="N3" />
+      <xs:enumeration value="N4" />
+      <xs:enumeration value="N5" />
+      <xs:enumeration value="N6" />
+      <xs:enumeration value="N7" />
+      <xs:enumeration value="N8" />
+      <xs:enumeration value="N9" />
+      <xs:enumeration value="NA" />
+      <xs:enumeration value="NAS" />
+      <xs:enumeration value="NB" />
+      <xs:enumeration value="NC" />
+      <xs:enumeration value="ND" />
+      <xs:enumeration value="NDA" />
+      <xs:enumeration value="NDB" />
+      <xs:enumeration value="NE" />
+      <xs:enumeration value="NF" />
+      <xs:enumeration value="NFC" />
+      <xs:enumeration value="NFD" />
+      <xs:enumeration value="NFM" />
+      <xs:enumeration value="NFN" />
+      <xs:enumeration value="NFS" />
+      <xs:enumeration value="NG" />
+      <xs:enumeration value="NH" />
+      <xs:enumeration value="NI" />
+      <xs:enumeration value="NIN" />
+      <xs:enumeration value="NJ" />
+      <xs:enumeration value="NK" />
+      <xs:enumeration value="NL" />
+      <xs:enumeration value="NM" />
+      <xs:enumeration value="NMT" />
+      <xs:enumeration value="NN" />
+      <xs:enumeration value="NO" />
+      <xs:enumeration value="NP" />
+      <xs:enumeration value="NPN" />
+      <xs:enumeration value="NQ" />
+      <xs:enumeration value="NR" />
+      <xs:enumeration value="NS" />
+      <xs:enumeration value="NT" />
+      <xs:enumeration value="NTP" />
+      <xs:enumeration value="NU" />
+      <xs:enumeration value="NW" />
+      <xs:enumeration value="NX" />
+      <xs:enumeration value="NY" />
+      <xs:enumeration value="NZ" />
+      <xs:enumeration value="O1" />
+      <xs:enumeration value="O2" />
+      <xs:enumeration value="O5" />
+      <xs:enumeration value="O7" />
+      <xs:enumeration value="O8" />
+      <xs:enumeration value="O9" />
+      <xs:enumeration value="OA" />
+      <xs:enumeration value="OB" />
+      <xs:enumeration value="OC" />
+      <xs:enumeration value="OD" />
+      <xs:enumeration value="OE" />
+      <xs:enumeration value="OF" />
+      <xs:enumeration value="OFF" />
+      <xs:enumeration value="OG" />
+      <xs:enumeration value="OH" />
+      <xs:enumeration value="OI" />
+      <xs:enumeration value="OIC" />
+      <xs:enumeration value="OJ" />
+      <xs:enumeration value="OK" />
+      <xs:enumeration value="OL" />
+      <xs:enumeration value="OM" />
+      <xs:enumeration value="ON" />
+      <xs:enumeration value="OOS" />
+      <xs:enumeration value="OP" />
+      <xs:enumeration value="OPE" />
+      <xs:enumeration value="OPF" />
+      <xs:enumeration value="OPN" />
+      <xs:enumeration value="OQ" />
+      <xs:enumeration value="OR" />
+      <xs:enumeration value="OS" />
+      <xs:enumeration value="OT" />
+      <xs:enumeration value="OU" />
+      <xs:enumeration value="OV" />
+      <xs:enumeration value="OVF" />
+      <xs:enumeration value="OW" />
+      <xs:enumeration value="OX" />
+      <xs:enumeration value="OZ" />
+      <xs:enumeration value="P1" />
+      <xs:enumeration value="P2" />
+      <xs:enumeration value="P3" />
+      <xs:enumeration value="P4" />
+      <xs:enumeration value="P5" />
+      <xs:enumeration value="P6" />
+      <xs:enumeration value="P7" />
+      <xs:enumeration value="P8" />
+      <xs:enumeration value="P9" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PAC" />
+      <xs:enumeration value="PAN" />
+      <xs:enumeration value="PAP" />
+      <xs:enumeration value="PB" />
+      <xs:enumeration value="PC" />
+      <xs:enumeration value="PCC" />
+      <xs:enumeration value="PCJ" />
+      <xs:enumeration value="PCN" />
+      <xs:enumeration value="PCS" />
+      <xs:enumeration value="PD" />
+      <xs:enumeration value="PDF" />
+      <xs:enumeration value="PDI" />
+      <xs:enumeration value="PDL" />
+      <xs:enumeration value="PDR" />
+      <xs:enumeration value="PE" />
+      <xs:enumeration value="PF" />
+      <xs:enumeration value="PG" />
+      <xs:enumeration value="PGC" />
+      <xs:enumeration value="PGD" />
+      <xs:enumeration value="PGN" />
+      <xs:enumeration value="PGS" />
+      <xs:enumeration value="PH" />
+      <xs:enumeration value="PHC" />
+      <xs:enumeration value="PHY" />
+      <xs:enumeration value="PI" />
+      <xs:enumeration value="PID" />
+      <xs:enumeration value="PIN" />
+      <xs:enumeration value="PJ" />
+      <xs:enumeration value="PJC" />
+      <xs:enumeration value="PK" />
+      <xs:enumeration value="PKG" />
+      <xs:enumeration value="PKU" />
+      <xs:enumeration value="PL" />
+      <xs:enumeration value="PLA" />
+      <xs:enumeration value="PLI" />
+      <xs:enumeration value="PLN" />
+      <xs:enumeration value="PM" />
+      <xs:enumeration value="PMA" />
+      <xs:enumeration value="PMN" />
+      <xs:enumeration value="PN" />
+      <xs:enumeration value="PNN" />
+      <xs:enumeration value="PO" />
+      <xs:enumeration value="POD" />
+      <xs:enumeration value="POL" />
+      <xs:enumeration value="POS" />
+      <xs:enumeration value="PP" />
+      <xs:enumeration value="PPJ" />
+      <xs:enumeration value="PPK" />
+      <xs:enumeration value="PPL" />
+      <xs:enumeration value="PPM" />
+      <xs:enumeration value="PPN" />
+      <xs:enumeration value="PQ" />
+      <xs:enumeration value="PR" />
+      <xs:enumeration value="PRK" />
+      <xs:enumeration value="PRS" />
+      <xs:enumeration value="PRT" />
+      <xs:enumeration value="PS" />
+      <xs:enumeration value="PSC" />
+      <xs:enumeration value="PSI" />
+      <xs:enumeration value="PSL" />
+      <xs:enumeration value="PSM" />
+      <xs:enumeration value="PSN" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="PTC" />
+      <xs:enumeration value="PU" />
+      <xs:enumeration value="PUA" />
+      <xs:enumeration value="PV" />
+      <xs:enumeration value="PVC" />
+      <xs:enumeration value="PVS" />
+      <xs:enumeration value="PW" />
+      <xs:enumeration value="PWC" />
+      <xs:enumeration value="PWS" />
+      <xs:enumeration value="PX" />
+      <xs:enumeration value="PXC" />
+      <xs:enumeration value="PY" />
+      <xs:enumeration value="PYA" />
+      <xs:enumeration value="PYR" />
+      <xs:enumeration value="PZ" />
+      <xs:enumeration value="Q1" />
+      <xs:enumeration value="Q2" />
+      <xs:enumeration value="Q3" />
+      <xs:enumeration value="Q4" />
+      <xs:enumeration value="Q5" />
+      <xs:enumeration value="Q6" />
+      <xs:enumeration value="Q7" />
+      <xs:enumeration value="Q8" />
+      <xs:enumeration value="Q9" />
+      <xs:enumeration value="QA" />
+      <xs:enumeration value="QB" />
+      <xs:enumeration value="QC" />
+      <xs:enumeration value="QD" />
+      <xs:enumeration value="QE" />
+      <xs:enumeration value="QF" />
+      <xs:enumeration value="QG" />
+      <xs:enumeration value="QH" />
+      <xs:enumeration value="QI" />
+      <xs:enumeration value="QJ" />
+      <xs:enumeration value="QK" />
+      <xs:enumeration value="QL" />
+      <xs:enumeration value="QM" />
+      <xs:enumeration value="QN" />
+      <xs:enumeration value="QO" />
+      <xs:enumeration value="QP" />
+      <xs:enumeration value="QQ" />
+      <xs:enumeration value="QR" />
+      <xs:enumeration value="QS" />
+      <xs:enumeration value="QT" />
+      <xs:enumeration value="QU" />
+      <xs:enumeration value="QV" />
+      <xs:enumeration value="QW" />
+      <xs:enumeration value="QX" />
+      <xs:enumeration value="QY" />
+      <xs:enumeration value="QZ" />
+      <xs:enumeration value="R0" />
+      <xs:enumeration value="R1" />
+      <xs:enumeration value="R2" />
+      <xs:enumeration value="R3" />
+      <xs:enumeration value="R4" />
+      <xs:enumeration value="R5" />
+      <xs:enumeration value="R6" />
+      <xs:enumeration value="R7" />
+      <xs:enumeration value="R8" />
+      <xs:enumeration value="R9" />
+      <xs:enumeration value="RA" />
+      <xs:enumeration value="RAA" />
+      <xs:enumeration value="RAN" />
+      <xs:enumeration value="RB" />
+      <xs:enumeration value="RC" />
+      <xs:enumeration value="RD" />
+      <xs:enumeration value="RE" />
+      <xs:enumeration value="REC" />
+      <xs:enumeration value="REP" />
+      <xs:enumeration value="RF" />
+      <xs:enumeration value="RG" />
+      <xs:enumeration value="RGI" />
+      <xs:enumeration value="RH" />
+      <xs:enumeration value="RI" />
+      <xs:enumeration value="RIG" />
+      <xs:enumeration value="RJ" />
+      <xs:enumeration value="RK" />
+      <xs:enumeration value="RL" />
+      <xs:enumeration value="RLI" />
+      <xs:enumeration value="RM" />
+      <xs:enumeration value="RN" />
+      <xs:enumeration value="RO" />
+      <xs:enumeration value="RP" />
+      <xs:enumeration value="RPP" />
+      <xs:enumeration value="RPS" />
+      <xs:enumeration value="RPT" />
+      <xs:enumeration value="RQ" />
+      <xs:enumeration value="RR" />
+      <xs:enumeration value="RRB" />
+      <xs:enumeration value="RRC" />
+      <xs:enumeration value="RRS" />
+      <xs:enumeration value="RS" />
+      <xs:enumeration value="RSN" />
+      <xs:enumeration value="RSS" />
+      <xs:enumeration value="RT" />
+      <xs:enumeration value="RTP" />
+      <xs:enumeration value="RU" />
+      <xs:enumeration value="RV" />
+      <xs:enumeration value="RW" />
+      <xs:enumeration value="RWK" />
+      <xs:enumeration value="RX" />
+      <xs:enumeration value="RY" />
+      <xs:enumeration value="RZ" />
+      <xs:enumeration value="S0" />
+      <xs:enumeration value="S1" />
+      <xs:enumeration value="S2" />
+      <xs:enumeration value="S3" />
+      <xs:enumeration value="S4" />
+      <xs:enumeration value="S5" />
+      <xs:enumeration value="S6" />
+      <xs:enumeration value="S7" />
+      <xs:enumeration value="S8" />
+      <xs:enumeration value="S9" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="SAL" />
+      <xs:enumeration value="SAN" />
+      <xs:enumeration value="SB" />
+      <xs:enumeration value="SBC" />
+      <xs:enumeration value="SBN" />
+      <xs:enumeration value="SC" />
+      <xs:enumeration value="SCA" />
+      <xs:enumeration value="SCN" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SDT" />
+      <xs:enumeration value="SE" />
+      <xs:enumeration value="SEK" />
+      <xs:enumeration value="SES" />
+      <xs:enumeration value="SF" />
+      <xs:enumeration value="SFB" />
+      <xs:enumeration value="SFT" />
+      <xs:enumeration value="SG" />
+      <xs:enumeration value="SH" />
+      <xs:enumeration value="SHL" />
+      <xs:enumeration value="SI" />
+      <xs:enumeration value="SII" />
+      <xs:enumeration value="SJ" />
+      <xs:enumeration value="SK" />
+      <xs:enumeration value="SL" />
+      <xs:enumeration value="SM" />
+      <xs:enumeration value="SMC" />
+      <xs:enumeration value="SMT" />
+      <xs:enumeration value="SN" />
+      <xs:enumeration value="SNH" />
+      <xs:enumeration value="SNP" />
+      <xs:enumeration value="SNV" />
+      <xs:enumeration value="SO" />
+      <xs:enumeration value="SP" />
+      <xs:enumeration value="SPL" />
+      <xs:enumeration value="SPN" />
+      <xs:enumeration value="SPP" />
+      <xs:enumeration value="SQ" />
+      <xs:enumeration value="SR" />
+      <xs:enumeration value="SS" />
+      <xs:enumeration value="SST" />
+      <xs:enumeration value="ST" />
+      <xs:enumeration value="STB" />
+      <xs:enumeration value="STR" />
+      <xs:enumeration value="STS" />
+      <xs:enumeration value="SU" />
+      <xs:enumeration value="SUB" />
+      <xs:enumeration value="SUC" />
+      <xs:enumeration value="SUO" />
+      <xs:enumeration value="SUP" />
+      <xs:enumeration value="SUQ" />
+      <xs:enumeration value="SV" />
+      <xs:enumeration value="SW" />
+      <xs:enumeration value="SX" />
+      <xs:enumeration value="SY" />
+      <xs:enumeration value="SZ" />
+      <xs:enumeration value="T0" />
+      <xs:enumeration value="T1" />
+      <xs:enumeration value="T2" />
+      <xs:enumeration value="T3" />
+      <xs:enumeration value="T4" />
+      <xs:enumeration value="T5" />
+      <xs:enumeration value="T6" />
+      <xs:enumeration value="T7" />
+      <xs:enumeration value="T8" />
+      <xs:enumeration value="T9" />
+      <xs:enumeration value="TA" />
+      <xs:enumeration value="TB" />
+      <xs:enumeration value="TC" />
+      <xs:enumeration value="TD" />
+      <xs:enumeration value="TDT" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="TF" />
+      <xs:enumeration value="TFC" />
+      <xs:enumeration value="TG" />
+      <xs:enumeration value="TH" />
+      <xs:enumeration value="TI" />
+      <xs:enumeration value="TIP" />
+      <xs:enumeration value="TJ" />
+      <xs:enumeration value="TK" />
+      <xs:enumeration value="TL" />
+      <xs:enumeration value="TM" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TO" />
+      <xs:enumeration value="TOC" />
+      <xs:enumeration value="TP" />
+      <xs:enumeration value="TPC" />
+      <xs:enumeration value="TPN" />
+      <xs:enumeration value="TQ" />
+      <xs:enumeration value="TR" />
+      <xs:enumeration value="TRC" />
+      <xs:enumeration value="TS" />
+      <xs:enumeration value="TSN" />
+      <xs:enumeration value="TT" />
+      <xs:enumeration value="TU" />
+      <xs:enumeration value="TV" />
+      <xs:enumeration value="TW" />
+      <xs:enumeration value="TX" />
+      <xs:enumeration value="TY" />
+      <xs:enumeration value="TZ" />
+      <xs:enumeration value="U0" />
+      <xs:enumeration value="U1" />
+      <xs:enumeration value="U2" />
+      <xs:enumeration value="U3" />
+      <xs:enumeration value="U4" />
+      <xs:enumeration value="U5" />
+      <xs:enumeration value="U6" />
+      <xs:enumeration value="U8" />
+      <xs:enumeration value="U9" />
+      <xs:enumeration value="UA" />
+      <xs:enumeration value="UB" />
+      <xs:enumeration value="UC" />
+      <xs:enumeration value="UCB" />
+      <xs:enumeration value="UCM" />
+      <xs:enumeration value="UD" />
+      <xs:enumeration value="UE" />
+      <xs:enumeration value="UF" />
+      <xs:enumeration value="UG" />
+      <xs:enumeration value="UH" />
+      <xs:enumeration value="UI" />
+      <xs:enumeration value="UIC" />
+      <xs:enumeration value="UII" />
+      <xs:enumeration value="UJ" />
+      <xs:enumeration value="UK" />
+      <xs:enumeration value="UL" />
+      <xs:enumeration value="ULC" />
+      <xs:enumeration value="UM" />
+      <xs:enumeration value="UN" />
+      <xs:enumeration value="UO" />
+      <xs:enumeration value="UP" />
+      <xs:enumeration value="UQ" />
+      <xs:enumeration value="UR" />
+      <xs:enumeration value="URI" />
+      <xs:enumeration value="URL" />
+      <xs:enumeration value="URP" />
+      <xs:enumeration value="URQ" />
+      <xs:enumeration value="US" />
+      <xs:enumeration value="USD" />
+      <xs:enumeration value="UT" />
+      <xs:enumeration value="UTY" />
+      <xs:enumeration value="UU" />
+      <xs:enumeration value="UV" />
+      <xs:enumeration value="UW" />
+      <xs:enumeration value="UX" />
+      <xs:enumeration value="UY" />
+      <xs:enumeration value="UZ" />
+      <xs:enumeration value="V0" />
+      <xs:enumeration value="V1" />
+      <xs:enumeration value="V2" />
+      <xs:enumeration value="V3" />
+      <xs:enumeration value="V4" />
+      <xs:enumeration value="V5" />
+      <xs:enumeration value="V6" />
+      <xs:enumeration value="V7" />
+      <xs:enumeration value="V8" />
+      <xs:enumeration value="V9" />
+      <xs:enumeration value="VA" />
+      <xs:enumeration value="VAO" />
+      <xs:enumeration value="VB" />
+      <xs:enumeration value="VC" />
+      <xs:enumeration value="VD" />
+      <xs:enumeration value="VE" />
+      <xs:enumeration value="VF" />
+      <xs:enumeration value="VG" />
+      <xs:enumeration value="VGS" />
+      <xs:enumeration value="VH" />
+      <xs:enumeration value="VI" />
+      <xs:enumeration value="VJ" />
+      <xs:enumeration value="VK" />
+      <xs:enumeration value="VL" />
+      <xs:enumeration value="VM" />
+      <xs:enumeration value="VN" />
+      <xs:enumeration value="VO" />
+      <xs:enumeration value="VP" />
+      <xs:enumeration value="VQ" />
+      <xs:enumeration value="VR" />
+      <xs:enumeration value="VS" />
+      <xs:enumeration value="VT" />
+      <xs:enumeration value="VU" />
+      <xs:enumeration value="VV" />
+      <xs:enumeration value="VW" />
+      <xs:enumeration value="VX" />
+      <xs:enumeration value="VY" />
+      <xs:enumeration value="VZ" />
+      <xs:enumeration value="W1" />
+      <xs:enumeration value="W2" />
+      <xs:enumeration value="W3" />
+      <xs:enumeration value="W4" />
+      <xs:enumeration value="W5" />
+      <xs:enumeration value="W6" />
+      <xs:enumeration value="W7" />
+      <xs:enumeration value="W8" />
+      <xs:enumeration value="W9" />
+      <xs:enumeration value="WA" />
+      <xs:enumeration value="WB" />
+      <xs:enumeration value="WC" />
+      <xs:enumeration value="WCS" />
+      <xs:enumeration value="WD" />
+      <xs:enumeration value="WDR" />
+      <xs:enumeration value="WE" />
+      <xs:enumeration value="WF" />
+      <xs:enumeration value="WG" />
+      <xs:enumeration value="WH" />
+      <xs:enumeration value="WI" />
+      <xs:enumeration value="WJ" />
+      <xs:enumeration value="WK" />
+      <xs:enumeration value="WL" />
+      <xs:enumeration value="WM" />
+      <xs:enumeration value="WN" />
+      <xs:enumeration value="WO" />
+      <xs:enumeration value="WP" />
+      <xs:enumeration value="WQ" />
+      <xs:enumeration value="WR" />
+      <xs:enumeration value="WS" />
+      <xs:enumeration value="WT" />
+      <xs:enumeration value="WU" />
+      <xs:enumeration value="WV" />
+      <xs:enumeration value="WW" />
+      <xs:enumeration value="WX" />
+      <xs:enumeration value="WY" />
+      <xs:enumeration value="WZ" />
+      <xs:enumeration value="X0" />
+      <xs:enumeration value="X1" />
+      <xs:enumeration value="X10" />
+      <xs:enumeration value="X11" />
+      <xs:enumeration value="X12" />
+      <xs:enumeration value="X13" />
+      <xs:enumeration value="X2" />
+      <xs:enumeration value="X3" />
+      <xs:enumeration value="X4" />
+      <xs:enumeration value="X5" />
+      <xs:enumeration value="X6" />
+      <xs:enumeration value="X7" />
+      <xs:enumeration value="X8" />
+      <xs:enumeration value="X9" />
+      <xs:enumeration value="XA" />
+      <xs:enumeration value="XB" />
+      <xs:enumeration value="XC" />
+      <xs:enumeration value="XD" />
+      <xs:enumeration value="XE" />
+      <xs:enumeration value="XF" />
+      <xs:enumeration value="XG" />
+      <xs:enumeration value="XH" />
+      <xs:enumeration value="XI" />
+      <xs:enumeration value="XJ" />
+      <xs:enumeration value="XK" />
+      <xs:enumeration value="XL" />
+      <xs:enumeration value="XM" />
+      <xs:enumeration value="XN" />
+      <xs:enumeration value="XO" />
+      <xs:enumeration value="XP" />
+      <xs:enumeration value="XQ" />
+      <xs:enumeration value="XR" />
+      <xs:enumeration value="XS" />
+      <xs:enumeration value="XT" />
+      <xs:enumeration value="XU" />
+      <xs:enumeration value="XV" />
+      <xs:enumeration value="XW" />
+      <xs:enumeration value="XX" />
+      <xs:enumeration value="XX1" />
+      <xs:enumeration value="XX2" />
+      <xs:enumeration value="XX3" />
+      <xs:enumeration value="XX4" />
+      <xs:enumeration value="XX5" />
+      <xs:enumeration value="XX6" />
+      <xs:enumeration value="XX7" />
+      <xs:enumeration value="XX8" />
+      <xs:enumeration value="XY" />
+      <xs:enumeration value="XZ" />
+      <xs:enumeration value="Y0" />
+      <xs:enumeration value="Y1" />
+      <xs:enumeration value="Y2" />
+      <xs:enumeration value="Y3" />
+      <xs:enumeration value="Y4" />
+      <xs:enumeration value="Y5" />
+      <xs:enumeration value="Y6" />
+      <xs:enumeration value="Y8" />
+      <xs:enumeration value="Y9" />
+      <xs:enumeration value="YA" />
+      <xs:enumeration value="YB" />
+      <xs:enumeration value="YC" />
+      <xs:enumeration value="YD" />
+      <xs:enumeration value="YE" />
+      <xs:enumeration value="YF" />
+      <xs:enumeration value="YH" />
+      <xs:enumeration value="YI" />
+      <xs:enumeration value="YJ" />
+      <xs:enumeration value="YK" />
+      <xs:enumeration value="YL" />
+      <xs:enumeration value="YM" />
+      <xs:enumeration value="YN" />
+      <xs:enumeration value="YO" />
+      <xs:enumeration value="YP" />
+      <xs:enumeration value="YQ" />
+      <xs:enumeration value="YR" />
+      <xs:enumeration value="YS" />
+      <xs:enumeration value="YT" />
+      <xs:enumeration value="YV" />
+      <xs:enumeration value="YW" />
+      <xs:enumeration value="YX" />
+      <xs:enumeration value="YY" />
+      <xs:enumeration value="YZ" />
+      <xs:enumeration value="Z1" />
+      <xs:enumeration value="Z2" />
+      <xs:enumeration value="Z3" />
+      <xs:enumeration value="Z4" />
+      <xs:enumeration value="Z5" />
+      <xs:enumeration value="Z6" />
+      <xs:enumeration value="Z7" />
+      <xs:enumeration value="Z8" />
+      <xs:enumeration value="Z9" />
+      <xs:enumeration value="ZA" />
+      <xs:enumeration value="ZB" />
+      <xs:enumeration value="ZC" />
+      <xs:enumeration value="ZD" />
+      <xs:enumeration value="ZE" />
+      <xs:enumeration value="ZG" />
+      <xs:enumeration value="ZH" />
+      <xs:enumeration value="ZI" />
+      <xs:enumeration value="ZJ" />
+      <xs:enumeration value="ZK" />
+      <xs:enumeration value="ZL" />
+      <xs:enumeration value="ZM" />
+      <xs:enumeration value="ZN" />
+      <xs:enumeration value="ZO" />
+      <xs:enumeration value="ZP" />
+      <xs:enumeration value="ZQ" />
+      <xs:enumeration value="ZR" />
+      <xs:enumeration value="ZS" />
+      <xs:enumeration value="ZT" />
+      <xs:enumeration value="ZTS" />
+      <xs:enumeration value="ZU" />
+      <xs:enumeration value="ZV" />
+      <xs:enumeration value="ZW" />
+      <xs:enumeration value="ZX" />
+      <xs:enumeration value="ZY" />
+      <xs:enumeration value="ZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_1691">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="10" />
+      <xs:enumeration value="11" />
+      <xs:enumeration value="12" />
+      <xs:enumeration value="13" />
+      <xs:enumeration value="14" />
+      <xs:enumeration value="15" />
+      <xs:enumeration value="16" />
+      <xs:enumeration value="17" />
+      <xs:enumeration value="18" />
+      <xs:enumeration value="19" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="20" />
+      <xs:enumeration value="21" />
+      <xs:enumeration value="22" />
+      <xs:enumeration value="23" />
+      <xs:enumeration value="24" />
+      <xs:enumeration value="25" />
+      <xs:enumeration value="26" />
+      <xs:enumeration value="27" />
+      <xs:enumeration value="28" />
+      <xs:enumeration value="29" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="35" />
+      <xs:enumeration value="36" />
+      <xs:enumeration value="37" />
+      <xs:enumeration value="38" />
+      <xs:enumeration value="39" />
+      <xs:enumeration value="4" />
+      <xs:enumeration value="40" />
+      <xs:enumeration value="41" />
+      <xs:enumeration value="42" />
+      <xs:enumeration value="43" />
+      <xs:enumeration value="44" />
+      <xs:enumeration value="45" />
+      <xs:enumeration value="46" />
+      <xs:enumeration value="47" />
+      <xs:enumeration value="48" />
+      <xs:enumeration value="49" />
+      <xs:enumeration value="5" />
+      <xs:enumeration value="50" />
+      <xs:enumeration value="51" />
+      <xs:enumeration value="52" />
+      <xs:enumeration value="53" />
+      <xs:enumeration value="54" />
+      <xs:enumeration value="55" />
+      <xs:enumeration value="56" />
+      <xs:enumeration value="57" />
+      <xs:enumeration value="58" />
+      <xs:enumeration value="59" />
+      <xs:enumeration value="6" />
+      <xs:enumeration value="7" />
+      <xs:enumeration value="8" />
+      <xs:enumeration value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_1693">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_1570">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ASB" />
+      <xs:enumeration value="ASC" />
+      <xs:enumeration value="B64" />
+      <xs:enumeration value="HDC" />
+      <xs:enumeration value="NOF" />
+      <xs:enumeration value="R64" />
+      <xs:enumeration value="UUE" />
+      <xs:enumeration value="ZZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="date">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d*-\d\d-\d\d" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="time">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d\d:\d\d(:\d\d)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_N">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_R">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_AN">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_DT">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_TM">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N0">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N1">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N2">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N3">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N4">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N5">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N6">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N7">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N8">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N9">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,5191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:btsedi="http://schemas.microsoft.com/BizTalk/2005/EdiSchemaEditorExtension" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" xmlns="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:appinfo>
+      <schemaEditorExtension:schemaInfo namespaceAlias="btsedi" extensionClass="Microsoft.BizTalk.Edi.SchemaEditorExtension.EdiSchemaExtension" standardName="EDI" xmlns:schemaEditorExtension="http://schemas.microsoft.com/BizTalk/2003/SchemaEditorExtensions" />
+      <b:schemaInfo version="1.0" document_type="868" standard="EDI" standards_version="00603" root_reference="X12_00603_868" displayroot_reference="X12_00603_868" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" X12ConditionDesignator_Check="No" />
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation xml:lang="en">copyright © Microsoft Corporation. All rights reserved.</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>Schema name: X12_6030_868</xs:documentation>
+  </xs:annotation>
+  <xs:element name="X12_00603_868">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="postfix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Electronic Form Structure" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ST">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Header" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ST01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Identifier Code_143" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="3" />
+                    <xs:maxLength value="3" />
+                    <xs:enumeration value="868" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ST02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="ST03">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Implementation Convention Preference_1705" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="E01">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E01" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Electronic Form Main Heading" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100" ref="DMI">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DMI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Maintenance Information">
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="DMI10" />
+                  <b:Subject name="DMI11" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100" ref="E03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E03" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Interchange Order of Segments" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1000" ref="MSG">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="MSG" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Message Text">
+                <b:Rule subjects="X12ConditionDesignatorX_Conditional" qualifier="MSG03" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="MSG02" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1000" ref="E10Loop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Transaction Set Grouping" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1000" ref="E20Loop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Segment Header Information" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="2000" ref="E41Loop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Composite Header Information" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="2000" ref="E30Loop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Data Element Attributes" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="10000" ref="E40Loop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for EDI Standards Note Reference" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SE">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Trailer" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SE01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Number of Included Segments_96" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SE02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E10Loop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Transaction Set Grouping" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="E10">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E10" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Transaction Set Grouping" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1000" ref="E13">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E13" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Segment Order in Transaction Set" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E20Loop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Segment Header Information" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="E20">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E20" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Segment Header Information" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100" ref="E22">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E22" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Relationships in a Segment or Composite" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100" ref="E24">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E24" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Sequence in a Segment or Composite" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E41Loop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Composite Header Information" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="E41">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E41" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Composite Header Information" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100" ref="E22_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E22" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Relationships in a Segment or Composite" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100" ref="E24_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E24" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Sequence in a Segment or Composite" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E34Loop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Code List Values for a Data Element" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="E34">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E34" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Code List Values for a Data Element" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="20" ref="DDI">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DDI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Explanation" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="5" ref="DAI_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DAI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Appendix Information" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E30Loop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Data Element Attributes" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="E30">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E30" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Attributes">
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="E3008" />
+                  <b:Subject name="E3009" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="10" ref="DAI">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DAI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Appendix Information" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="QTY">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="QTY" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Quantity Information">
+                <b:Rule subjects="X12ConditionDesignatorX_Required" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="QTY02" />
+                  <b:Subject name="QTY04" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Exclusion" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="QTY02" />
+                  <b:Subject name="QTY04" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100000" ref="E34Loop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Code List Values for a Data Element" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E40Loop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for EDI Standards Note Reference" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="E40">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="E40" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="EDI Standards Note Reference" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="100" ref="DMI_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DMI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Maintenance Information">
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="DMI10" />
+                  <b:Subject name="DMI11" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1000" ref="DDI_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DDI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Explanation" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E01">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E01" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Electronic Form Main Heading" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E0101" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E0102" type="X12_ID_922">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Electronic Form Standards Type Code_922" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E0103" type="X12_ID_480">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Version / Release / Industry Identifier Code_480" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E0104" type="X12_ID_924">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Full or Partial Indicator Code_924" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DMI">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DMI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Maintenance Information">
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="DMI10" />
+            <b:Subject name="DMI11" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DMI01" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DMI02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Maintenance Number_926" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name_93" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="60" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Address Information_166" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="55" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI05">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Address Information_166" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="55" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI06">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="City Name_19" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="2" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI07">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="State or Province Code_156" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:length value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI08">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Postal Code_116" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="3" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI09">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Country Code_26" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="2" />
+              <xs:maxLength value="3" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI10" type="X12_ID_365">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Communication Number Qualifier_365" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI11">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Communication Number_364" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="256" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI12">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E03">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E03" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Interchange Order of Segments" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E0301" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E0302" type="X12_ID_906">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Level Number Code_906" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E0303">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Segment ID Code_721" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="2" />
+              <xs:maxLength value="3" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E0304" type="X12_ID_903">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Envelope Indicator Code_903" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E0305" type="X12_ID_904">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Requirement Designator Code_904" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E0306">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maximum Use_905" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="7" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E0307">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MSG">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="MSG" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Message Text">
+          <b:Rule subjects="X12ConditionDesignatorX_Conditional" qualifier="MSG03" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="MSG02" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="MSG01">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free-form Message Text_933" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="264" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="MSG02" type="X12_ID_934">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Printer Carriage Control Code_934" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="MSG03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Number_1470" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E10">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E10" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Transaction Set Grouping" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E1001" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E1002" type="X12_ID_143">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Transaction Set Identifier Code_143" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E1003" type="X12_ID_479">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Functional Identifier Code_479" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E1004">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1005">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E13">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E13" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Segment Order in Transaction Set" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E1301" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E1302">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Set_589" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1303" type="X12_ID_902">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Section Designator Code_902" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1304">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Segment ID Code_721" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="2" />
+              <xs:maxLength value="3" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1305" type="X12_ID_904">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Requirement Designator Code_904" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1306">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maximum Use_905" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="7" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1307">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Loop Name_909" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="2" />
+              <xs:maxLength value="4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1308">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Loop Repeat Count_910" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="7" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1309">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Loop Level Number_489" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:length value="1" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E1310">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E20">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E20" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Segment Header Information" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E2001" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E2002">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Segment ID Code_721" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="2" />
+              <xs:maxLength value="3" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2003">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2004">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E22">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E22" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Relationships in a Segment or Composite" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E2201" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E2202" type="X12_ID_912">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Relation Code_912" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E2203">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2204">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2205">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2206">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2207">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2208">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2209">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2210">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2211">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2212">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E24">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E24" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Sequence in a Segment or Composite" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E2401" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E2402">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E2403">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Reference Number_725" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E2404" type="X12_ID_904">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Requirement Designator Code_904" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2405" type="X12_ID_491">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Usage Type Code_491" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2406">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2407">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Count_609" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E41">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E41" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Composite Header Information" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E4101" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E4102">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Reference Number_725" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E4103">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E4104">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E22_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E22_2" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Relationships in a Segment or Composite" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E2201" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E2202" type="X12_ID_912">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Relation Code_912" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E2203">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2204">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2205">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2206">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2207">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2208">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2209">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2210">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2211">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2212">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E24_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E24_2" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Sequence in a Segment or Composite" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E2401" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E2402">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Position in Segment or Composite_911" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E2403">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Reference Number_725" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E2404" type="X12_ID_904">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Requirement Designator Code_904" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2405" type="X12_ID_491">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Usage Type Code_491" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2406">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E2407">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Count_609" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E30">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E30" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Element Attributes">
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="E3008" />
+            <b:Subject name="E3009" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E3001" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E3002">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Reference Number_725" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E3003" type="X12_ID_913">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Data Type Code_913" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E3004">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Minimum Length_914" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E3005">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maximum Length_915" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="7" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E3006">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E3007">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E3008">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Element Reference Number_725" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E3009">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code List Reference_916" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DAI">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DAI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Appendix Information" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DAI01" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DAI02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code List Reference_916" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DAI03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QTY">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="QTY" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Quantity Information">
+          <b:Rule subjects="X12ConditionDesignatorX_Required" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="QTY02" />
+            <b:Subject name="QTY04" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Exclusion" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="QTY02" />
+            <b:Subject name="QTY04" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="QTY01" type="X12_ID_673">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Quantity Qualifier_673" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="QTY02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Quantity_380" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C001">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Composite Unit of Measure" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="QTY04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free-form Information_61" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E34">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E34" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Code List Values for a Data Element" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E3401" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E3402">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code Value_918" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="8" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="E3403">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Partition Indicator_505" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E3404">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DDI">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DDI" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Explanation" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DDI01">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DAI_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DAI_2" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Appendix Information" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DAI01" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DAI02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code List Reference_916" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DAI03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="E40">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="E40" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="EDI Standards Note Reference" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="E4001" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="E4002">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="E4003" type="X12_ID_568">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Electronic Form Note Reference Code_568" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="E4004">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Assigned Identification_350" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="20" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DMI_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DMI_2" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Data Maintenance Information">
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="DMI10" />
+            <b:Subject name="DMI11" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DMI01" type="X12_ID_487">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Maintenance Operation Code_487" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DMI02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Data Maintenance Number_926" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name_93" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="60" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Address Information_166" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="55" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI05">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Address Information_166" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="55" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI06">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="City Name_19" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="2" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI07">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="State or Province Code_156" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:length value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI08">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Postal Code_116" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="3" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI09">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Country Code_26" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="2" />
+              <xs:maxLength value="3" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI10" type="X12_ID_365">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Communication Number Qualifier_365" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI11">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Communication Number_364" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="256" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DMI12">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Identification Number_490" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N0">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DDI_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DDI_2" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Explanation" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DDI01">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Description_352" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="80" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C001">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Composite Unit of Measure" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C00101" type="X12_ID_355">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Unit or Basis for Measurement Code_355" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00102">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Exponent_1018" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00103">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Multiplier_649" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00104" type="X12_ID_355">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Unit or Basis for Measurement Code_355" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00105">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Exponent_1018" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00106">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Multiplier_649" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00107" type="X12_ID_355">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Unit or Basis for Measurement Code_355" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00108">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Exponent_1018" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00109">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Multiplier_649" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00110" type="X12_ID_355">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Unit or Basis for Measurement Code_355" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00111">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Exponent_1018" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00112">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Multiplier_649" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00113" type="X12_ID_355">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Unit or Basis for Measurement Code_355" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00114">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Exponent_1018" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00115">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Multiplier_649" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="X12_ID_487">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A" />
+      <xs:enumeration value="C" />
+      <xs:enumeration value="D" />
+      <xs:enumeration value="F" />
+      <xs:enumeration value="I" />
+      <xs:enumeration value="R" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_922">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="H" />
+      <xs:enumeration value="I" />
+      <xs:enumeration value="N" />
+      <xs:enumeration value="T" />
+      <xs:enumeration value="U" />
+      <xs:enumeration value="X" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_480">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="001000" />
+      <xs:enumeration value="002000" />
+      <xs:enumeration value="002001" />
+      <xs:enumeration value="002002" />
+      <xs:enumeration value="002003" />
+      <xs:enumeration value="002031" />
+      <xs:enumeration value="002040" />
+      <xs:enumeration value="002041" />
+      <xs:enumeration value="002042" />
+      <xs:enumeration value="003000" />
+      <xs:enumeration value="003010" />
+      <xs:enumeration value="003011" />
+      <xs:enumeration value="003012" />
+      <xs:enumeration value="003020" />
+      <xs:enumeration value="003021" />
+      <xs:enumeration value="003022" />
+      <xs:enumeration value="003030" />
+      <xs:enumeration value="003031" />
+      <xs:enumeration value="003032" />
+      <xs:enumeration value="003040" />
+      <xs:enumeration value="003041" />
+      <xs:enumeration value="003042" />
+      <xs:enumeration value="003050" />
+      <xs:enumeration value="003051" />
+      <xs:enumeration value="003052" />
+      <xs:enumeration value="003060" />
+      <xs:enumeration value="003061" />
+      <xs:enumeration value="003062" />
+      <xs:enumeration value="003070" />
+      <xs:enumeration value="003071" />
+      <xs:enumeration value="003072" />
+      <xs:enumeration value="004000" />
+      <xs:enumeration value="004010" />
+      <xs:enumeration value="004011" />
+      <xs:enumeration value="004012" />
+      <xs:enumeration value="004020" />
+      <xs:enumeration value="004021" />
+      <xs:enumeration value="004022" />
+      <xs:enumeration value="004030" />
+      <xs:enumeration value="004031" />
+      <xs:enumeration value="004032" />
+      <xs:enumeration value="004040" />
+      <xs:enumeration value="004041" />
+      <xs:enumeration value="004042" />
+      <xs:enumeration value="004050" />
+      <xs:enumeration value="004051" />
+      <xs:enumeration value="004052" />
+      <xs:enumeration value="004060" />
+      <xs:enumeration value="004061" />
+      <xs:enumeration value="004062" />
+      <xs:enumeration value="005000" />
+      <xs:enumeration value="005010" />
+      <xs:enumeration value="005011" />
+      <xs:enumeration value="005012" />
+      <xs:enumeration value="005020" />
+      <xs:enumeration value="005021" />
+      <xs:enumeration value="005022" />
+      <xs:enumeration value="005030" />
+      <xs:enumeration value="005031" />
+      <xs:enumeration value="005032" />
+      <xs:enumeration value="005040" />
+      <xs:enumeration value="005041" />
+      <xs:enumeration value="005042" />
+      <xs:enumeration value="005050" />
+      <xs:enumeration value="005051" />
+      <xs:enumeration value="005052" />
+      <xs:enumeration value="006000" />
+      <xs:enumeration value="006010" />
+      <xs:enumeration value="006011" />
+      <xs:enumeration value="006012" />
+      <xs:enumeration value="006020" />
+      <xs:enumeration value="006021" />
+      <xs:enumeration value="006022" />
+      <xs:enumeration value="006030" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_924">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="F" />
+      <xs:enumeration value="P" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_365">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="AC" />
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AE" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="AS" />
+      <xs:enumeration value="AU" />
+      <xs:enumeration value="BN" />
+      <xs:enumeration value="BT" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CP" />
+      <xs:enumeration value="DN" />
+      <xs:enumeration value="EA" />
+      <xs:enumeration value="ED" />
+      <xs:enumeration value="EM" />
+      <xs:enumeration value="EX" />
+      <xs:enumeration value="FT" />
+      <xs:enumeration value="FU" />
+      <xs:enumeration value="FX" />
+      <xs:enumeration value="HF" />
+      <xs:enumeration value="HP" />
+      <xs:enumeration value="IT" />
+      <xs:enumeration value="MN" />
+      <xs:enumeration value="NP" />
+      <xs:enumeration value="OF" />
+      <xs:enumeration value="OT" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PC" />
+      <xs:enumeration value="PP" />
+      <xs:enumeration value="PS" />
+      <xs:enumeration value="SP" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="TL" />
+      <xs:enumeration value="TM" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TS" />
+      <xs:enumeration value="TX" />
+      <xs:enumeration value="UR" />
+      <xs:enumeration value="VM" />
+      <xs:enumeration value="WC" />
+      <xs:enumeration value="WF" />
+      <xs:enumeration value="WP" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_906">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0" />
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_903">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="H" />
+      <xs:enumeration value="N" />
+      <xs:enumeration value="T" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_904">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="C" />
+      <xs:enumeration value="F" />
+      <xs:enumeration value="M" />
+      <xs:enumeration value="N" />
+      <xs:enumeration value="O" />
+      <xs:enumeration value="R" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_934">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AT" />
+      <xs:enumeration value="DS" />
+      <xs:enumeration value="LC" />
+      <xs:enumeration value="NP" />
+      <xs:enumeration value="NS" />
+      <xs:enumeration value="SS" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_143">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="100" />
+      <xs:enumeration value="101" />
+      <xs:enumeration value="102" />
+      <xs:enumeration value="103" />
+      <xs:enumeration value="104" />
+      <xs:enumeration value="105" />
+      <xs:enumeration value="106" />
+      <xs:enumeration value="107" />
+      <xs:enumeration value="108" />
+      <xs:enumeration value="109" />
+      <xs:enumeration value="110" />
+      <xs:enumeration value="111" />
+      <xs:enumeration value="112" />
+      <xs:enumeration value="113" />
+      <xs:enumeration value="120" />
+      <xs:enumeration value="121" />
+      <xs:enumeration value="124" />
+      <xs:enumeration value="125" />
+      <xs:enumeration value="126" />
+      <xs:enumeration value="127" />
+      <xs:enumeration value="128" />
+      <xs:enumeration value="129" />
+      <xs:enumeration value="130" />
+      <xs:enumeration value="131" />
+      <xs:enumeration value="132" />
+      <xs:enumeration value="133" />
+      <xs:enumeration value="135" />
+      <xs:enumeration value="138" />
+      <xs:enumeration value="139" />
+      <xs:enumeration value="140" />
+      <xs:enumeration value="141" />
+      <xs:enumeration value="142" />
+      <xs:enumeration value="143" />
+      <xs:enumeration value="144" />
+      <xs:enumeration value="146" />
+      <xs:enumeration value="147" />
+      <xs:enumeration value="148" />
+      <xs:enumeration value="149" />
+      <xs:enumeration value="150" />
+      <xs:enumeration value="151" />
+      <xs:enumeration value="152" />
+      <xs:enumeration value="153" />
+      <xs:enumeration value="154" />
+      <xs:enumeration value="155" />
+      <xs:enumeration value="157" />
+      <xs:enumeration value="158" />
+      <xs:enumeration value="159" />
+      <xs:enumeration value="160" />
+      <xs:enumeration value="161" />
+      <xs:enumeration value="163" />
+      <xs:enumeration value="170" />
+      <xs:enumeration value="175" />
+      <xs:enumeration value="176" />
+      <xs:enumeration value="179" />
+      <xs:enumeration value="180" />
+      <xs:enumeration value="185" />
+      <xs:enumeration value="186" />
+      <xs:enumeration value="187" />
+      <xs:enumeration value="188" />
+      <xs:enumeration value="189" />
+      <xs:enumeration value="190" />
+      <xs:enumeration value="191" />
+      <xs:enumeration value="194" />
+      <xs:enumeration value="195" />
+      <xs:enumeration value="196" />
+      <xs:enumeration value="197" />
+      <xs:enumeration value="198" />
+      <xs:enumeration value="199" />
+      <xs:enumeration value="200" />
+      <xs:enumeration value="201" />
+      <xs:enumeration value="202" />
+      <xs:enumeration value="203" />
+      <xs:enumeration value="204" />
+      <xs:enumeration value="205" />
+      <xs:enumeration value="206" />
+      <xs:enumeration value="210" />
+      <xs:enumeration value="211" />
+      <xs:enumeration value="212" />
+      <xs:enumeration value="213" />
+      <xs:enumeration value="214" />
+      <xs:enumeration value="215" />
+      <xs:enumeration value="216" />
+      <xs:enumeration value="217" />
+      <xs:enumeration value="219" />
+      <xs:enumeration value="220" />
+      <xs:enumeration value="222" />
+      <xs:enumeration value="223" />
+      <xs:enumeration value="224" />
+      <xs:enumeration value="225" />
+      <xs:enumeration value="227" />
+      <xs:enumeration value="228" />
+      <xs:enumeration value="240" />
+      <xs:enumeration value="242" />
+      <xs:enumeration value="244" />
+      <xs:enumeration value="245" />
+      <xs:enumeration value="248" />
+      <xs:enumeration value="249" />
+      <xs:enumeration value="250" />
+      <xs:enumeration value="251" />
+      <xs:enumeration value="252" />
+      <xs:enumeration value="255" />
+      <xs:enumeration value="256" />
+      <xs:enumeration value="259" />
+      <xs:enumeration value="260" />
+      <xs:enumeration value="261" />
+      <xs:enumeration value="262" />
+      <xs:enumeration value="263" />
+      <xs:enumeration value="264" />
+      <xs:enumeration value="265" />
+      <xs:enumeration value="266" />
+      <xs:enumeration value="267" />
+      <xs:enumeration value="268" />
+      <xs:enumeration value="269" />
+      <xs:enumeration value="270" />
+      <xs:enumeration value="271" />
+      <xs:enumeration value="272" />
+      <xs:enumeration value="273" />
+      <xs:enumeration value="274" />
+      <xs:enumeration value="275" />
+      <xs:enumeration value="276" />
+      <xs:enumeration value="277" />
+      <xs:enumeration value="278" />
+      <xs:enumeration value="280" />
+      <xs:enumeration value="283" />
+      <xs:enumeration value="284" />
+      <xs:enumeration value="285" />
+      <xs:enumeration value="286" />
+      <xs:enumeration value="288" />
+      <xs:enumeration value="290" />
+      <xs:enumeration value="300" />
+      <xs:enumeration value="301" />
+      <xs:enumeration value="303" />
+      <xs:enumeration value="304" />
+      <xs:enumeration value="309" />
+      <xs:enumeration value="310" />
+      <xs:enumeration value="311" />
+      <xs:enumeration value="312" />
+      <xs:enumeration value="313" />
+      <xs:enumeration value="315" />
+      <xs:enumeration value="317" />
+      <xs:enumeration value="319" />
+      <xs:enumeration value="322" />
+      <xs:enumeration value="323" />
+      <xs:enumeration value="324" />
+      <xs:enumeration value="325" />
+      <xs:enumeration value="326" />
+      <xs:enumeration value="350" />
+      <xs:enumeration value="352" />
+      <xs:enumeration value="353" />
+      <xs:enumeration value="354" />
+      <xs:enumeration value="355" />
+      <xs:enumeration value="356" />
+      <xs:enumeration value="357" />
+      <xs:enumeration value="358" />
+      <xs:enumeration value="359" />
+      <xs:enumeration value="361" />
+      <xs:enumeration value="362" />
+      <xs:enumeration value="404" />
+      <xs:enumeration value="410" />
+      <xs:enumeration value="412" />
+      <xs:enumeration value="414" />
+      <xs:enumeration value="417" />
+      <xs:enumeration value="418" />
+      <xs:enumeration value="419" />
+      <xs:enumeration value="420" />
+      <xs:enumeration value="421" />
+      <xs:enumeration value="422" />
+      <xs:enumeration value="423" />
+      <xs:enumeration value="424" />
+      <xs:enumeration value="425" />
+      <xs:enumeration value="426" />
+      <xs:enumeration value="429" />
+      <xs:enumeration value="431" />
+      <xs:enumeration value="432" />
+      <xs:enumeration value="433" />
+      <xs:enumeration value="434" />
+      <xs:enumeration value="435" />
+      <xs:enumeration value="436" />
+      <xs:enumeration value="437" />
+      <xs:enumeration value="440" />
+      <xs:enumeration value="451" />
+      <xs:enumeration value="452" />
+      <xs:enumeration value="453" />
+      <xs:enumeration value="455" />
+      <xs:enumeration value="456" />
+      <xs:enumeration value="460" />
+      <xs:enumeration value="463" />
+      <xs:enumeration value="466" />
+      <xs:enumeration value="468" />
+      <xs:enumeration value="470" />
+      <xs:enumeration value="475" />
+      <xs:enumeration value="485" />
+      <xs:enumeration value="486" />
+      <xs:enumeration value="490" />
+      <xs:enumeration value="492" />
+      <xs:enumeration value="494" />
+      <xs:enumeration value="500" />
+      <xs:enumeration value="501" />
+      <xs:enumeration value="503" />
+      <xs:enumeration value="504" />
+      <xs:enumeration value="511" />
+      <xs:enumeration value="517" />
+      <xs:enumeration value="521" />
+      <xs:enumeration value="527" />
+      <xs:enumeration value="536" />
+      <xs:enumeration value="540" />
+      <xs:enumeration value="561" />
+      <xs:enumeration value="567" />
+      <xs:enumeration value="568" />
+      <xs:enumeration value="601" />
+      <xs:enumeration value="603" />
+      <xs:enumeration value="620" />
+      <xs:enumeration value="625" />
+      <xs:enumeration value="650" />
+      <xs:enumeration value="715" />
+      <xs:enumeration value="753" />
+      <xs:enumeration value="754" />
+      <xs:enumeration value="805" />
+      <xs:enumeration value="806" />
+      <xs:enumeration value="810" />
+      <xs:enumeration value="811" />
+      <xs:enumeration value="812" />
+      <xs:enumeration value="813" />
+      <xs:enumeration value="814" />
+      <xs:enumeration value="815" />
+      <xs:enumeration value="816" />
+      <xs:enumeration value="818" />
+      <xs:enumeration value="819" />
+      <xs:enumeration value="820" />
+      <xs:enumeration value="821" />
+      <xs:enumeration value="822" />
+      <xs:enumeration value="823" />
+      <xs:enumeration value="824" />
+      <xs:enumeration value="826" />
+      <xs:enumeration value="827" />
+      <xs:enumeration value="828" />
+      <xs:enumeration value="829" />
+      <xs:enumeration value="830" />
+      <xs:enumeration value="831" />
+      <xs:enumeration value="832" />
+      <xs:enumeration value="833" />
+      <xs:enumeration value="834" />
+      <xs:enumeration value="835" />
+      <xs:enumeration value="836" />
+      <xs:enumeration value="837" />
+      <xs:enumeration value="838" />
+      <xs:enumeration value="839" />
+      <xs:enumeration value="840" />
+      <xs:enumeration value="841" />
+      <xs:enumeration value="842" />
+      <xs:enumeration value="843" />
+      <xs:enumeration value="844" />
+      <xs:enumeration value="845" />
+      <xs:enumeration value="846" />
+      <xs:enumeration value="847" />
+      <xs:enumeration value="848" />
+      <xs:enumeration value="849" />
+      <xs:enumeration value="850" />
+      <xs:enumeration value="851" />
+      <xs:enumeration value="852" />
+      <xs:enumeration value="853" />
+      <xs:enumeration value="854" />
+      <xs:enumeration value="855" />
+      <xs:enumeration value="856" />
+      <xs:enumeration value="857" />
+      <xs:enumeration value="858" />
+      <xs:enumeration value="859" />
+      <xs:enumeration value="860" />
+      <xs:enumeration value="861" />
+      <xs:enumeration value="862" />
+      <xs:enumeration value="863" />
+      <xs:enumeration value="864" />
+      <xs:enumeration value="865" />
+      <xs:enumeration value="866" />
+      <xs:enumeration value="867" />
+      <xs:enumeration value="868" />
+      <xs:enumeration value="869" />
+      <xs:enumeration value="870" />
+      <xs:enumeration value="871" />
+      <xs:enumeration value="872" />
+      <xs:enumeration value="873" />
+      <xs:enumeration value="874" />
+      <xs:enumeration value="875" />
+      <xs:enumeration value="876" />
+      <xs:enumeration value="877" />
+      <xs:enumeration value="878" />
+      <xs:enumeration value="879" />
+      <xs:enumeration value="880" />
+      <xs:enumeration value="881" />
+      <xs:enumeration value="882" />
+      <xs:enumeration value="883" />
+      <xs:enumeration value="884" />
+      <xs:enumeration value="885" />
+      <xs:enumeration value="886" />
+      <xs:enumeration value="887" />
+      <xs:enumeration value="888" />
+      <xs:enumeration value="889" />
+      <xs:enumeration value="890" />
+      <xs:enumeration value="891" />
+      <xs:enumeration value="893" />
+      <xs:enumeration value="894" />
+      <xs:enumeration value="895" />
+      <xs:enumeration value="896" />
+      <xs:enumeration value="920" />
+      <xs:enumeration value="924" />
+      <xs:enumeration value="925" />
+      <xs:enumeration value="926" />
+      <xs:enumeration value="928" />
+      <xs:enumeration value="940" />
+      <xs:enumeration value="943" />
+      <xs:enumeration value="944" />
+      <xs:enumeration value="945" />
+      <xs:enumeration value="947" />
+      <xs:enumeration value="980" />
+      <xs:enumeration value="990" />
+      <xs:enumeration value="993" />
+      <xs:enumeration value="996" />
+      <xs:enumeration value="997" />
+      <xs:enumeration value="998" />
+      <xs:enumeration value="999" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_479">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="AC" />
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AE" />
+      <xs:enumeration value="AF" />
+      <xs:enumeration value="AG" />
+      <xs:enumeration value="AH" />
+      <xs:enumeration value="AI" />
+      <xs:enumeration value="AK" />
+      <xs:enumeration value="AL" />
+      <xs:enumeration value="AM" />
+      <xs:enumeration value="AN" />
+      <xs:enumeration value="AO" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="AQ" />
+      <xs:enumeration value="AR" />
+      <xs:enumeration value="AS" />
+      <xs:enumeration value="AT" />
+      <xs:enumeration value="AU" />
+      <xs:enumeration value="AV" />
+      <xs:enumeration value="AW" />
+      <xs:enumeration value="AX" />
+      <xs:enumeration value="AY" />
+      <xs:enumeration value="AZ" />
+      <xs:enumeration value="BA" />
+      <xs:enumeration value="BB" />
+      <xs:enumeration value="BC" />
+      <xs:enumeration value="BD" />
+      <xs:enumeration value="BE" />
+      <xs:enumeration value="BF" />
+      <xs:enumeration value="BG" />
+      <xs:enumeration value="BL" />
+      <xs:enumeration value="BS" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CB" />
+      <xs:enumeration value="CC" />
+      <xs:enumeration value="CD" />
+      <xs:enumeration value="CE" />
+      <xs:enumeration value="CF" />
+      <xs:enumeration value="CH" />
+      <xs:enumeration value="CI" />
+      <xs:enumeration value="CJ" />
+      <xs:enumeration value="CK" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="CM" />
+      <xs:enumeration value="CN" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="CP" />
+      <xs:enumeration value="CQ" />
+      <xs:enumeration value="CR" />
+      <xs:enumeration value="CS" />
+      <xs:enumeration value="CT" />
+      <xs:enumeration value="CU" />
+      <xs:enumeration value="CV" />
+      <xs:enumeration value="CW" />
+      <xs:enumeration value="D3" />
+      <xs:enumeration value="D4" />
+      <xs:enumeration value="D5" />
+      <xs:enumeration value="DA" />
+      <xs:enumeration value="DD" />
+      <xs:enumeration value="DF" />
+      <xs:enumeration value="DI" />
+      <xs:enumeration value="DM" />
+      <xs:enumeration value="DS" />
+      <xs:enumeration value="DX" />
+      <xs:enumeration value="EC" />
+      <xs:enumeration value="ED" />
+      <xs:enumeration value="EI" />
+      <xs:enumeration value="EN" />
+      <xs:enumeration value="EO" />
+      <xs:enumeration value="EP" />
+      <xs:enumeration value="ER" />
+      <xs:enumeration value="ES" />
+      <xs:enumeration value="EV" />
+      <xs:enumeration value="EX" />
+      <xs:enumeration value="FA" />
+      <xs:enumeration value="FB" />
+      <xs:enumeration value="FC" />
+      <xs:enumeration value="FG" />
+      <xs:enumeration value="FR" />
+      <xs:enumeration value="FT" />
+      <xs:enumeration value="GC" />
+      <xs:enumeration value="GE" />
+      <xs:enumeration value="GF" />
+      <xs:enumeration value="GL" />
+      <xs:enumeration value="GP" />
+      <xs:enumeration value="GR" />
+      <xs:enumeration value="GT" />
+      <xs:enumeration value="HB" />
+      <xs:enumeration value="HC" />
+      <xs:enumeration value="HI" />
+      <xs:enumeration value="HN" />
+      <xs:enumeration value="HP" />
+      <xs:enumeration value="HR" />
+      <xs:enumeration value="HS" />
+      <xs:enumeration value="HU" />
+      <xs:enumeration value="HV" />
+      <xs:enumeration value="IA" />
+      <xs:enumeration value="IB" />
+      <xs:enumeration value="IC" />
+      <xs:enumeration value="ID" />
+      <xs:enumeration value="IE" />
+      <xs:enumeration value="IF" />
+      <xs:enumeration value="IG" />
+      <xs:enumeration value="IH" />
+      <xs:enumeration value="IJ" />
+      <xs:enumeration value="IM" />
+      <xs:enumeration value="IN" />
+      <xs:enumeration value="IO" />
+      <xs:enumeration value="IR" />
+      <xs:enumeration value="IS" />
+      <xs:enumeration value="JB" />
+      <xs:enumeration value="KM" />
+      <xs:enumeration value="LA" />
+      <xs:enumeration value="LB" />
+      <xs:enumeration value="LI" />
+      <xs:enumeration value="LN" />
+      <xs:enumeration value="LR" />
+      <xs:enumeration value="LS" />
+      <xs:enumeration value="LT" />
+      <xs:enumeration value="MA" />
+      <xs:enumeration value="MC" />
+      <xs:enumeration value="MD" />
+      <xs:enumeration value="ME" />
+      <xs:enumeration value="MF" />
+      <xs:enumeration value="MG" />
+      <xs:enumeration value="MH" />
+      <xs:enumeration value="MI" />
+      <xs:enumeration value="MJ" />
+      <xs:enumeration value="MK" />
+      <xs:enumeration value="MM" />
+      <xs:enumeration value="MN" />
+      <xs:enumeration value="MO" />
+      <xs:enumeration value="MP" />
+      <xs:enumeration value="MQ" />
+      <xs:enumeration value="MR" />
+      <xs:enumeration value="MS" />
+      <xs:enumeration value="MT" />
+      <xs:enumeration value="MV" />
+      <xs:enumeration value="MW" />
+      <xs:enumeration value="MX" />
+      <xs:enumeration value="MY" />
+      <xs:enumeration value="MZ" />
+      <xs:enumeration value="NC" />
+      <xs:enumeration value="NL" />
+      <xs:enumeration value="NP" />
+      <xs:enumeration value="NR" />
+      <xs:enumeration value="NT" />
+      <xs:enumeration value="OC" />
+      <xs:enumeration value="OG" />
+      <xs:enumeration value="OR" />
+      <xs:enumeration value="OW" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PB" />
+      <xs:enumeration value="PC" />
+      <xs:enumeration value="PD" />
+      <xs:enumeration value="PE" />
+      <xs:enumeration value="PF" />
+      <xs:enumeration value="PG" />
+      <xs:enumeration value="PH" />
+      <xs:enumeration value="PI" />
+      <xs:enumeration value="PJ" />
+      <xs:enumeration value="PK" />
+      <xs:enumeration value="PL" />
+      <xs:enumeration value="PN" />
+      <xs:enumeration value="PO" />
+      <xs:enumeration value="PQ" />
+      <xs:enumeration value="PR" />
+      <xs:enumeration value="PS" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="PU" />
+      <xs:enumeration value="PV" />
+      <xs:enumeration value="PW" />
+      <xs:enumeration value="PY" />
+      <xs:enumeration value="QG" />
+      <xs:enumeration value="QM" />
+      <xs:enumeration value="QO" />
+      <xs:enumeration value="RA" />
+      <xs:enumeration value="RB" />
+      <xs:enumeration value="RC" />
+      <xs:enumeration value="RD" />
+      <xs:enumeration value="RE" />
+      <xs:enumeration value="RF" />
+      <xs:enumeration value="RG" />
+      <xs:enumeration value="RH" />
+      <xs:enumeration value="RI" />
+      <xs:enumeration value="RJ" />
+      <xs:enumeration value="RK" />
+      <xs:enumeration value="RL" />
+      <xs:enumeration value="RM" />
+      <xs:enumeration value="RN" />
+      <xs:enumeration value="RO" />
+      <xs:enumeration value="RP" />
+      <xs:enumeration value="RQ" />
+      <xs:enumeration value="RR" />
+      <xs:enumeration value="RS" />
+      <xs:enumeration value="RT" />
+      <xs:enumeration value="RU" />
+      <xs:enumeration value="RV" />
+      <xs:enumeration value="RW" />
+      <xs:enumeration value="RX" />
+      <xs:enumeration value="RY" />
+      <xs:enumeration value="RZ" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="SB" />
+      <xs:enumeration value="SC" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SE" />
+      <xs:enumeration value="SF" />
+      <xs:enumeration value="SH" />
+      <xs:enumeration value="SI" />
+      <xs:enumeration value="SJ" />
+      <xs:enumeration value="SL" />
+      <xs:enumeration value="SM" />
+      <xs:enumeration value="SN" />
+      <xs:enumeration value="SO" />
+      <xs:enumeration value="SP" />
+      <xs:enumeration value="SQ" />
+      <xs:enumeration value="SR" />
+      <xs:enumeration value="SS" />
+      <xs:enumeration value="ST" />
+      <xs:enumeration value="SU" />
+      <xs:enumeration value="SV" />
+      <xs:enumeration value="SW" />
+      <xs:enumeration value="TA" />
+      <xs:enumeration value="TB" />
+      <xs:enumeration value="TD" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="TF" />
+      <xs:enumeration value="TI" />
+      <xs:enumeration value="TJ" />
+      <xs:enumeration value="TM" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TO" />
+      <xs:enumeration value="TP" />
+      <xs:enumeration value="TR" />
+      <xs:enumeration value="TT" />
+      <xs:enumeration value="TU" />
+      <xs:enumeration value="TX" />
+      <xs:enumeration value="UA" />
+      <xs:enumeration value="UB" />
+      <xs:enumeration value="UC" />
+      <xs:enumeration value="UD" />
+      <xs:enumeration value="UI" />
+      <xs:enumeration value="UP" />
+      <xs:enumeration value="UW" />
+      <xs:enumeration value="VA" />
+      <xs:enumeration value="VB" />
+      <xs:enumeration value="VC" />
+      <xs:enumeration value="VD" />
+      <xs:enumeration value="VE" />
+      <xs:enumeration value="VH" />
+      <xs:enumeration value="VI" />
+      <xs:enumeration value="VS" />
+      <xs:enumeration value="WA" />
+      <xs:enumeration value="WB" />
+      <xs:enumeration value="WG" />
+      <xs:enumeration value="WI" />
+      <xs:enumeration value="WL" />
+      <xs:enumeration value="WR" />
+      <xs:enumeration value="WT" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_902">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="D" />
+      <xs:enumeration value="H" />
+      <xs:enumeration value="N" />
+      <xs:enumeration value="S" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_912">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="C" />
+      <xs:enumeration value="E" />
+      <xs:enumeration value="L" />
+      <xs:enumeration value="P" />
+      <xs:enumeration value="R" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_491">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="C" />
+      <xs:enumeration value="S" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_913">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AN" />
+      <xs:enumeration value="B" />
+      <xs:enumeration value="DT" />
+      <xs:enumeration value="ID" />
+      <xs:enumeration value="N0" />
+      <xs:enumeration value="N1" />
+      <xs:enumeration value="N2" />
+      <xs:enumeration value="N3" />
+      <xs:enumeration value="N4" />
+      <xs:enumeration value="N5" />
+      <xs:enumeration value="N6" />
+      <xs:enumeration value="N7" />
+      <xs:enumeration value="N8" />
+      <xs:enumeration value="N9" />
+      <xs:enumeration value="R" />
+      <xs:enumeration value="TM" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_673">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="00" />
+      <xs:enumeration value="01" />
+      <xs:enumeration value="02" />
+      <xs:enumeration value="03" />
+      <xs:enumeration value="04" />
+      <xs:enumeration value="05" />
+      <xs:enumeration value="06" />
+      <xs:enumeration value="07" />
+      <xs:enumeration value="08" />
+      <xs:enumeration value="09" />
+      <xs:enumeration value="0A" />
+      <xs:enumeration value="0B" />
+      <xs:enumeration value="0C" />
+      <xs:enumeration value="0D" />
+      <xs:enumeration value="0E" />
+      <xs:enumeration value="0F" />
+      <xs:enumeration value="0G" />
+      <xs:enumeration value="0H" />
+      <xs:enumeration value="0I" />
+      <xs:enumeration value="0J" />
+      <xs:enumeration value="0K" />
+      <xs:enumeration value="0L" />
+      <xs:enumeration value="0M" />
+      <xs:enumeration value="0N" />
+      <xs:enumeration value="0O" />
+      <xs:enumeration value="0P" />
+      <xs:enumeration value="0Q" />
+      <xs:enumeration value="0R" />
+      <xs:enumeration value="0S" />
+      <xs:enumeration value="0T" />
+      <xs:enumeration value="0U" />
+      <xs:enumeration value="0V" />
+      <xs:enumeration value="0W" />
+      <xs:enumeration value="0X" />
+      <xs:enumeration value="0Y" />
+      <xs:enumeration value="0Z" />
+      <xs:enumeration value="10" />
+      <xs:enumeration value="11" />
+      <xs:enumeration value="12" />
+      <xs:enumeration value="13" />
+      <xs:enumeration value="14" />
+      <xs:enumeration value="15" />
+      <xs:enumeration value="16" />
+      <xs:enumeration value="17" />
+      <xs:enumeration value="18" />
+      <xs:enumeration value="19" />
+      <xs:enumeration value="1A" />
+      <xs:enumeration value="1B" />
+      <xs:enumeration value="1C" />
+      <xs:enumeration value="1D" />
+      <xs:enumeration value="1E" />
+      <xs:enumeration value="1F" />
+      <xs:enumeration value="1G" />
+      <xs:enumeration value="1H" />
+      <xs:enumeration value="1I" />
+      <xs:enumeration value="1J" />
+      <xs:enumeration value="1K" />
+      <xs:enumeration value="1L" />
+      <xs:enumeration value="1M" />
+      <xs:enumeration value="1N" />
+      <xs:enumeration value="1O" />
+      <xs:enumeration value="1P" />
+      <xs:enumeration value="1Q" />
+      <xs:enumeration value="1R" />
+      <xs:enumeration value="1S" />
+      <xs:enumeration value="1T" />
+      <xs:enumeration value="1U" />
+      <xs:enumeration value="1V" />
+      <xs:enumeration value="1W" />
+      <xs:enumeration value="1X" />
+      <xs:enumeration value="1Y" />
+      <xs:enumeration value="1Z" />
+      <xs:enumeration value="20" />
+      <xs:enumeration value="21" />
+      <xs:enumeration value="22" />
+      <xs:enumeration value="23" />
+      <xs:enumeration value="24" />
+      <xs:enumeration value="25" />
+      <xs:enumeration value="26" />
+      <xs:enumeration value="27" />
+      <xs:enumeration value="28" />
+      <xs:enumeration value="29" />
+      <xs:enumeration value="2A" />
+      <xs:enumeration value="2B" />
+      <xs:enumeration value="2C" />
+      <xs:enumeration value="2D" />
+      <xs:enumeration value="2E" />
+      <xs:enumeration value="2F" />
+      <xs:enumeration value="2G" />
+      <xs:enumeration value="2H" />
+      <xs:enumeration value="2I" />
+      <xs:enumeration value="2J" />
+      <xs:enumeration value="2K" />
+      <xs:enumeration value="2L" />
+      <xs:enumeration value="2M" />
+      <xs:enumeration value="2N" />
+      <xs:enumeration value="2O" />
+      <xs:enumeration value="2P" />
+      <xs:enumeration value="2Q" />
+      <xs:enumeration value="2R" />
+      <xs:enumeration value="2S" />
+      <xs:enumeration value="2T" />
+      <xs:enumeration value="2U" />
+      <xs:enumeration value="2V" />
+      <xs:enumeration value="2W" />
+      <xs:enumeration value="2X" />
+      <xs:enumeration value="2Y" />
+      <xs:enumeration value="2Z" />
+      <xs:enumeration value="30" />
+      <xs:enumeration value="31" />
+      <xs:enumeration value="32" />
+      <xs:enumeration value="33" />
+      <xs:enumeration value="34" />
+      <xs:enumeration value="35" />
+      <xs:enumeration value="36" />
+      <xs:enumeration value="37" />
+      <xs:enumeration value="38" />
+      <xs:enumeration value="39" />
+      <xs:enumeration value="3A" />
+      <xs:enumeration value="3B" />
+      <xs:enumeration value="3C" />
+      <xs:enumeration value="3D" />
+      <xs:enumeration value="3E" />
+      <xs:enumeration value="3F" />
+      <xs:enumeration value="3G" />
+      <xs:enumeration value="3H" />
+      <xs:enumeration value="3I" />
+      <xs:enumeration value="3J" />
+      <xs:enumeration value="3K" />
+      <xs:enumeration value="3L" />
+      <xs:enumeration value="3M" />
+      <xs:enumeration value="3N" />
+      <xs:enumeration value="3O" />
+      <xs:enumeration value="3P" />
+      <xs:enumeration value="3Q" />
+      <xs:enumeration value="3R" />
+      <xs:enumeration value="3S" />
+      <xs:enumeration value="3T" />
+      <xs:enumeration value="3V" />
+      <xs:enumeration value="3W" />
+      <xs:enumeration value="3X" />
+      <xs:enumeration value="3Y" />
+      <xs:enumeration value="3Z" />
+      <xs:enumeration value="40" />
+      <xs:enumeration value="41" />
+      <xs:enumeration value="42" />
+      <xs:enumeration value="43" />
+      <xs:enumeration value="44" />
+      <xs:enumeration value="45" />
+      <xs:enumeration value="46" />
+      <xs:enumeration value="47" />
+      <xs:enumeration value="48" />
+      <xs:enumeration value="49" />
+      <xs:enumeration value="4A" />
+      <xs:enumeration value="4B" />
+      <xs:enumeration value="4C" />
+      <xs:enumeration value="4D" />
+      <xs:enumeration value="4E" />
+      <xs:enumeration value="4F" />
+      <xs:enumeration value="4G" />
+      <xs:enumeration value="4H" />
+      <xs:enumeration value="4I" />
+      <xs:enumeration value="4J" />
+      <xs:enumeration value="4K" />
+      <xs:enumeration value="4L" />
+      <xs:enumeration value="4M" />
+      <xs:enumeration value="4N" />
+      <xs:enumeration value="4O" />
+      <xs:enumeration value="4P" />
+      <xs:enumeration value="4Q" />
+      <xs:enumeration value="4R" />
+      <xs:enumeration value="4S" />
+      <xs:enumeration value="4T" />
+      <xs:enumeration value="4U" />
+      <xs:enumeration value="4V" />
+      <xs:enumeration value="4W" />
+      <xs:enumeration value="4X" />
+      <xs:enumeration value="4Y" />
+      <xs:enumeration value="4Z" />
+      <xs:enumeration value="50" />
+      <xs:enumeration value="51" />
+      <xs:enumeration value="52" />
+      <xs:enumeration value="53" />
+      <xs:enumeration value="54" />
+      <xs:enumeration value="55" />
+      <xs:enumeration value="56" />
+      <xs:enumeration value="57" />
+      <xs:enumeration value="58" />
+      <xs:enumeration value="59" />
+      <xs:enumeration value="5A" />
+      <xs:enumeration value="5B" />
+      <xs:enumeration value="5C" />
+      <xs:enumeration value="5D" />
+      <xs:enumeration value="5E" />
+      <xs:enumeration value="5F" />
+      <xs:enumeration value="5G" />
+      <xs:enumeration value="5H" />
+      <xs:enumeration value="5I" />
+      <xs:enumeration value="5J" />
+      <xs:enumeration value="5K" />
+      <xs:enumeration value="5L" />
+      <xs:enumeration value="5M" />
+      <xs:enumeration value="5N" />
+      <xs:enumeration value="5O" />
+      <xs:enumeration value="5P" />
+      <xs:enumeration value="5Q" />
+      <xs:enumeration value="5R" />
+      <xs:enumeration value="5S" />
+      <xs:enumeration value="5T" />
+      <xs:enumeration value="5U" />
+      <xs:enumeration value="5V" />
+      <xs:enumeration value="5W" />
+      <xs:enumeration value="5X" />
+      <xs:enumeration value="5Y" />
+      <xs:enumeration value="5Z" />
+      <xs:enumeration value="60" />
+      <xs:enumeration value="61" />
+      <xs:enumeration value="62" />
+      <xs:enumeration value="63" />
+      <xs:enumeration value="64" />
+      <xs:enumeration value="65" />
+      <xs:enumeration value="66" />
+      <xs:enumeration value="67" />
+      <xs:enumeration value="68" />
+      <xs:enumeration value="69" />
+      <xs:enumeration value="6A" />
+      <xs:enumeration value="6B" />
+      <xs:enumeration value="6C" />
+      <xs:enumeration value="6D" />
+      <xs:enumeration value="6E" />
+      <xs:enumeration value="6F" />
+      <xs:enumeration value="6G" />
+      <xs:enumeration value="6H" />
+      <xs:enumeration value="6I" />
+      <xs:enumeration value="6J" />
+      <xs:enumeration value="6K" />
+      <xs:enumeration value="6L" />
+      <xs:enumeration value="6M" />
+      <xs:enumeration value="6N" />
+      <xs:enumeration value="6O" />
+      <xs:enumeration value="6P" />
+      <xs:enumeration value="6Q" />
+      <xs:enumeration value="6R" />
+      <xs:enumeration value="6S" />
+      <xs:enumeration value="6T" />
+      <xs:enumeration value="6U" />
+      <xs:enumeration value="6V" />
+      <xs:enumeration value="6W" />
+      <xs:enumeration value="6X" />
+      <xs:enumeration value="6Y" />
+      <xs:enumeration value="6Z" />
+      <xs:enumeration value="70" />
+      <xs:enumeration value="71" />
+      <xs:enumeration value="72" />
+      <xs:enumeration value="73" />
+      <xs:enumeration value="74" />
+      <xs:enumeration value="75" />
+      <xs:enumeration value="76" />
+      <xs:enumeration value="77" />
+      <xs:enumeration value="78" />
+      <xs:enumeration value="79" />
+      <xs:enumeration value="7A" />
+      <xs:enumeration value="7B" />
+      <xs:enumeration value="7C" />
+      <xs:enumeration value="7D" />
+      <xs:enumeration value="7E" />
+      <xs:enumeration value="7F" />
+      <xs:enumeration value="7G" />
+      <xs:enumeration value="7H" />
+      <xs:enumeration value="7I" />
+      <xs:enumeration value="7J" />
+      <xs:enumeration value="7K" />
+      <xs:enumeration value="7L" />
+      <xs:enumeration value="7M" />
+      <xs:enumeration value="7N" />
+      <xs:enumeration value="7O" />
+      <xs:enumeration value="7P" />
+      <xs:enumeration value="7Q" />
+      <xs:enumeration value="7R" />
+      <xs:enumeration value="7S" />
+      <xs:enumeration value="7T" />
+      <xs:enumeration value="7U" />
+      <xs:enumeration value="7V" />
+      <xs:enumeration value="7W" />
+      <xs:enumeration value="7X" />
+      <xs:enumeration value="7Y" />
+      <xs:enumeration value="7Z" />
+      <xs:enumeration value="80" />
+      <xs:enumeration value="81" />
+      <xs:enumeration value="82" />
+      <xs:enumeration value="83" />
+      <xs:enumeration value="84" />
+      <xs:enumeration value="85" />
+      <xs:enumeration value="86" />
+      <xs:enumeration value="87" />
+      <xs:enumeration value="88" />
+      <xs:enumeration value="89" />
+      <xs:enumeration value="8A" />
+      <xs:enumeration value="8B" />
+      <xs:enumeration value="8C" />
+      <xs:enumeration value="8D" />
+      <xs:enumeration value="8E" />
+      <xs:enumeration value="8F" />
+      <xs:enumeration value="8G" />
+      <xs:enumeration value="8H" />
+      <xs:enumeration value="8I" />
+      <xs:enumeration value="8J" />
+      <xs:enumeration value="8K" />
+      <xs:enumeration value="8L" />
+      <xs:enumeration value="8M" />
+      <xs:enumeration value="8N" />
+      <xs:enumeration value="8O" />
+      <xs:enumeration value="8P" />
+      <xs:enumeration value="8Q" />
+      <xs:enumeration value="8R" />
+      <xs:enumeration value="8S" />
+      <xs:enumeration value="8T" />
+      <xs:enumeration value="8U" />
+      <xs:enumeration value="8V" />
+      <xs:enumeration value="8W" />
+      <xs:enumeration value="8X" />
+      <xs:enumeration value="8Y" />
+      <xs:enumeration value="8Z" />
+      <xs:enumeration value="90" />
+      <xs:enumeration value="91" />
+      <xs:enumeration value="92" />
+      <xs:enumeration value="93" />
+      <xs:enumeration value="94" />
+      <xs:enumeration value="95" />
+      <xs:enumeration value="96" />
+      <xs:enumeration value="97" />
+      <xs:enumeration value="98" />
+      <xs:enumeration value="99" />
+      <xs:enumeration value="9A" />
+      <xs:enumeration value="9C" />
+      <xs:enumeration value="9D" />
+      <xs:enumeration value="9E" />
+      <xs:enumeration value="9F" />
+      <xs:enumeration value="9H" />
+      <xs:enumeration value="9J" />
+      <xs:enumeration value="9K" />
+      <xs:enumeration value="9L" />
+      <xs:enumeration value="9M" />
+      <xs:enumeration value="9N" />
+      <xs:enumeration value="9P" />
+      <xs:enumeration value="9R" />
+      <xs:enumeration value="9S" />
+      <xs:enumeration value="9V" />
+      <xs:enumeration value="A0" />
+      <xs:enumeration value="A1" />
+      <xs:enumeration value="A2" />
+      <xs:enumeration value="A3" />
+      <xs:enumeration value="A4" />
+      <xs:enumeration value="A5" />
+      <xs:enumeration value="A6" />
+      <xs:enumeration value="A7" />
+      <xs:enumeration value="A8" />
+      <xs:enumeration value="A9" />
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="AC" />
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AE" />
+      <xs:enumeration value="AF" />
+      <xs:enumeration value="AG" />
+      <xs:enumeration value="AH" />
+      <xs:enumeration value="AI" />
+      <xs:enumeration value="AJ" />
+      <xs:enumeration value="AK" />
+      <xs:enumeration value="AL" />
+      <xs:enumeration value="AM" />
+      <xs:enumeration value="AN" />
+      <xs:enumeration value="AO" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="AQ" />
+      <xs:enumeration value="AR" />
+      <xs:enumeration value="AS" />
+      <xs:enumeration value="AT" />
+      <xs:enumeration value="AU" />
+      <xs:enumeration value="AV" />
+      <xs:enumeration value="AW" />
+      <xs:enumeration value="AX" />
+      <xs:enumeration value="AY" />
+      <xs:enumeration value="AZ" />
+      <xs:enumeration value="B1" />
+      <xs:enumeration value="B2" />
+      <xs:enumeration value="B3" />
+      <xs:enumeration value="B4" />
+      <xs:enumeration value="B5" />
+      <xs:enumeration value="B6" />
+      <xs:enumeration value="B7" />
+      <xs:enumeration value="B8" />
+      <xs:enumeration value="B9" />
+      <xs:enumeration value="BA" />
+      <xs:enumeration value="BB" />
+      <xs:enumeration value="BC" />
+      <xs:enumeration value="BD" />
+      <xs:enumeration value="BE" />
+      <xs:enumeration value="BF" />
+      <xs:enumeration value="BG" />
+      <xs:enumeration value="BH" />
+      <xs:enumeration value="BI" />
+      <xs:enumeration value="BJ" />
+      <xs:enumeration value="BK" />
+      <xs:enumeration value="BL" />
+      <xs:enumeration value="BM" />
+      <xs:enumeration value="BN" />
+      <xs:enumeration value="BO" />
+      <xs:enumeration value="BP" />
+      <xs:enumeration value="BQ" />
+      <xs:enumeration value="BR" />
+      <xs:enumeration value="BS" />
+      <xs:enumeration value="BT" />
+      <xs:enumeration value="BU" />
+      <xs:enumeration value="BV" />
+      <xs:enumeration value="BW" />
+      <xs:enumeration value="BX" />
+      <xs:enumeration value="BY" />
+      <xs:enumeration value="BZ" />
+      <xs:enumeration value="C0" />
+      <xs:enumeration value="C1" />
+      <xs:enumeration value="C2" />
+      <xs:enumeration value="C3" />
+      <xs:enumeration value="C4" />
+      <xs:enumeration value="C5" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CB" />
+      <xs:enumeration value="CC" />
+      <xs:enumeration value="CD" />
+      <xs:enumeration value="CE" />
+      <xs:enumeration value="CF" />
+      <xs:enumeration value="CG" />
+      <xs:enumeration value="CH" />
+      <xs:enumeration value="CI" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="CN" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="CP" />
+      <xs:enumeration value="CR" />
+      <xs:enumeration value="CS" />
+      <xs:enumeration value="CW" />
+      <xs:enumeration value="CY" />
+      <xs:enumeration value="CZ" />
+      <xs:enumeration value="D0" />
+      <xs:enumeration value="D1" />
+      <xs:enumeration value="D2" />
+      <xs:enumeration value="D3" />
+      <xs:enumeration value="D4" />
+      <xs:enumeration value="D5" />
+      <xs:enumeration value="D6" />
+      <xs:enumeration value="D7" />
+      <xs:enumeration value="D8" />
+      <xs:enumeration value="D9" />
+      <xs:enumeration value="DA" />
+      <xs:enumeration value="DB" />
+      <xs:enumeration value="DC" />
+      <xs:enumeration value="DD" />
+      <xs:enumeration value="DE" />
+      <xs:enumeration value="DF" />
+      <xs:enumeration value="DG" />
+      <xs:enumeration value="DH" />
+      <xs:enumeration value="DI" />
+      <xs:enumeration value="DJ" />
+      <xs:enumeration value="DK" />
+      <xs:enumeration value="DL" />
+      <xs:enumeration value="DM" />
+      <xs:enumeration value="DN" />
+      <xs:enumeration value="DO" />
+      <xs:enumeration value="DP" />
+      <xs:enumeration value="DQ" />
+      <xs:enumeration value="DR" />
+      <xs:enumeration value="DS" />
+      <xs:enumeration value="DT" />
+      <xs:enumeration value="DU" />
+      <xs:enumeration value="DW" />
+      <xs:enumeration value="DX" />
+      <xs:enumeration value="DY" />
+      <xs:enumeration value="DZ" />
+      <xs:enumeration value="E1" />
+      <xs:enumeration value="E2" />
+      <xs:enumeration value="E3" />
+      <xs:enumeration value="E4" />
+      <xs:enumeration value="E5" />
+      <xs:enumeration value="E8" />
+      <xs:enumeration value="E9" />
+      <xs:enumeration value="EA" />
+      <xs:enumeration value="EB" />
+      <xs:enumeration value="EC" />
+      <xs:enumeration value="ED" />
+      <xs:enumeration value="EE" />
+      <xs:enumeration value="EF" />
+      <xs:enumeration value="EG" />
+      <xs:enumeration value="EH" />
+      <xs:enumeration value="EI" />
+      <xs:enumeration value="EJ" />
+      <xs:enumeration value="EK" />
+      <xs:enumeration value="EL" />
+      <xs:enumeration value="EM" />
+      <xs:enumeration value="EN" />
+      <xs:enumeration value="EO" />
+      <xs:enumeration value="EP" />
+      <xs:enumeration value="EQ" />
+      <xs:enumeration value="ER" />
+      <xs:enumeration value="ES" />
+      <xs:enumeration value="ET" />
+      <xs:enumeration value="EU" />
+      <xs:enumeration value="EV" />
+      <xs:enumeration value="EW" />
+      <xs:enumeration value="EX" />
+      <xs:enumeration value="EY" />
+      <xs:enumeration value="EZ" />
+      <xs:enumeration value="F0" />
+      <xs:enumeration value="F1" />
+      <xs:enumeration value="F3" />
+      <xs:enumeration value="F4" />
+      <xs:enumeration value="F5" />
+      <xs:enumeration value="F6" />
+      <xs:enumeration value="F7" />
+      <xs:enumeration value="F8" />
+      <xs:enumeration value="F9" />
+      <xs:enumeration value="FA" />
+      <xs:enumeration value="FB" />
+      <xs:enumeration value="FC" />
+      <xs:enumeration value="FD" />
+      <xs:enumeration value="FE" />
+      <xs:enumeration value="FF" />
+      <xs:enumeration value="FG" />
+      <xs:enumeration value="FH" />
+      <xs:enumeration value="FI" />
+      <xs:enumeration value="FJ" />
+      <xs:enumeration value="FK" />
+      <xs:enumeration value="FL" />
+      <xs:enumeration value="FM" />
+      <xs:enumeration value="FN" />
+      <xs:enumeration value="FO" />
+      <xs:enumeration value="FP" />
+      <xs:enumeration value="FQ" />
+      <xs:enumeration value="FS" />
+      <xs:enumeration value="FT" />
+      <xs:enumeration value="FU" />
+      <xs:enumeration value="FV" />
+      <xs:enumeration value="FW" />
+      <xs:enumeration value="FX" />
+      <xs:enumeration value="FY" />
+      <xs:enumeration value="FZ" />
+      <xs:enumeration value="G0" />
+      <xs:enumeration value="G1" />
+      <xs:enumeration value="G2" />
+      <xs:enumeration value="G3" />
+      <xs:enumeration value="G4" />
+      <xs:enumeration value="G5" />
+      <xs:enumeration value="G6" />
+      <xs:enumeration value="G7" />
+      <xs:enumeration value="G8" />
+      <xs:enumeration value="G9" />
+      <xs:enumeration value="GA" />
+      <xs:enumeration value="GB" />
+      <xs:enumeration value="GC" />
+      <xs:enumeration value="GD" />
+      <xs:enumeration value="GE" />
+      <xs:enumeration value="GF" />
+      <xs:enumeration value="GG" />
+      <xs:enumeration value="GH" />
+      <xs:enumeration value="GI" />
+      <xs:enumeration value="GL" />
+      <xs:enumeration value="GP" />
+      <xs:enumeration value="GQ" />
+      <xs:enumeration value="GR" />
+      <xs:enumeration value="GS" />
+      <xs:enumeration value="GT" />
+      <xs:enumeration value="GU" />
+      <xs:enumeration value="GV" />
+      <xs:enumeration value="GW" />
+      <xs:enumeration value="GX" />
+      <xs:enumeration value="GZ" />
+      <xs:enumeration value="H0" />
+      <xs:enumeration value="H1" />
+      <xs:enumeration value="H2" />
+      <xs:enumeration value="H3" />
+      <xs:enumeration value="H4" />
+      <xs:enumeration value="H5" />
+      <xs:enumeration value="H6" />
+      <xs:enumeration value="H7" />
+      <xs:enumeration value="H8" />
+      <xs:enumeration value="H9" />
+      <xs:enumeration value="HA" />
+      <xs:enumeration value="HB" />
+      <xs:enumeration value="HC" />
+      <xs:enumeration value="HD" />
+      <xs:enumeration value="HE" />
+      <xs:enumeration value="HF" />
+      <xs:enumeration value="HG" />
+      <xs:enumeration value="HH" />
+      <xs:enumeration value="HI" />
+      <xs:enumeration value="HJ" />
+      <xs:enumeration value="HK" />
+      <xs:enumeration value="HL" />
+      <xs:enumeration value="HM" />
+      <xs:enumeration value="HN" />
+      <xs:enumeration value="HO" />
+      <xs:enumeration value="HP" />
+      <xs:enumeration value="HQ" />
+      <xs:enumeration value="HR" />
+      <xs:enumeration value="HS" />
+      <xs:enumeration value="HT" />
+      <xs:enumeration value="HU" />
+      <xs:enumeration value="HV" />
+      <xs:enumeration value="HW" />
+      <xs:enumeration value="HY" />
+      <xs:enumeration value="HZ" />
+      <xs:enumeration value="I0" />
+      <xs:enumeration value="I1" />
+      <xs:enumeration value="I2" />
+      <xs:enumeration value="I3" />
+      <xs:enumeration value="I4" />
+      <xs:enumeration value="I5" />
+      <xs:enumeration value="I6" />
+      <xs:enumeration value="I7" />
+      <xs:enumeration value="I8" />
+      <xs:enumeration value="I9" />
+      <xs:enumeration value="IA" />
+      <xs:enumeration value="IB" />
+      <xs:enumeration value="IC" />
+      <xs:enumeration value="ID" />
+      <xs:enumeration value="IE" />
+      <xs:enumeration value="IF" />
+      <xs:enumeration value="IG" />
+      <xs:enumeration value="IH" />
+      <xs:enumeration value="II" />
+      <xs:enumeration value="IJ" />
+      <xs:enumeration value="IK" />
+      <xs:enumeration value="IL" />
+      <xs:enumeration value="IM" />
+      <xs:enumeration value="IN" />
+      <xs:enumeration value="IP" />
+      <xs:enumeration value="IQ" />
+      <xs:enumeration value="IS" />
+      <xs:enumeration value="IT" />
+      <xs:enumeration value="J0" />
+      <xs:enumeration value="J1" />
+      <xs:enumeration value="J2" />
+      <xs:enumeration value="J3" />
+      <xs:enumeration value="J4" />
+      <xs:enumeration value="J5" />
+      <xs:enumeration value="J6" />
+      <xs:enumeration value="J7" />
+      <xs:enumeration value="JA" />
+      <xs:enumeration value="JB" />
+      <xs:enumeration value="JC" />
+      <xs:enumeration value="JD" />
+      <xs:enumeration value="JE" />
+      <xs:enumeration value="JF" />
+      <xs:enumeration value="JG" />
+      <xs:enumeration value="JH" />
+      <xs:enumeration value="JI" />
+      <xs:enumeration value="JJ" />
+      <xs:enumeration value="JK" />
+      <xs:enumeration value="JL" />
+      <xs:enumeration value="JM" />
+      <xs:enumeration value="JN" />
+      <xs:enumeration value="JO" />
+      <xs:enumeration value="JP" />
+      <xs:enumeration value="JQ" />
+      <xs:enumeration value="JR" />
+      <xs:enumeration value="JS" />
+      <xs:enumeration value="JT" />
+      <xs:enumeration value="JU" />
+      <xs:enumeration value="JV" />
+      <xs:enumeration value="JW" />
+      <xs:enumeration value="JX" />
+      <xs:enumeration value="JY" />
+      <xs:enumeration value="JZ" />
+      <xs:enumeration value="K1" />
+      <xs:enumeration value="K2" />
+      <xs:enumeration value="K3" />
+      <xs:enumeration value="K4" />
+      <xs:enumeration value="K5" />
+      <xs:enumeration value="K6" />
+      <xs:enumeration value="K7" />
+      <xs:enumeration value="K8" />
+      <xs:enumeration value="K9" />
+      <xs:enumeration value="KA" />
+      <xs:enumeration value="KB" />
+      <xs:enumeration value="KC" />
+      <xs:enumeration value="KD" />
+      <xs:enumeration value="KE" />
+      <xs:enumeration value="KF" />
+      <xs:enumeration value="KG" />
+      <xs:enumeration value="KH" />
+      <xs:enumeration value="KI" />
+      <xs:enumeration value="KJ" />
+      <xs:enumeration value="KK" />
+      <xs:enumeration value="KL" />
+      <xs:enumeration value="KM" />
+      <xs:enumeration value="KN" />
+      <xs:enumeration value="KO" />
+      <xs:enumeration value="KP" />
+      <xs:enumeration value="KQ" />
+      <xs:enumeration value="KR" />
+      <xs:enumeration value="KS" />
+      <xs:enumeration value="KU" />
+      <xs:enumeration value="KV" />
+      <xs:enumeration value="KW" />
+      <xs:enumeration value="KX" />
+      <xs:enumeration value="KY" />
+      <xs:enumeration value="KZ" />
+      <xs:enumeration value="L2" />
+      <xs:enumeration value="L3" />
+      <xs:enumeration value="L4" />
+      <xs:enumeration value="L5" />
+      <xs:enumeration value="L6" />
+      <xs:enumeration value="L7" />
+      <xs:enumeration value="L8" />
+      <xs:enumeration value="L9" />
+      <xs:enumeration value="LA" />
+      <xs:enumeration value="LB" />
+      <xs:enumeration value="LC" />
+      <xs:enumeration value="LE" />
+      <xs:enumeration value="LG" />
+      <xs:enumeration value="LH" />
+      <xs:enumeration value="LI" />
+      <xs:enumeration value="LK" />
+      <xs:enumeration value="LL" />
+      <xs:enumeration value="LM" />
+      <xs:enumeration value="LN" />
+      <xs:enumeration value="LO" />
+      <xs:enumeration value="LP" />
+      <xs:enumeration value="LQ" />
+      <xs:enumeration value="LR" />
+      <xs:enumeration value="LS" />
+      <xs:enumeration value="LT" />
+      <xs:enumeration value="LU" />
+      <xs:enumeration value="LV" />
+      <xs:enumeration value="LW" />
+      <xs:enumeration value="LX" />
+      <xs:enumeration value="LY" />
+      <xs:enumeration value="LZ" />
+      <xs:enumeration value="M1" />
+      <xs:enumeration value="M2" />
+      <xs:enumeration value="M3" />
+      <xs:enumeration value="M4" />
+      <xs:enumeration value="M5" />
+      <xs:enumeration value="M6" />
+      <xs:enumeration value="M7" />
+      <xs:enumeration value="M8" />
+      <xs:enumeration value="M9" />
+      <xs:enumeration value="MA" />
+      <xs:enumeration value="MB" />
+      <xs:enumeration value="MC" />
+      <xs:enumeration value="MD" />
+      <xs:enumeration value="ME" />
+      <xs:enumeration value="MF" />
+      <xs:enumeration value="MG" />
+      <xs:enumeration value="MH" />
+      <xs:enumeration value="MI" />
+      <xs:enumeration value="MJ" />
+      <xs:enumeration value="MK" />
+      <xs:enumeration value="ML" />
+      <xs:enumeration value="MM" />
+      <xs:enumeration value="MN" />
+      <xs:enumeration value="MO" />
+      <xs:enumeration value="MP" />
+      <xs:enumeration value="MQ" />
+      <xs:enumeration value="MS" />
+      <xs:enumeration value="MX" />
+      <xs:enumeration value="N1" />
+      <xs:enumeration value="N2" />
+      <xs:enumeration value="N3" />
+      <xs:enumeration value="N4" />
+      <xs:enumeration value="N5" />
+      <xs:enumeration value="N6" />
+      <xs:enumeration value="NA" />
+      <xs:enumeration value="NB" />
+      <xs:enumeration value="NC" />
+      <xs:enumeration value="ND" />
+      <xs:enumeration value="NE" />
+      <xs:enumeration value="NF" />
+      <xs:enumeration value="NG" />
+      <xs:enumeration value="NH" />
+      <xs:enumeration value="NL" />
+      <xs:enumeration value="NN" />
+      <xs:enumeration value="NO" />
+      <xs:enumeration value="NP" />
+      <xs:enumeration value="NQ" />
+      <xs:enumeration value="NR" />
+      <xs:enumeration value="NS" />
+      <xs:enumeration value="NT" />
+      <xs:enumeration value="NU" />
+      <xs:enumeration value="NV" />
+      <xs:enumeration value="NW" />
+      <xs:enumeration value="O1" />
+      <xs:enumeration value="O2" />
+      <xs:enumeration value="O3" />
+      <xs:enumeration value="O4" />
+      <xs:enumeration value="O5" />
+      <xs:enumeration value="O6" />
+      <xs:enumeration value="O7" />
+      <xs:enumeration value="O8" />
+      <xs:enumeration value="O9" />
+      <xs:enumeration value="OA" />
+      <xs:enumeration value="OB" />
+      <xs:enumeration value="OC" />
+      <xs:enumeration value="OD" />
+      <xs:enumeration value="OE" />
+      <xs:enumeration value="OF" />
+      <xs:enumeration value="OG" />
+      <xs:enumeration value="OH" />
+      <xs:enumeration value="OI" />
+      <xs:enumeration value="OL" />
+      <xs:enumeration value="ON" />
+      <xs:enumeration value="OO" />
+      <xs:enumeration value="OQ" />
+      <xs:enumeration value="OR" />
+      <xs:enumeration value="OT" />
+      <xs:enumeration value="OU" />
+      <xs:enumeration value="OV" />
+      <xs:enumeration value="OW" />
+      <xs:enumeration value="P1" />
+      <xs:enumeration value="P3" />
+      <xs:enumeration value="P4" />
+      <xs:enumeration value="P5" />
+      <xs:enumeration value="P6" />
+      <xs:enumeration value="P7" />
+      <xs:enumeration value="P8" />
+      <xs:enumeration value="P9" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PB" />
+      <xs:enumeration value="PC" />
+      <xs:enumeration value="PD" />
+      <xs:enumeration value="PE" />
+      <xs:enumeration value="PF" />
+      <xs:enumeration value="PG" />
+      <xs:enumeration value="PH" />
+      <xs:enumeration value="PK" />
+      <xs:enumeration value="PL" />
+      <xs:enumeration value="PO" />
+      <xs:enumeration value="PP" />
+      <xs:enumeration value="PQ" />
+      <xs:enumeration value="PR" />
+      <xs:enumeration value="PS" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="PW" />
+      <xs:enumeration value="PX" />
+      <xs:enumeration value="PY" />
+      <xs:enumeration value="Q1" />
+      <xs:enumeration value="Q2" />
+      <xs:enumeration value="Q3" />
+      <xs:enumeration value="Q4" />
+      <xs:enumeration value="Q5" />
+      <xs:enumeration value="Q6" />
+      <xs:enumeration value="Q7" />
+      <xs:enumeration value="Q8" />
+      <xs:enumeration value="Q9" />
+      <xs:enumeration value="QA" />
+      <xs:enumeration value="QB" />
+      <xs:enumeration value="QC" />
+      <xs:enumeration value="QD" />
+      <xs:enumeration value="QE" />
+      <xs:enumeration value="QF" />
+      <xs:enumeration value="QH" />
+      <xs:enumeration value="QI" />
+      <xs:enumeration value="QJ" />
+      <xs:enumeration value="QL" />
+      <xs:enumeration value="QM" />
+      <xs:enumeration value="QN" />
+      <xs:enumeration value="QO" />
+      <xs:enumeration value="QP" />
+      <xs:enumeration value="QQ" />
+      <xs:enumeration value="QR" />
+      <xs:enumeration value="QS" />
+      <xs:enumeration value="QT" />
+      <xs:enumeration value="QU" />
+      <xs:enumeration value="QV" />
+      <xs:enumeration value="QW" />
+      <xs:enumeration value="QX" />
+      <xs:enumeration value="QY" />
+      <xs:enumeration value="R1" />
+      <xs:enumeration value="R2" />
+      <xs:enumeration value="R3" />
+      <xs:enumeration value="R4" />
+      <xs:enumeration value="R5" />
+      <xs:enumeration value="R6" />
+      <xs:enumeration value="R7" />
+      <xs:enumeration value="R8" />
+      <xs:enumeration value="R9" />
+      <xs:enumeration value="RA" />
+      <xs:enumeration value="RB" />
+      <xs:enumeration value="RC" />
+      <xs:enumeration value="RD" />
+      <xs:enumeration value="RE" />
+      <xs:enumeration value="RF" />
+      <xs:enumeration value="RG" />
+      <xs:enumeration value="RH" />
+      <xs:enumeration value="RJ" />
+      <xs:enumeration value="RL" />
+      <xs:enumeration value="RM" />
+      <xs:enumeration value="RN" />
+      <xs:enumeration value="RP" />
+      <xs:enumeration value="RQ" />
+      <xs:enumeration value="RS" />
+      <xs:enumeration value="RT" />
+      <xs:enumeration value="RW" />
+      <xs:enumeration value="RY" />
+      <xs:enumeration value="S1" />
+      <xs:enumeration value="S2" />
+      <xs:enumeration value="S3" />
+      <xs:enumeration value="S4" />
+      <xs:enumeration value="S5" />
+      <xs:enumeration value="S6" />
+      <xs:enumeration value="S7" />
+      <xs:enumeration value="S8" />
+      <xs:enumeration value="S9" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="SB" />
+      <xs:enumeration value="SC" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SE" />
+      <xs:enumeration value="SF" />
+      <xs:enumeration value="SG" />
+      <xs:enumeration value="SH" />
+      <xs:enumeration value="SI" />
+      <xs:enumeration value="SJ" />
+      <xs:enumeration value="SK" />
+      <xs:enumeration value="SL" />
+      <xs:enumeration value="SM" />
+      <xs:enumeration value="SN" />
+      <xs:enumeration value="SO" />
+      <xs:enumeration value="SP" />
+      <xs:enumeration value="SQ" />
+      <xs:enumeration value="SR" />
+      <xs:enumeration value="SS" />
+      <xs:enumeration value="ST" />
+      <xs:enumeration value="SU" />
+      <xs:enumeration value="SV" />
+      <xs:enumeration value="SW" />
+      <xs:enumeration value="SX" />
+      <xs:enumeration value="SY" />
+      <xs:enumeration value="SZ" />
+      <xs:enumeration value="T1" />
+      <xs:enumeration value="T2" />
+      <xs:enumeration value="T3" />
+      <xs:enumeration value="T4" />
+      <xs:enumeration value="T5" />
+      <xs:enumeration value="T6" />
+      <xs:enumeration value="T7" />
+      <xs:enumeration value="TA" />
+      <xs:enumeration value="TB" />
+      <xs:enumeration value="TC" />
+      <xs:enumeration value="TD" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="TG" />
+      <xs:enumeration value="TH" />
+      <xs:enumeration value="TI" />
+      <xs:enumeration value="TJ" />
+      <xs:enumeration value="TK" />
+      <xs:enumeration value="TM" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TO" />
+      <xs:enumeration value="TP" />
+      <xs:enumeration value="TQ" />
+      <xs:enumeration value="TR" />
+      <xs:enumeration value="TS" />
+      <xs:enumeration value="TT" />
+      <xs:enumeration value="TU" />
+      <xs:enumeration value="TV" />
+      <xs:enumeration value="TW" />
+      <xs:enumeration value="TX" />
+      <xs:enumeration value="TY" />
+      <xs:enumeration value="U1" />
+      <xs:enumeration value="U2" />
+      <xs:enumeration value="U3" />
+      <xs:enumeration value="UA" />
+      <xs:enumeration value="UB" />
+      <xs:enumeration value="UC" />
+      <xs:enumeration value="UD" />
+      <xs:enumeration value="UE" />
+      <xs:enumeration value="UF" />
+      <xs:enumeration value="UG" />
+      <xs:enumeration value="UH" />
+      <xs:enumeration value="UI" />
+      <xs:enumeration value="UJ" />
+      <xs:enumeration value="UK" />
+      <xs:enumeration value="UL" />
+      <xs:enumeration value="UM" />
+      <xs:enumeration value="UN" />
+      <xs:enumeration value="UO" />
+      <xs:enumeration value="UP" />
+      <xs:enumeration value="UQ" />
+      <xs:enumeration value="UR" />
+      <xs:enumeration value="US" />
+      <xs:enumeration value="UT" />
+      <xs:enumeration value="UU" />
+      <xs:enumeration value="UV" />
+      <xs:enumeration value="UW" />
+      <xs:enumeration value="UX" />
+      <xs:enumeration value="UY" />
+      <xs:enumeration value="UZ" />
+      <xs:enumeration value="V1" />
+      <xs:enumeration value="V2" />
+      <xs:enumeration value="V3" />
+      <xs:enumeration value="V4" />
+      <xs:enumeration value="V5" />
+      <xs:enumeration value="V8" />
+      <xs:enumeration value="VA" />
+      <xs:enumeration value="VB" />
+      <xs:enumeration value="VC" />
+      <xs:enumeration value="VD" />
+      <xs:enumeration value="VE" />
+      <xs:enumeration value="VF" />
+      <xs:enumeration value="VG" />
+      <xs:enumeration value="VH" />
+      <xs:enumeration value="VI" />
+      <xs:enumeration value="VJ" />
+      <xs:enumeration value="VK" />
+      <xs:enumeration value="VL" />
+      <xs:enumeration value="VM" />
+      <xs:enumeration value="VN" />
+      <xs:enumeration value="VP" />
+      <xs:enumeration value="VR" />
+      <xs:enumeration value="VS" />
+      <xs:enumeration value="VT" />
+      <xs:enumeration value="VV" />
+      <xs:enumeration value="VY" />
+      <xs:enumeration value="W0" />
+      <xs:enumeration value="W1" />
+      <xs:enumeration value="W2" />
+      <xs:enumeration value="W3" />
+      <xs:enumeration value="W4" />
+      <xs:enumeration value="W5" />
+      <xs:enumeration value="W6" />
+      <xs:enumeration value="W7" />
+      <xs:enumeration value="W8" />
+      <xs:enumeration value="W9" />
+      <xs:enumeration value="WA" />
+      <xs:enumeration value="WB" />
+      <xs:enumeration value="WC" />
+      <xs:enumeration value="WD" />
+      <xs:enumeration value="WE" />
+      <xs:enumeration value="WG" />
+      <xs:enumeration value="WL" />
+      <xs:enumeration value="WO" />
+      <xs:enumeration value="WP" />
+      <xs:enumeration value="WR" />
+      <xs:enumeration value="WT" />
+      <xs:enumeration value="WV" />
+      <xs:enumeration value="WW" />
+      <xs:enumeration value="WX" />
+      <xs:enumeration value="WY" />
+      <xs:enumeration value="X1" />
+      <xs:enumeration value="X2" />
+      <xs:enumeration value="X6" />
+      <xs:enumeration value="X7" />
+      <xs:enumeration value="X8" />
+      <xs:enumeration value="X9" />
+      <xs:enumeration value="XA" />
+      <xs:enumeration value="XB" />
+      <xs:enumeration value="XC" />
+      <xs:enumeration value="XD" />
+      <xs:enumeration value="XE" />
+      <xs:enumeration value="XG" />
+      <xs:enumeration value="XI" />
+      <xs:enumeration value="XJ" />
+      <xs:enumeration value="XL" />
+      <xs:enumeration value="XN" />
+      <xs:enumeration value="XO" />
+      <xs:enumeration value="XR" />
+      <xs:enumeration value="XT" />
+      <xs:enumeration value="XU" />
+      <xs:enumeration value="XV" />
+      <xs:enumeration value="XX" />
+      <xs:enumeration value="XY" />
+      <xs:enumeration value="XZ" />
+      <xs:enumeration value="Y1" />
+      <xs:enumeration value="Y2" />
+      <xs:enumeration value="Y3" />
+      <xs:enumeration value="Y4" />
+      <xs:enumeration value="Y5" />
+      <xs:enumeration value="Y6" />
+      <xs:enumeration value="Y7" />
+      <xs:enumeration value="YA" />
+      <xs:enumeration value="YB" />
+      <xs:enumeration value="YC" />
+      <xs:enumeration value="YD" />
+      <xs:enumeration value="YE" />
+      <xs:enumeration value="YF" />
+      <xs:enumeration value="YG" />
+      <xs:enumeration value="YH" />
+      <xs:enumeration value="YJ" />
+      <xs:enumeration value="YK" />
+      <xs:enumeration value="YL" />
+      <xs:enumeration value="YM" />
+      <xs:enumeration value="YN" />
+      <xs:enumeration value="YP" />
+      <xs:enumeration value="YQ" />
+      <xs:enumeration value="YR" />
+      <xs:enumeration value="YS" />
+      <xs:enumeration value="YT" />
+      <xs:enumeration value="YU" />
+      <xs:enumeration value="YW" />
+      <xs:enumeration value="YX" />
+      <xs:enumeration value="YY" />
+      <xs:enumeration value="YZ" />
+      <xs:enumeration value="Z1" />
+      <xs:enumeration value="Z2" />
+      <xs:enumeration value="Z3" />
+      <xs:enumeration value="Z4" />
+      <xs:enumeration value="Z6" />
+      <xs:enumeration value="Z7" />
+      <xs:enumeration value="Z8" />
+      <xs:enumeration value="Z9" />
+      <xs:enumeration value="ZA" />
+      <xs:enumeration value="ZB" />
+      <xs:enumeration value="ZC" />
+      <xs:enumeration value="ZD" />
+      <xs:enumeration value="ZE" />
+      <xs:enumeration value="ZF" />
+      <xs:enumeration value="ZG" />
+      <xs:enumeration value="ZH" />
+      <xs:enumeration value="ZI" />
+      <xs:enumeration value="ZJ" />
+      <xs:enumeration value="ZK" />
+      <xs:enumeration value="ZL" />
+      <xs:enumeration value="ZM" />
+      <xs:enumeration value="ZN" />
+      <xs:enumeration value="ZO" />
+      <xs:enumeration value="ZP" />
+      <xs:enumeration value="ZQ" />
+      <xs:enumeration value="ZR" />
+      <xs:enumeration value="ZS" />
+      <xs:enumeration value="ZT" />
+      <xs:enumeration value="ZU" />
+      <xs:enumeration value="ZV" />
+      <xs:enumeration value="ZW" />
+      <xs:enumeration value="ZX" />
+      <xs:enumeration value="ZY" />
+      <xs:enumeration value="ZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_568">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ABS" />
+      <xs:enumeration value="DMR" />
+      <xs:enumeration value="IND" />
+      <xs:enumeration value="NON" />
+      <xs:enumeration value="PUR" />
+      <xs:enumeration value="SCP" />
+      <xs:enumeration value="STD" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_355">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="01" />
+      <xs:enumeration value="02" />
+      <xs:enumeration value="03" />
+      <xs:enumeration value="04" />
+      <xs:enumeration value="05" />
+      <xs:enumeration value="06" />
+      <xs:enumeration value="07" />
+      <xs:enumeration value="08" />
+      <xs:enumeration value="09" />
+      <xs:enumeration value="10" />
+      <xs:enumeration value="11" />
+      <xs:enumeration value="12" />
+      <xs:enumeration value="13" />
+      <xs:enumeration value="14" />
+      <xs:enumeration value="15" />
+      <xs:enumeration value="16" />
+      <xs:enumeration value="17" />
+      <xs:enumeration value="18" />
+      <xs:enumeration value="19" />
+      <xs:enumeration value="1A" />
+      <xs:enumeration value="1B" />
+      <xs:enumeration value="1C" />
+      <xs:enumeration value="1D" />
+      <xs:enumeration value="1E" />
+      <xs:enumeration value="1F" />
+      <xs:enumeration value="1G" />
+      <xs:enumeration value="1H" />
+      <xs:enumeration value="1I" />
+      <xs:enumeration value="1J" />
+      <xs:enumeration value="1K" />
+      <xs:enumeration value="1L" />
+      <xs:enumeration value="1M" />
+      <xs:enumeration value="1N" />
+      <xs:enumeration value="1O" />
+      <xs:enumeration value="1P" />
+      <xs:enumeration value="1Q" />
+      <xs:enumeration value="1R" />
+      <xs:enumeration value="1S" />
+      <xs:enumeration value="1T" />
+      <xs:enumeration value="1X" />
+      <xs:enumeration value="1Z" />
+      <xs:enumeration value="20" />
+      <xs:enumeration value="21" />
+      <xs:enumeration value="22" />
+      <xs:enumeration value="23" />
+      <xs:enumeration value="24" />
+      <xs:enumeration value="25" />
+      <xs:enumeration value="26" />
+      <xs:enumeration value="27" />
+      <xs:enumeration value="28" />
+      <xs:enumeration value="29" />
+      <xs:enumeration value="2A" />
+      <xs:enumeration value="2B" />
+      <xs:enumeration value="2C" />
+      <xs:enumeration value="2D" />
+      <xs:enumeration value="2F" />
+      <xs:enumeration value="2G" />
+      <xs:enumeration value="2H" />
+      <xs:enumeration value="2I" />
+      <xs:enumeration value="2J" />
+      <xs:enumeration value="2K" />
+      <xs:enumeration value="2L" />
+      <xs:enumeration value="2M" />
+      <xs:enumeration value="2N" />
+      <xs:enumeration value="2P" />
+      <xs:enumeration value="2Q" />
+      <xs:enumeration value="2R" />
+      <xs:enumeration value="2U" />
+      <xs:enumeration value="2V" />
+      <xs:enumeration value="2W" />
+      <xs:enumeration value="2X" />
+      <xs:enumeration value="2Y" />
+      <xs:enumeration value="2Z" />
+      <xs:enumeration value="30" />
+      <xs:enumeration value="31" />
+      <xs:enumeration value="32" />
+      <xs:enumeration value="33" />
+      <xs:enumeration value="34" />
+      <xs:enumeration value="35" />
+      <xs:enumeration value="36" />
+      <xs:enumeration value="37" />
+      <xs:enumeration value="38" />
+      <xs:enumeration value="39" />
+      <xs:enumeration value="3A" />
+      <xs:enumeration value="3B" />
+      <xs:enumeration value="3C" />
+      <xs:enumeration value="3D" />
+      <xs:enumeration value="3E" />
+      <xs:enumeration value="3F" />
+      <xs:enumeration value="3G" />
+      <xs:enumeration value="3H" />
+      <xs:enumeration value="3I" />
+      <xs:enumeration value="3J" />
+      <xs:enumeration value="3K" />
+      <xs:enumeration value="3L" />
+      <xs:enumeration value="3M" />
+      <xs:enumeration value="3Z" />
+      <xs:enumeration value="40" />
+      <xs:enumeration value="41" />
+      <xs:enumeration value="42" />
+      <xs:enumeration value="43" />
+      <xs:enumeration value="44" />
+      <xs:enumeration value="45" />
+      <xs:enumeration value="46" />
+      <xs:enumeration value="47" />
+      <xs:enumeration value="48" />
+      <xs:enumeration value="49" />
+      <xs:enumeration value="4A" />
+      <xs:enumeration value="4B" />
+      <xs:enumeration value="4C" />
+      <xs:enumeration value="4D" />
+      <xs:enumeration value="4E" />
+      <xs:enumeration value="4F" />
+      <xs:enumeration value="4G" />
+      <xs:enumeration value="4I" />
+      <xs:enumeration value="4J" />
+      <xs:enumeration value="4K" />
+      <xs:enumeration value="4L" />
+      <xs:enumeration value="4M" />
+      <xs:enumeration value="4N" />
+      <xs:enumeration value="4O" />
+      <xs:enumeration value="4P" />
+      <xs:enumeration value="4Q" />
+      <xs:enumeration value="4R" />
+      <xs:enumeration value="4S" />
+      <xs:enumeration value="4T" />
+      <xs:enumeration value="4U" />
+      <xs:enumeration value="4V" />
+      <xs:enumeration value="4W" />
+      <xs:enumeration value="4X" />
+      <xs:enumeration value="50" />
+      <xs:enumeration value="51" />
+      <xs:enumeration value="52" />
+      <xs:enumeration value="53" />
+      <xs:enumeration value="54" />
+      <xs:enumeration value="55" />
+      <xs:enumeration value="56" />
+      <xs:enumeration value="57" />
+      <xs:enumeration value="58" />
+      <xs:enumeration value="59" />
+      <xs:enumeration value="5A" />
+      <xs:enumeration value="5B" />
+      <xs:enumeration value="5C" />
+      <xs:enumeration value="5D" />
+      <xs:enumeration value="5E" />
+      <xs:enumeration value="5F" />
+      <xs:enumeration value="5G" />
+      <xs:enumeration value="5H" />
+      <xs:enumeration value="5I" />
+      <xs:enumeration value="5J" />
+      <xs:enumeration value="5K" />
+      <xs:enumeration value="5P" />
+      <xs:enumeration value="5Q" />
+      <xs:enumeration value="60" />
+      <xs:enumeration value="61" />
+      <xs:enumeration value="62" />
+      <xs:enumeration value="63" />
+      <xs:enumeration value="64" />
+      <xs:enumeration value="65" />
+      <xs:enumeration value="66" />
+      <xs:enumeration value="67" />
+      <xs:enumeration value="68" />
+      <xs:enumeration value="69" />
+      <xs:enumeration value="70" />
+      <xs:enumeration value="71" />
+      <xs:enumeration value="72" />
+      <xs:enumeration value="73" />
+      <xs:enumeration value="74" />
+      <xs:enumeration value="75" />
+      <xs:enumeration value="76" />
+      <xs:enumeration value="77" />
+      <xs:enumeration value="78" />
+      <xs:enumeration value="79" />
+      <xs:enumeration value="80" />
+      <xs:enumeration value="81" />
+      <xs:enumeration value="82" />
+      <xs:enumeration value="83" />
+      <xs:enumeration value="84" />
+      <xs:enumeration value="85" />
+      <xs:enumeration value="86" />
+      <xs:enumeration value="87" />
+      <xs:enumeration value="89" />
+      <xs:enumeration value="8C" />
+      <xs:enumeration value="8D" />
+      <xs:enumeration value="8P" />
+      <xs:enumeration value="8R" />
+      <xs:enumeration value="8S" />
+      <xs:enumeration value="8U" />
+      <xs:enumeration value="90" />
+      <xs:enumeration value="91" />
+      <xs:enumeration value="92" />
+      <xs:enumeration value="93" />
+      <xs:enumeration value="94" />
+      <xs:enumeration value="95" />
+      <xs:enumeration value="96" />
+      <xs:enumeration value="97" />
+      <xs:enumeration value="98" />
+      <xs:enumeration value="99" />
+      <xs:enumeration value="9A" />
+      <xs:enumeration value="9B" />
+      <xs:enumeration value="9F" />
+      <xs:enumeration value="9O" />
+      <xs:enumeration value="9P" />
+      <xs:enumeration value="9S" />
+      <xs:enumeration value="9Y" />
+      <xs:enumeration value="9Z" />
+      <xs:enumeration value="A1" />
+      <xs:enumeration value="A2" />
+      <xs:enumeration value="A3" />
+      <xs:enumeration value="A4" />
+      <xs:enumeration value="A5" />
+      <xs:enumeration value="A6" />
+      <xs:enumeration value="A7" />
+      <xs:enumeration value="A8" />
+      <xs:enumeration value="A9" />
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="AC" />
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AE" />
+      <xs:enumeration value="AF" />
+      <xs:enumeration value="AG" />
+      <xs:enumeration value="AH" />
+      <xs:enumeration value="AI" />
+      <xs:enumeration value="AJ" />
+      <xs:enumeration value="AK" />
+      <xs:enumeration value="AL" />
+      <xs:enumeration value="AM" />
+      <xs:enumeration value="AN" />
+      <xs:enumeration value="AO" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="AQ" />
+      <xs:enumeration value="AR" />
+      <xs:enumeration value="AS" />
+      <xs:enumeration value="AT" />
+      <xs:enumeration value="AU" />
+      <xs:enumeration value="AV" />
+      <xs:enumeration value="AW" />
+      <xs:enumeration value="AX" />
+      <xs:enumeration value="AY" />
+      <xs:enumeration value="AZ" />
+      <xs:enumeration value="B0" />
+      <xs:enumeration value="B1" />
+      <xs:enumeration value="B2" />
+      <xs:enumeration value="B3" />
+      <xs:enumeration value="B4" />
+      <xs:enumeration value="B5" />
+      <xs:enumeration value="B6" />
+      <xs:enumeration value="B7" />
+      <xs:enumeration value="B8" />
+      <xs:enumeration value="B9" />
+      <xs:enumeration value="BA" />
+      <xs:enumeration value="BB" />
+      <xs:enumeration value="BC" />
+      <xs:enumeration value="BD" />
+      <xs:enumeration value="BE" />
+      <xs:enumeration value="BF" />
+      <xs:enumeration value="BG" />
+      <xs:enumeration value="BH" />
+      <xs:enumeration value="BI" />
+      <xs:enumeration value="BJ" />
+      <xs:enumeration value="BK" />
+      <xs:enumeration value="BL" />
+      <xs:enumeration value="BM" />
+      <xs:enumeration value="BN" />
+      <xs:enumeration value="BO" />
+      <xs:enumeration value="BP" />
+      <xs:enumeration value="BQ" />
+      <xs:enumeration value="BR" />
+      <xs:enumeration value="BS" />
+      <xs:enumeration value="BT" />
+      <xs:enumeration value="BU" />
+      <xs:enumeration value="BV" />
+      <xs:enumeration value="BW" />
+      <xs:enumeration value="BX" />
+      <xs:enumeration value="BY" />
+      <xs:enumeration value="BZ" />
+      <xs:enumeration value="C0" />
+      <xs:enumeration value="C1" />
+      <xs:enumeration value="C2" />
+      <xs:enumeration value="C3" />
+      <xs:enumeration value="C4" />
+      <xs:enumeration value="C5" />
+      <xs:enumeration value="C6" />
+      <xs:enumeration value="C7" />
+      <xs:enumeration value="C8" />
+      <xs:enumeration value="C9" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CB" />
+      <xs:enumeration value="CC" />
+      <xs:enumeration value="CD" />
+      <xs:enumeration value="CE" />
+      <xs:enumeration value="CF" />
+      <xs:enumeration value="CG" />
+      <xs:enumeration value="CH" />
+      <xs:enumeration value="CI" />
+      <xs:enumeration value="CJ" />
+      <xs:enumeration value="CK" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="CM" />
+      <xs:enumeration value="CN" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="CP" />
+      <xs:enumeration value="CQ" />
+      <xs:enumeration value="CR" />
+      <xs:enumeration value="CS" />
+      <xs:enumeration value="CT" />
+      <xs:enumeration value="CU" />
+      <xs:enumeration value="CV" />
+      <xs:enumeration value="CW" />
+      <xs:enumeration value="CX" />
+      <xs:enumeration value="CY" />
+      <xs:enumeration value="CZ" />
+      <xs:enumeration value="D1" />
+      <xs:enumeration value="D2" />
+      <xs:enumeration value="D3" />
+      <xs:enumeration value="D4" />
+      <xs:enumeration value="D5" />
+      <xs:enumeration value="D6" />
+      <xs:enumeration value="D8" />
+      <xs:enumeration value="D9" />
+      <xs:enumeration value="DA" />
+      <xs:enumeration value="DB" />
+      <xs:enumeration value="DC" />
+      <xs:enumeration value="DD" />
+      <xs:enumeration value="DE" />
+      <xs:enumeration value="DF" />
+      <xs:enumeration value="DG" />
+      <xs:enumeration value="DH" />
+      <xs:enumeration value="DI" />
+      <xs:enumeration value="DJ" />
+      <xs:enumeration value="DK" />
+      <xs:enumeration value="DL" />
+      <xs:enumeration value="DM" />
+      <xs:enumeration value="DN" />
+      <xs:enumeration value="DO" />
+      <xs:enumeration value="DP" />
+      <xs:enumeration value="DQ" />
+      <xs:enumeration value="DR" />
+      <xs:enumeration value="DS" />
+      <xs:enumeration value="DT" />
+      <xs:enumeration value="DU" />
+      <xs:enumeration value="DW" />
+      <xs:enumeration value="DX" />
+      <xs:enumeration value="DY" />
+      <xs:enumeration value="DZ" />
+      <xs:enumeration value="E1" />
+      <xs:enumeration value="E3" />
+      <xs:enumeration value="E4" />
+      <xs:enumeration value="E5" />
+      <xs:enumeration value="E7" />
+      <xs:enumeration value="E8" />
+      <xs:enumeration value="E9" />
+      <xs:enumeration value="EA" />
+      <xs:enumeration value="EB" />
+      <xs:enumeration value="EC" />
+      <xs:enumeration value="ED" />
+      <xs:enumeration value="EE" />
+      <xs:enumeration value="EF" />
+      <xs:enumeration value="EG" />
+      <xs:enumeration value="EH" />
+      <xs:enumeration value="EJ" />
+      <xs:enumeration value="EK" />
+      <xs:enumeration value="EL" />
+      <xs:enumeration value="EM" />
+      <xs:enumeration value="EP" />
+      <xs:enumeration value="EQ" />
+      <xs:enumeration value="ES" />
+      <xs:enumeration value="ET" />
+      <xs:enumeration value="EV" />
+      <xs:enumeration value="EX" />
+      <xs:enumeration value="EY" />
+      <xs:enumeration value="EZ" />
+      <xs:enumeration value="F0" />
+      <xs:enumeration value="F1" />
+      <xs:enumeration value="F2" />
+      <xs:enumeration value="F3" />
+      <xs:enumeration value="F4" />
+      <xs:enumeration value="F5" />
+      <xs:enumeration value="F6" />
+      <xs:enumeration value="F9" />
+      <xs:enumeration value="FA" />
+      <xs:enumeration value="FB" />
+      <xs:enumeration value="FD" />
+      <xs:enumeration value="FE" />
+      <xs:enumeration value="FF" />
+      <xs:enumeration value="FG" />
+      <xs:enumeration value="FH" />
+      <xs:enumeration value="FJ" />
+      <xs:enumeration value="FK" />
+      <xs:enumeration value="FL" />
+      <xs:enumeration value="FM" />
+      <xs:enumeration value="FO" />
+      <xs:enumeration value="FP" />
+      <xs:enumeration value="FR" />
+      <xs:enumeration value="FS" />
+      <xs:enumeration value="FT" />
+      <xs:enumeration value="FU" />
+      <xs:enumeration value="FV" />
+      <xs:enumeration value="FZ" />
+      <xs:enumeration value="G1" />
+      <xs:enumeration value="G2" />
+      <xs:enumeration value="G3" />
+      <xs:enumeration value="G4" />
+      <xs:enumeration value="G5" />
+      <xs:enumeration value="G6" />
+      <xs:enumeration value="G7" />
+      <xs:enumeration value="G8" />
+      <xs:enumeration value="G9" />
+      <xs:enumeration value="GA" />
+      <xs:enumeration value="GB" />
+      <xs:enumeration value="GC" />
+      <xs:enumeration value="GD" />
+      <xs:enumeration value="GE" />
+      <xs:enumeration value="GF" />
+      <xs:enumeration value="GG" />
+      <xs:enumeration value="GH" />
+      <xs:enumeration value="GI" />
+      <xs:enumeration value="GJ" />
+      <xs:enumeration value="GK" />
+      <xs:enumeration value="GL" />
+      <xs:enumeration value="GM" />
+      <xs:enumeration value="GN" />
+      <xs:enumeration value="GO" />
+      <xs:enumeration value="GP" />
+      <xs:enumeration value="GQ" />
+      <xs:enumeration value="GR" />
+      <xs:enumeration value="GS" />
+      <xs:enumeration value="GT" />
+      <xs:enumeration value="GU" />
+      <xs:enumeration value="GV" />
+      <xs:enumeration value="GW" />
+      <xs:enumeration value="GX" />
+      <xs:enumeration value="GY" />
+      <xs:enumeration value="GZ" />
+      <xs:enumeration value="H1" />
+      <xs:enumeration value="H2" />
+      <xs:enumeration value="H3" />
+      <xs:enumeration value="H4" />
+      <xs:enumeration value="H5" />
+      <xs:enumeration value="H6" />
+      <xs:enumeration value="H7" />
+      <xs:enumeration value="H8" />
+      <xs:enumeration value="H9" />
+      <xs:enumeration value="HA" />
+      <xs:enumeration value="HB" />
+      <xs:enumeration value="HC" />
+      <xs:enumeration value="HD" />
+      <xs:enumeration value="HE" />
+      <xs:enumeration value="HF" />
+      <xs:enumeration value="HG" />
+      <xs:enumeration value="HH" />
+      <xs:enumeration value="HI" />
+      <xs:enumeration value="HJ" />
+      <xs:enumeration value="HK" />
+      <xs:enumeration value="HL" />
+      <xs:enumeration value="HM" />
+      <xs:enumeration value="HN" />
+      <xs:enumeration value="HO" />
+      <xs:enumeration value="HP" />
+      <xs:enumeration value="HQ" />
+      <xs:enumeration value="HR" />
+      <xs:enumeration value="HS" />
+      <xs:enumeration value="HT" />
+      <xs:enumeration value="HU" />
+      <xs:enumeration value="HV" />
+      <xs:enumeration value="HW" />
+      <xs:enumeration value="HX" />
+      <xs:enumeration value="HY" />
+      <xs:enumeration value="HZ" />
+      <xs:enumeration value="I1" />
+      <xs:enumeration value="I2" />
+      <xs:enumeration value="IA" />
+      <xs:enumeration value="IB" />
+      <xs:enumeration value="IC" />
+      <xs:enumeration value="IE" />
+      <xs:enumeration value="IF" />
+      <xs:enumeration value="IG" />
+      <xs:enumeration value="IH" />
+      <xs:enumeration value="II" />
+      <xs:enumeration value="IK" />
+      <xs:enumeration value="IL" />
+      <xs:enumeration value="IM" />
+      <xs:enumeration value="IN" />
+      <xs:enumeration value="IP" />
+      <xs:enumeration value="IS" />
+      <xs:enumeration value="IT" />
+      <xs:enumeration value="IU" />
+      <xs:enumeration value="IV" />
+      <xs:enumeration value="IW" />
+      <xs:enumeration value="J1" />
+      <xs:enumeration value="J2" />
+      <xs:enumeration value="J3" />
+      <xs:enumeration value="J4" />
+      <xs:enumeration value="J5" />
+      <xs:enumeration value="J6" />
+      <xs:enumeration value="J7" />
+      <xs:enumeration value="J8" />
+      <xs:enumeration value="J9" />
+      <xs:enumeration value="JA" />
+      <xs:enumeration value="JB" />
+      <xs:enumeration value="JC" />
+      <xs:enumeration value="JE" />
+      <xs:enumeration value="JG" />
+      <xs:enumeration value="JK" />
+      <xs:enumeration value="JL" />
+      <xs:enumeration value="JM" />
+      <xs:enumeration value="JN" />
+      <xs:enumeration value="JO" />
+      <xs:enumeration value="JP" />
+      <xs:enumeration value="JR" />
+      <xs:enumeration value="JS" />
+      <xs:enumeration value="JT" />
+      <xs:enumeration value="JU" />
+      <xs:enumeration value="JV" />
+      <xs:enumeration value="JX" />
+      <xs:enumeration value="K0" />
+      <xs:enumeration value="K1" />
+      <xs:enumeration value="K2" />
+      <xs:enumeration value="K3" />
+      <xs:enumeration value="K4" />
+      <xs:enumeration value="K5" />
+      <xs:enumeration value="K6" />
+      <xs:enumeration value="K7" />
+      <xs:enumeration value="K9" />
+      <xs:enumeration value="KA" />
+      <xs:enumeration value="KB" />
+      <xs:enumeration value="KC" />
+      <xs:enumeration value="KD" />
+      <xs:enumeration value="KE" />
+      <xs:enumeration value="KF" />
+      <xs:enumeration value="KG" />
+      <xs:enumeration value="KH" />
+      <xs:enumeration value="KI" />
+      <xs:enumeration value="KJ" />
+      <xs:enumeration value="KK" />
+      <xs:enumeration value="KL" />
+      <xs:enumeration value="KM" />
+      <xs:enumeration value="KN" />
+      <xs:enumeration value="KO" />
+      <xs:enumeration value="KP" />
+      <xs:enumeration value="KQ" />
+      <xs:enumeration value="KR" />
+      <xs:enumeration value="KT" />
+      <xs:enumeration value="KU" />
+      <xs:enumeration value="KV" />
+      <xs:enumeration value="KW" />
+      <xs:enumeration value="KX" />
+      <xs:enumeration value="L1" />
+      <xs:enumeration value="L2" />
+      <xs:enumeration value="LA" />
+      <xs:enumeration value="LB" />
+      <xs:enumeration value="LC" />
+      <xs:enumeration value="LE" />
+      <xs:enumeration value="LF" />
+      <xs:enumeration value="LG" />
+      <xs:enumeration value="LH" />
+      <xs:enumeration value="LI" />
+      <xs:enumeration value="LJ" />
+      <xs:enumeration value="LK" />
+      <xs:enumeration value="LL" />
+      <xs:enumeration value="LM" />
+      <xs:enumeration value="LN" />
+      <xs:enumeration value="LO" />
+      <xs:enumeration value="LP" />
+      <xs:enumeration value="LQ" />
+      <xs:enumeration value="LR" />
+      <xs:enumeration value="LS" />
+      <xs:enumeration value="LT" />
+      <xs:enumeration value="LX" />
+      <xs:enumeration value="LY" />
+      <xs:enumeration value="M0" />
+      <xs:enumeration value="M1" />
+      <xs:enumeration value="M2" />
+      <xs:enumeration value="M3" />
+      <xs:enumeration value="M4" />
+      <xs:enumeration value="M5" />
+      <xs:enumeration value="M6" />
+      <xs:enumeration value="M7" />
+      <xs:enumeration value="M8" />
+      <xs:enumeration value="M9" />
+      <xs:enumeration value="MA" />
+      <xs:enumeration value="MB" />
+      <xs:enumeration value="MC" />
+      <xs:enumeration value="MD" />
+      <xs:enumeration value="ME" />
+      <xs:enumeration value="MF" />
+      <xs:enumeration value="MG" />
+      <xs:enumeration value="MH" />
+      <xs:enumeration value="MI" />
+      <xs:enumeration value="MJ" />
+      <xs:enumeration value="MK" />
+      <xs:enumeration value="ML" />
+      <xs:enumeration value="MM" />
+      <xs:enumeration value="MN" />
+      <xs:enumeration value="MO" />
+      <xs:enumeration value="MP" />
+      <xs:enumeration value="MQ" />
+      <xs:enumeration value="MR" />
+      <xs:enumeration value="MS" />
+      <xs:enumeration value="MT" />
+      <xs:enumeration value="MU" />
+      <xs:enumeration value="MV" />
+      <xs:enumeration value="MW" />
+      <xs:enumeration value="MX" />
+      <xs:enumeration value="MY" />
+      <xs:enumeration value="MZ" />
+      <xs:enumeration value="N1" />
+      <xs:enumeration value="N2" />
+      <xs:enumeration value="N3" />
+      <xs:enumeration value="N4" />
+      <xs:enumeration value="N6" />
+      <xs:enumeration value="N7" />
+      <xs:enumeration value="N9" />
+      <xs:enumeration value="NA" />
+      <xs:enumeration value="NB" />
+      <xs:enumeration value="NC" />
+      <xs:enumeration value="ND" />
+      <xs:enumeration value="NE" />
+      <xs:enumeration value="NF" />
+      <xs:enumeration value="NG" />
+      <xs:enumeration value="NH" />
+      <xs:enumeration value="NI" />
+      <xs:enumeration value="NJ" />
+      <xs:enumeration value="NK" />
+      <xs:enumeration value="NL" />
+      <xs:enumeration value="NM" />
+      <xs:enumeration value="NN" />
+      <xs:enumeration value="NQ" />
+      <xs:enumeration value="NR" />
+      <xs:enumeration value="NS" />
+      <xs:enumeration value="NT" />
+      <xs:enumeration value="NU" />
+      <xs:enumeration value="NV" />
+      <xs:enumeration value="NW" />
+      <xs:enumeration value="NX" />
+      <xs:enumeration value="NY" />
+      <xs:enumeration value="NZ" />
+      <xs:enumeration value="OA" />
+      <xs:enumeration value="OB" />
+      <xs:enumeration value="OC" />
+      <xs:enumeration value="OG" />
+      <xs:enumeration value="ON" />
+      <xs:enumeration value="OP" />
+      <xs:enumeration value="OT" />
+      <xs:enumeration value="OU" />
+      <xs:enumeration value="OZ" />
+      <xs:enumeration value="P0" />
+      <xs:enumeration value="P1" />
+      <xs:enumeration value="P2" />
+      <xs:enumeration value="P3" />
+      <xs:enumeration value="P4" />
+      <xs:enumeration value="P5" />
+      <xs:enumeration value="P6" />
+      <xs:enumeration value="P7" />
+      <xs:enumeration value="P8" />
+      <xs:enumeration value="P9" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PB" />
+      <xs:enumeration value="PC" />
+      <xs:enumeration value="PD" />
+      <xs:enumeration value="PE" />
+      <xs:enumeration value="PF" />
+      <xs:enumeration value="PG" />
+      <xs:enumeration value="PH" />
+      <xs:enumeration value="PI" />
+      <xs:enumeration value="PJ" />
+      <xs:enumeration value="PK" />
+      <xs:enumeration value="PL" />
+      <xs:enumeration value="PM" />
+      <xs:enumeration value="PN" />
+      <xs:enumeration value="PO" />
+      <xs:enumeration value="PP" />
+      <xs:enumeration value="PQ" />
+      <xs:enumeration value="PR" />
+      <xs:enumeration value="PS" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="PU" />
+      <xs:enumeration value="PV" />
+      <xs:enumeration value="PW" />
+      <xs:enumeration value="PX" />
+      <xs:enumeration value="PY" />
+      <xs:enumeration value="PZ" />
+      <xs:enumeration value="Q1" />
+      <xs:enumeration value="Q2" />
+      <xs:enumeration value="Q3" />
+      <xs:enumeration value="Q4" />
+      <xs:enumeration value="Q5" />
+      <xs:enumeration value="Q6" />
+      <xs:enumeration value="Q7" />
+      <xs:enumeration value="Q9" />
+      <xs:enumeration value="QA" />
+      <xs:enumeration value="QB" />
+      <xs:enumeration value="QC" />
+      <xs:enumeration value="QD" />
+      <xs:enumeration value="QE" />
+      <xs:enumeration value="QF" />
+      <xs:enumeration value="QH" />
+      <xs:enumeration value="QK" />
+      <xs:enumeration value="QR" />
+      <xs:enumeration value="QS" />
+      <xs:enumeration value="QT" />
+      <xs:enumeration value="QU" />
+      <xs:enumeration value="R1" />
+      <xs:enumeration value="R2" />
+      <xs:enumeration value="R3" />
+      <xs:enumeration value="R4" />
+      <xs:enumeration value="R5" />
+      <xs:enumeration value="R6" />
+      <xs:enumeration value="R7" />
+      <xs:enumeration value="R8" />
+      <xs:enumeration value="R9" />
+      <xs:enumeration value="RA" />
+      <xs:enumeration value="RB" />
+      <xs:enumeration value="RC" />
+      <xs:enumeration value="RD" />
+      <xs:enumeration value="RE" />
+      <xs:enumeration value="RG" />
+      <xs:enumeration value="RH" />
+      <xs:enumeration value="RK" />
+      <xs:enumeration value="RL" />
+      <xs:enumeration value="RM" />
+      <xs:enumeration value="RN" />
+      <xs:enumeration value="RO" />
+      <xs:enumeration value="RP" />
+      <xs:enumeration value="RS" />
+      <xs:enumeration value="RT" />
+      <xs:enumeration value="RU" />
+      <xs:enumeration value="RX" />
+      <xs:enumeration value="S1" />
+      <xs:enumeration value="S2" />
+      <xs:enumeration value="S3" />
+      <xs:enumeration value="S4" />
+      <xs:enumeration value="S5" />
+      <xs:enumeration value="S6" />
+      <xs:enumeration value="S7" />
+      <xs:enumeration value="S8" />
+      <xs:enumeration value="S9" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="SB" />
+      <xs:enumeration value="SC" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SE" />
+      <xs:enumeration value="SF" />
+      <xs:enumeration value="SG" />
+      <xs:enumeration value="SH" />
+      <xs:enumeration value="SI" />
+      <xs:enumeration value="SJ" />
+      <xs:enumeration value="SK" />
+      <xs:enumeration value="SL" />
+      <xs:enumeration value="SM" />
+      <xs:enumeration value="SN" />
+      <xs:enumeration value="SO" />
+      <xs:enumeration value="SP" />
+      <xs:enumeration value="SQ" />
+      <xs:enumeration value="SR" />
+      <xs:enumeration value="SS" />
+      <xs:enumeration value="ST" />
+      <xs:enumeration value="SV" />
+      <xs:enumeration value="SW" />
+      <xs:enumeration value="SX" />
+      <xs:enumeration value="SY" />
+      <xs:enumeration value="SZ" />
+      <xs:enumeration value="T0" />
+      <xs:enumeration value="T1" />
+      <xs:enumeration value="T2" />
+      <xs:enumeration value="T3" />
+      <xs:enumeration value="T4" />
+      <xs:enumeration value="T5" />
+      <xs:enumeration value="T6" />
+      <xs:enumeration value="T7" />
+      <xs:enumeration value="T8" />
+      <xs:enumeration value="T9" />
+      <xs:enumeration value="TA" />
+      <xs:enumeration value="TB" />
+      <xs:enumeration value="TC" />
+      <xs:enumeration value="TD" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="TF" />
+      <xs:enumeration value="TG" />
+      <xs:enumeration value="TH" />
+      <xs:enumeration value="TI" />
+      <xs:enumeration value="TJ" />
+      <xs:enumeration value="TK" />
+      <xs:enumeration value="TL" />
+      <xs:enumeration value="TM" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TO" />
+      <xs:enumeration value="TP" />
+      <xs:enumeration value="TQ" />
+      <xs:enumeration value="TR" />
+      <xs:enumeration value="TS" />
+      <xs:enumeration value="TT" />
+      <xs:enumeration value="TU" />
+      <xs:enumeration value="TV" />
+      <xs:enumeration value="TW" />
+      <xs:enumeration value="TX" />
+      <xs:enumeration value="TY" />
+      <xs:enumeration value="TZ" />
+      <xs:enumeration value="U1" />
+      <xs:enumeration value="U2" />
+      <xs:enumeration value="U3" />
+      <xs:enumeration value="U5" />
+      <xs:enumeration value="UA" />
+      <xs:enumeration value="UB" />
+      <xs:enumeration value="UC" />
+      <xs:enumeration value="UD" />
+      <xs:enumeration value="UE" />
+      <xs:enumeration value="UF" />
+      <xs:enumeration value="UH" />
+      <xs:enumeration value="UL" />
+      <xs:enumeration value="UM" />
+      <xs:enumeration value="UN" />
+      <xs:enumeration value="UP" />
+      <xs:enumeration value="UQ" />
+      <xs:enumeration value="UR" />
+      <xs:enumeration value="US" />
+      <xs:enumeration value="UT" />
+      <xs:enumeration value="UU" />
+      <xs:enumeration value="UV" />
+      <xs:enumeration value="UW" />
+      <xs:enumeration value="UX" />
+      <xs:enumeration value="UY" />
+      <xs:enumeration value="UZ" />
+      <xs:enumeration value="V1" />
+      <xs:enumeration value="V2" />
+      <xs:enumeration value="V3" />
+      <xs:enumeration value="V4" />
+      <xs:enumeration value="V5" />
+      <xs:enumeration value="V6" />
+      <xs:enumeration value="VA" />
+      <xs:enumeration value="VC" />
+      <xs:enumeration value="VI" />
+      <xs:enumeration value="VP" />
+      <xs:enumeration value="VR" />
+      <xs:enumeration value="VS" />
+      <xs:enumeration value="W2" />
+      <xs:enumeration value="W7" />
+      <xs:enumeration value="WA" />
+      <xs:enumeration value="WB" />
+      <xs:enumeration value="WD" />
+      <xs:enumeration value="WE" />
+      <xs:enumeration value="WG" />
+      <xs:enumeration value="WH" />
+      <xs:enumeration value="WI" />
+      <xs:enumeration value="WK" />
+      <xs:enumeration value="WM" />
+      <xs:enumeration value="WP" />
+      <xs:enumeration value="WR" />
+      <xs:enumeration value="WW" />
+      <xs:enumeration value="X1" />
+      <xs:enumeration value="X2" />
+      <xs:enumeration value="X3" />
+      <xs:enumeration value="X4" />
+      <xs:enumeration value="X5" />
+      <xs:enumeration value="X6" />
+      <xs:enumeration value="X7" />
+      <xs:enumeration value="X8" />
+      <xs:enumeration value="X9" />
+      <xs:enumeration value="XP" />
+      <xs:enumeration value="Y1" />
+      <xs:enumeration value="Y2" />
+      <xs:enumeration value="Y3" />
+      <xs:enumeration value="Y4" />
+      <xs:enumeration value="YD" />
+      <xs:enumeration value="YL" />
+      <xs:enumeration value="YR" />
+      <xs:enumeration value="YT" />
+      <xs:enumeration value="Z1" />
+      <xs:enumeration value="Z2" />
+      <xs:enumeration value="Z3" />
+      <xs:enumeration value="Z4" />
+      <xs:enumeration value="Z5" />
+      <xs:enumeration value="Z6" />
+      <xs:enumeration value="Z7" />
+      <xs:enumeration value="Z8" />
+      <xs:enumeration value="Z9" />
+      <xs:enumeration value="ZA" />
+      <xs:enumeration value="ZB" />
+      <xs:enumeration value="ZC" />
+      <xs:enumeration value="ZD" />
+      <xs:enumeration value="ZE" />
+      <xs:enumeration value="ZF" />
+      <xs:enumeration value="ZG" />
+      <xs:enumeration value="ZH" />
+      <xs:enumeration value="ZI" />
+      <xs:enumeration value="ZJ" />
+      <xs:enumeration value="ZK" />
+      <xs:enumeration value="ZL" />
+      <xs:enumeration value="ZM" />
+      <xs:enumeration value="ZN" />
+      <xs:enumeration value="ZO" />
+      <xs:enumeration value="ZP" />
+      <xs:enumeration value="ZQ" />
+      <xs:enumeration value="ZR" />
+      <xs:enumeration value="ZS" />
+      <xs:enumeration value="ZT" />
+      <xs:enumeration value="ZU" />
+      <xs:enumeration value="ZV" />
+      <xs:enumeration value="ZW" />
+      <xs:enumeration value="ZX" />
+      <xs:enumeration value="ZY" />
+      <xs:enumeration value="ZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="date">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d*-\d\d-\d\d" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="time">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d\d:\d\d(:\d\d)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_N">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_R">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_AN">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_DT">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_TM">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N0">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N1">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N2">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N3">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N4">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N5">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N6">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N7">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N8">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N9">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+</xs:schema>
