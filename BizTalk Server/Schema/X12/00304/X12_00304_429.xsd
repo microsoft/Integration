@@ -1,0 +1,995 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:btsedi="http://schemas.microsoft.com/BizTalk/2005/EdiSchemaEditorExtension" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" xmlns="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:appinfo>
+      <schemaEditorExtension:schemaInfo namespaceAlias="btsedi" extensionClass="Microsoft.BizTalk.Edi.SchemaEditorExtension.EdiSchemaExtension" standardName="EDI" xmlns:schemaEditorExtension="http://schemas.microsoft.com/BizTalk/2003/SchemaEditorExtensions" />
+      <b:schemaInfo version="1.0" document_type="429" standard="EDI" standards_version="00304" root_reference="X12_00304_429" displayroot_reference="X12_00304_429" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" X12ConditionDesignator_Check="No" />
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation xml:lang="en">copyright © Microsoft Corporation. All rights reserved.</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>Schema name: X12_3040_429</xs:documentation>
+  </xs:annotation>
+  <xs:element name="X12_00304_429">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="postfix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Railroad Retirement Activity" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ST">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Header" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ST01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Identifier Code_143" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="3" />
+                    <xs:maxLength value="3" />
+                    <xs:enumeration value="429" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ST02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="ST03">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Implementation Convention Preference_1705" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="999" ref="RU1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="RU1" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Retirement Board Detail" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="999" ref="RU2Loop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Employing Carrier Response" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SE">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Trailer" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SE01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Number of Included Segments_96" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SE02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RU2Loop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for Employing Carrier Response" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="RU2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="RU2" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Employing Carrier Response">
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU203" />
+                  <b:Subject name="RU204" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Conditional" qualifier="RU205" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU206" />
+                  <b:Subject name="RU207" />
+                  <b:Subject name="RU208" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="RU3">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="RU3" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Employing Carrier Claim Profile">
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU302" />
+                  <b:Subject name="RU303" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU304" />
+                  <b:Subject name="RU305" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU306" />
+                  <b:Subject name="RU307" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU308" />
+                  <b:Subject name="RU309" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU310" />
+                  <b:Subject name="RU311" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU312" />
+                  <b:Subject name="RU313" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU314" />
+                  <b:Subject name="RU315" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU316" />
+                  <b:Subject name="RU317" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU318" />
+                  <b:Subject name="RU319" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU320" />
+                  <b:Subject name="RU321" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU322" />
+                  <b:Subject name="RU323" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU324" />
+                  <b:Subject name="RU325" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU326" />
+                  <b:Subject name="RU327" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="RU328" />
+                  <b:Subject name="RU329" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="2" ref="NTE">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="NTE" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Note/Special Instruction" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RU1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="RU1" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Retirement Board Detail" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="RU101" type="X12_ID_535">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Rail Retirement Activity Code_535" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RU102">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Number_127" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="RU103">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name_93" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU104">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Number_127" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU105">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU106" type="X12_ID_537">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Employment Code_537" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU107" type="X12_ID_545">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Unemployed Reason Code_545" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU108">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU109">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Claim Profile_574" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:length value="14" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RU2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="RU2" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Employing Carrier Response">
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU203" />
+            <b:Subject name="RU204" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Conditional" qualifier="RU205" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU206" />
+            <b:Subject name="RU207" />
+            <b:Subject name="RU208" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="RU201" type="X12_ID_535">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Rail Retirement Activity Code_535" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RU202">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference Number_127" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU203">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU204" type="X12_ID_584">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Employment Status Code_584" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU205">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Amount_610" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_N2">
+              <xs:minLength value="1" />
+              <xs:maxLength value="15" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU206" type="X12_ID_594">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Frequency Code_594" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU207">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU208">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RU3">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="RU3" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Employing Carrier Claim Profile">
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU302" />
+            <b:Subject name="RU303" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU304" />
+            <b:Subject name="RU305" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU306" />
+            <b:Subject name="RU307" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU308" />
+            <b:Subject name="RU309" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU310" />
+            <b:Subject name="RU311" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU312" />
+            <b:Subject name="RU313" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU314" />
+            <b:Subject name="RU315" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU316" />
+            <b:Subject name="RU317" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU318" />
+            <b:Subject name="RU319" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU320" />
+            <b:Subject name="RU321" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU322" />
+            <b:Subject name="RU323" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU324" />
+            <b:Subject name="RU325" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU326" />
+            <b:Subject name="RU327" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="RU328" />
+            <b:Subject name="RU329" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="RU301">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU302" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU303" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU304" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU305" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU306" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU307" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU308" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU309" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU310" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU311" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU312" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU313" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU314" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU315" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU316" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU317" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU318" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU319" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU320" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU321" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU322" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU323" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU324" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU325" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU326" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU327" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU328" type="X12_ID_585">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Payroll Status Code_585" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="RU329" type="X12_ID_590">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Wages Paid Code_590" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NTE">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="NTE" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Note/Special Instruction" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="NTE01" type="X12_ID_363">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Note Reference Code_363" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NTE02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free Form Message_3" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="60" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="X12_ID_535">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A" />
+      <xs:enumeration value="B" />
+      <xs:enumeration value="C" />
+      <xs:enumeration value="D" />
+      <xs:enumeration value="S" />
+      <xs:enumeration value="T" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_537">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="N" />
+      <xs:enumeration value="R" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_545">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="4" />
+      <xs:enumeration value="5" />
+      <xs:enumeration value="6" />
+      <xs:enumeration value="7" />
+      <xs:enumeration value="8" />
+      <xs:enumeration value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_584">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="AC" />
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AF" />
+      <xs:enumeration value="AO" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="AU" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="CT" />
+      <xs:enumeration value="DC" />
+      <xs:enumeration value="DI" />
+      <xs:enumeration value="DQ" />
+      <xs:enumeration value="DR" />
+      <xs:enumeration value="DS" />
+      <xs:enumeration value="FA" />
+      <xs:enumeration value="FB" />
+      <xs:enumeration value="FC" />
+      <xs:enumeration value="FO" />
+      <xs:enumeration value="FT" />
+      <xs:enumeration value="IA" />
+      <xs:enumeration value="L1" />
+      <xs:enumeration value="LA" />
+      <xs:enumeration value="LE" />
+      <xs:enumeration value="LM" />
+      <xs:enumeration value="LS" />
+      <xs:enumeration value="LU" />
+      <xs:enumeration value="LW" />
+      <xs:enumeration value="NE" />
+      <xs:enumeration value="OS" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="RA" />
+      <xs:enumeration value="RI" />
+      <xs:enumeration value="RM" />
+      <xs:enumeration value="RP" />
+      <xs:enumeration value="RT" />
+      <xs:enumeration value="RU" />
+      <xs:enumeration value="RW" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="SE" />
+      <xs:enumeration value="SL" />
+      <xs:enumeration value="SU" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="UK" />
+      <xs:enumeration value="VO" />
+      <xs:enumeration value="ZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_594">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="4" />
+      <xs:enumeration value="5" />
+      <xs:enumeration value="6" />
+      <xs:enumeration value="7" />
+      <xs:enumeration value="9" />
+      <xs:enumeration value="A" />
+      <xs:enumeration value="B" />
+      <xs:enumeration value="Q" />
+      <xs:enumeration value="S" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_585">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="AL" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="DH" />
+      <xs:enumeration value="GU" />
+      <xs:enumeration value="HO" />
+      <xs:enumeration value="JD" />
+      <xs:enumeration value="LO" />
+      <xs:enumeration value="MC" />
+      <xs:enumeration value="ML" />
+      <xs:enumeration value="MO" />
+      <xs:enumeration value="OP" />
+      <xs:enumeration value="PD" />
+      <xs:enumeration value="RD" />
+      <xs:enumeration value="RF" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SU" />
+      <xs:enumeration value="VC" />
+      <xs:enumeration value="WK" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_590">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0" />
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_363">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACC" />
+      <xs:enumeration value="ACI" />
+      <xs:enumeration value="ACT" />
+      <xs:enumeration value="ADD" />
+      <xs:enumeration value="ALL" />
+      <xs:enumeration value="APS" />
+      <xs:enumeration value="BOL" />
+      <xs:enumeration value="CER" />
+      <xs:enumeration value="CHG" />
+      <xs:enumeration value="CLR" />
+      <xs:enumeration value="CUS" />
+      <xs:enumeration value="DEL" />
+      <xs:enumeration value="DGN" />
+      <xs:enumeration value="DOD" />
+      <xs:enumeration value="EXR" />
+      <xs:enumeration value="GEN" />
+      <xs:enumeration value="GPI" />
+      <xs:enumeration value="GSI" />
+      <xs:enumeration value="INS" />
+      <xs:enumeration value="INT" />
+      <xs:enumeration value="INV" />
+      <xs:enumeration value="LAB" />
+      <xs:enumeration value="LEN" />
+      <xs:enumeration value="LIN" />
+      <xs:enumeration value="LOC" />
+      <xs:enumeration value="LOI" />
+      <xs:enumeration value="MFG" />
+      <xs:enumeration value="NCD" />
+      <xs:enumeration value="ORA" />
+      <xs:enumeration value="ORI" />
+      <xs:enumeration value="OTH" />
+      <xs:enumeration value="PAY" />
+      <xs:enumeration value="PCS" />
+      <xs:enumeration value="PDS" />
+      <xs:enumeration value="PES" />
+      <xs:enumeration value="PKG" />
+      <xs:enumeration value="PMT" />
+      <xs:enumeration value="PPC" />
+      <xs:enumeration value="PRI" />
+      <xs:enumeration value="PUR" />
+      <xs:enumeration value="QUT" />
+      <xs:enumeration value="REC" />
+      <xs:enumeration value="REV" />
+      <xs:enumeration value="ROU" />
+      <xs:enumeration value="SPH" />
+      <xs:enumeration value="TAF" />
+      <xs:enumeration value="TCF" />
+      <xs:enumeration value="TIL" />
+      <xs:enumeration value="TLF" />
+      <xs:enumeration value="TPO" />
+      <xs:enumeration value="TRA" />
+      <xs:enumeration value="TRF" />
+      <xs:enumeration value="TRS" />
+      <xs:enumeration value="TSF" />
+      <xs:enumeration value="WHI" />
+      <xs:enumeration value="WRP" />
+      <xs:enumeration value="ZZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="date">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d*-\d\d-\d\d" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="time">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d\d:\d\d(:\d\d)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_N">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_R">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_AN">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_DT">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_TM">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N0">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N1">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N2">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N3">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N4">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N5">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N6">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N7">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N8">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N9">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+</xs:schema>
