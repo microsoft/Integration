@@ -1,0 +1,2986 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:btsedi="http://schemas.microsoft.com/BizTalk/2005/EdiSchemaEditorExtension" xmlns:b="http://schemas.microsoft.com/BizTalk/2003/EANCOM" xmlns="http://schemas.microsoft.com/BizTalk/EDI/EDIFACT/2006" targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/EDIFACT/2006" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:appinfo>
+      <schemaEditorExtension:schemaInfo namespaceAlias="btsedi" extensionClass="Microsoft.BizTalk.Edi.SchemaEditorExtension.EdiSchemaExtension" standardName="EDI" xmlns:schemaEditorExtension="http://schemas.microsoft.com/BizTalk/2003/SchemaEditorExtensions" />
+      <b:schemaInfo is_envelope="no" version="1.0" document_type="COMDIS" standard="EDI" standards_version="D96A" root_reference="EFACT_D96A_COMDIS" displayroot_reference="EFACT_D96A_COMDIS" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" EdifactDependencyRule_Check="No" />
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation xml:lang="en">copyright © Microsoft Corporation. All rights reserved.</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>Schema name: EFACT_d96a_COMDIS</xs:documentation>
+  </xs:annotation>
+  <xs:element name="EFACT_D96A_COMDIS">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="postfix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Commercial dispute message" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UNH">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Message Header" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UNH1">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Message Reference Number_0062" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="EDIFACT_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="14" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="UNH2">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:recordInfo notes="Message Identifier" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="UNH2.1">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Type Identifier_0065" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="6" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="UNH2.2">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Type Version Number_0052" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="UNH2.3">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Type Release Number_0054" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="UNH2.4">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Controlling Agency_0051" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH2.5">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Association Assigned Code_0057" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="6" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH2.6">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Code List Directory Version Number_0110" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="6" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH2.7">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Type Sub-function Identification" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="6" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="UNH3">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Common Access Reference_0068" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="EDIFACT_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="35" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="UNH4">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:recordInfo notes="Status of the Transfer" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="UNH4.1">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Sequence Message Transfer Number_0070" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_N">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="2" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH4.2">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="First/Last Sequence Message Transfer Indication_0073" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_A">
+                          <xs:length value="1" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="UNH5">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:recordInfo notes="Message Subset Identification" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="UNH5.1">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Subset Identification_0115" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="14" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH5.2">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Subset Version Number_0116" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH5.3">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Subset Release Number_0118" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH5.4">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Controlling Agency, Coded_0051" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="UNH6">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:recordInfo notes="Message Implementation Guideline Identification" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="UNH6.1">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Implementation Guideline Identification_0121" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="14" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH6.2">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Implementation Guideline Version Number_0122" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH6.3">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Message Implementation Guideline Release Number_0124" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH6.4">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Controlling Agency, Coded_0051" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="UNH7">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:recordInfo notes="Scenario Identification" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="UNH7.1">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Scenario Identification_0127" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="14" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH7.2">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Scenario Version Number_0128" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH7.3">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Scenario Release Number_0130" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="UNH7.4">
+                      <xs:annotation>
+                        <xs:appinfo>
+                          <b:fieldInfo notes="Controlling Agency, Coded_0051" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                        </xs:appinfo>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="EDIFACT_AN">
+                          <xs:minLength value="1" />
+                          <xs:maxLength value="3" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="BGM">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="BGM" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="BEGINNING OF MESSAGE" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="RFF">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="RFF" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="REFERENCE" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="DTM">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DTM" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="99" ref="NADLoop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for NAME AND ADDRESS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9999" ref="DOCLoop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for DOCUMENT/MESSAGE DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="UNT">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Message Trailer" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UNT1">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Number of Segments in a Message_0074" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="EDIFACT_N">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="UNT2">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Message Reference Number_0062" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="EDIFACT_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="14" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NADLoop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for NAME AND ADDRESS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="NAD">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="NAD" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="NAME AND ADDRESS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="CTA">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="CTA" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="CONTACT INFORMATION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="5" ref="COM">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="COM" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="COMMUNICATION CONTACT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AJTLoop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for ADJUSTMENT DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AJT">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="AJT" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="ADJUSTMENT DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="FTX">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="FTX" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="FREE TEXT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="INPLoop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for PARTIES TO INSTRUCTION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="INP">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="INP" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTIES TO INSTRUCTION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="FTX_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="FTX" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="FREE TEXT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AJTLoop2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for ADJUSTMENT DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AJT_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="AJT" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="ADJUSTMENT DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="FTX_3">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="FTX" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="FREE TEXT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DLILoop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for DOCUMENT LINE IDENTIFICATION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="DLI">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DLI" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT LINE IDENTIFICATION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="2" ref="MOA_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="MOA" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="AJTLoop2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for ADJUSTMENT DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DOCLoop1">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for DOCUMENT/MESSAGE DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="DOC">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DOC" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="DTM_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="DTM" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="2" ref="MOA">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="MOA" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="AJTLoop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for ADJUSTMENT DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9" ref="INPLoop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for PARTIES TO INSTRUCTION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="9999" ref="DLILoop1">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_record" count_ignore="yes" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Loop for DOCUMENT LINE IDENTIFICATION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BGM">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="BGM" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="BEGINNING OF MESSAGE" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="C002">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE NAME" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="BGM02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="DOCUMENT/MESSAGE NUMBER_1004" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="BGM03" type="EDIFACT_ID_1225">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="MESSAGE FUNCTION, CODED_1225" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="BGM04" type="EDIFACT_ID_4343">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="RESPONSE TYPE, CODED_4343" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RFF">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="RFF" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="REFERENCE" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="C506">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="REFERENCE" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DTM">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DTM" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="C507">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NAD">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="NAD" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="NAME AND ADDRESS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="NAD01" type="EDIFACT_ID_3035">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="PARTY QUALIFIER_3035" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C082">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTY IDENTIFICATION DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C058">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" Used="No" notes="NAME AND ADDRESS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C080">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTY NAME" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C059">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="5" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="STREET" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="NAD06">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="CITY NAME_3164" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="NAD07">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="COUNTRY SUB-ENTITY IDENTIFICATION_3229" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="NAD08">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="POSTCODE IDENTIFICATION_3251" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="NAD09" type="EDIFACT_ID_3207">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="COUNTRY, CODED_3207" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CTA">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="CTA" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="CONTACT INFORMATION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CTA01" type="EDIFACT_ID_3139">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="CONTACT FUNCTION, CODED_3139" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C056">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DEPARTMENT OR EMPLOYEE DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="COM">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="COM" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="COMMUNICATION CONTACT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="C076">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="COMMUNICATION CONTACT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DOC">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DOC" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="C002_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE NAME" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C503">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE DETAILS" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="DOC03" type="EDIFACT_ID_3153">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="COMMUNICATION CHANNEL IDENTIFIER, CODED_3153" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="DOC04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="NUMBER OF COPIES OF DOCUMENT REQUIRED_1220" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_N">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="DOC05">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="NUMBER OF ORIGINALS OF DOCUMENT REQUIRED_1218" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_N">
+              <xs:minLength value="1" />
+              <xs:maxLength value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DTM_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DTM_2" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="C507_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MOA">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="MOA" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="C516">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AJT">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="AJT" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="ADJUSTMENT DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="AJT01" type="EDIFACT_ID_4465">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="ADJUSTMENT REASON, CODED_4465" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="AJT02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="LINE ITEM NUMBER_1082" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_N">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FTX">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="FTX" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="FREE TEXT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FTX01" type="EDIFACT_ID_4451">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="TEXT SUBJECT QUALIFIER_4451" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="FTX02" type="EDIFACT_ID_4453">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="TEXT FUNCTION, CODED_4453" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C107">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT REFERENCE" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C108">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT LITERAL" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="FTX05" type="EDIFACT_ID_3453">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="LANGUAGE, CODED_3453" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="INP">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="INP" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTIES TO INSTRUCTION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="C849">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTIES TO INSTRUCTION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C522">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="INSTRUCTION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C850">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" Used="No" notes="STATUS OF INSTRUCTION" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="INP04" type="EDIFACT_ID_1229">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="ACTION REQUEST/NOTIFICATION, CODED_1229" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FTX_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="FTX_2" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="FREE TEXT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FTX01" type="EDIFACT_ID_4451">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="TEXT SUBJECT QUALIFIER_4451" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="FTX02" type="EDIFACT_ID_4453">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="TEXT FUNCTION, CODED_4453" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C107_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT REFERENCE" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C108_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT LITERAL" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="FTX05" type="EDIFACT_ID_3453">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="LANGUAGE, CODED_3453" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DLI">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="DLI" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT LINE IDENTIFICATION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DLI01" type="EDIFACT_ID_1073">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="DOCUMENT LINE INDICATOR, CODED_1073" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DLI02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="LINE ITEM NUMBER_1082" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_N">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MOA_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="MOA_2" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="C516_2">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AJT_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="AJT_2" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="ADJUSTMENT DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="AJT01" type="EDIFACT_ID_4465">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="ADJUSTMENT REASON, CODED_4465" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="AJT02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="LINE ITEM NUMBER_1082" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_N">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FTX_3">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="FTX_3" delimiter_type="inherit_field" count_ignore="no" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="FREE TEXT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FTX01" type="EDIFACT_ID_4451">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="TEXT SUBJECT QUALIFIER_4451" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="FTX02" type="EDIFACT_ID_4453">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="TEXT FUNCTION, CODED_4453" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C107_3">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT REFERENCE" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="C108_3">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT LITERAL" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="FTX05" type="EDIFACT_ID_3453">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="LANGUAGE, CODED_3453" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C002">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE NAME" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="C00201" type="EDIFACT_ID_1001">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Document/message name, coded_1001" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00202" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00203" type="EDIFACT_ID_3055">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list responsible agency, coded_3055" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00204">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Document/message name_1000" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C506">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="REFERENCE" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C50601" type="EDIFACT_ID_1153">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference qualifier_1153" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50602">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference number_1154" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50603">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Line number_1156" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50604">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Reference version number_4000" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C507">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C50701" type="EDIFACT_ID_2005">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date/time/period qualifier_2005" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50702">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date/time/period_2380" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50703" type="EDIFACT_ID_2379">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date/time/period format qualifier_2379" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C082">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTY IDENTIFICATION DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C08201">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party id. identification_3039" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08202" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08203" type="EDIFACT_ID_3055">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list responsible agency, coded_3055" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C058">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" Used="No" notes="NAME AND ADDRESS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C05801">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name and address line_3124" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05802">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name and address line_3124" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05803">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name and address line_3124" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05804">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name and address line_3124" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05805">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Name and address line_3124" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C080">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTY NAME" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C08001">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party name_3036" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08002">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party name_3036" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08003">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party name_3036" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08004">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party name_3036" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08005">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party name_3036" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C08006" type="EDIFACT_ID_3045">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party name format, coded_3045" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C059">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="5" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="STREET" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C05901">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Street and number/p.o. box_3042" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05902">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Street and number/p.o. box_3042" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05903">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Street and number/p.o. box_3042" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05904">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Street and number/p.o. box_3042" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C056">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DEPARTMENT OR EMPLOYEE DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="C05601">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Department or employee identification_3413" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="17" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C05602">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Department or employee_3412" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C076">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="COMMUNICATION CONTACT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C07601">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Communication number_3148" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="512" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="C07602" type="EDIFACT_ID_3155">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Communication channel qualifier_3155" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C002_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE NAME" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="C00201" type="EDIFACT_ID_1001">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Document/message name, coded_1001" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00202" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00203" type="EDIFACT_ID_3055">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list responsible agency, coded_3055" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C00204">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Document/message name_1000" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C503">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DOCUMENT/MESSAGE DETAILS" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="C50301">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Document/message number_1004" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50302" type="EDIFACT_ID_1373">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Document/message status, coded_1373" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50303">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Document/message source_1366" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50304" type="EDIFACT_ID_3453">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Language, coded_3453" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C507_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="DATE/TIME/PERIOD" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C50701" type="EDIFACT_ID_2005">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date/time/period qualifier_2005" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50702">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date/time/period_2380" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C50703" type="EDIFACT_ID_2379">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date/time/period format qualifier_2379" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C516">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C51601" type="EDIFACT_ID_5025">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Monetary amount type qualifier_5025" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51602">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Monetary amount_5004" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_N">
+              <xs:minLength value="1" />
+              <xs:maxLength value="18" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51603" type="EDIFACT_ID_6345">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Currency, coded_6345" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51604" type="EDIFACT_ID_6343">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Currency qualifier_6343" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51605" type="EDIFACT_ID_4405">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Status, coded_4405" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C107">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT REFERENCE" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C10701" type="EDIFACT_ID_4441">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text, coded_4441" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10702" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10703" type="EDIFACT_ID_3055">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list responsible agency, coded_3055" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C108">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT LITERAL" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C10801">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10802">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10803">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10804">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10805">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C849">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="PARTIES TO INSTRUCTION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C84901" type="EDIFACT_ID_3301">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party enacting instruction identification_3301" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C84902" type="EDIFACT_ID_3285">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Recipient of the instruction identification_3285" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C522">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="2" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="INSTRUCTION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C52201" type="EDIFACT_ID_4403">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Instruction qualifier_4403" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C52202" type="EDIFACT_ID_4401">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Instruction, coded_4401" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C52203" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C52204" type="EDIFACT_ID_3055">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list responsible agency, coded_3055" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C52205">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Instruction_4400" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C850">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" Used="No" notes="STATUS OF INSTRUCTION" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C85001" type="EDIFACT_ID_4405">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Status, coded_4405" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C85002">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Party name_3036" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C107_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT REFERENCE" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C10701" type="EDIFACT_ID_4441">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text, coded_4441" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10702" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10703" type="EDIFACT_ID_3055">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list responsible agency, coded_3055" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C108_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT LITERAL" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C10801">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10802">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10803">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10804">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10805">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C516_2">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="1" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="MONETARY AMOUNT" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C51601" type="EDIFACT_ID_5025">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Monetary amount type qualifier_5025" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51602">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Monetary amount_5004" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_N">
+              <xs:minLength value="1" />
+              <xs:maxLength value="18" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51603" type="EDIFACT_ID_6345">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Currency, coded_6345" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51604" type="EDIFACT_ID_6343">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Currency qualifier_6343" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C51605" type="EDIFACT_ID_4405">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Status, coded_4405" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C107_3">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="3" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT REFERENCE" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C10701" type="EDIFACT_ID_4441">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text, coded_4441" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10702" type="EDIFACT_ID_1131">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list qualifier_1131" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10703" type="EDIFACT_ID_3055">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Code list responsible agency, coded_3055" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="C108_3">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="infix" delimiter_type="inherit_subfield" count_ignore="yes" sequence_number="4" escape_type="inherit_escape" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="TEXT LITERAL" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="C10801">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10802">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10803">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10804">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="C10805">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Free text_4440" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="EDIFACT_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="70" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="EDIFACT_ID_1001">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="67" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_1131">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3055">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_1225">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="5" />
+      <xs:enumeration value="6" />
+      <xs:enumeration value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4343">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_1153">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CDN" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_2005">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="137" />
+      <xs:enumeration value="171" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_2379">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="102" />
+      <xs:enumeration value="203" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3035">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BY" />
+      <xs:enumeration value="PE" />
+      <xs:enumeration value="PR" />
+      <xs:enumeration value="SU" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ID3055_2">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3045">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3207">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AE" />
+      <xs:enumeration value="AF" />
+      <xs:enumeration value="AG" />
+      <xs:enumeration value="AL" />
+      <xs:enumeration value="AM" />
+      <xs:enumeration value="AO" />
+      <xs:enumeration value="AR" />
+      <xs:enumeration value="AT" />
+      <xs:enumeration value="AU" />
+      <xs:enumeration value="AZ" />
+      <xs:enumeration value="BA" />
+      <xs:enumeration value="BB" />
+      <xs:enumeration value="BD" />
+      <xs:enumeration value="BE" />
+      <xs:enumeration value="BG" />
+      <xs:enumeration value="BH" />
+      <xs:enumeration value="BI" />
+      <xs:enumeration value="BJ" />
+      <xs:enumeration value="BM" />
+      <xs:enumeration value="BO" />
+      <xs:enumeration value="BR" />
+      <xs:enumeration value="BS" />
+      <xs:enumeration value="BW" />
+      <xs:enumeration value="BY" />
+      <xs:enumeration value="BZ" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CF" />
+      <xs:enumeration value="CG" />
+      <xs:enumeration value="CH" />
+      <xs:enumeration value="CI" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="CM" />
+      <xs:enumeration value="CN" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="CR" />
+      <xs:enumeration value="CU" />
+      <xs:enumeration value="CY" />
+      <xs:enumeration value="CZ" />
+      <xs:enumeration value="DE" />
+      <xs:enumeration value="DK" />
+      <xs:enumeration value="DO" />
+      <xs:enumeration value="DZ" />
+      <xs:enumeration value="EC" />
+      <xs:enumeration value="EE" />
+      <xs:enumeration value="EG" />
+      <xs:enumeration value="ES" />
+      <xs:enumeration value="ET" />
+      <xs:enumeration value="FI" />
+      <xs:enumeration value="FJ" />
+      <xs:enumeration value="FR" />
+      <xs:enumeration value="GA" />
+      <xs:enumeration value="GB" />
+      <xs:enumeration value="GE" />
+      <xs:enumeration value="GH" />
+      <xs:enumeration value="GI" />
+      <xs:enumeration value="GM" />
+      <xs:enumeration value="GR" />
+      <xs:enumeration value="GT" />
+      <xs:enumeration value="GY" />
+      <xs:enumeration value="HK" />
+      <xs:enumeration value="HN" />
+      <xs:enumeration value="HR" />
+      <xs:enumeration value="HT" />
+      <xs:enumeration value="HU" />
+      <xs:enumeration value="ID" />
+      <xs:enumeration value="IE" />
+      <xs:enumeration value="IL" />
+      <xs:enumeration value="IN" />
+      <xs:enumeration value="IQ" />
+      <xs:enumeration value="IR" />
+      <xs:enumeration value="IS" />
+      <xs:enumeration value="IT" />
+      <xs:enumeration value="JM" />
+      <xs:enumeration value="JO" />
+      <xs:enumeration value="JP" />
+      <xs:enumeration value="KE" />
+      <xs:enumeration value="KG" />
+      <xs:enumeration value="KH" />
+      <xs:enumeration value="KP" />
+      <xs:enumeration value="KR" />
+      <xs:enumeration value="KW" />
+      <xs:enumeration value="KZ" />
+      <xs:enumeration value="LB" />
+      <xs:enumeration value="LI" />
+      <xs:enumeration value="LK" />
+      <xs:enumeration value="LR" />
+      <xs:enumeration value="LS" />
+      <xs:enumeration value="LT" />
+      <xs:enumeration value="LU" />
+      <xs:enumeration value="LV" />
+      <xs:enumeration value="LY" />
+      <xs:enumeration value="MA" />
+      <xs:enumeration value="MC" />
+      <xs:enumeration value="MD" />
+      <xs:enumeration value="MK" />
+      <xs:enumeration value="MT" />
+      <xs:enumeration value="MX" />
+      <xs:enumeration value="MY" />
+      <xs:enumeration value="MZ" />
+      <xs:enumeration value="NA" />
+      <xs:enumeration value="NG" />
+      <xs:enumeration value="NI" />
+      <xs:enumeration value="NL" />
+      <xs:enumeration value="NO" />
+      <xs:enumeration value="NZ" />
+      <xs:enumeration value="OM" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PE" />
+      <xs:enumeration value="PG" />
+      <xs:enumeration value="PH" />
+      <xs:enumeration value="PK" />
+      <xs:enumeration value="PL" />
+      <xs:enumeration value="PR" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="PY" />
+      <xs:enumeration value="QA" />
+      <xs:enumeration value="RO" />
+      <xs:enumeration value="RU" />
+      <xs:enumeration value="RW" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SE" />
+      <xs:enumeration value="SG" />
+      <xs:enumeration value="SI" />
+      <xs:enumeration value="SK" />
+      <xs:enumeration value="SM" />
+      <xs:enumeration value="SV" />
+      <xs:enumeration value="SY" />
+      <xs:enumeration value="SZ" />
+      <xs:enumeration value="TH" />
+      <xs:enumeration value="TJ" />
+      <xs:enumeration value="TM" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TR" />
+      <xs:enumeration value="TW" />
+      <xs:enumeration value="UA" />
+      <xs:enumeration value="UG" />
+      <xs:enumeration value="US" />
+      <xs:enumeration value="UY" />
+      <xs:enumeration value="UZ" />
+      <xs:enumeration value="VE" />
+      <xs:enumeration value="VN" />
+      <xs:enumeration value="YU" />
+      <xs:enumeration value="ZA" />
+      <xs:enumeration value="ZM" />
+      <xs:enumeration value="ZR" />
+      <xs:enumeration value="ZW" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3139">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="AR" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3155">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EM" />
+      <xs:enumeration value="FX" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="TL" />
+      <xs:enumeration value="XF" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ID1001_2">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="380" />
+      <xs:enumeration value="381" />
+      <xs:enumeration value="383" />
+      <xs:enumeration value="82" />
+      <xs:enumeration value="83" />
+      <xs:enumeration value="84" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_1373">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="8" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3453">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3153">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="ID2005_2">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="137" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_5025">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="124" />
+      <xs:enumeration value="23" />
+      <xs:enumeration value="257" />
+      <xs:enumeration value="5" />
+      <xs:enumeration value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_6345">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ARS" />
+      <xs:enumeration value="ATS" />
+      <xs:enumeration value="AUD" />
+      <xs:enumeration value="BEF" />
+      <xs:enumeration value="BGL" />
+      <xs:enumeration value="BRL" />
+      <xs:enumeration value="CAD" />
+      <xs:enumeration value="CHF" />
+      <xs:enumeration value="CLP" />
+      <xs:enumeration value="CNY" />
+      <xs:enumeration value="COP" />
+      <xs:enumeration value="CRC" />
+      <xs:enumeration value="CUP" />
+      <xs:enumeration value="CYP" />
+      <xs:enumeration value="CZK" />
+      <xs:enumeration value="DEM" />
+      <xs:enumeration value="DKK" />
+      <xs:enumeration value="DZD" />
+      <xs:enumeration value="ECS" />
+      <xs:enumeration value="EEK" />
+      <xs:enumeration value="EGP" />
+      <xs:enumeration value="ESP" />
+      <xs:enumeration value="EUR" />
+      <xs:enumeration value="FIM" />
+      <xs:enumeration value="FRF" />
+      <xs:enumeration value="GBP" />
+      <xs:enumeration value="GRD" />
+      <xs:enumeration value="GTQ" />
+      <xs:enumeration value="HKD" />
+      <xs:enumeration value="HNL" />
+      <xs:enumeration value="HRD" />
+      <xs:enumeration value="HUF" />
+      <xs:enumeration value="IDR" />
+      <xs:enumeration value="IEP" />
+      <xs:enumeration value="ILS" />
+      <xs:enumeration value="INR" />
+      <xs:enumeration value="IQD" />
+      <xs:enumeration value="IRR" />
+      <xs:enumeration value="ISK" />
+      <xs:enumeration value="ITL" />
+      <xs:enumeration value="JOD" />
+      <xs:enumeration value="JPY" />
+      <xs:enumeration value="KPW" />
+      <xs:enumeration value="KWD" />
+      <xs:enumeration value="LKR" />
+      <xs:enumeration value="LTL" />
+      <xs:enumeration value="LUF" />
+      <xs:enumeration value="LVL" />
+      <xs:enumeration value="MAD" />
+      <xs:enumeration value="MTL" />
+      <xs:enumeration value="MXN" />
+      <xs:enumeration value="MYR" />
+      <xs:enumeration value="NAD" />
+      <xs:enumeration value="NIO" />
+      <xs:enumeration value="NLG" />
+      <xs:enumeration value="NOK" />
+      <xs:enumeration value="NZD" />
+      <xs:enumeration value="PAB" />
+      <xs:enumeration value="PEN" />
+      <xs:enumeration value="PHP" />
+      <xs:enumeration value="PKR" />
+      <xs:enumeration value="PLZ" />
+      <xs:enumeration value="PTE" />
+      <xs:enumeration value="PYG" />
+      <xs:enumeration value="ROL" />
+      <xs:enumeration value="RUR" />
+      <xs:enumeration value="SAR" />
+      <xs:enumeration value="SEK" />
+      <xs:enumeration value="SGD" />
+      <xs:enumeration value="SIT" />
+      <xs:enumeration value="SKK" />
+      <xs:enumeration value="SVC" />
+      <xs:enumeration value="THB" />
+      <xs:enumeration value="TND" />
+      <xs:enumeration value="TRL" />
+      <xs:enumeration value="TWD" />
+      <xs:enumeration value="USD" />
+      <xs:enumeration value="UYU" />
+      <xs:enumeration value="VEB" />
+      <xs:enumeration value="XEU" />
+      <xs:enumeration value="YUN" />
+      <xs:enumeration value="ZAR" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_6343">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4405">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4465">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="10E" />
+      <xs:enumeration value="11E" />
+      <xs:enumeration value="12E" />
+      <xs:enumeration value="13E" />
+      <xs:enumeration value="14" />
+      <xs:enumeration value="17" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="26" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="32" />
+      <xs:enumeration value="35" />
+      <xs:enumeration value="4" />
+      <xs:enumeration value="5" />
+      <xs:enumeration value="56" />
+      <xs:enumeration value="64" />
+      <xs:enumeration value="ZZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4451">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACE" />
+      <xs:enumeration value="ZZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4453">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4441">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="001" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ID3055_3">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="91" />
+      <xs:enumeration value="92" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ID3453_2">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AB" />
+      <xs:enumeration value="AF" />
+      <xs:enumeration value="AM" />
+      <xs:enumeration value="AR" />
+      <xs:enumeration value="AS" />
+      <xs:enumeration value="AY" />
+      <xs:enumeration value="AZ" />
+      <xs:enumeration value="BA" />
+      <xs:enumeration value="BE" />
+      <xs:enumeration value="BG" />
+      <xs:enumeration value="BH" />
+      <xs:enumeration value="BI" />
+      <xs:enumeration value="BN" />
+      <xs:enumeration value="BO" />
+      <xs:enumeration value="BR" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="CS" />
+      <xs:enumeration value="CY" />
+      <xs:enumeration value="DA" />
+      <xs:enumeration value="DE" />
+      <xs:enumeration value="DZ" />
+      <xs:enumeration value="EL" />
+      <xs:enumeration value="EN" />
+      <xs:enumeration value="EO" />
+      <xs:enumeration value="ES" />
+      <xs:enumeration value="ET" />
+      <xs:enumeration value="EU" />
+      <xs:enumeration value="FA" />
+      <xs:enumeration value="FI" />
+      <xs:enumeration value="FJ" />
+      <xs:enumeration value="FO" />
+      <xs:enumeration value="FR" />
+      <xs:enumeration value="FY" />
+      <xs:enumeration value="GA" />
+      <xs:enumeration value="GD" />
+      <xs:enumeration value="GL" />
+      <xs:enumeration value="GN" />
+      <xs:enumeration value="GU" />
+      <xs:enumeration value="HA" />
+      <xs:enumeration value="HE" />
+      <xs:enumeration value="HI" />
+      <xs:enumeration value="HR" />
+      <xs:enumeration value="HU" />
+      <xs:enumeration value="HY" />
+      <xs:enumeration value="IA" />
+      <xs:enumeration value="ID" />
+      <xs:enumeration value="IE" />
+      <xs:enumeration value="IK" />
+      <xs:enumeration value="IS" />
+      <xs:enumeration value="IT" />
+      <xs:enumeration value="IU" />
+      <xs:enumeration value="JA" />
+      <xs:enumeration value="JW" />
+      <xs:enumeration value="KA" />
+      <xs:enumeration value="KL" />
+      <xs:enumeration value="KM" />
+      <xs:enumeration value="KN" />
+      <xs:enumeration value="KO" />
+      <xs:enumeration value="KS" />
+      <xs:enumeration value="KU" />
+      <xs:enumeration value="KY" />
+      <xs:enumeration value="LA" />
+      <xs:enumeration value="LN" />
+      <xs:enumeration value="LO" />
+      <xs:enumeration value="LT" />
+      <xs:enumeration value="LV" />
+      <xs:enumeration value="MG" />
+      <xs:enumeration value="MI" />
+      <xs:enumeration value="MK" />
+      <xs:enumeration value="ML" />
+      <xs:enumeration value="MN" />
+      <xs:enumeration value="MO" />
+      <xs:enumeration value="MR" />
+      <xs:enumeration value="MS" />
+      <xs:enumeration value="MT" />
+      <xs:enumeration value="NA" />
+      <xs:enumeration value="NE" />
+      <xs:enumeration value="NL" />
+      <xs:enumeration value="NO" />
+      <xs:enumeration value="OC" />
+      <xs:enumeration value="OM" />
+      <xs:enumeration value="OR" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PL" />
+      <xs:enumeration value="PS" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="QU" />
+      <xs:enumeration value="RM" />
+      <xs:enumeration value="RN" />
+      <xs:enumeration value="RO" />
+      <xs:enumeration value="RU" />
+      <xs:enumeration value="RW" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SG" />
+      <xs:enumeration value="SH" />
+      <xs:enumeration value="SI" />
+      <xs:enumeration value="SK" />
+      <xs:enumeration value="SL" />
+      <xs:enumeration value="SM" />
+      <xs:enumeration value="SN" />
+      <xs:enumeration value="SO" />
+      <xs:enumeration value="SQ" />
+      <xs:enumeration value="SR" />
+      <xs:enumeration value="SS" />
+      <xs:enumeration value="ST" />
+      <xs:enumeration value="SU" />
+      <xs:enumeration value="SV" />
+      <xs:enumeration value="SW" />
+      <xs:enumeration value="TA" />
+      <xs:enumeration value="TE" />
+      <xs:enumeration value="TG" />
+      <xs:enumeration value="TH" />
+      <xs:enumeration value="TI" />
+      <xs:enumeration value="TK" />
+      <xs:enumeration value="TL" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TO" />
+      <xs:enumeration value="TR" />
+      <xs:enumeration value="TS" />
+      <xs:enumeration value="TT" />
+      <xs:enumeration value="TW" />
+      <xs:enumeration value="UG" />
+      <xs:enumeration value="UK" />
+      <xs:enumeration value="UR" />
+      <xs:enumeration value="UZ" />
+      <xs:enumeration value="VI" />
+      <xs:enumeration value="VO" />
+      <xs:enumeration value="WO" />
+      <xs:enumeration value="YI" />
+      <xs:enumeration value="YO" />
+      <xs:enumeration value="ZA" />
+      <xs:enumeration value="ZH" />
+      <xs:enumeration value="ZU" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3301">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="4" />
+      <xs:enumeration value="5" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_3285">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4403">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_4401">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AA" />
+      <xs:enumeration value="AAE" />
+      <xs:enumeration value="AD" />
+      <xs:enumeration value="AG" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_1229">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="ID4451_2">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AAG" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID_1073">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ID5025_2">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="124" />
+      <xs:enumeration value="23" />
+      <xs:enumeration value="257" />
+      <xs:enumeration value="5" />
+      <xs:enumeration value="52" />
+      <xs:enumeration value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ID6345_2">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_N">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_AN">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_ID">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="EDIFACT_A">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+</xs:schema>

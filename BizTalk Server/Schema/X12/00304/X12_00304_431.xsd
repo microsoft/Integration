@@ -1,0 +1,896 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:btsedi="http://schemas.microsoft.com/BizTalk/2005/EdiSchemaEditorExtension" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" xmlns="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:appinfo>
+      <schemaEditorExtension:schemaInfo namespaceAlias="btsedi" extensionClass="Microsoft.BizTalk.Edi.SchemaEditorExtension.EdiSchemaExtension" standardName="EDI" xmlns:schemaEditorExtension="http://schemas.microsoft.com/BizTalk/2003/SchemaEditorExtensions" />
+      <b:schemaInfo version="1.0" document_type="431" standard="EDI" standards_version="00304" root_reference="X12_00304_431" displayroot_reference="X12_00304_431" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" X12ConditionDesignator_Check="No" />
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation xml:lang="en">copyright © Microsoft Corporation. All rights reserved.</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>Schema name: X12_3040_431</xs:documentation>
+  </xs:annotation>
+  <xs:element name="X12_00304_431">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="postfix" delimiter_type="inherit_record" count_ignore="yes" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Railroad Station Master File" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ST">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Header" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ST01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Identifier Code_143" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="3" />
+                    <xs:maxLength value="3" />
+                    <xs:enumeration value="431" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ST02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="ST03">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Implementation Convention Preference_1705" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="SMB">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMB" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Beginning Segment for Railroad Station Master File" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element maxOccurs="10" ref="N4">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="N4" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Geographic Location">
+                <b:Rule subjects="X12ConditionDesignatorX_Conditional" qualifier="N406" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="N405" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="SMS">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMS" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Station Codes Segment" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="10" ref="SMA">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMA" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Station Address" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="10" ref="SMR">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMR" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Cross Reference">
+                <b:Rule subjects="X12ConditionDesignatorX_Required" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="SMR02" />
+                  <b:Subject name="SMR04" />
+                </b:Rule>
+                <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+                  <b:Subject name="SMR04" />
+                  <b:Subject name="SMR05" />
+                </b:Rule>
+              </b:recordInfo>
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" ref="SMO">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMO" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Operational Services" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SE">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:recordInfo notes="Transaction Set Trailer" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SE01">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Number of Included Segments_96" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="1" />
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SE02">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <b:fieldInfo notes="Transaction Set Control Number_329" />
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="X12_AN">
+                    <xs:minLength value="4" />
+                    <xs:maxLength value="9" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SMB">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMB" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Beginning Segment for Railroad Station Master File" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SMB01" type="X12_ID_353">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Transaction Set Purpose Code_353" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SMB02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SMB03" type="X12_ID_813">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Station Type Code_813" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMB04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Standard Point Location Code_154" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="6" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMB05" type="X12_ID_813">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Station Type Code_813" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMB06" type="X12_ID_813">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Station Type Code_813" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMB07" type="X12_ID_813">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Station Type Code_813" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="N4">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="N4" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Geographic Location">
+          <b:Rule subjects="X12ConditionDesignatorX_Conditional" qualifier="N406" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="N405" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="N401">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="City Name_19" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="2" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="N402">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="State or Province Code_156" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:length value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="N403">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Postal Code_116" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="3" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="N404">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Country Code_26" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="2" />
+              <xs:maxLength value="3" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="N405" type="X12_ID_309">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Location Qualifier_309" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="N406">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Location Identifier_310" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SMS">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMS" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Station Codes Segment" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SMS01">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Standard Carrier Alpha Code_140" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="2" />
+              <xs:maxLength value="4" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SMS02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Freight Station Accounting Code_573" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="1" />
+              <xs:maxLength value="5" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMS03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMS04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Rule 260 Junction Code_638" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="1" />
+              <xs:maxLength value="5" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMS05">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Postal Code_116" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="3" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SMA">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMA" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Station Address" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SMA01" type="X12_ID_852">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Address Type Code_852" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SMA02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Address Information_166" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="1" />
+              <xs:maxLength value="35" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SMA03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="City Name_19" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="2" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SMA04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="State or Province Code_156" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:length value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SMA05">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Postal Code_116" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="3" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SMA06">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SMR">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMR" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Cross Reference">
+          <b:Rule subjects="X12ConditionDesignatorX_Required" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="SMR02" />
+            <b:Subject name="SMR04" />
+          </b:Rule>
+          <b:Rule subjects="X12ConditionDesignatorX_Paired" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+            <b:Subject name="SMR04" />
+            <b:Subject name="SMR05" />
+          </b:Rule>
+        </b:recordInfo>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SMR01" type="X12_ID_309">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Location Qualifier_309" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMR02">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Standard Point Location Code_154" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:minLength value="6" />
+              <xs:maxLength value="9" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SMR03">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Date_373" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_DT">
+              <xs:minLength value="6" />
+              <xs:maxLength value="6" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMR04">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="City Name_19" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_AN">
+              <xs:minLength value="2" />
+              <xs:maxLength value="30" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMR05">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="State or Province Code_156" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_ID">
+              <xs:length value="2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SMO">
+    <xs:annotation>
+      <xs:appinfo>
+        <b:recordInfo structure="delimited" field_order="prefix" tag_name="SMO" delimiter_type="inherit_field" count_ignore="no" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" notes="Operational Services" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SMO01" type="X12_ID_253">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Automobile Ramp Facility Code_253" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMO02" type="X12_ID_321">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Intermodal Facility Code_321" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMO03" type="X12_ID_1073">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Yes/No Condition or Response Code_1073" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMO04" type="X12_ID_1073">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Yes/No Condition or Response Code_1073" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMO05">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Weight_81" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="X12_R">
+              <xs:minLength value="1" />
+              <xs:maxLength value="10" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMO06" type="X12_ID_511">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Rail Car Plate Size Code_511" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" name="SMO07" type="X12_ID_512">
+          <xs:annotation>
+            <xs:appinfo>
+              <b:fieldInfo notes="Import/Export Code_512" />
+            </xs:appinfo>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="X12_ID_353">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="00" />
+      <xs:enumeration value="01" />
+      <xs:enumeration value="02" />
+      <xs:enumeration value="03" />
+      <xs:enumeration value="04" />
+      <xs:enumeration value="05" />
+      <xs:enumeration value="06" />
+      <xs:enumeration value="07" />
+      <xs:enumeration value="08" />
+      <xs:enumeration value="10" />
+      <xs:enumeration value="11" />
+      <xs:enumeration value="12" />
+      <xs:enumeration value="13" />
+      <xs:enumeration value="14" />
+      <xs:enumeration value="15" />
+      <xs:enumeration value="16" />
+      <xs:enumeration value="17" />
+      <xs:enumeration value="18" />
+      <xs:enumeration value="19" />
+      <xs:enumeration value="20" />
+      <xs:enumeration value="21" />
+      <xs:enumeration value="22" />
+      <xs:enumeration value="25" />
+      <xs:enumeration value="26" />
+      <xs:enumeration value="27" />
+      <xs:enumeration value="28" />
+      <xs:enumeration value="30" />
+      <xs:enumeration value="31" />
+      <xs:enumeration value="32" />
+      <xs:enumeration value="33" />
+      <xs:enumeration value="34" />
+      <xs:enumeration value="35" />
+      <xs:enumeration value="36" />
+      <xs:enumeration value="37" />
+      <xs:enumeration value="38" />
+      <xs:enumeration value="41" />
+      <xs:enumeration value="42" />
+      <xs:enumeration value="43" />
+      <xs:enumeration value="44" />
+      <xs:enumeration value="45" />
+      <xs:enumeration value="46" />
+      <xs:enumeration value="47" />
+      <xs:enumeration value="48" />
+      <xs:enumeration value="49" />
+      <xs:enumeration value="50" />
+      <xs:enumeration value="5C" />
+      <xs:enumeration value="77" />
+      <xs:enumeration value="CN" />
+      <xs:enumeration value="ZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_813">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A" />
+      <xs:enumeration value="H" />
+      <xs:enumeration value="I" />
+      <xs:enumeration value="J" />
+      <xs:enumeration value="M" />
+      <xs:enumeration value="N" />
+      <xs:enumeration value="O" />
+      <xs:enumeration value="R" />
+      <xs:enumeration value="S" />
+      <xs:enumeration value="W" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_309">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AC" />
+      <xs:enumeration value="AP" />
+      <xs:enumeration value="AR" />
+      <xs:enumeration value="BE" />
+      <xs:enumeration value="BL" />
+      <xs:enumeration value="BS" />
+      <xs:enumeration value="CA" />
+      <xs:enumeration value="CC" />
+      <xs:enumeration value="CD" />
+      <xs:enumeration value="CI" />
+      <xs:enumeration value="CL" />
+      <xs:enumeration value="CO" />
+      <xs:enumeration value="CR" />
+      <xs:enumeration value="CS" />
+      <xs:enumeration value="CY" />
+      <xs:enumeration value="D" />
+      <xs:enumeration value="DC" />
+      <xs:enumeration value="DE" />
+      <xs:enumeration value="DR" />
+      <xs:enumeration value="DT" />
+      <xs:enumeration value="FA" />
+      <xs:enumeration value="FE" />
+      <xs:enumeration value="FF" />
+      <xs:enumeration value="FI" />
+      <xs:enumeration value="FR" />
+      <xs:enumeration value="FT" />
+      <xs:enumeration value="FV" />
+      <xs:enumeration value="GL" />
+      <xs:enumeration value="IA" />
+      <xs:enumeration value="IM" />
+      <xs:enumeration value="IP" />
+      <xs:enumeration value="IS" />
+      <xs:enumeration value="IT" />
+      <xs:enumeration value="K" />
+      <xs:enumeration value="MI" />
+      <xs:enumeration value="MS" />
+      <xs:enumeration value="NS" />
+      <xs:enumeration value="OA" />
+      <xs:enumeration value="OL" />
+      <xs:enumeration value="OR" />
+      <xs:enumeration value="OV" />
+      <xs:enumeration value="PA" />
+      <xs:enumeration value="PE" />
+      <xs:enumeration value="PL" />
+      <xs:enumeration value="PP" />
+      <xs:enumeration value="PQ" />
+      <xs:enumeration value="PR" />
+      <xs:enumeration value="PS" />
+      <xs:enumeration value="PT" />
+      <xs:enumeration value="PU" />
+      <xs:enumeration value="RA" />
+      <xs:enumeration value="RC" />
+      <xs:enumeration value="RE" />
+      <xs:enumeration value="RG" />
+      <xs:enumeration value="RJ" />
+      <xs:enumeration value="RL" />
+      <xs:enumeration value="RS" />
+      <xs:enumeration value="RT" />
+      <xs:enumeration value="SB" />
+      <xs:enumeration value="SC" />
+      <xs:enumeration value="SD" />
+      <xs:enumeration value="SG" />
+      <xs:enumeration value="SL" />
+      <xs:enumeration value="SN" />
+      <xs:enumeration value="SP" />
+      <xs:enumeration value="SS" />
+      <xs:enumeration value="ST" />
+      <xs:enumeration value="SW" />
+      <xs:enumeration value="TA" />
+      <xs:enumeration value="TC" />
+      <xs:enumeration value="TL" />
+      <xs:enumeration value="TM" />
+      <xs:enumeration value="TN" />
+      <xs:enumeration value="TR" />
+      <xs:enumeration value="TX" />
+      <xs:enumeration value="UN" />
+      <xs:enumeration value="UR" />
+      <xs:enumeration value="VS" />
+      <xs:enumeration value="W" />
+      <xs:enumeration value="WF" />
+      <xs:enumeration value="WH" />
+      <xs:enumeration value="ZN" />
+      <xs:enumeration value="ZZ" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_852">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A" />
+      <xs:enumeration value="C" />
+      <xs:enumeration value="M" />
+      <xs:enumeration value="T" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_253">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A" />
+      <xs:enumeration value="B" />
+      <xs:enumeration value="F" />
+      <xs:enumeration value="N" />
+      <xs:enumeration value="P" />
+      <xs:enumeration value="T" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_321">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0" />
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="4" />
+      <xs:enumeration value="5" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_1073">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="N" />
+      <xs:enumeration value="U" />
+      <xs:enumeration value="Y" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_511">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="B" />
+      <xs:enumeration value="C" />
+      <xs:enumeration value="D" />
+      <xs:enumeration value="E" />
+      <xs:enumeration value="F" />
+      <xs:enumeration value="G" />
+      <xs:enumeration value="H" />
+      <xs:enumeration value="I" />
+      <xs:enumeration value="X" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID_512">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="B" />
+      <xs:enumeration value="E" />
+      <xs:enumeration value="I" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="date">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d*-\d\d-\d\d" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="time">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d\d:\d\d(:\d\d)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="X12_N">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_R">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_AN">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_ID">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_DT">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_TM">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N0">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N1">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N2">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N3">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N4">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N5">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N6">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N7">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N8">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="X12_N9">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+</xs:schema>
