@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationTool", "MigrationTool\MigrationTool.csproj", "{1B72FCB4-639E-411D-901D-3C7F9A4C744F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14826DBB-C714-4630-BEA3-16496E4ABFC2} = {14826DBB-C714-4630-BEA3-16496E4ABFC2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteOperations", "RemoteOperations\RemoteOperations.csproj", "{14826DBB-C714-4630-BEA3-16496E4ABFC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{10E8B0EA-BEEB-445C-BAD2-61327E36081B}"
+	ProjectSection(SolutionItems) = preProject
+		Util\gacutil.exe = Util\gacutil.exe
+		Util\gacutil.exe.config = Util\gacutil.exe.config
+		Util\PsExec.exe = Util\PsExec.exe
+	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BizTalkMigrationTool", "BizTalkMigrationTool\BizTalkMigrationTool.vdproj", "{A568F2D1-4F81-4E1B-8519-27F9A3B5A5B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B72FCB4-639E-411D-901D-3C7F9A4C744F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B72FCB4-639E-411D-901D-3C7F9A4C744F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B72FCB4-639E-411D-901D-3C7F9A4C744F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B72FCB4-639E-411D-901D-3C7F9A4C744F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14826DBB-C714-4630-BEA3-16496E4ABFC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14826DBB-C714-4630-BEA3-16496E4ABFC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14826DBB-C714-4630-BEA3-16496E4ABFC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14826DBB-C714-4630-BEA3-16496E4ABFC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A568F2D1-4F81-4E1B-8519-27F9A3B5A5B5}.Debug|Any CPU.ActiveCfg = Debug
+		{A568F2D1-4F81-4E1B-8519-27F9A3B5A5B5}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
