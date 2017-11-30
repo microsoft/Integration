@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using MigrationTool;
 
 namespace MigrationTool
 {
@@ -78,7 +71,7 @@ namespace MigrationTool
                 config.AppSettings.Settings["ServicesDriveDestination"].Value = txtServicesDrive.Text;
                 config.Save();
                 biztalkAdminOperations.UpdateSettings();
-                this.Close();
+                Close();
                
                 
                 
@@ -88,7 +81,7 @@ namespace MigrationTool
             {
                 BizTalkAdminOperations.BizTalkAdminOperations adminOperations = new BizTalkAdminOperations.BizTalkAdminOperations();
                 adminOperations.LogInfoInLogFile("Error while Updating Settings to ConfigFile " + ex.Message + ", " + ex.StackTrace);
-                this.Close();
+                Close();
             }
         }
         #endregion

@@ -7,9 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Data.SqlClient;
-using System.EnterpriseServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -18,20 +16,14 @@ using System.Windows.Forms;
 using System.Management;
 using Microsoft.BizTalk.ExplorerOM;
 using Microsoft.BizTalk.Management;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Reflection;
-using System.Net.NetworkInformation;
-using System.Security.AccessControl;
 using System.Security.Principal;
-using System.ServiceProcess;
 using MigrationTool;
 using System.Configuration;
 using Microsoft.RuleEngine;
 using Microsoft.Web.Administration;
-using System.Security;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace BizTalkAdminOperations
@@ -109,22 +101,22 @@ namespace BizTalkAdminOperations
             isBizTalkAppExecuted = strPerformOperationYes;
             strIsUtilCopied = strPerformOperationNo;
 
-            remoteRootFolder = System.Configuration.ConfigurationManager.AppSettings["RemoteRootFolder"].ToString();// +"\\" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
-            bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH").ToString() + @"Tracking\bm.exe";
-            bizTalkAppToIgnore = System.Configuration.ConfigurationManager.AppSettings["BizTalkAppToIgnore"].ToString();
-            baseBizTalkAppCol = System.Configuration.ConfigurationManager.AppSettings["AppToRefer"].ToString();
-            strCertPass = System.Configuration.ConfigurationManager.AppSettings["CertPass"].ToString();
-            strFoldersToCopy = System.Configuration.ConfigurationManager.AppSettings["FoldersToCopy"].ToString();
-            strFoldersToCopyNoFiles = System.Configuration.ConfigurationManager.AppSettings["FoldersToCopyNoFiles"].ToString();
-            strCustomDllToInclude = System.Configuration.ConfigurationManager.AppSettings["CustomDllToInclude"].ToString();
-            strWindowsServiceToIgnore = System.Configuration.ConfigurationManager.AppSettings["WindowsServiceToIgnore"].ToString();
-            strWebsitesFolder = System.Configuration.ConfigurationManager.AppSettings["WebSitesDriveDestination"].ToString();
-            strFoldersDrive = System.Configuration.ConfigurationManager.AppSettings["FoldersDriveDestination"].ToString();
-            strServicesDrive = System.Configuration.ConfigurationManager.AppSettings["ServicesDriveDestination"].ToString();
+            remoteRootFolder = ConfigurationManager.AppSettings["RemoteRootFolder"];// +"\\" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
+            bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
+            bizTalkAppToIgnore = ConfigurationManager.AppSettings["BizTalkAppToIgnore"];
+            baseBizTalkAppCol = ConfigurationManager.AppSettings["AppToRefer"];
+            strCertPass = ConfigurationManager.AppSettings["CertPass"];
+            strFoldersToCopy = ConfigurationManager.AppSettings["FoldersToCopy"];
+            strFoldersToCopyNoFiles = ConfigurationManager.AppSettings["FoldersToCopyNoFiles"];
+            strCustomDllToInclude = ConfigurationManager.AppSettings["CustomDllToInclude"];
+            strWindowsServiceToIgnore = ConfigurationManager.AppSettings["WindowsServiceToIgnore"];
+            strWebsitesFolder = ConfigurationManager.AppSettings["WebSitesDriveDestination"];
+            strFoldersDrive = ConfigurationManager.AppSettings["FoldersDriveDestination"];
+            strServicesDrive = ConfigurationManager.AppSettings["ServicesDriveDestination"];
 
             strToolMode = "Backup";
             strServerType = "BizTalk";
-            machineName = System.Environment.MachineName;
+            machineName = Environment.MachineName;
         }
 
 
@@ -413,7 +405,7 @@ namespace BizTalkAdminOperations
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new System.Xml.Serialization.XmlSerializer(hosts.GetType());
+                XmlSerializer x = new XmlSerializer(hosts.GetType());
                 XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
                 xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
@@ -571,7 +563,7 @@ namespace BizTalkAdminOperations
                                 CreateHostInstance(cmbBoxServerDst.Items[i].ToString(), host.name, strUserName, strPassword);
                             }
                             else
-                                LogInfo("Host Instance already exist: " + host.name + " on " + cmbBoxServerDst.Items[i].ToString());
+                                LogInfo("Host Instance already exist: " + host.name + " on " + cmbBoxServerDst.Items[i]);
                         }
                     }
 
@@ -895,7 +887,7 @@ namespace BizTalkAdminOperations
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    XmlSerializer x = new System.Xml.Serialization.XmlSerializer(rcvSndHandlers.GetType());
+                    XmlSerializer x = new XmlSerializer(rcvSndHandlers.GetType());
                     XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
                     xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
@@ -940,7 +932,7 @@ namespace BizTalkAdminOperations
 
             richTextBoxLogs.Select(startIndex, endIndex - startIndex);
             richTextBoxLogs.SelectionColor = Color.DarkGreen;
-            richTextBoxLogs.AppendText(System.Environment.NewLine);
+            richTextBoxLogs.AppendText(Environment.NewLine);
 
             try
             {
@@ -951,8 +943,8 @@ namespace BizTalkAdminOperations
             }
             catch (Exception logEx)
             {
-                richTextBoxLogs.AppendText(System.Environment.NewLine);
-                richTextBoxLogs.AppendText("Exception Message while writing in log file:  " + logEx.Message.ToString());
+                richTextBoxLogs.AppendText(Environment.NewLine);
+                richTextBoxLogs.AppendText("Exception Message while writing in log file:  " + logEx.Message);
             }
 
         } //UI
@@ -966,7 +958,7 @@ namespace BizTalkAdminOperations
             richTextBoxLogs.Select(startIndex, endIndex - startIndex);
             richTextBoxLogs.SelectionColor = Color.DarkRed;
 
-            richTextBoxLogs.AppendText(System.Environment.NewLine);
+            richTextBoxLogs.AppendText(Environment.NewLine);
 
             try
             {
@@ -977,36 +969,36 @@ namespace BizTalkAdminOperations
             }
             catch (Exception logEx)
             {
-                richTextBoxLogs.AppendText(System.Environment.NewLine);
-                richTextBoxLogs.AppendText("Exception Message while writing in log file:  " + logEx.Message.ToString());
+                richTextBoxLogs.AppendText(Environment.NewLine);
+                richTextBoxLogs.AppendText("Exception Message while writing in log file:  " + logEx.Message);
             }
         }
 
         private void LogException(Exception ex)  //UI FILLE
         {
             int startIndex = richTextBoxLogs.TextLength;
-            richTextBoxLogs.AppendText("Exception Message:  " + ex.Message.ToString());
+            richTextBoxLogs.AppendText("Exception Message:  " + ex.Message);
 
             int endIndex = richTextBoxLogs.TextLength;
 
             richTextBoxLogs.Select(startIndex, endIndex - startIndex);
             richTextBoxLogs.SelectionColor = Color.DarkRed;
-            richTextBoxLogs.AppendText(System.Environment.NewLine);
+            richTextBoxLogs.AppendText(Environment.NewLine);
 
             richTextBoxLogs.Refresh();
             try
             {
                 using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
                 {
-                    writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + "Exception Message:  " + ex.Message.ToString());
+                    writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + "Exception Message:  " + ex.Message);
                     writer.WriteLine("Inner Exception:  " + ex.InnerException);
                     writer.WriteLine("StackTrace:  " + ex.StackTrace);
                 }
             }
             catch (Exception logEx)
             {
-                richTextBoxLogs.AppendText(System.Environment.NewLine);
-                richTextBoxLogs.AppendText("Exception Message while writing in log file:  " + logEx.Message.ToString());
+                richTextBoxLogs.AppendText(Environment.NewLine);
+                richTextBoxLogs.AppendText("Exception Message while writing in log file:  " + logEx.Message);
             }
         }
 
@@ -1015,7 +1007,7 @@ namespace BizTalkAdminOperations
             if (!(string.IsNullOrEmpty(strMsg)) && !(string.IsNullOrWhiteSpace(strMsg)))
             {
                 richTextBoxLogs.AppendText(strMsg);
-                richTextBoxLogs.AppendText(System.Environment.NewLine);
+                richTextBoxLogs.AppendText(Environment.NewLine);
                 richTextBoxLogs.Refresh();
 
                 try
@@ -1027,7 +1019,7 @@ namespace BizTalkAdminOperations
                 }
                 catch (Exception logEx)
                 {
-                    richTextBoxLogs.AppendText("Exception while writing info log file:  " + logEx.Message.ToString());
+                    richTextBoxLogs.AppendText("Exception while writing info log file:  " + logEx.Message);
                 }
             }
         }
@@ -1045,8 +1037,8 @@ namespace BizTalkAdminOperations
                 }
                 catch (Exception logEx)
                 {
-                    richTextBoxLogs.AppendText(System.Environment.NewLine);
-                    richTextBoxLogs.AppendText("Exception while writing info log file:  " + logEx.Message.ToString());
+                    richTextBoxLogs.AppendText(Environment.NewLine);
+                    richTextBoxLogs.AppendText("Exception while writing info log file:  " + logEx.Message);
                 }
             }
         }
@@ -1066,8 +1058,8 @@ namespace BizTalkAdminOperations
             }
             catch (Exception logEx)
             {
-                richTextBoxLogs.AppendText(System.Environment.NewLine);
-                richTextBoxLogs.AppendText("Exception while writing info in log file:  " + logEx.Message.ToString());
+                richTextBoxLogs.AppendText(Environment.NewLine);
+                richTextBoxLogs.AppendText("Exception while writing info in log file:  " + logEx.Message);
             }
         }
 
@@ -1085,8 +1077,8 @@ namespace BizTalkAdminOperations
             }
             catch (Exception logEx)
             {
-                richTextBoxLogs.AppendText(System.Environment.NewLine);
-                richTextBoxLogs.AppendText("Exception while writing info in log file:  " + logEx.Message.ToString());
+                richTextBoxLogs.AppendText(Environment.NewLine);
+                richTextBoxLogs.AppendText("Exception while writing info in log file:  " + logEx.Message);
             }
         }
 
@@ -1159,7 +1151,7 @@ namespace BizTalkAdminOperations
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    x = new System.Xml.Serialization.XmlSerializer(bizTalkApps.GetType());
+                    x = new XmlSerializer(bizTalkApps.GetType());
                     XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
                     xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
@@ -1242,7 +1234,7 @@ namespace BizTalkAdminOperations
                                orderby dCode descending
                                select new
                                {
-                                   DcodeAppName = dCode.ToString() + "," + element.Attribute("ApplicationName").Value
+                                   DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
                                })
                        .ToList();
 
@@ -1252,7 +1244,7 @@ namespace BizTalkAdminOperations
                 char[] charSeprator = { ',' };
                 string commandArguments = "";
 
-                LogInfo("Total Apps: " + appcount.ToString());
+                LogInfo("Total Apps: " + appcount);
 
                 string msiPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(msiPath);
                 for (int i = 0; i < appcount; i++)
@@ -1262,9 +1254,9 @@ namespace BizTalkAdminOperations
                     // connection string to the BizTalk management database where the ports will be created
                     btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
 
-                    appName = appList[i].DcodeAppName.Split(charSeprator)[1].ToString();
+                    appName = appList[i].DcodeAppName.Split(charSeprator)[1];
 
-                    LogInfo(": Current Sequence:" + (i + 1).ToString() + ": App Name:" + appName);
+                    LogInfo(": Current Sequence:" + (i + 1) + ": App Name:" + appName);
 
                     if (machineName == strDstNode) //local
                     {
@@ -1318,9 +1310,6 @@ namespace BizTalkAdminOperations
                                 catch (Exception ex)
                                 {
                                     LogShortErrorMsg("Failed: Adding reference of dependent Apps." + ex.Message);
-                                }
-                                finally
-                                {
                                 }
                             }
                             else
@@ -1456,13 +1445,13 @@ namespace BizTalkAdminOperations
                                    orderby dCode descending
                                    select new
                                    {
-                                       DcodeAppName = dCode.ToString() + "," + element.Attribute("ApplicationName").Value
+                                       DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
                                    })
                            .ToList();
 
                     int appcount = appList.Count;
 
-                    LogInfo("Total Apps: " + appcount.ToString());
+                    LogInfo("Total Apps: " + appcount);
                     string msiPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(msiPath);
 
                     //clean MSI directory
@@ -1477,9 +1466,9 @@ namespace BizTalkAdminOperations
                     }
                     for (int i = 0; i < appcount; i++)
                     {
-                        appName = appList[i].DcodeAppName.Split(charSeprator)[1].ToString();
+                        appName = appList[i].DcodeAppName.Split(charSeprator)[1];
 
-                        LogInfo("Current Sequence:" + (i + 1).ToString() + ": App Name:" + appName);
+                        LogInfo("Current Sequence:" + (i + 1) + ": App Name:" + appName);
 
                         //get Spec File
                         if (machineName == strSrcNode)
@@ -1806,7 +1795,7 @@ namespace BizTalkAdminOperations
                 {
                     try
                     {
-                        string[] dstAppPoolTemp = System.IO.File.ReadAllLines(xmlPath + "\\AppPoolList.txt");
+                        string[] dstAppPoolTemp = File.ReadAllLines(xmlPath + "\\AppPoolList.txt");
                         if (dstAppPoolTemp.Length == 0)
                         {
                             //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -1916,7 +1905,7 @@ namespace BizTalkAdminOperations
                     {
                         try
                         {
-                            string[] srcLinesTemp = System.IO.File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
+                            string[] srcLinesTemp = File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
                             if (srcLinesTemp.Length == 0)
                             {
                                 //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -1943,7 +1932,7 @@ namespace BizTalkAdminOperations
                     {
                         try
                         {
-                            string[] srcLinesTemp = System.IO.File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
+                            string[] srcLinesTemp = File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
                             if (srcLinesTemp.Length == 0)
                             {
                                 //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -2110,7 +2099,7 @@ namespace BizTalkAdminOperations
                 {
                     try
                     {
-                        string[] dstLinesTemp = System.IO.File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
+                        string[] dstLinesTemp = File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
                         if (dstLinesTemp.Length == 0)
                         {
                             //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -2127,8 +2116,8 @@ namespace BizTalkAdminOperations
                 UpdateWebSiteXml();
                 LogInfo("Generated Delta of Website to be imported.");
 
-                string[] dstLines = System.IO.File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
-                string[] srcLines = System.IO.File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
+                string[] dstLines = File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
+                string[] srcLines = File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
 
                 for (int srcLineCount = 0; srcLineCount < srcLines.Length; srcLineCount++)
                 {
@@ -2184,7 +2173,7 @@ namespace BizTalkAdminOperations
                 {
                     try
                     {
-                        string[] dstLinesTemp = System.IO.File.ReadAllLines(xmlPath + "\\DstWebAppList.txt");
+                        string[] dstLinesTemp = File.ReadAllLines(xmlPath + "\\DstWebAppList.txt");
                         if (dstLinesTemp.Length == 0)
                         {
                             //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -2367,7 +2356,7 @@ namespace BizTalkAdminOperations
                                                 {
                                                     if (certificate.HasPrivateKey)
                                                     {
-                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i.ToString() + ".PFX";
+                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i + ".PFX";
                                                         //certBytes = certificate.Export(X509ContentType.Pfx, strCertPass);
                                                         //File.WriteAllBytes(certFileName, certBytes);
                                                         if (iStoreLocation == "CurrentUser")
@@ -2385,7 +2374,7 @@ namespace BizTalkAdminOperations
                                                     }
                                                     else
                                                     {
-                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i.ToString() + ".CER";
+                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i + ".CER";
                                                         certBytes = certificate.Export(X509ContentType.Cert);
                                                         File.WriteAllBytes(certFileName, certBytes);
                                                         
@@ -2508,10 +2497,6 @@ namespace BizTalkAdminOperations
                                     {
                                         LogException(ex);
                                     }
-                                    finally
-                                    {
-
-                                    }
                                 }
                             }
                             catch (Exception ex)
@@ -2524,7 +2509,7 @@ namespace BizTalkAdminOperations
                 }
                 //END::new code for delta, get all cert name and write them in txt file, 
 
-                string[] dstCertNameList = System.IO.File.ReadAllLines(xmlPath + @"\DstCertList.txt"); //read all cert of Dst
+                string[] dstCertNameList = File.ReadAllLines(xmlPath + @"\DstCertList.txt"); //read all cert of Dst
                 //Creating CertificatesList with out StorLocation
                 string[] dstCertList = new string[dstCertNameList.Length];
                 for (int i = 0; i < dstCertNameList.Length; i++)
@@ -2746,7 +2731,7 @@ namespace BizTalkAdminOperations
                 for (int iAppCount = 0; iAppCount < appcount; iAppCount++)
                 {
                     //appNameCollectionString = appNameCollectionString + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1].ToString();//
-                    appNameCollectionString = appNameCollectionString.ToString().TrimStart(',') + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1].ToString();
+                    appNameCollectionString = appNameCollectionString.TrimStart(',') + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1];
                 }
 
 
@@ -2812,7 +2797,7 @@ namespace BizTalkAdminOperations
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    x = new System.Xml.Serialization.XmlSerializer(asmList.GetType());
+                    x = new XmlSerializer(asmList.GetType());
                     XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
                     xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
@@ -2929,7 +2914,7 @@ namespace BizTalkAdminOperations
                         }
 
                         customDll = new string[customDllCount];
-                        LogInfo("Initial Custom Assembly count: " + customDll.Length.ToString());
+                        LogInfo("Initial Custom Assembly count: " + customDll.Length);
                         int customDllLength = 0;
                         for (int i = 0; i < CustomDllFilters.Length; i++)
                         {
@@ -2965,19 +2950,19 @@ namespace BizTalkAdminOperations
                         {
                             try
                             {
-                                findDLL = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName.ToString() + ".dll", SearchOption.AllDirectories);
+                                findDLL = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
                                 if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName.ToString() + ".dll", SearchOption.AllDirectories);
+                                    findDLL = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
                                 if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName.ToString() + ".dll", SearchOption.AllDirectories);
+                                    findDLL = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
                                 if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName.ToString() + ".dll", SearchOption.AllDirectories);
+                                    findDLL = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
                                 if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName.ToString() + ".dll", SearchOption.AllDirectories);
+                                    findDLL = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
 
                                 if (findDLL.Length == 0)
                                 {
-                                    LogShortErrorMsg("Did not Find Assembly:" + asmList.Assembly[i].AsmName.ToString());
+                                    LogShortErrorMsg("Did not Find Assembly:" + asmList.Assembly[i].AsmName);
                                 }
                                 else
                                 {
@@ -3035,7 +3020,7 @@ namespace BizTalkAdminOperations
 
                     if (strCustomDllToInclude != string.Empty) //if custom Dll fileter not empty
                     {
-                        LogInfo("Final Custom Assembly count: " + (customDll.Length - customDlls).ToString());
+                        LogInfo("Final Custom Assembly count: " + (customDll.Length - customDlls));
                         LogInfo("Custom Dll: Export started.");
                         //write custom dll paths in txt file
                         try
@@ -3220,7 +3205,7 @@ namespace BizTalkAdminOperations
                         else
                         {
                             LogShortErrorMsg("Failed: Creating DstCustomAssemblyList.txt.");
-                            LogInfoInLogFile("Remote Exe return code: " + returnCode.ToString());
+                            LogInfoInLogFile("Remote Exe return code: " + returnCode);
                         }
                     }
                 }
@@ -3229,8 +3214,8 @@ namespace BizTalkAdminOperations
                 if (strCustomDllToInclude != string.Empty)
                 {
 
-                    string[] srcLines = System.IO.File.ReadAllLines(xmlPath + @"\SrcCustomAssemblyList.txt");
-                    string[] dstLines = System.IO.File.ReadAllLines(xmlPath + @"\DstCustomAssemblyList.txt");
+                    string[] srcLines = File.ReadAllLines(xmlPath + @"\SrcCustomAssemblyList.txt");
+                    string[] dstLines = File.ReadAllLines(xmlPath + @"\DstCustomAssemblyList.txt");
 
                     foreach (string srcFilePath in srcLines)
                     {
@@ -3258,7 +3243,7 @@ namespace BizTalkAdminOperations
                 {
                     string strSrc, strDst, remoteRootFolderUnc = string.Empty;
                     remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
-                    if (strServerType == "BizTalk" && importBizTalkDll == true)
+                    if (strServerType == "BizTalk" && importBizTalkDll)
                     {
                         //copy BizTalk Dll Folder
                         strSrc = asmPath;
@@ -3284,7 +3269,7 @@ namespace BizTalkAdminOperations
 
                 if (strCustomDllToInclude != string.Empty)
                 {
-                    string[] srcLines = System.IO.File.ReadAllLines(xmlPath + @"\CustomAssemblyToImport.txt");
+                    string[] srcLines = File.ReadAllLines(xmlPath + @"\CustomAssemblyToImport.txt");
                     int flagCustomDllExists = 0;
                     LogInfo("Custom Dll Import Started.");
                     for (int i = 0; i < srcLines.Length; i++)  //Custom DLL
@@ -3336,7 +3321,7 @@ namespace BizTalkAdminOperations
                
                 if(strServerType== "BizTalk")
                 {
-                    string[] srcLines = System.IO.File.ReadAllLines(xmlPath + @"\BizTalkAssemblyToImport.txt");
+                    string[] srcLines = File.ReadAllLines(xmlPath + @"\BizTalkAssemblyToImport.txt");
                     int flagBizTalkDllExists = 0;
                     LogInfo("BizTalk Assembly Import Started.");
                     for (int i = 0; i < srcLines.Length; i++)  
@@ -3540,30 +3525,30 @@ namespace BizTalkAdminOperations
                 //get all accounts for each view
                 foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
                 {
-                    LogInfoInLogFile("BAM: Get Accounts for View: " + dRow["ViewName"].ToString());
+                    LogInfoInLogFile("BAM: Get Accounts for View: " + dRow["ViewName"]);
                     if (machineName == strSrcNode)
                     {
-                        commandArguments = "/C " + "\"\"" + bamExePath + "\"" + " get-accounts -View:\"" + dRow["ViewName"].ToString() + "\" -Server:" + srcBAMSqlInstance
-                            + " -Database:BAMPrimaryImport > \"" + xmlPath + "\\BamView_" + dRow["ViewName"].ToString() + ".txt\"\"";
+                        commandArguments = "/C " + "\"\"" + bamExePath + "\"" + " get-accounts -View:\"" + dRow["ViewName"] + "\" -Server:" + srcBAMSqlInstance
+                            + " -Database:BAMPrimaryImport > \"" + xmlPath + "\\BamView_" + dRow["ViewName"] + ".txt\"\"";
                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                         if (returnCode == 0)
-                            LogShortSuccessMsg("Success: Get BAM Accounts for View: " + dRow["ViewName"].ToString());
+                            LogShortSuccessMsg("Success: Get BAM Accounts for View: " + dRow["ViewName"]);
                         else
-                            LogShortErrorMsg("Failed: Get BAM Accounts for View: " + dRow["ViewName"].ToString());
+                            LogShortErrorMsg("Failed: Get BAM Accounts for View: " + dRow["ViewName"]);
                     }
                     else
                     {
                         string appPathUnc = ConvertPathToUncPath(appPath);
                         commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                   remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportBAMAccounts\" \"" + srcBAMSqlInstance + "\" \"" + dRow["ViewName"].ToString() + "\"\"";
+                   remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportBAMAccounts\" \"" + srcBAMSqlInstance + "\" \"" + dRow["ViewName"] + "\"\"";
 
                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                         if (returnCode == 0)
-                            LogShortSuccessMsg("Success:  Remotely Trigggered  BAM Accounts for View: " + dRow["ViewName"].ToString() + ",Please Check Remote operation Log for Further Details.");
+                            LogShortSuccessMsg("Success:  Remotely Trigggered  BAM Accounts for View: " + dRow["ViewName"] + ",Please Check Remote operation Log for Further Details.");
                         else
-                            LogShortErrorMsg("Failed: Triggering Remotely BAM Accounts for View: " + dRow["ViewName"].ToString());
+                            LogShortErrorMsg("Failed: Triggering Remotely BAM Accounts for View: " + dRow["ViewName"]);
                     }
 
                     
@@ -3718,7 +3703,7 @@ namespace BizTalkAdminOperations
               
 
                 //read all view name from exported SrcBamViewsList.txt file
-                string[] linesViewName = System.IO.File.ReadAllLines(xmlPath + @"\SrcBamViewsList.txt");
+                string[] linesViewName = File.ReadAllLines(xmlPath + @"\SrcBamViewsList.txt");
 
                 for (int countViewName = 0; countViewName < linesViewName.Length; countViewName++)
                 {
@@ -3728,7 +3713,7 @@ namespace BizTalkAdminOperations
                         try
                         {
                             //read file with ViewName to import Accounts
-                            lines = System.IO.File.ReadAllLines(xmlPath + "\\BamView_" + linesViewName[countViewName] + ".txt");
+                            lines = File.ReadAllLines(xmlPath + "\\BamView_" + linesViewName[countViewName] + ".txt");
                         }
                         catch (Exception ex)
                         {
@@ -3780,7 +3765,7 @@ namespace BizTalkAdminOperations
                 //btt import
                 string bttDeployExePath = bamExePath.Substring(0, bamExePath.LastIndexOf("\\") + 1) + "bttDeploy.exe ";
                 string[] bttFiles = Directory.GetFiles(xmlPath, "BTT_*.xml", SearchOption.AllDirectories);
-                string[] dstBttActivities = System.IO.File.ReadAllLines(xmlPath + @"\DstBamBttList.txt");
+                string[] dstBttActivities = File.ReadAllLines(xmlPath + @"\DstBamBttList.txt");
 
                 foreach (string bttFile in bttFiles)
                 {
@@ -3860,12 +3845,11 @@ namespace BizTalkAdminOperations
 
                 if (machineName == strSrcNode) //local
                 {
-                    SelectQuery query = new System.Management.SelectQuery(string.Format(
-                            "select name, startname, pathname, displayname from Win32_Service"));
+                    SelectQuery query = new SelectQuery("select name, startname, pathname, displayname from Win32_Service");
                     using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcServiceList.txt", false))
                     {
                         using (ManagementObjectSearcher searcher =
-                            new System.Management.ManagementObjectSearcher(query))
+                            new ManagementObjectSearcher(query))
                         {
                             foreach (var service in searcher.Get())
                             {
@@ -3882,7 +3866,7 @@ namespace BizTalkAdminOperations
                                     if (blFound)
                                     {
                                         string strPathName = service["pathname"].ToString();
-                                        writer.WriteLine(service["name"] + "," + strPathName.ToString().Trim('"') + "," + service["displayname"]);
+                                        writer.WriteLine(service["name"] + "," + strPathName.Trim('"') + "," + service["displayname"]);
                                     }
                                 }
                             }
@@ -3910,7 +3894,7 @@ namespace BizTalkAdminOperations
                 if (strToolMode == "Backup")
                 {
                     //read Source File and copy exe folder to local.
-                    string[] srcLines = System.IO.File.ReadAllLines(xmlPath + @"\SrcServiceList.txt");
+                    string[] srcLines = File.ReadAllLines(xmlPath + @"\SrcServiceList.txt");
 
                     for (int i = 0; i < srcLines.Length; i++)
                     {
@@ -3953,12 +3937,11 @@ namespace BizTalkAdminOperations
                 {
                     try
                     {
-                        SelectQuery query = new System.Management.SelectQuery(string.Format(
-                                "select name, startname, pathname  from Win32_Service"));
+                        SelectQuery query = new SelectQuery("select name, startname, pathname  from Win32_Service");
                         using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstServiceList.txt", false))
                         {
                             using (ManagementObjectSearcher searcher =
-                                new System.Management.ManagementObjectSearcher(query))
+                                new ManagementObjectSearcher(query))
                             {
                                 foreach (var service in searcher.Get())
                                 {
@@ -4005,8 +3988,8 @@ namespace BizTalkAdminOperations
                 }
 
                 //compare source and destination
-                string[] srcLines = System.IO.File.ReadAllLines(xmlPath + @"\SrcServiceList.txt");
-                string[] dstLines = System.IO.File.ReadAllLines(xmlPath + @"\DstServiceList.txt");
+                string[] srcLines = File.ReadAllLines(xmlPath + @"\SrcServiceList.txt");
+                string[] dstLines = File.ReadAllLines(xmlPath + @"\DstServiceList.txt");
 
                 for (int i = 0; i < srcLines.Length; i++)
                 {
@@ -4071,7 +4054,7 @@ namespace BizTalkAdminOperations
         #region readioButton Checked Changed Events
         private void rbWebsiteYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbWebsiteYes.Checked == true)
+            if (rbWebsiteYes.Checked)
             {
                 strWebSite = strPerformOperationYes;
             }
@@ -4083,7 +4066,7 @@ namespace BizTalkAdminOperations
 
         private void rbAppPoolYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbAppPoolYes.Checked == true)
+            if (rbAppPoolYes.Checked)
             {
                 strAppPool = strPerformOperationYes;
             }
@@ -4096,7 +4079,7 @@ namespace BizTalkAdminOperations
         private void rbCertificateYes_CheckedChanged(object sender, EventArgs e)
         {
 
-            if (rbCertificateYes.Checked == true)
+            if (rbCertificateYes.Checked)
             {
                 strCertificate = strPerformOperationYes;
             }
@@ -4108,7 +4091,7 @@ namespace BizTalkAdminOperations
 
         private void rbHostInstanceYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbHostInstanceYes.Checked == true)
+            if (rbHostInstanceYes.Checked)
             {
                 strHostInstance = strPerformOperationYes;
             }
@@ -4120,7 +4103,7 @@ namespace BizTalkAdminOperations
 
         private void rbHandlersYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbHandlersYes.Checked == true)
+            if (rbHandlersYes.Checked)
             {
                 strHandlers = strPerformOperationYes;
             }
@@ -4132,7 +4115,7 @@ namespace BizTalkAdminOperations
 
         private void rbGlobalPartyBindingYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbGlobalPartyBindingYes.Checked == true)
+            if (rbGlobalPartyBindingYes.Checked)
             {
                 strGlobalPartyBinding = strPerformOperationYes;
             }
@@ -4144,7 +4127,7 @@ namespace BizTalkAdminOperations
 
         private void rbBizTalkAssembliesYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBizTalkAssembliesYes.Checked == true)
+            if (rbBizTalkAssembliesYes.Checked)
             {
                 strBizTalkAssemblies = strPerformOperationYes;
             }
@@ -4156,7 +4139,7 @@ namespace BizTalkAdminOperations
 
         private void rbBizTalkAppYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBizTalkAppYes.Checked == true)
+            if (rbBizTalkAppYes.Checked)
             {
                 strBizTalkApp = strPerformOperationYes;
             }
@@ -4168,7 +4151,7 @@ namespace BizTalkAdminOperations
 
         private void rbBamYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBamYes.Checked == true)
+            if (rbBamYes.Checked)
             {
                 strBam = strPerformOperationYes;
             }
@@ -4180,7 +4163,7 @@ namespace BizTalkAdminOperations
 
         private void rbFileCopyYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbFileCopyYes.Checked == true)
+            if (rbFileCopyYes.Checked)
             {
                 strFileCopy = strPerformOperationYes;
             }
@@ -4192,7 +4175,7 @@ namespace BizTalkAdminOperations
 
         private void rbMigrate_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbMigrate.Checked == true)
+            if (rbMigrate.Checked)
             {
                 strToolMode = "Migrate";
                 LogInfo("Mode is set to Migration. Folder / VDir operation will be between Source and Destination.");
@@ -4207,7 +4190,7 @@ namespace BizTalkAdminOperations
 
         private void rbApp_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbApp.Checked == true)  //if App
+            if (rbApp.Checked)  //if App
             {
                 strServerType = "App";
                 panel4.Enabled = false;
@@ -4312,7 +4295,7 @@ namespace BizTalkAdminOperations
 
         private void rbServicesYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbServicesYes.Checked == true)
+            if (rbServicesYes.Checked)
             {
                 strServices = strPerformOperationYes;
             }
@@ -4387,7 +4370,7 @@ namespace BizTalkAdminOperations
                             panelLoginDialog.Visible = true;
                             loginOperationName = "useraccount";
                             lblLoginDialog.Text = "For remote deployment please provide credentials which has admin rights on destination server.";
-                            txtUserName.Text = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                            txtUserName.Text = WindowsIdentity.GetCurrent().Name;
                             txtPassword.Text = "";
                             txtPassword.Focus();
                             goto Outer;
@@ -4535,7 +4518,7 @@ namespace BizTalkAdminOperations
                             panelLoginDialog.Visible = true;
                             loginOperationName = "useraccount";
                             lblLoginDialog.Text = "For remote deployment please provide credentials which has admin rights on destination server.";
-                            txtUserName.Text = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                            txtUserName.Text = WindowsIdentity.GetCurrent().Name;
                             txtPassword.Text = "";
                             goto Outer;
                         }
@@ -4745,7 +4728,7 @@ namespace BizTalkAdminOperations
                 }
 
             }
-            this.ActiveControl = txtConnectionString;
+            ActiveControl = txtConnectionString;
 
         }
 
@@ -4882,7 +4865,7 @@ namespace BizTalkAdminOperations
                     }
                     else
                         dstFolderPath = strFoldersDrive.Trim().Substring(0, 1) + folderPath.Substring(1);
-                    string[] srcLines = System.IO.File.ReadAllLines(xmlPath + "\\SharePermission_" + folderName + ".txt");
+                    string[] srcLines = File.ReadAllLines(xmlPath + "\\SharePermission_" + folderName + ".txt");
                     int permissionLineIndex = -1;
                     for (int i = 0; i < srcLines.Length; i++)
                     {
@@ -4931,7 +4914,7 @@ namespace BizTalkAdminOperations
             {
                 XElement root = XElement.Load(xmlPath + "\\AppPools.xml");
                 XNamespace ns = root.GetDefaultNamespace();
-                string[] lines = System.IO.File.ReadAllLines(xmlPath + "\\AppPoolList.txt");
+                string[] lines = File.ReadAllLines(xmlPath + "\\AppPoolList.txt");
 
                 foreach (var item in lines)
                 {
@@ -4966,7 +4949,7 @@ namespace BizTalkAdminOperations
                 //Reading the Src BTSInstallPath
                 if (File.Exists(xmlPath + "\\" + "SrcBTSInstallPath.txt"))
                 {
-                    string[] srcBTSInstall = System.IO.File.ReadAllLines(xmlPath + @"\srcBTSInstallPath.txt");
+                    string[] srcBTSInstall = File.ReadAllLines(xmlPath + @"\srcBTSInstallPath.txt");
 
                     for (int j = 0; j < srcBTSInstall.Length; j++)
                     {
@@ -4979,7 +4962,7 @@ namespace BizTalkAdminOperations
                 //Reading the Dst BTSInstallPath
                 if (File.Exists(xmlPath + "\\" + "DstBTSInstallPath.txt"))
                 {
-                    string[] dstBTSInstall = System.IO.File.ReadAllLines(xmlPath + @"\DstBTSInstallPath.txt");
+                    string[] dstBTSInstall = File.ReadAllLines(xmlPath + @"\DstBTSInstallPath.txt");
 
                     for (int j = 0; j < dstBTSInstall.Length; j++)
                     {
@@ -4989,7 +4972,7 @@ namespace BizTalkAdminOperations
                 }
                 XElement root = XElement.Load(xmlPath + "\\" + pWebAppsFileName);
                 XNamespace ns = root.GetDefaultNamespace();
-                string[] lines = System.IO.File.ReadAllLines(xmlPath + "\\DstWebAppList.txt");
+                string[] lines = File.ReadAllLines(xmlPath + "\\DstWebAppList.txt");
 
                 foreach (var item in lines)
                 {
@@ -5043,7 +5026,7 @@ namespace BizTalkAdminOperations
         private void UpdateWebSiteXml()
         {
             //split website xml into indivudual websites with new ID value for each website.
-            string[] dstLines = System.IO.File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
+            string[] dstLines = File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
             int dstSiteCount = dstLines.Length; //get count of websites existing in Dst
             int i = 1;
             string srcBTSInstallPath = string.Empty;
@@ -5057,7 +5040,7 @@ namespace BizTalkAdminOperations
                 //Reading the Src BTSInstallPath
                 if (File.Exists(xmlPath + "\\" + "SrcBTSInstallPath.txt"))
                 {
-                    string[] srcBTSInstall = System.IO.File.ReadAllLines(xmlPath + @"\srcBTSInstallPath.txt");
+                    string[] srcBTSInstall = File.ReadAllLines(xmlPath + @"\srcBTSInstallPath.txt");
 
                     for (int j = 0; j < srcBTSInstall.Length; j++)
                     {
@@ -5070,7 +5053,7 @@ namespace BizTalkAdminOperations
                 //Reading the Dst BTSInstallPath
                 if (File.Exists(xmlPath + "\\" + "DstBTSInstallPath.txt"))
                 {
-                    string[] dstBTSInstall = System.IO.File.ReadAllLines(xmlPath + @"\DstBTSInstallPath.txt");
+                    string[] dstBTSInstall = File.ReadAllLines(xmlPath + @"\DstBTSInstallPath.txt");
 
                     for (int j = 0; j < dstBTSInstall.Length; j++)
                     {
@@ -5201,7 +5184,7 @@ namespace BizTalkAdminOperations
                 //remove apps which already existing in destination
                 XElement root = XElement.Load(xmlPath + "\\Apps.xml");
                 XNamespace ns = root.GetDefaultNamespace();
-                string[] lines = System.IO.File.ReadAllLines(xmlPath + @"\DstAppList.txt");
+                string[] lines = File.ReadAllLines(xmlPath + @"\DstAppList.txt");
                 foreach (var item in lines)
                 {
                     var ActivityList = from el in root.Elements(ns + "BizTalkApplication")
@@ -5219,17 +5202,13 @@ namespace BizTalkAdminOperations
                 LogException(ex);
                 throw;
             }
-            finally
-            {
-
-            }
         }
 
         private void UpdateAssemblyFile()
         {
             try
             {
-                string[] srcBizTalkDllLines = System.IO.File.ReadAllLines(xmlPath + @"\SrcBizTalkAssemblyList.txt");
+                string[] srcBizTalkDllLines = File.ReadAllLines(xmlPath + @"\SrcBizTalkAssemblyList.txt");
                      if (machineName == strDstNode) //local
                 {
                       string asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
@@ -5309,7 +5288,7 @@ namespace BizTalkAdminOperations
 
                     }
                 }
-                string[] dstBiztalkDllLines = System.IO.File.ReadAllLines(xmlPath + @"\DstBizTalkAssemblyList.txt");
+                string[] dstBiztalkDllLines = File.ReadAllLines(xmlPath + @"\DstBizTalkAssemblyList.txt");
 
                 foreach (string srcFilePath in srcBizTalkDllLines)
                 {
@@ -5347,7 +5326,7 @@ namespace BizTalkAdminOperations
             {
                 XElement root = XElement.Load(pBamDefXmlFilePath);
                 XNamespace ns = root.GetDefaultNamespace();
-                string[] lines = System.IO.File.ReadAllLines(pActivityNameTxtFilePath);
+                string[] lines = File.ReadAllLines(pActivityNameTxtFilePath);
                 foreach (var item in lines)
                 {
                     var ActivityList = from el in root.Elements(ns + "Activity")
@@ -5455,7 +5434,7 @@ namespace BizTalkAdminOperations
         }
         private void EnableControls(bool pTrueFalse)
         {
-            if (strServerType == "App" && pTrueFalse == true) //App
+            if (strServerType == "App" && pTrueFalse) //App
             {
                 panel12.Enabled = pTrueFalse;
                 panel13.Enabled = pTrueFalse;
@@ -5773,7 +5752,7 @@ namespace BizTalkAdminOperations
                     if (i > 0)
                         strNodes = strNodes + ",";
 
-                    strNodes = strNodes + cmbBoxServerSrc.Items[i].ToString();
+                    strNodes = strNodes + cmbBoxServerSrc.Items[i];
                 }
                 srv.SrcNodes = strNodes;
 
@@ -5781,7 +5760,7 @@ namespace BizTalkAdminOperations
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new System.Xml.Serialization.XmlSerializer(srv.GetType());
+                XmlSerializer x = new XmlSerializer(srv.GetType());
                 XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
                 xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
@@ -5827,14 +5806,14 @@ namespace BizTalkAdminOperations
                     if (i > 0)
                         strNodes = strNodes + ",";
 
-                    strNodes = strNodes + cmbBoxServerDst.Items[i].ToString();
+                    strNodes = strNodes + cmbBoxServerDst.Items[i];
                 }
                 srv.DstNodes = strNodes;
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new System.Xml.Serialization.XmlSerializer(srv.GetType());
+                XmlSerializer x = new XmlSerializer(srv.GetType());
                 XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
                 xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
@@ -5880,7 +5859,7 @@ namespace BizTalkAdminOperations
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new System.Xml.Serialization.XmlSerializer(srv.GetType());
+                XmlSerializer x = new XmlSerializer(srv.GetType());
                 XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
                 xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
@@ -6052,8 +6031,8 @@ namespace BizTalkAdminOperations
 
         public void UpdateSettings()
         {
-            string configPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string configFile = System.IO.Path.Combine(configPath, "MigrationTool.exe.config");
+            string configPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string configFile = Path.Combine(configPath, "MigrationTool.exe.config");
             ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
             configFileMap.ExeConfigFilename = configFile;
             System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
@@ -6085,7 +6064,7 @@ namespace BizTalkAdminOperations
                 string[] arrBrePolicies = new string[ds.Tables[0].Rows.Count];
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1].ToString() + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0].ToString() + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[1].ToString();
+                    arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[1];
                 }
 
                 //Creating BRERuleEngineDb Connection
@@ -6486,7 +6465,7 @@ namespace BizTalkAdminOperations
                 HostCollection hosts = btsExp.Hosts;
                 for (int i = 0; i < cmbBoxServerSrc.Items.Count; i++)
                 {
-                    using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + "Src_" + cmbBoxServerSrc.Items[i].ToString() + "_HostMappings.xml"))
+                    using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + "Src_" + cmbBoxServerSrc.Items[i] + "_HostMappings.xml"))
                     {
                         writer.WriteStartElement("SettingsMap");
                         writer.WriteStartElement("HostMappings");
@@ -6511,7 +6490,7 @@ namespace BizTalkAdminOperations
                         
                             if (ht.Name.EndsWith(cmbBoxServerSrc.Items[i].ToString())|| ht.Name.EndsWith(cmbBoxServerSrc.Items[i].ToString().ToLower()))
                             {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3].ToString();
+                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
                             }
 
@@ -6522,7 +6501,7 @@ namespace BizTalkAdminOperations
                         for (j = 0; j < hostInstancesArray.Length; j++)
                         {
                             writer.WriteStartElement("SourceHostInstance");
-                            writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + cmbBoxServerSrc.Items[i].ToString());
+                            writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + cmbBoxServerSrc.Items[i]);
                             writer.WriteElementString("DestinationHostInstances", hostInstancesArray[j] + ":" + "{ServerName}");
                             writer.WriteEndElement();
 
@@ -6603,7 +6582,7 @@ namespace BizTalkAdminOperations
                         {
                             if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i])|| ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3].ToString();
+                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
                             }
                         }
@@ -6620,14 +6599,14 @@ namespace BizTalkAdminOperations
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
                                                        let attr = node.Attribute("Name")
-                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0].ToString()))
+                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
                                                        select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination with ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
                                                let attr = node.Attribute("Name")
-                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0].ToString()))
+                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
                                                select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
@@ -6669,7 +6648,7 @@ namespace BizTalkAdminOperations
                         {
                             if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3].ToString();
+                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
                             }
                         }
@@ -6686,14 +6665,14 @@ namespace BizTalkAdminOperations
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
                                                        let attr = node.Attribute("Name")
-                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0].ToString()))
+                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
                                                        select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination wiht ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
                                                let attr = node.Attribute("Name")
-                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0].ToString()))
+                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
                                                select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
@@ -6739,7 +6718,7 @@ namespace BizTalkAdminOperations
                         {
                             if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3].ToString();
+                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
                             }
                         }
@@ -6758,14 +6737,14 @@ namespace BizTalkAdminOperations
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
                                                        let attr = node.Attribute("Name")
-                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0].ToString()))
+                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
                                                        select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination wiht ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
                                                let attr = node.Attribute("Name")
-                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0].ToString()))
+                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
                                                select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
@@ -6820,7 +6799,7 @@ namespace BizTalkAdminOperations
                 }
                 if (File.Exists(xmlPath + "\\" + "SrcSSOAppsList.txt"))
                 {
-                    string[] SsoAppsList = System.IO.File.ReadAllLines(xmlPath + @"\SrcSSOAppsList.txt");
+                    string[] SsoAppsList = File.ReadAllLines(xmlPath + @"\SrcSSOAppsList.txt");
                     for (int i = 0; i < SsoAppsList.Length; i++)
                     {
                         if ((string.IsNullOrEmpty(SsoAppsList[i]) || string.IsNullOrWhiteSpace(SsoAppsList[i]) || SsoAppsList[i].Contains("Using SSO server") || SsoAppsList[i].Contains("Applications available for") || SsoAppsList[i].Contains("applications available for")))
@@ -6911,7 +6890,7 @@ namespace BizTalkAdminOperations
                     {
                         try
                         {
-                            string[] ssoAppInformation = System.IO.File.ReadAllLines(files[i]);
+                            string[] ssoAppInformation = File.ReadAllLines(files[i]);
                             //Extarcting Inofrmation from TextFile
                             string applicationName = string.Empty;
                             string applicationType = string.Empty;
@@ -7089,7 +7068,7 @@ namespace BizTalkAdminOperations
                 {
                     for (int i = 0; i < files.Length; i++)
                     {
-                        string[] ssoMappingList = System.IO.File.ReadAllLines(files[i]);
+                        string[] ssoMappingList = File.ReadAllLines(files[i]);
                         List<string> ssoMapping = new List<string>();
                         try
                         {
@@ -7190,7 +7169,7 @@ namespace BizTalkAdminOperations
                 List<string> dstSsoApps = new List<string>();
                 if (File.Exists(xmlPath + "\\" + "DstSSOAppsList.txt"))
                 {
-                    string[] dstSsoAppsList = System.IO.File.ReadAllLines(xmlPath + @"\DstSSOAppsList.txt");
+                    string[] dstSsoAppsList = File.ReadAllLines(xmlPath + @"\DstSSOAppsList.txt");
                     
                     for (int i = 0; i < dstSsoAppsList.Length; i++)
                     {

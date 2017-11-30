@@ -4,16 +4,14 @@
     using System.Management;
     using System.Collections;
     using System.Globalization;
-    using System.ComponentModel.Design.Serialization;
-    using System.Reflection;
-    
-    
+
+
     // Functions ShouldSerialize<PropertyName> are functions used by VS property browser to check if a particular property has to be serialized. These functions are added for all ValueType properties ( properties of type Int32, BOOL etc.. which cannot be set to null). These functions use Is<PropertyName>Null function. These functions are also used in the TypeConverter implementation for the properties to check for NULL value of property so that an empty value can be shown in Property browser in case of Drag and Drop in Visual studio.
     // Functions Is<PropertyName>Null() are used to check if a property is NULL.
     // Functions Reset<PropertyName> are added for Nullable Read/Write properties. These functions are used by VS designer in property browser to set a property to NULL.
     // Every property added to the class for WMI property has attributes set to define its behavior in Visual Studio designer and also to define a TypeConverter to be used.
     // An Early Bound class generated for the WMI class.MSBTS_HostSetting
-    public class HostSetting : System.ComponentModel.Component {
+    public class HostSetting : Component {
         
         // Private property to hold the WMI namespace in which the class resides.
         private static string CreatedWmiNamespace = "\\ROOT\\MicrosoftBizTalkServer";
@@ -22,76 +20,76 @@
         private static string CreatedClassName = "MSBTS_HostSetting";
         
         // Private member variable to hold the ManagementScope which is used by the various methods.
-        private static System.Management.ManagementScope statMgmtScope = null;
+        private static ManagementScope statMgmtScope = null;
         
         private ManagementSystemProperties PrivateSystemProperties;
         
         // Underlying lateBound WMI object.
-        private System.Management.ManagementObject PrivateLateBoundObject;
+        private ManagementObject PrivateLateBoundObject;
         
         // Member variable to store the 'automatic commit' behavior for the class.
         private bool AutoCommitProp;
         
         // Private variable to hold the embedded property representing the instance.
-        private System.Management.ManagementBaseObject embeddedObj;
+        private ManagementBaseObject embeddedObj;
         
         // The current WMI object used
-        private System.Management.ManagementBaseObject curObj;
+        private ManagementBaseObject curObj;
         
         // Flag to indicate if the instance is an embedded object.
         private bool isEmbedded;
         
         // Below are different overloads of constructors to initialize an instance of the class with a WMI object.
         public HostSetting() {
-            this.InitializeObject(null, null, null);
+            InitializeObject(null, null, null);
         }
         
         public HostSetting(string keyMgmtDbNameOverride, string keyMgmtDbServerOverride, string keyName) {
-            this.InitializeObject(null, new System.Management.ManagementPath(HostSetting.ConstructPath(keyMgmtDbNameOverride, keyMgmtDbServerOverride, keyName)), null);
+            InitializeObject(null, new ManagementPath(ConstructPath(keyMgmtDbNameOverride, keyMgmtDbServerOverride, keyName)), null);
         }
         
-        public HostSetting(System.Management.ManagementScope mgmtScope, string keyMgmtDbNameOverride, string keyMgmtDbServerOverride, string keyName) {
-            this.InitializeObject(((System.Management.ManagementScope)(mgmtScope)), new System.Management.ManagementPath(HostSetting.ConstructPath(keyMgmtDbNameOverride, keyMgmtDbServerOverride, keyName)), null);
+        public HostSetting(ManagementScope mgmtScope, string keyMgmtDbNameOverride, string keyMgmtDbServerOverride, string keyName) {
+            InitializeObject(mgmtScope, new ManagementPath(ConstructPath(keyMgmtDbNameOverride, keyMgmtDbServerOverride, keyName)), null);
         }
         
-        public HostSetting(System.Management.ManagementPath path, System.Management.ObjectGetOptions getOptions) {
-            this.InitializeObject(null, path, getOptions);
+        public HostSetting(ManagementPath path, ObjectGetOptions getOptions) {
+            InitializeObject(null, path, getOptions);
         }
         
-        public HostSetting(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path) {
-            this.InitializeObject(mgmtScope, path, null);
+        public HostSetting(ManagementScope mgmtScope, ManagementPath path) {
+            InitializeObject(mgmtScope, path, null);
         }
         
-        public HostSetting(System.Management.ManagementPath path) {
-            this.InitializeObject(null, path, null);
+        public HostSetting(ManagementPath path) {
+            InitializeObject(null, path, null);
         }
         
-        public HostSetting(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path, System.Management.ObjectGetOptions getOptions) {
-            this.InitializeObject(mgmtScope, path, getOptions);
+        public HostSetting(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions getOptions) {
+            InitializeObject(mgmtScope, path, getOptions);
         }
         
-        public HostSetting(System.Management.ManagementObject theObject) {
+        public HostSetting(ManagementObject theObject) {
             Initialize();
-            if ((CheckIfProperClass(theObject) == true)) {
+            if (CheckIfProperClass(theObject)) {
                 PrivateLateBoundObject = theObject;
                 PrivateSystemProperties = new ManagementSystemProperties(PrivateLateBoundObject);
                 curObj = PrivateLateBoundObject;
             }
             else {
-                throw new System.ArgumentException("Class name does not match.");
+                throw new ArgumentException("Class name does not match.");
             }
         }
         
-        public HostSetting(System.Management.ManagementBaseObject theObject) {
+        public HostSetting(ManagementBaseObject theObject) {
             Initialize();
-            if ((CheckIfProperClass(theObject) == true)) {
+            if (CheckIfProperClass(theObject)) {
                 embeddedObj = theObject;
                 PrivateSystemProperties = new ManagementSystemProperties(theObject);
                 curObj = embeddedObj;
                 isEmbedded = true;
             }
             else {
-                throw new System.ArgumentException("Class name does not match.");
+                throw new ArgumentException("Class name does not match.");
             }
         }
         
@@ -134,7 +132,7 @@
         // Property returning the underlying lateBound object.
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public System.Management.ManagementBaseObject LateBoundObject {
+        public ManagementBaseObject LateBoundObject {
             get {
                 return curObj;
             }
@@ -143,7 +141,7 @@
         // ManagementScope of the object.
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public System.Management.ManagementScope Scope {
+        public ManagementScope Scope {
             get {
                 if ((isEmbedded == false)) {
                     return PrivateLateBoundObject.Scope;
@@ -173,7 +171,7 @@
         
         // The ManagementPath of the underlying WMI object.
         [Browsable(true)]
-        public System.Management.ManagementPath Path {
+        public ManagementPath Path {
             get {
                 if ((isEmbedded == false)) {
                     return PrivateLateBoundObject.Path;
@@ -185,7 +183,7 @@
             set {
                 if ((isEmbedded == false)) {
                     if ((CheckIfProperClass(null, value, null) != true)) {
-                        throw new System.ArgumentException("Class name does not match.");
+                        throw new ArgumentException("Class name does not match.");
                     }
                     PrivateLateBoundObject.Path = value;
                 }
@@ -195,7 +193,7 @@
         // Public static scope property which is used by the various methods.
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public static System.Management.ManagementScope StaticScope {
+        public static ManagementScope StaticScope {
             get {
                 return statMgmtScope;
             }
@@ -225,14 +223,14 @@
         public bool AuthTrusted {
             get {
                 if ((curObj["AuthTrusted"] == null)) {
-                    return System.Convert.ToBoolean(0);
+                    return Convert.ToBoolean(0);
                 }
                 return ((bool)(curObj["AuthTrusted"]));
             }
             set {
                 curObj["AuthTrusted"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -277,14 +275,14 @@
         public uint DBQueueSizeThreshold {
             get {
                 if ((curObj["DBQueueSizeThreshold"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["DBQueueSizeThreshold"]));
             }
             set {
                 curObj["DBQueueSizeThreshold"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -310,14 +308,14 @@
         public uint DBSessionThreshold {
             get {
                 if ((curObj["DBSessionThreshold"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["DBSessionThreshold"]));
             }
             set {
                 curObj["DBSessionThreshold"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -334,7 +332,7 @@
             set {
                 curObj["DecryptCertComment"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -350,7 +348,7 @@
             set {
                 curObj["DecryptCertThumbprint"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -377,14 +375,14 @@
         public uint DeliveryQueueSize {
             get {
                 if ((curObj["DeliveryQueueSize"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["DeliveryQueueSize"]));
             }
             set {
                 curObj["DeliveryQueueSize"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -420,14 +418,14 @@
         public uint GlobalMemoryThreshold {
             get {
                 if ((curObj["GlobalMemoryThreshold"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["GlobalMemoryThreshold"]));
             }
             set {
                 curObj["GlobalMemoryThreshold"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -454,14 +452,14 @@
         public bool HostTracking {
             get {
                 if ((curObj["HostTracking"] == null)) {
-                    return System.Convert.ToBoolean(0);
+                    return Convert.ToBoolean(0);
                 }
                 return ((bool)(curObj["HostTracking"]));
             }
             set {
                 curObj["HostTracking"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -488,14 +486,14 @@
         public HostTypeValues HostType {
             get {
                 if ((curObj["HostType"] == null)) {
-                    return ((HostTypeValues)(System.Convert.ToInt32(0)));
+                    return ((HostTypeValues)(Convert.ToInt32(0)));
                 }
-                return ((HostTypeValues)(System.Convert.ToInt32(curObj["HostType"])));
+                return ((HostTypeValues)(Convert.ToInt32(curObj["HostType"])));
             }
 
             set
             {
-                curObj["HostType"] = System.Convert.ToInt32(value);
+                curObj["HostType"] = Convert.ToInt32(value);
             }
         }
         
@@ -520,14 +518,14 @@
         public uint InflightMessageThreshold {
             get {
                 if ((curObj["InflightMessageThreshold"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["InflightMessageThreshold"]));
             }
             set {
                 curObj["InflightMessageThreshold"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -554,14 +552,14 @@
         public bool IsDefault {
             get {
                 if ((curObj["IsDefault"] == null)) {
-                    return System.Convert.ToBoolean(0);
+                    return Convert.ToBoolean(0);
                 }
                 return ((bool)(curObj["IsDefault"]));
             }
             set {
                 curObj["IsDefault"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -588,14 +586,14 @@
         public bool IsHost32BitOnly {
             get {
                 if ((curObj["IsHost32BitOnly"] == null)) {
-                    return System.Convert.ToBoolean(0);
+                    return Convert.ToBoolean(0);
                 }
                 return ((bool)(curObj["IsHost32BitOnly"]));
             }
             set {
                 curObj["IsHost32BitOnly"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -612,7 +610,7 @@
             set {
                 curObj["LastUsedLogon"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -639,14 +637,14 @@
         public uint MessageDeliveryMaximumDelay {
             get {
                 if ((curObj["MessageDeliveryMaximumDelay"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessageDeliveryMaximumDelay"]));
             }
             set {
                 curObj["MessageDeliveryMaximumDelay"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -673,14 +671,14 @@
         public uint MessageDeliveryOverdriveFactor {
             get {
                 if ((curObj["MessageDeliveryOverdriveFactor"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessageDeliveryOverdriveFactor"]));
             }
             set {
                 curObj["MessageDeliveryOverdriveFactor"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -707,14 +705,14 @@
         public uint MessageDeliverySampleSpaceSize {
             get {
                 if ((curObj["MessageDeliverySampleSpaceSize"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessageDeliverySampleSpaceSize"]));
             }
             set {
                 curObj["MessageDeliverySampleSpaceSize"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -741,14 +739,14 @@
         public uint MessageDeliverySampleSpaceWindow {
             get {
                 if ((curObj["MessageDeliverySampleSpaceWindow"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessageDeliverySampleSpaceWindow"]));
             }
             set {
                 curObj["MessageDeliverySampleSpaceWindow"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -775,14 +773,14 @@
         public uint MessagePublishMaximumDelay {
             get {
                 if ((curObj["MessagePublishMaximumDelay"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessagePublishMaximumDelay"]));
             }
             set {
                 curObj["MessagePublishMaximumDelay"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -808,14 +806,14 @@
         public uint MessagePublishOverdriveFactor {
             get {
                 if ((curObj["MessagePublishOverdriveFactor"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessagePublishOverdriveFactor"]));
             }
             set {
                 curObj["MessagePublishOverdriveFactor"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -842,14 +840,14 @@
         public uint MessagePublishSampleSpaceSize {
             get {
                 if ((curObj["MessagePublishSampleSpaceSize"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessagePublishSampleSpaceSize"]));
             }
             set {
                 curObj["MessagePublishSampleSpaceSize"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -876,14 +874,14 @@
         public uint MessagePublishSampleSpaceWindow {
             get {
                 if ((curObj["MessagePublishSampleSpaceWindow"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["MessagePublishSampleSpaceWindow"]));
             }
             set {
                 curObj["MessagePublishSampleSpaceWindow"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -958,14 +956,14 @@
         public uint ProcessMemoryThreshold {
             get {
                 if ((curObj["ProcessMemoryThreshold"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["ProcessMemoryThreshold"]));
             }
             set {
                 curObj["ProcessMemoryThreshold"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -1000,14 +998,14 @@
         public uint ThreadPoolSize {
             get {
                 if ((curObj["ThreadPoolSize"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["ThreadPoolSize"]));
             }
             set {
                 curObj["ThreadPoolSize"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -1034,40 +1032,40 @@
         public uint ThreadThreshold {
             get {
                 if ((curObj["ThreadThreshold"] == null)) {
-                    return System.Convert.ToUInt32(0);
+                    return Convert.ToUInt32(0);
                 }
                 return ((uint)(curObj["ThreadThreshold"]));
             }
             set {
                 curObj["ThreadThreshold"] = value;
                 if (((isEmbedded == false) 
-                            && (AutoCommitProp == true))) {
+                            && AutoCommitProp)) {
                     PrivateLateBoundObject.Put();
                 }
             }
         }
         
-        private bool CheckIfProperClass(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path, System.Management.ObjectGetOptions OptionsParam) {
+        private bool CheckIfProperClass(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions OptionsParam) {
             if (((path != null) 
-                        && (string.Compare(path.ClassName, this.ManagementClassName, true, System.Globalization.CultureInfo.InvariantCulture) == 0))) {
+                        && (string.Compare(path.ClassName, ManagementClassName, true, CultureInfo.InvariantCulture) == 0))) {
                 return true;
             }
             else {
-                return CheckIfProperClass(new System.Management.ManagementObject(mgmtScope, path, OptionsParam));
+                return CheckIfProperClass(new ManagementObject(mgmtScope, path, OptionsParam));
             }
         }
         
-        private bool CheckIfProperClass(System.Management.ManagementBaseObject theObj) {
+        private bool CheckIfProperClass(ManagementBaseObject theObj) {
             if (((theObj != null) 
-                        && (string.Compare(((string)(theObj["__CLASS"])), this.ManagementClassName, true, System.Globalization.CultureInfo.InvariantCulture) == 0))) {
+                        && (string.Compare(((string)(theObj["__CLASS"])), ManagementClassName, true, CultureInfo.InvariantCulture) == 0))) {
                 return true;
             }
             else {
-                System.Array parentClasses = ((System.Array)(theObj["__DERIVATION"]));
+                Array parentClasses = ((Array)(theObj["__DERIVATION"]));
                 if ((parentClasses != null)) {
                     int count = 0;
                     for (count = 0; (count < parentClasses.Length); count = (count + 1)) {
-                        if ((string.Compare(((string)(parentClasses.GetValue(count))), this.ManagementClassName, true, System.Globalization.CultureInfo.InvariantCulture) == 0)) {
+                        if ((string.Compare(((string)(parentClasses.GetValue(count))), ManagementClassName, true, CultureInfo.InvariantCulture) == 0)) {
                             return true;
                         }
                     }
@@ -1077,7 +1075,7 @@
         }
         
         private bool ShouldSerializeAuthTrusted() {
-            if ((this.IsAuthTrustedNull == false)) {
+            if ((IsAuthTrustedNull == false)) {
                 return true;
             }
             return false;
@@ -1086,13 +1084,13 @@
         private void ResetAuthTrusted() {
             curObj["AuthTrusted"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeDBQueueSizeThreshold() {
-            if ((this.IsDBQueueSizeThresholdNull == false)) {
+            if ((IsDBQueueSizeThresholdNull == false)) {
                 return true;
             }
             return false;
@@ -1101,13 +1099,13 @@
         private void ResetDBQueueSizeThreshold() {
             curObj["DBQueueSizeThreshold"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeDBSessionThreshold() {
-            if ((this.IsDBSessionThresholdNull == false)) {
+            if ((IsDBSessionThresholdNull == false)) {
                 return true;
             }
             return false;
@@ -1116,7 +1114,7 @@
         private void ResetDBSessionThreshold() {
             curObj["DBSessionThreshold"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
@@ -1124,7 +1122,7 @@
         private void ResetDecryptCertComment() {
             curObj["DecryptCertComment"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
@@ -1132,13 +1130,13 @@
         private void ResetDecryptCertThumbprint() {
             curObj["DecryptCertThumbprint"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeDeliveryQueueSize() {
-            if ((this.IsDeliveryQueueSizeNull == false)) {
+            if ((IsDeliveryQueueSizeNull == false)) {
                 return true;
             }
             return false;
@@ -1147,13 +1145,13 @@
         private void ResetDeliveryQueueSize() {
             curObj["DeliveryQueueSize"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeGlobalMemoryThreshold() {
-            if ((this.IsGlobalMemoryThresholdNull == false)) {
+            if ((IsGlobalMemoryThresholdNull == false)) {
                 return true;
             }
             return false;
@@ -1162,13 +1160,13 @@
         private void ResetGlobalMemoryThreshold() {
             curObj["GlobalMemoryThreshold"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeHostTracking() {
-            if ((this.IsHostTrackingNull == false)) {
+            if ((IsHostTrackingNull == false)) {
                 return true;
             }
             return false;
@@ -1177,20 +1175,20 @@
         private void ResetHostTracking() {
             curObj["HostTracking"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeHostType() {
-            if ((this.IsHostTypeNull == false)) {
+            if ((IsHostTypeNull == false)) {
                 return true;
             }
             return false;
         }
         
         private bool ShouldSerializeInflightMessageThreshold() {
-            if ((this.IsInflightMessageThresholdNull == false)) {
+            if ((IsInflightMessageThresholdNull == false)) {
                 return true;
             }
             return false;
@@ -1199,13 +1197,13 @@
         private void ResetInflightMessageThreshold() {
             curObj["InflightMessageThreshold"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeIsDefault() {
-            if ((this.IsIsDefaultNull == false)) {
+            if ((IsIsDefaultNull == false)) {
                 return true;
             }
             return false;
@@ -1214,13 +1212,13 @@
         private void ResetIsDefault() {
             curObj["IsDefault"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeIsHost32BitOnly() {
-            if ((this.IsIsHost32BitOnlyNull == false)) {
+            if ((IsIsHost32BitOnlyNull == false)) {
                 return true;
             }
             return false;
@@ -1229,7 +1227,7 @@
         private void ResetIsHost32BitOnly() {
             curObj["IsHost32BitOnly"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
@@ -1237,13 +1235,13 @@
         private void ResetLastUsedLogon() {
             curObj["LastUsedLogon"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliveryMaximumDelay() {
-            if ((this.IsMessageDeliveryMaximumDelayNull == false)) {
+            if ((IsMessageDeliveryMaximumDelayNull == false)) {
                 return true;
             }
             return false;
@@ -1252,13 +1250,13 @@
         private void ResetMessageDeliveryMaximumDelay() {
             curObj["MessageDeliveryMaximumDelay"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliveryOverdriveFactor() {
-            if ((this.IsMessageDeliveryOverdriveFactorNull == false)) {
+            if ((IsMessageDeliveryOverdriveFactorNull == false)) {
                 return true;
             }
             return false;
@@ -1267,13 +1265,13 @@
         private void ResetMessageDeliveryOverdriveFactor() {
             curObj["MessageDeliveryOverdriveFactor"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliverySampleSpaceSize() {
-            if ((this.IsMessageDeliverySampleSpaceSizeNull == false)) {
+            if ((IsMessageDeliverySampleSpaceSizeNull == false)) {
                 return true;
             }
             return false;
@@ -1282,13 +1280,13 @@
         private void ResetMessageDeliverySampleSpaceSize() {
             curObj["MessageDeliverySampleSpaceSize"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliverySampleSpaceWindow() {
-            if ((this.IsMessageDeliverySampleSpaceWindowNull == false)) {
+            if ((IsMessageDeliverySampleSpaceWindowNull == false)) {
                 return true;
             }
             return false;
@@ -1297,13 +1295,13 @@
         private void ResetMessageDeliverySampleSpaceWindow() {
             curObj["MessageDeliverySampleSpaceWindow"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishMaximumDelay() {
-            if ((this.IsMessagePublishMaximumDelayNull == false)) {
+            if ((IsMessagePublishMaximumDelayNull == false)) {
                 return true;
             }
             return false;
@@ -1312,13 +1310,13 @@
         private void ResetMessagePublishMaximumDelay() {
             curObj["MessagePublishMaximumDelay"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishOverdriveFactor() {
-            if ((this.IsMessagePublishOverdriveFactorNull == false)) {
+            if ((IsMessagePublishOverdriveFactorNull == false)) {
                 return true;
             }
             return false;
@@ -1327,13 +1325,13 @@
         private void ResetMessagePublishOverdriveFactor() {
             curObj["MessagePublishOverdriveFactor"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishSampleSpaceSize() {
-            if ((this.IsMessagePublishSampleSpaceSizeNull == false)) {
+            if ((IsMessagePublishSampleSpaceSizeNull == false)) {
                 return true;
             }
             return false;
@@ -1342,13 +1340,13 @@
         private void ResetMessagePublishSampleSpaceSize() {
             curObj["MessagePublishSampleSpaceSize"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishSampleSpaceWindow() {
-            if ((this.IsMessagePublishSampleSpaceWindowNull == false)) {
+            if ((IsMessagePublishSampleSpaceWindowNull == false)) {
                 return true;
             }
             return false;
@@ -1357,13 +1355,13 @@
         private void ResetMessagePublishSampleSpaceWindow() {
             curObj["MessagePublishSampleSpaceWindow"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeProcessMemoryThreshold() {
-            if ((this.IsProcessMemoryThresholdNull == false)) {
+            if ((IsProcessMemoryThresholdNull == false)) {
                 return true;
             }
             return false;
@@ -1372,13 +1370,13 @@
         private void ResetProcessMemoryThreshold() {
             curObj["ProcessMemoryThreshold"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeThreadPoolSize() {
-            if ((this.IsThreadPoolSizeNull == false)) {
+            if ((IsThreadPoolSizeNull == false)) {
                 return true;
             }
             return false;
@@ -1387,13 +1385,13 @@
         private void ResetThreadPoolSize() {
             curObj["ThreadPoolSize"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeThreadThreshold() {
-            if ((this.IsThreadThresholdNull == false)) {
+            if ((IsThreadThresholdNull == false)) {
                 return true;
             }
             return false;
@@ -1402,7 +1400,7 @@
         private void ResetThreadThreshold() {
             curObj["ThreadThreshold"] = null;
             if (((isEmbedded == false) 
-                        && (AutoCommitProp == true))) {
+                        && AutoCommitProp)) {
                 PrivateLateBoundObject.Put();
             }
         }
@@ -1415,7 +1413,7 @@
         }
         
         [Browsable(true)]
-        public void CommitObject(System.Management.PutOptions putOptions) {
+        public void CommitObject(PutOptions putOptions) {
             if ((isEmbedded == false)) {
                 PrivateLateBoundObject.Put(putOptions);
             }
@@ -1434,14 +1432,14 @@
             return strPath;
         }
         
-        private void InitializeObject(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path, System.Management.ObjectGetOptions getOptions) {
+        private void InitializeObject(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions getOptions) {
             Initialize();
             if ((path != null)) {
                 if ((CheckIfProperClass(mgmtScope, path, getOptions) != true)) {
-                    throw new System.ArgumentException("Class name does not match.");
+                    throw new ArgumentException("Class name does not match.");
                 }
             }
-            PrivateLateBoundObject = new System.Management.ManagementObject(mgmtScope, path, getOptions);
+            PrivateLateBoundObject = new ManagementObject(mgmtScope, path, getOptions);
             PrivateSystemProperties = new ManagementSystemProperties(PrivateLateBoundObject);
             curObj = PrivateLateBoundObject;
         }
@@ -1455,55 +1453,55 @@
             return GetInstances(null, condition, null);
         }
         
-        public static HostSettingCollection GetInstances(System.String [] selectedProperties) {
+        public static HostSettingCollection GetInstances(String [] selectedProperties) {
             return GetInstances(null, null, selectedProperties);
         }
         
-        public static HostSettingCollection GetInstances(string condition, System.String [] selectedProperties) {
+        public static HostSettingCollection GetInstances(string condition, String [] selectedProperties) {
             return GetInstances(null, condition, selectedProperties);
         }
         
-        public static HostSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, System.Management.EnumerationOptions enumOptions) {
+        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
             if ((mgmtScope == null)) {
                 if ((statMgmtScope == null)) {
-                    mgmtScope = new System.Management.ManagementScope();
+                    mgmtScope = new ManagementScope();
                     mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
                 }
                 else {
                     mgmtScope = statMgmtScope;
                 }
             }
-            System.Management.ManagementPath pathObj = new System.Management.ManagementPath();
+            ManagementPath pathObj = new ManagementPath();
             pathObj.ClassName = "MSBTS_HostSetting";
             pathObj.NamespacePath = "root\\MicrosoftBizTalkServer";
-            System.Management.ManagementClass clsObject = new System.Management.ManagementClass(mgmtScope, pathObj, null);
+            ManagementClass clsObject = new ManagementClass(mgmtScope, pathObj, null);
             if ((enumOptions == null)) {
-                enumOptions = new System.Management.EnumerationOptions();
+                enumOptions = new EnumerationOptions();
                 enumOptions.EnsureLocatable = true;
             }
             return new HostSettingCollection(clsObject.GetInstances(enumOptions));
         }
         
-        public static HostSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, string condition) {
+        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, string condition) {
             return GetInstances(mgmtScope, condition, null);
         }
         
-        public static HostSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, System.String [] selectedProperties) {
+        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, String [] selectedProperties) {
             return GetInstances(mgmtScope, null, selectedProperties);
         }
         
-        public static HostSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, string condition, System.String [] selectedProperties) {
+        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
             if ((mgmtScope == null)) {
                 if ((statMgmtScope == null)) {
-                    mgmtScope = new System.Management.ManagementScope();
+                    mgmtScope = new ManagementScope();
                     mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
                 }
                 else {
                     mgmtScope = statMgmtScope;
                 }
             }
-            System.Management.ManagementObjectSearcher ObjectSearcher = new System.Management.ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_HostSetting", condition, selectedProperties));
-            System.Management.EnumerationOptions enumOptions = new System.Management.EnumerationOptions();
+            ManagementObjectSearcher ObjectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_HostSetting", condition, selectedProperties));
+            EnumerationOptions enumOptions = new EnumerationOptions();
             enumOptions.EnsureLocatable = true;
             ObjectSearcher.Options = enumOptions;
             return new HostSettingCollection(ObjectSearcher.Get());
@@ -1511,25 +1509,25 @@
         
         [Browsable(true)]
         public static HostSetting CreateInstance() {
-            System.Management.ManagementScope mgmtScope = null;
+            ManagementScope mgmtScope = null;
             if ((statMgmtScope == null)) {                
-                mgmtScope = new System.Management.ManagementScope();
+                mgmtScope = new ManagementScope();
                 mgmtScope.Path.NamespacePath = CreatedWmiNamespace;               
             }
             else {
                 mgmtScope = statMgmtScope;
             }
-            System.Management.ManagementPath mgmtPath = new System.Management.ManagementPath(CreatedClassName);
-            System.Management.ManagementClass tmpMgmtClass = new System.Management.ManagementClass(mgmtScope, mgmtPath, null);
+            ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
+            ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
             return new HostSetting(tmpMgmtClass.CreateInstance());
         }
         [Browsable(true)]
         public static HostSetting CreateInstance(string pServer, string pUserName,string pPassword, string pDomain)
         {
-            System.Management.ManagementScope mgmtScope = null;
+            ManagementScope mgmtScope = null;
             if ((statMgmtScope == null))
             {
-                mgmtScope = new System.Management.ManagementScope();
+                mgmtScope = new ManagementScope();
                 mgmtScope.Path.NamespacePath = "\\\\" + pServer +  CreatedWmiNamespace;
 
                 ConnectionOptions connection = new ConnectionOptions();
@@ -1542,8 +1540,8 @@
             {
                 mgmtScope = statMgmtScope;
             }
-            System.Management.ManagementPath mgmtPath = new System.Management.ManagementPath(CreatedClassName);
-            System.Management.ManagementClass tmpMgmtClass = new System.Management.ManagementClass(mgmtScope, mgmtPath, null);
+            ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
+            ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
             return new HostSetting(tmpMgmtClass.CreateInstance());
         }
         
@@ -1588,19 +1586,19 @@
                 }
             }
             
-            public virtual void CopyTo(System.Array array, int index) {
+            public virtual void CopyTo(Array array, int index) {
                 privColObj.CopyTo(array, index);
                 int nCtr;
                 for (nCtr = 0; (nCtr < array.Length); nCtr = (nCtr + 1)) {
-                    array.SetValue(new HostSetting(((System.Management.ManagementObject)(array.GetValue(nCtr)))), nCtr);
+                    array.SetValue(new HostSetting(((ManagementObject)(array.GetValue(nCtr)))), nCtr);
                 }
             }
             
-            public virtual System.Collections.IEnumerator GetEnumerator() {
+            public virtual IEnumerator GetEnumerator() {
                 return new HostSettingEnumerator(privColObj.GetEnumerator());
             }
             
-            public class HostSettingEnumerator : object, System.Collections.IEnumerator {
+            public class HostSettingEnumerator : object, IEnumerator {
                 
                 private ManagementObjectCollection.ManagementObjectEnumerator privObjEnum;
                 
@@ -1610,7 +1608,7 @@
                 
                 public virtual object Current {
                     get {
-                        return new HostSetting(((System.Management.ManagementObject)(privObjEnum.Current)));
+                        return new HostSetting(((ManagementObject)(privObjEnum.Current)));
                     }
                 }
                 
@@ -1629,55 +1627,55 @@
             
             private TypeConverter baseConverter;
             
-            private System.Type baseType;
+            private Type baseType;
             
-            public WMIValueTypeConverter(System.Type inBaseType) {
+            public WMIValueTypeConverter(Type inBaseType) {
                 baseConverter = TypeDescriptor.GetConverter(inBaseType);
                 baseType = inBaseType;
             }
             
-            public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type srcType) {
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type srcType) {
                 return baseConverter.CanConvertFrom(context, srcType);
             }
             
-            public override bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Type destinationType) {
+            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
                 return baseConverter.CanConvertTo(context, destinationType);
             }
             
-            public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) {
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
                 return baseConverter.ConvertFrom(context, culture, value);
             }
             
-            public override object CreateInstance(System.ComponentModel.ITypeDescriptorContext context, System.Collections.IDictionary dictionary) {
+            public override object CreateInstance(ITypeDescriptorContext context, IDictionary dictionary) {
                 return baseConverter.CreateInstance(context, dictionary);
             }
             
-            public override bool GetCreateInstanceSupported(System.ComponentModel.ITypeDescriptorContext context) {
+            public override bool GetCreateInstanceSupported(ITypeDescriptorContext context) {
                 return baseConverter.GetCreateInstanceSupported(context);
             }
             
-            public override PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value, System.Attribute[] attributeVar) {
+            public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributeVar) {
                 return baseConverter.GetProperties(context, value, attributeVar);
             }
             
-            public override bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) {
+            public override bool GetPropertiesSupported(ITypeDescriptorContext context) {
                 return baseConverter.GetPropertiesSupported(context);
             }
             
-            public override System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(System.ComponentModel.ITypeDescriptorContext context) {
+            public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
                 return baseConverter.GetStandardValues(context);
             }
             
-            public override bool GetStandardValuesExclusive(System.ComponentModel.ITypeDescriptorContext context) {
+            public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) {
                 return baseConverter.GetStandardValuesExclusive(context);
             }
             
-            public override bool GetStandardValuesSupported(System.ComponentModel.ITypeDescriptorContext context) {
+            public override bool GetStandardValuesSupported(ITypeDescriptorContext context) {
                 return baseConverter.GetStandardValuesSupported(context);
             }
             
-            public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) {
-                if ((baseType.BaseType == typeof(System.Enum))) {
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+                if ((baseType.BaseType == typeof(Enum))) {
                     if ((value.GetType() == destinationType)) {
                         return value;
                     }
@@ -1689,7 +1687,7 @@
                     return baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
                 if (((baseType == typeof(bool)) 
-                            && (baseType.BaseType == typeof(System.ValueType)))) {
+                            && (baseType.BaseType == typeof(ValueType)))) {
                     if ((((value == null) 
                                 && (context != null)) 
                                 && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
@@ -1706,12 +1704,12 @@
         }
         
         // Embedded class to represent WMI system Properties.
-        [TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         public class ManagementSystemProperties {
             
-            private System.Management.ManagementBaseObject PrivateLateBoundObject;
+            private ManagementBaseObject PrivateLateBoundObject;
             
-            public ManagementSystemProperties(System.Management.ManagementBaseObject ManagedObject) {
+            public ManagementSystemProperties(ManagementBaseObject ManagedObject) {
                 PrivateLateBoundObject = ManagedObject;
             }
             
