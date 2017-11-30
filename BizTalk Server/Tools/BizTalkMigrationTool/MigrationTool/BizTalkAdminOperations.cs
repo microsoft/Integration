@@ -534,7 +534,7 @@ namespace BizTalkAdminOperations
 
                     //Creating DestinationHostList
                     searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host", enumOptions);
-                    foreach (ManagementObject inst in searchObject.Get())
+                    foreach (var inst in searchObject.Get())
                     {
                         //dstHostList = dstHostList + inst["Name"].ToString().ToUpper() + ",";
                         dstHostList.Add(inst["Name"].ToString().ToUpper());
@@ -557,7 +557,7 @@ namespace BizTalkAdminOperations
                         //Creating DestinationHostInstanceListForeachnode
                         dstHostInstanceList = new List<string>();
                         searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_HostInstance", enumOptions);
-                        foreach (ManagementObject inst in searchObject.Get())
+                        foreach (var inst in searchObject.Get())
                         {
                             if (inst["RunningServer"].ToString().ToUpper() == cmbBoxServerDst.Items[i].ToString())
                                 // dstHostInstanceList = dstHostInstanceList + inst["HostName"].ToString().ToUpper() + ",";
@@ -768,7 +768,7 @@ namespace BizTalkAdminOperations
                 EnumerationOptions enumOptions = new EnumerationOptions();
                 enumOptions.ReturnImmediately = false;
                 searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_ReceiveHandler", enumOptions);
-                foreach (ManagementObject inst in searchObject.Get())
+                foreach (var inst in searchObject.Get())
                 {
                     dstRcvHandlerList = dstRcvHandlerList + inst["HostName"].ToString().ToUpper() + "_" + inst["AdapterName"].ToString().ToUpper() + ",";
                 }
@@ -776,7 +776,7 @@ namespace BizTalkAdminOperations
                 //Get Snd Handler List from Dst                
                 enumOptions.ReturnImmediately = false;
                 searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_SendHandler2", enumOptions);
-                foreach (ManagementObject inst in searchObject.Get())
+                foreach (var inst in searchObject.Get())
                 {
                     dstSndHandlerList = dstSndHandlerList + inst["HostName"].ToString().ToUpper() + "_" + inst["AdapterName"].ToString().ToUpper() + ",";
                 }
@@ -2139,7 +2139,7 @@ namespace BizTalkAdminOperations
                             matches = 1;
                     }
 
-                    if (!(matches == 1))  //if no match which mean website is not existing in dest then create website in dest
+                    if (matches != 1)  //if no match which mean website is not existing in dest then create website in dest
                     {
                         //actual web site import.
                         if (machineName == strDstNode) //local
@@ -3867,7 +3867,7 @@ namespace BizTalkAdminOperations
                         using (ManagementObjectSearcher searcher =
                             new System.Management.ManagementObjectSearcher(query))
                         {
-                            foreach (ManagementObject service in searcher.Get())
+                            foreach (var service in searcher.Get())
                             {
                                 if (service["startname"] != null && (service["startname"].ToString().ToLower().Contains(userNameNoDomain)|| service["startname"].ToString().ToLower().Contains(userNameNoDomain.ToLower())))
                                 {
@@ -3960,7 +3960,7 @@ namespace BizTalkAdminOperations
                             using (ManagementObjectSearcher searcher =
                                 new System.Management.ManagementObjectSearcher(query))
                             {
-                                foreach (ManagementObject service in searcher.Get())
+                                foreach (var service in searcher.Get())
                                 {
                                     if (service["startname"] != null && (service["startname"].ToString().ToLower().Contains(userNameNoDomain) || service["startname"].ToString().ToLower().Contains(userNameNoDomain.ToLower())))
                                     {
@@ -4898,7 +4898,7 @@ namespace BizTalkAdminOperations
 
                             if (i == permissionLineIndex)
                                 grantString = grantString + "\"/GRANT:" + permission[0].Substring(18).Trim() + "," + permission[1].Trim() + "\" ";
-                            else        ///GRANT:Everyone, FULL
+                            else        //GRANT:Everyone, FULL
                                 grantString = grantString + "\"/GRANT:" + permission[0].Trim() + "," + permission[1].Trim() + "\" ";
                         }
                     }
@@ -6429,7 +6429,7 @@ namespace BizTalkAdminOperations
             try
             {
                 byte[] keyArray;
-                keyArray = (UTF8Encoding.UTF8.GetBytes("M!grat!onkey1234"));
+                keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
                 TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
 
                 DES.Mode = CipherMode.ECB;
@@ -6437,7 +6437,7 @@ namespace BizTalkAdminOperations
 
                 DES.Padding = PaddingMode.PKCS7;
                 ICryptoTransform DESEncrypt = DES.CreateEncryptor();
-                Byte[] Buffer = ASCIIEncoding.ASCII.GetBytes(data);
+                Byte[] Buffer = Encoding.ASCII.GetBytes(data);
 
                 return Convert.ToBase64String(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
             }
@@ -6454,7 +6454,7 @@ namespace BizTalkAdminOperations
             try
             {
                 byte[] keyArray;
-                keyArray = (UTF8Encoding.UTF8.GetBytes("M!grat!onkey1234"));
+                keyArray = (Encoding.UTF8.GetBytes("M!grat!onkey1234"));
                 TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
 
                 DES.Mode = CipherMode.ECB;

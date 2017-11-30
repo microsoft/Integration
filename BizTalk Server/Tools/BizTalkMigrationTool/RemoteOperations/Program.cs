@@ -1221,7 +1221,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
             using (ManagementObjectSearcher searcher =
                 new System.Management.ManagementObjectSearcher(query))
             {
-                foreach (ManagementObject service in searcher.Get())
+                foreach (var service in searcher.Get())
                 {
                     if (service["startname"] != null && (service["startname"].ToString().ToLower().Contains(pUserNameNoDomain)|| service["startname"].ToString().ToLower().Contains(pUserNameNoDomain.ToLower())))
                     {
@@ -1963,7 +1963,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
 
                 //Creating DestinationHostList
                 searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host", enumOptions);
-                foreach (ManagementObject inst in searchObject.Get())
+                foreach (var inst in searchObject.Get())
                 {
                     //dstHostList = dstHostList + inst["Name"].ToString().ToUpper() + ",";
                     dstHostList.Add(inst["Name"].ToString().ToUpper());
@@ -1986,7 +1986,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     //Creating DestinationHostInstanceListForeachnode
                     dstHostInstanceList = new List<string>();
                     searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_HostInstance", enumOptions);
-                    foreach (ManagementObject inst in searchObject.Get())
+                    foreach (var inst in searchObject.Get())
                     {
                         if (inst["RunningServer"].ToString().ToUpper() == dstservers[i].ToString())
                             // dstHostInstanceList = dstHostInstanceList + inst["HostName"].ToString().ToUpper() + ",";
@@ -2232,7 +2232,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 try
                 {
                     byte[] keyArray;
-                    keyArray = (UTF8Encoding.UTF8.GetBytes("M!grat!onkey1234"));
+                    keyArray = (Encoding.UTF8.GetBytes("M!grat!onkey1234"));
                     TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
 
                     DES.Mode = CipherMode.ECB;
@@ -2240,7 +2240,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
 
                     DES.Padding = PaddingMode.PKCS7;
                     ICryptoTransform DESEncrypt = DES.CreateEncryptor();
-                    Byte[] Buffer = ASCIIEncoding.ASCII.GetBytes(data);
+                    Byte[] Buffer = Encoding.ASCII.GetBytes(data);
 
                     return Convert.ToBase64String(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
                 }
@@ -2257,7 +2257,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 try
                 {
                     byte[] keyArray;
-                    keyArray = (UTF8Encoding.UTF8.GetBytes("M!grat!onkey1234"));
+                    keyArray = (Encoding.UTF8.GetBytes("M!grat!onkey1234"));
                     TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
 
                     DES.Mode = CipherMode.ECB;

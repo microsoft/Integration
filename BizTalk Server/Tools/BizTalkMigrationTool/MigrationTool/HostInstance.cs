@@ -847,13 +847,13 @@
             }
         }
         
-        public uint Install(bool GrantLogOnAsService, string Logon, string Password) {
+        public uint Install(bool grantLogOnAsService, string logon, string password) {
             if ((isEmbedded == false)) {
                 System.Management.ManagementBaseObject inParams = null;
                 inParams = PrivateLateBoundObject.GetMethodParameters("Install");
-                inParams["GrantLogOnAsService"] = ((System.Boolean )(GrantLogOnAsService));
-                inParams["Logon"] = ((System.String )(Logon));
-                inParams["Password"] = ((System.String )(Password));
+                inParams["GrantLogOnAsService"] = ((System.Boolean )(grantLogOnAsService));
+                inParams["Logon"] = ((System.String )(logon));
+                inParams["Password"] = ((System.String )(password));
                 System.Management.ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("Install", inParams, null);
                 return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
