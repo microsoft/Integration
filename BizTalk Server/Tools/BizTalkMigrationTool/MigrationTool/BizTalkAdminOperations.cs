@@ -366,40 +366,46 @@ namespace BizTalkAdminOperations
                 LogInfo("Host Instances: Export started.");
                 LogInfo("Connecting to BizTalkMgmtdb...." + txtConnectionString.Text);
 
-                SqlCommand sqlCmd = new SqlCommand();
-                sqlCmd.Connection = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-
-                sqlCmd.CommandText = "SELECT Name HostName,NTGroupName, cast(HostTracking as bit) HostTracking, cast(AuthTrusted as bit) Trusted, CASE WHEN HostType = 1 THEN 1 ELSE 0 END AS HostType, IsHost32BitOnly Is32Bit FROM adm_host";
-
-                DataSet ds = new DataSet();
-                SqlDataAdapter sqlDataAd = new SqlDataAdapter(sqlCmd);
-
-                sqlDataAd.Fill(ds);
-
-                ds.Tables[0].TableName = "Host";
-
-                Hosts hosts = new Hosts();
-                hosts.Host = new HostsHost[ds.Tables["Host"].Rows.Count];
-                int i = 0;
-                foreach (DataRow dRow in ds.Tables["Host"].Rows)
+                Hosts hosts;
+                using (var connection = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
-                    hosts.Host[i] = new HostsHost();
+                    connection.Open();
+                    using (var sqlCmd = new SqlCommand("SELECT Name HostName,NTGroupName, cast(HostTracking as bit) HostTracking, cast(AuthTrusted as bit) Trusted, CASE WHEN HostType = 1 THEN 1 ELSE 0 END AS HostType, IsHost32BitOnly Is32Bit FROM adm_host", connection))
+                    {
+                        using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
+                        {
+                            using (var ds = new DataSet())
+                            {
+                                sqlDataAd.Fill(ds);
 
-                    hosts.Host[i].authenticationTrusted = Convert.ToBoolean(dRow["Trusted"]);
-                    hosts.Host[i].hostTracking = Convert.ToBoolean(dRow["HostTracking"]);
-                    hosts.Host[i].inProcess = Convert.ToBoolean(dRow["HostType"]);
-                    hosts.Host[i].is32bit = Convert.ToBoolean(dRow["Is32Bit"]);
-                    hosts.Host[i].isDefaultHost = false;
-                    hosts.Host[i].name = dRow["HostName"].ToString();
-                    hosts.Host[i].ntGroupName = dRow["NTGroupName"].ToString();
+                                ds.Tables[0].TableName = "Host";
 
-                    hosts.Host[i].HostInstance = new HostsHostHostInstance[1];
-                    hosts.Host[i].HostInstance[0] = new HostsHostHostInstance();
-                    hosts.Host[i].HostInstance[0].server = "";
-                    hosts.Host[i].HostInstance[0].password = "";
-                    hosts.Host[i].HostInstance[0].userName = "";
+                                hosts = new Hosts();
+                                hosts.Host = new HostsHost[ds.Tables["Host"].Rows.Count];
+                                int i = 0;
+                                foreach (DataRow dRow in ds.Tables["Host"].Rows)
+                                {
+                                    hosts.Host[i] = new HostsHost();
 
-                    i++;
+                                    hosts.Host[i].authenticationTrusted = Convert.ToBoolean(dRow["Trusted"]);
+                                    hosts.Host[i].hostTracking = Convert.ToBoolean(dRow["HostTracking"]);
+                                    hosts.Host[i].inProcess = Convert.ToBoolean(dRow["HostType"]);
+                                    hosts.Host[i].is32bit = Convert.ToBoolean(dRow["Is32Bit"]);
+                                    hosts.Host[i].isDefaultHost = false;
+                                    hosts.Host[i].name = dRow["HostName"].ToString();
+                                    hosts.Host[i].ntGroupName = dRow["NTGroupName"].ToString();
+
+                                    hosts.Host[i].HostInstance = new HostsHostHostInstance[1];
+                                    hosts.Host[i].HostInstance[0] = new HostsHostHostInstance();
+                                    hosts.Host[i].HostInstance[0].server = "";
+                                    hosts.Host[i].HostInstance[0].password = "";
+                                    hosts.Host[i].HostInstance[0].userName = "";
+
+                                    i++;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
@@ -3413,7 +3419,6 @@ namespace BizTalkAdminOperations
         private string btnBamExport_Click(object sender, EventArgs e)
         {
             string commandArguments;
-            SqlCommand sqlCmd = null;
             int returnCode=0;
             try
             {
@@ -3466,15 +3471,20 @@ namespace BizTalkAdminOperations
                     throw new Exception("Error while cleaning Bam Files, please clean them manually and resume operation." + ex.Message);
                 }
 
-                SqlDataReader sqlRed = null;
-                SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                sqlCon.Open();
-
-                SqlCommand sqlcmd = new SqlCommand("SELECT [BamDBServerName] FROM [adm_Group]", sqlCon);
-                sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (sqlRed.Read())
+                using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
-                    srcBAMSqlInstance = sqlRed.GetString(0);
+                    sqlCon.Open();
+
+                    using (var sqlcmd = new SqlCommand("SELECT [BamDBServerName] FROM [adm_Group]", sqlCon))
+                    {
+                        using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (sqlRed.Read())
+                            {
+                                srcBAMSqlInstance = sqlRed.GetString(0);
+                            }
+                        }
+                    }
                 }
 
                 LogInfo("Connecting to BamPrimaryImport...." + srcBAMSqlInstance);
@@ -3510,67 +3520,73 @@ namespace BizTalkAdminOperations
                 //Get all Views
                 LogInfo("BAM: Get all views.");
 
-                sqlCmd = new SqlCommand();
-                sqlCmd.Connection = new SqlConnection("Server=" + srcBAMSqlInstance + ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI");
-                //two queries, one for views and second for BTT
-                sqlCmd.CommandText = "SELECT ViewName FROM bam_Metadata_Views;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;";
-
-                DataSet ds = new DataSet();
-                SqlDataAdapter sqlDataAd = new SqlDataAdapter(sqlCmd);
-
-                sqlDataAd.Fill(ds);
-
-                ds.Tables[0].TableName = "BamViews";
-                ds.Tables[1].TableName = "BttFiles";
-                using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcBamViewsList.txt", false))
+                using (var connection = new SqlConnection("Server=" + srcBAMSqlInstance + ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI"))
                 {
-                    foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
+                    connection.Open();
+                    using (var sqlCmd = new SqlCommand("SELECT ViewName FROM bam_Metadata_Views;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;", connection))
                     {
-                        writer.WriteLine(dRow["ViewName"].ToString());
-                    }
-                }
-                LogInfo("Success: Created SrcBamViewsList.txt.");
-                //get all accounts for each view
-                foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
-                {
-                    LogInfoInLogFile("BAM: Get Accounts for View: " + dRow["ViewName"]);
-                    if (machineName == strSrcNode)
-                    {
-                        commandArguments = "/C " + "\"\"" + bamExePath + "\"" + " get-accounts -View:\"" + dRow["ViewName"] + "\" -Server:" + srcBAMSqlInstance
-                            + " -Database:BAMPrimaryImport > \"" + xmlPath + "\\BamView_" + dRow["ViewName"] + ".txt\"\"";
-                        returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                        using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
+                        {
+                            using (var ds = new DataSet())
+                            {
+                                sqlDataAd.Fill(ds);
 
-                        if (returnCode == 0)
-                            LogShortSuccessMsg("Success: Get BAM Accounts for View: " + dRow["ViewName"]);
-                        else
-                            LogShortErrorMsg("Failed: Get BAM Accounts for View: " + dRow["ViewName"]);
-                    }
-                    else
-                    {
-                        string appPathUnc = ConvertPathToUncPath(appPath);
-                        commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                   remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportBAMAccounts\" \"" + srcBAMSqlInstance + "\" \"" + dRow["ViewName"] + "\"\"";
 
-                        returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                                ds.Tables[0].TableName = "BamViews";
+                                ds.Tables[1].TableName = "BttFiles";
+                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcBamViewsList.txt", false))
+                                {
+                                    foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
+                                    {
+                                        writer.WriteLine(dRow["ViewName"].ToString());
+                                    }
+                                }
+                                LogInfo("Success: Created SrcBamViewsList.txt.");
+                                //get all accounts for each view
+                                foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
+                                {
+                                    LogInfoInLogFile("BAM: Get Accounts for View: " + dRow["ViewName"]);
+                                    if (machineName == strSrcNode)
+                                    {
+                                        commandArguments = "/C " + "\"\"" + bamExePath + "\"" + " get-accounts -View:\"" + dRow["ViewName"] + "\" -Server:" + srcBAMSqlInstance
+                                                           + " -Database:BAMPrimaryImport > \"" + xmlPath + "\\BamView_" + dRow["ViewName"] + ".txt\"\"";
+                                        returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
-                        if (returnCode == 0)
-                            LogShortSuccessMsg("Success:  Remotely Trigggered  BAM Accounts for View: " + dRow["ViewName"] + ",Please Check Remote operation Log for Further Details.");
-                        else
-                            LogShortErrorMsg("Failed: Triggering Remotely BAM Accounts for View: " + dRow["ViewName"]);
-                    }
+                                        if (returnCode == 0)
+                                            LogShortSuccessMsg("Success: Get BAM Accounts for View: " + dRow["ViewName"]);
+                                        else
+                                            LogShortErrorMsg("Failed: Get BAM Accounts for View: " + dRow["ViewName"]);
+                                    }
+                                    else
+                                    {
+                                        string appPathUnc = ConvertPathToUncPath(appPath);
+                                        commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
+                                                           remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportBAMAccounts\" \"" + srcBAMSqlInstance + "\" \"" + dRow["ViewName"] + "\"\"";
+
+                                        returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+
+                                        if (returnCode == 0)
+                                            LogShortSuccessMsg("Success:  Remotely Trigggered  BAM Accounts for View: " + dRow["ViewName"] + ",Please Check Remote operation Log for Further Details.");
+                                        else
+                                            LogShortErrorMsg("Failed: Triggering Remotely BAM Accounts for View: " + dRow["ViewName"]);
+                                    }
 
                     
-                }
+                                }
 
-                //BTT Files
-                LogInfo("Starting BTT file export.");
-                foreach (DataRow dRow in ds.Tables["BttFiles"].Rows)
-                {
-                    string bttXml = dRow["ProfileXml"].ToString();
-                    string activityName = dRow["ActivityName"].ToString();
-                    XmlDocument xDoc = new XmlDocument();
-                    xDoc.LoadXml(bttXml);
-                    xDoc.Save(xmlPath + "\\BTT_" + activityName + ".xml");
+                                //BTT Files
+                                LogInfo("Starting BTT file export.");
+                                foreach (DataRow dRow in ds.Tables["BttFiles"].Rows)
+                                {
+                                    string bttXml = dRow["ProfileXml"].ToString();
+                                    string activityName = dRow["ActivityName"].ToString();
+                                    XmlDocument xDoc = new XmlDocument();
+                                    xDoc.LoadXml(bttXml);
+                                    xDoc.Save(xmlPath + "\\BTT_" + activityName + ".xml");
+                                }
+                            }
+                        }
+                    }
                 }
                 LogShortSuccessMsg("Success: Exported BTT files.");
 
@@ -3580,20 +3596,11 @@ namespace BizTalkAdminOperations
             {
                 LogException(ex);
             }
-            finally
-            {
-                if (sqlCmd != null)
-                    if (sqlCmd.Connection != null)
-                        sqlCmd.Connection.Close();
-            }
             return strSuccess;
         }
 
         private string btnBamImport_Click(object sender, EventArgs e)
         {
-            SqlCommand sqlCmd = null;
-            DataSet ds = null;
-            SqlDataAdapter sqlDataAd = null;
             string commandArguments;
             int returnCode=0;
             try
@@ -3629,45 +3636,55 @@ namespace BizTalkAdminOperations
                     throw new Exception("Error while cleaning Bam Files, please clean them manually and resume operation." + ex.Message);
                 }
 
-                SqlDataReader sqlRed = null;
-                SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                sqlCon.Open();
-
-                SqlCommand sqlcmd = new SqlCommand("SELECT [BamDBServerName] FROM [adm_Group]", sqlCon);
-                sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (sqlRed.Read())
+                using (SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
-                    dstBAMSqlInstance = sqlRed.GetString(0);
+                    sqlCon.Open();
+
+                    using (var sqlcmd = new SqlCommand("SELECT [BamDBServerName] FROM [adm_Group]", sqlCon))
+                    {
+                        using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (sqlRed.Read())
+                            {
+                                dstBAMSqlInstance = sqlRed.GetString(0);
+                            }
+                        }
+                    }
                 }
 
                 LogInfo("Connecting Dst Sql..." + dstBAMSqlInstance);
                 //get existing activities from Dst machine and write into DstBamActivitiesList.txt file under XmlBinding Folder
-                sqlCmd = new SqlCommand();
-                sqlCmd.Connection = new SqlConnection("Server=" + dstBAMSqlInstance + ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI");
-
-                sqlCmd.CommandText = "SELECT ActivityName FROM bam_Metadata_Activities;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;";
-
-                ds = new DataSet();
-                sqlDataAd = new SqlDataAdapter(sqlCmd);
-
-                sqlDataAd.Fill(ds);
-                ds.Tables[0].TableName = "Activites";
-                ds.Tables[1].TableName = "BttFiles";
-
-                //create DstBamActivitiesList.txt
-                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstBamActivitiesList.txt", false))
+                using (var connection = new SqlConnection("Server=" + dstBAMSqlInstance + ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI"))
                 {
-                    foreach (DataRow dRow in ds.Tables["Activites"].Rows)
+                    connection.Open();
+                    using (var sqlCmd = new SqlCommand("SELECT ActivityName FROM bam_Metadata_Activities;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;", connection))
                     {
-                        writer.WriteLine(dRow["ActivityName"].ToString());
-                    }
-                }
-                //create DstBamBttList.txt
-                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstBamBttList.txt", false))
-                {
-                    foreach (DataRow dRow in ds.Tables["BttFiles"].Rows)
-                    {
-                        writer.WriteLine(dRow["ActivityName"].ToString());
+                        using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
+                        {
+                            using (var ds = new DataSet())
+                            {
+                                sqlDataAd.Fill(ds);
+                                ds.Tables[0].TableName = "Activites";
+                                ds.Tables[1].TableName = "BttFiles";
+
+                                //create DstBamActivitiesList.txt
+                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstBamActivitiesList.txt", false))
+                                {
+                                    foreach (DataRow dRow in ds.Tables["Activites"].Rows)
+                                    {
+                                        writer.WriteLine(dRow["ActivityName"].ToString());
+                                    }
+                                }
+                                //create DstBamBttList.txt
+                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstBamBttList.txt", false))
+                                {
+                                    foreach (DataRow dRow in ds.Tables["BttFiles"].Rows)
+                                    {
+                                        writer.WriteLine(dRow["ActivityName"].ToString());
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -3813,13 +3830,6 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 LogException(ex);
-            }
-
-            finally
-            {
-                if (sqlCmd != null)
-                    if (sqlCmd.Connection != null)
-                        sqlCmd.Connection.Close();
             }
 
             return strSuccess;
@@ -5076,36 +5086,42 @@ namespace BizTalkAdminOperations
         private void UpdateAppXmlFile()
         {   //this is genrating two file one is DstAppList.txt and second one is AppsToImport.xml            
             //Get all App name from Dst BizTalk Mgmt DB
-            SqlCommand sqlCmd = null;
             char[] chrSep = { ',' };
             try
             {
-                sqlCmd = new SqlCommand();
-                sqlCmd.Connection = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                sqlCmd.CommandText = "SELECT nvcName AS AppName FROM bts_application ORDER BY nvcName ASC;";
-
-                DataSet ds = new DataSet();
-                SqlDataAdapter sqlDataAd = new SqlDataAdapter(sqlCmd);
-
-                sqlDataAd.Fill(ds);
-                ds.Tables[0].TableName = "AppNames";
-
-                //write all apps in txt file, one app each line.
-                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstAppList.txt", false))
+                using (var connection = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
-                    foreach (DataRow dRow in ds.Tables["AppNames"].Rows)
+                    connection.Open();
+                    using (var sqlCmd = new SqlCommand("SELECT nvcName AS AppName FROM bts_application ORDER BY nvcName ASC;", connection))
                     {
-                        writer.WriteLine(dRow["AppName"].ToString());
-                    }
+                        using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
+                        {
+                            using (var ds = new DataSet())
+                            {
+                                sqlDataAd.Fill(ds);
 
-                    string[] arrAppsToIgnore = bizTalkAppToIgnore.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                                ds.Tables[0].TableName = "AppNames";
 
-                    foreach (string appToIgnore in arrAppsToIgnore)
-                    {
-                        string find = "AppName = '" + appToIgnore.Trim() + "'";
-                        DataRow[] foundRows = ds.Tables["AppNames"].Select(find);
-                        if (!(foundRows.Length > 0))
-                            writer.WriteLine(appToIgnore.Trim());
+                                //write all apps in txt file, one app each line.
+                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstAppList.txt", false))
+                                {
+                                    foreach (DataRow dRow in ds.Tables["AppNames"].Rows)
+                                    {
+                                        writer.WriteLine(dRow["AppName"].ToString());
+                                    }
+
+                                    string[] arrAppsToIgnore = bizTalkAppToIgnore.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+
+                                    foreach (string appToIgnore in arrAppsToIgnore)
+                                    {
+                                        string find = "AppName = '" + appToIgnore.Trim() + "'";
+                                        DataRow[] foundRows = ds.Tables["AppNames"].Select(find);
+                                        if (!(foundRows.Length > 0))
+                                            writer.WriteLine(appToIgnore.Trim());
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -5807,8 +5823,6 @@ namespace BizTalkAdminOperations
         }
         private void TstDstSqlConnection(bool pSaveConnectionInfo)
         {
-            SqlDataReader sqlRed = null;
-
             try
             {
                 if (strServerType == "BizTalk")
@@ -5819,14 +5833,20 @@ namespace BizTalkAdminOperations
                         cmbBoxServerDst.Items.Clear();
                         cmbBoxServerDst.Text = "";
                         LogInfo("Validating Sql Instance.");
-                        SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                        sqlCon.Open();
-
-                        SqlCommand sqlcmd = new SqlCommand("SELECT [Id],[Name] FROM [adm_Server]", sqlCon);
-                        sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                        while (sqlRed.Read())
+                        using (var sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                         {
-                            cmbBoxServerDst.Items.Add(sqlRed.GetString(1).ToUpper());
+                            sqlCon.Open();
+
+                            using (var sqlcmd = new SqlCommand("SELECT [Id],[Name] FROM [adm_Server]", sqlCon))
+                            {
+                                using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                {
+                                    while (sqlRed.Read())
+                                    {
+                                        cmbBoxServerDst.Items.Add(sqlRed.GetString(1).ToUpper());
+                                    }
+                                }
+                            }
                         }
                         cmbBoxServerDst.Visible = true;
                         LogShortSuccessMsg("Connection Verified.");
@@ -5871,17 +5891,11 @@ namespace BizTalkAdminOperations
                 cmbBoxServerDst.Text = "";
                 LogShortErrorMsg(ex.Message);
             }
-            finally
-            {
-                if (sqlRed != null)
-                    sqlRed.Close();
-            }
         }
 
         private void TstSrcSqlConnection(bool pSaveConnectionInfo)
         {
             string serverName = "";
-            SqlDataReader sqlRed = null;
 
             try
             {
@@ -5894,18 +5908,24 @@ namespace BizTalkAdminOperations
                         cmbBoxServerSrc.Text = "";
 
                         LogInfo("Validating Sql Instance.");
-                        SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                        sqlCon.Open();
-
-                        SqlCommand sqlcmd = new SqlCommand("SELECT [Id],[Name] FROM [adm_Server]", sqlCon);
-                        sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                        while (sqlRed.Read())
+                        using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                         {
-                            cmbBoxServerSrc.Items.Add(sqlRed.GetString(1).ToUpper());
-                            if (serverName == "")
-                                serverName = sqlRed.GetString(1).ToUpper();
-                            else
-                                serverName = serverName + "," + sqlRed.GetString(1).ToUpper();
+                            sqlCon.Open();
+
+                            using (var sqlcmd = new SqlCommand("SELECT [Id],[Name] FROM [adm_Server]", sqlCon))
+                            {
+                                using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                                {
+                                    while (sqlRed.Read())
+                                    {
+                                        cmbBoxServerSrc.Items.Add(sqlRed.GetString(1).ToUpper());
+                                        if (serverName == "")
+                                            serverName = sqlRed.GetString(1).ToUpper();
+                                        else
+                                            serverName = serverName + "," + sqlRed.GetString(1).ToUpper();
+                                    }
+                                }
+                            }
                         }
                         cmbBoxServerSrc.Visible = true;
                         LogShortSuccessMsg("Connection Verified.");
@@ -5949,11 +5969,6 @@ namespace BizTalkAdminOperations
                 cmbBoxServerSrc.Text = "";
                 LogShortErrorMsg(ex.Message);
             }
-            finally
-            {
-                if (sqlRed != null)
-                    sqlRed.Close();
-            }
         }
 
         public void UpdateSettings()
@@ -5982,24 +5997,35 @@ namespace BizTalkAdminOperations
             try
             {
                 //Getting the List of Policies associated to Application
-                SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                sqlCon.Open();
-                string sqlQuery = "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
-                SqlDataAdapter sqlDataAd = new SqlDataAdapter(sqlQuery, sqlCon);
-                DataSet ds = new DataSet();
-                sqlDataAd.Fill(ds);
-                string[] arrBrePolicies = new string[ds.Tables[0].Rows.Count];
-                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                string[] arrBrePolicies;
+                using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
-                    arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[1];
-                }
+                    sqlCon.Open();
+                    string sqlQuery = "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
+                    using (var sqlDataAd = new SqlDataAdapter(sqlQuery, sqlCon))
+                    {
+                        using (var ds = new DataSet())
+                        {
+                            sqlDataAd.Fill(ds);
+                            arrBrePolicies = new string[ds.Tables[0].Rows.Count];
+                            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                            {
+                                arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[1];
+                            }
+                        }
+                    }
 
-                //Creating BRERuleEngineDb Connection
-                SqlCommand sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon);
-                SqlDataReader sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (sqlRed.Read())
-                {
-                    srcBRESqlInstance = sqlRed.GetString(0);
+                    //Creating BRERuleEngineDb Connection
+                    using (var sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon))
+                    {
+                        using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (sqlRed.Read())
+                            {
+                                srcBRESqlInstance = sqlRed.GetString(0);
+                            }
+                        }
+                    }
                 }
                 //Creating Business RuleEngineDB COnnection
                 SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder("Server = " + srcBRESqlInstance + "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
@@ -6036,34 +6062,37 @@ namespace BizTalkAdminOperations
                             //Exporting vocabularyAssocated to Policy
 
                             string vocabQuery = "select A.nRuleSetID,A.strName as policyName,B.nVocabularyID,C.nVocabularyID,C.strName as VocabularyName from re_ruleset(nolock) as A,re_ruleset_to_vocabulary_links As B,re_vocabulary As C where A.nRuleSetID = B.nReferingRuleset and B.nVocabularyID = C.nVocabularyID and C.strName not in('Predicates','Functions','Common Values','Common Sets') and A.strName = @strPolicyName";
-                            SqlDataAdapter sqlVocabad = new SqlDataAdapter(vocabQuery, sqlBRE.ConnectionString);
-                            sqlVocabad.SelectCommand.Parameters.AddWithValue("@strPolicyName", ruleSetInfo.Name);
-                            DataSet dsVocab = new DataSet();
-                            sqlVocabad.Fill(dsVocab);
-                            VocabularyInfoCollection vocabularyInfos = sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
-                            foreach (DataRow dr in dsVocab.Tables[0].Rows)
+                            using (var sqlVocabad = new SqlDataAdapter(vocabQuery, sqlBRE.ConnectionString))
                             {
-                                string vocabularyName = dr["VocabularyName"].ToString();
-                                foreach (VocabularyInfo vocabularyInfo in vocabularyInfos)
+                                sqlVocabad.SelectCommand.Parameters.AddWithValue("@strPolicyName", ruleSetInfo.Name);
+                                using (var dsVocab = new DataSet())
                                 {
-                                    try
+                                    sqlVocabad.Fill(dsVocab);
+                                    VocabularyInfoCollection vocabularyInfos = sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
+                                    foreach (DataRow dr in dsVocab.Tables[0].Rows)
                                     {
-                                        if (vocabularyName == vocabularyInfo.Name)
+                                        string vocabularyName = dr["VocabularyName"].ToString();
+                                        foreach (VocabularyInfo vocabularyInfo in vocabularyInfos)
                                         {
-                                            var VocabularyName = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", vocabularyInfo.Name, vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
-                                            rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo, brePath + "/" + VocabularyName);
+                                            try
+                                            {
+                                                if (vocabularyName == vocabularyInfo.Name)
+                                                {
+                                                    var VocabularyName = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", vocabularyInfo.Name, vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
+                                                    rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo, brePath + "/" + VocabularyName);
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                LogShortErrorMsg("Exception Occured while Exporting " + vocabularyInfo.Name + "please check log file for details.");
+                                                LogInfoSyncronously("Exception while Exporting Vocabulary " + ex.Message);
+
+                                            }
+
                                         }
                                     }
-                                    catch (Exception ex)
-                                    {
-                                        LogShortErrorMsg("Exception Occured while Exporting " + vocabularyInfo.Name + "please check log file for details.");
-                                        LogInfoSyncronously("Exception while Exporting Vocabulary " + ex.Message);
-
-                                    }
-
                                 }
                             }
-
                         }
                         catch (Exception ex)
                         {
@@ -6085,16 +6114,21 @@ namespace BizTalkAdminOperations
 
         private void ImportBrePolicyVocabulary()
         {
-            String[] files;
             try
             {
-                SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                sqlCon.Open();
-                SqlCommand sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon);
-                SqlDataReader sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (sqlRed.Read())
+                using (var sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
-                    dstBRESqlInstance = sqlRed.GetString(0);
+                    sqlCon.Open();
+                    using (var sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon))
+                    {
+                        using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (sqlRed.Read())
+                            {
+                                dstBRESqlInstance = sqlRed.GetString(0);
+                            }
+                        }
+                    }
                 }
                 SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder("Server = " + dstBRESqlInstance + "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
                 SqlRuleStore sqlRulesStore = new SqlRuleStore(sqlBRE.ConnectionString);
@@ -6103,7 +6137,7 @@ namespace BizTalkAdminOperations
                 VocabularyInfoCollection dstvocabularyInfos = sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
 
                 //Importing Vocabualries
-                files = Directory.GetFiles(brePath, "Vocabualary*.xml");
+                var files = Directory.GetFiles(brePath, "Vocabualary*.xml");
                 if (files.Length != 0)
                 {
                     string[] vocabualrySet = new string[dstvocabularyInfos.Count];
@@ -6909,6 +6943,7 @@ namespace BizTalkAdminOperations
                                 "Server=" + srcSSOSqlInstance +
                                 ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                             {
+                                sqlCon.Open();
                                 string text =
                                     "SELECT  [ai_app_name],[ai_description],[ai_contact_info],[ai_user_group_name],[ai_admin_group_name],[ai_flags],[ai_num_fields],[ai_purge_id],[ai_audit_id],[ai_ticket_timeout] FROM [SSODB].[dbo].[SSOX_ApplicationInfo] where [ai_app_name] = @AppName";
                                 using (var sqlCmd = new SqlCommand(text, sqlCon))

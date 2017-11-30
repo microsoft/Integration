@@ -1339,29 +1339,39 @@ namespace RemoteOperations
                 try
                 {
                     //Getting the List of Policies associated to Application
-                    SqlConnection sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName +
-                                                             ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                    sqlCon.Open();
-                    string sqlQuery =
-                        "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
-                    SqlDataAdapter sqlDataAd = new SqlDataAdapter(sqlQuery, sqlCon);
-                    DataSet ds = new DataSet();
-                    sqlDataAd.Fill(ds);
-                    string[] arrBREPolicies = new string[ds.Tables[0].Rows.Count];
-                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    string[] arrBREPolicies;
+                    using (var sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                     {
-                        arrBREPolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." +
-                                            ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] +
-                                            "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[
-                                                1];
-                    }
+                        sqlCon.Open();
+                        string sqlQuery =
+                            "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
+                        using (var sqlDataAd = new SqlDataAdapter(sqlQuery, sqlCon))
+                        {
+                            using (var ds = new DataSet())
+                            {
+                                sqlDataAd.Fill(ds);
+                                arrBREPolicies = new string[ds.Tables[0].Rows.Count];
+                                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                                {
+                                    arrBREPolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." +
+                                                        ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] +
+                                                        "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[
+                                                            1];
+                                }
+                            }
+                        }
 
-                    //Creating BRERuleEngineDb Connection
-                    SqlCommand sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon);
-                    SqlDataReader sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                    while (sqlRed.Read())
-                    {
-                        srcBRESqlInstance = sqlRed.GetString(0);
+                        //Creating BRERuleEngineDb Connection
+                        using (var sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon))
+                        {
+                            using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                            {
+                                while (sqlRed.Read())
+                                {
+                                    srcBRESqlInstance = sqlRed.GetString(0);
+                                }
+                            }
+                        }
                     }
                     //Creating Business RuleEngineDB COnnection
                     SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder(
@@ -1404,38 +1414,41 @@ namespace RemoteOperations
 
                                 string vocabQuery =
                                     "select A.nRuleSetID,A.strName as policyName,B.nVocabularyID,C.nVocabularyID,C.strName as VocabularyName from re_ruleset(nolock) as A,re_ruleset_to_vocabulary_links As B,re_vocabulary As C where A.nRuleSetID = B.nReferingRuleset and B.nVocabularyID = C.nVocabularyID and C.strName not in('Predicates','Functions','Common Values','Common Sets') and A.strName = @strPolicyName";
-                                SqlDataAdapter sqlVocabad = new SqlDataAdapter(vocabQuery, sqlBRE.ConnectionString);
-                                sqlVocabad.SelectCommand.Parameters.AddWithValue("@strPolicyName", ruleSetInfo.Name);
-                                DataSet dsVocab = new DataSet();
-                                sqlVocabad.Fill(dsVocab);
-                                VocabularyInfoCollection vocabularyInfos =
-                                    sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
-                                foreach (DataRow dr in dsVocab.Tables[0].Rows)
+                                using (var sqlVocabad = new SqlDataAdapter(vocabQuery, sqlBRE.ConnectionString))
                                 {
-                                    string vocabularyName = dr["VocabularyName"].ToString();
-                                    foreach (VocabularyInfo vocabularyInfo in vocabularyInfos)
+                                    sqlVocabad.SelectCommand.Parameters.AddWithValue("@strPolicyName", ruleSetInfo.Name);
+                                    using (var dsVocab = new DataSet())
                                     {
-                                        try
+                                        sqlVocabad.Fill(dsVocab);
+                                        VocabularyInfoCollection vocabularyInfos =
+                                            sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
+                                        foreach (DataRow dr in dsVocab.Tables[0].Rows)
                                         {
-                                            if (vocabularyName == vocabularyInfo.Name)
+                                            string vocabularyName = dr["VocabularyName"].ToString();
+                                            foreach (VocabularyInfo vocabularyInfo in vocabularyInfos)
                                             {
-                                                var formattedVocabularyName = String.Format("{0}{1}.{2}.{3}.xml",
-                                                    "Vocabualary_", vocabularyInfo.Name, vocabularyInfo.MajorRevision,
-                                                    vocabularyInfo.MinorRevision);
-                                                rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo,
-                                                    brePath + "/" + formattedVocabularyName);
+                                                try
+                                                {
+                                                    if (vocabularyName == vocabularyInfo.Name)
+                                                    {
+                                                        var formattedVocabularyName = String.Format("{0}{1}.{2}.{3}.xml",
+                                                            "Vocabualary_", vocabularyInfo.Name, vocabularyInfo.MajorRevision,
+                                                            vocabularyInfo.MinorRevision);
+                                                        rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo,
+                                                            brePath + "/" + formattedVocabularyName);
+                                                    }
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    LogInfo("Exception occured, please check log file for details.", pRootPath);
+                                                    LogException(ex, pRootPath);
+
+                                                }
+
                                             }
                                         }
-                                        catch (Exception ex)
-                                        {
-                                            LogInfo("Exception occured, please check log file for details.", pRootPath);
-                                            LogException(ex, pRootPath);
-
-                                        }
-
                                     }
                                 }
-
                             }
                             catch (Exception ex)
                             {
@@ -1461,14 +1474,19 @@ namespace RemoteOperations
                 string brePath = pRootPath + "\\ExportedData\\BRE";
                 try
                 {
-                    SqlConnection sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName +
-                                                             ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                    sqlCon.Open();
-                    SqlCommand sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon);
-                    SqlDataReader sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                    while (sqlRed.Read())
+                    using (var sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                     {
-                        dstBRESqlInstance = sqlRed.GetString(0);
+                        sqlCon.Open();
+                        using (var sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon))
+                        {
+                            using (var sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                            {
+                                while (sqlRed.Read())
+                                {
+                                    dstBRESqlInstance = sqlRed.GetString(0);
+                                }
+                            }
+                        }
                     }
                     SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder(
                         "Server = " + dstBRESqlInstance +
