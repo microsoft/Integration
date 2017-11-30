@@ -1459,22 +1459,18 @@
         }
         
         public static HostSettingCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
-            if (mgmtScope == null) {
-                if (statMgmtScope == null) {
-                    mgmtScope = new ManagementScope();
-                    mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
-                }
-                else {
-                    mgmtScope = statMgmtScope;
-                }
+            if (mgmtScope == null)
+            {
+                mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
-            ManagementPath pathObj = new ManagementPath();
-            pathObj.ClassName = "MSBTS_HostSetting";
-            pathObj.NamespacePath = "root\\MicrosoftBizTalkServer";
+            ManagementPath pathObj = new ManagementPath
+            {
+                ClassName = "MSBTS_HostSetting",
+                NamespacePath = "root\\MicrosoftBizTalkServer"
+            };
             ManagementClass clsObject = new ManagementClass(mgmtScope, pathObj, null);
             if (enumOptions == null) {
-                enumOptions = new EnumerationOptions();
-                enumOptions.EnsureLocatable = true;
+                enumOptions = new EnumerationOptions {EnsureLocatable = true};
             }
             return new HostSettingCollection(clsObject.GetInstances(enumOptions));
         }
@@ -1488,32 +1484,19 @@
         }
         
         public static HostSettingCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
-            if (mgmtScope == null) {
-                if (statMgmtScope == null) {
-                    mgmtScope = new ManagementScope();
-                    mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
-                }
-                else {
-                    mgmtScope = statMgmtScope;
-                }
+            if (mgmtScope == null)
+            {
+                mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
-            ManagementObjectSearcher ObjectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_HostSetting", condition, selectedProperties));
-            EnumerationOptions enumOptions = new EnumerationOptions();
-            enumOptions.EnsureLocatable = true;
-            ObjectSearcher.Options = enumOptions;
-            return new HostSettingCollection(ObjectSearcher.Get());
+            ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_HostSetting", condition, selectedProperties));
+            EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
+            objectSearcher.Options = enumOptions;
+            return new HostSettingCollection(objectSearcher.Get());
         }
         
         [Browsable(true)]
         public static HostSetting CreateInstance() {
-            ManagementScope mgmtScope = null;
-            if (statMgmtScope == null) {                
-                mgmtScope = new ManagementScope();
-                mgmtScope.Path.NamespacePath = CreatedWmiNamespace;               
-            }
-            else {
-                mgmtScope = statMgmtScope;
-            }
+            var mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = CreatedWmiNamespace}};
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
             ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
             return new HostSetting(tmpMgmtClass.CreateInstance());
@@ -1521,22 +1504,16 @@
         [Browsable(true)]
         public static HostSetting CreateInstance(string pServer, string pUserName,string pPassword, string pDomain)
         {
-            ManagementScope mgmtScope = null;
-            if (statMgmtScope == null)
+            var mgmtScope = statMgmtScope ?? new ManagementScope
             {
-                mgmtScope = new ManagementScope();
-                mgmtScope.Path.NamespacePath = "\\\\" + pServer +  CreatedWmiNamespace;
-
-                ConnectionOptions connection = new ConnectionOptions();
-                connection.Username = pUserName;
-                connection.Password = pPassword;
-                connection.Authority = "ntlmdomain:" + pDomain;
-                mgmtScope.Options = connection;
-            }
-            else
-            {
-                mgmtScope = statMgmtScope;
-            }
+                Path = {NamespacePath = "\\\\" + pServer + CreatedWmiNamespace},
+                Options = new ConnectionOptions
+                {
+                    Username = pUserName,
+                    Password = pPassword,
+                    Authority = "ntlmdomain:" + pDomain
+                }
+            };
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
             ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
             return new HostSetting(tmpMgmtClass.CreateInstance());
@@ -1622,57 +1599,57 @@
         // TypeConverter to handle null values for ValueType properties
         public class WMIValueTypeConverter : TypeConverter {
             
-            private readonly TypeConverter baseConverter;
+            private readonly TypeConverter _baseConverter;
             
-            private readonly Type baseType;
+            private readonly Type _baseType;
             
             public WMIValueTypeConverter(Type inBaseType) {
-                baseConverter = TypeDescriptor.GetConverter(inBaseType);
-                baseType = inBaseType;
+                _baseConverter = TypeDescriptor.GetConverter(inBaseType);
+                _baseType = inBaseType;
             }
             
             public override bool CanConvertFrom(ITypeDescriptorContext context, Type srcType) {
-                return baseConverter.CanConvertFrom(context, srcType);
+                return _baseConverter.CanConvertFrom(context, srcType);
             }
             
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
-                return baseConverter.CanConvertTo(context, destinationType);
+                return _baseConverter.CanConvertTo(context, destinationType);
             }
             
             public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
-                return baseConverter.ConvertFrom(context, culture, value);
+                return _baseConverter.ConvertFrom(context, culture, value);
             }
             
             public override object CreateInstance(ITypeDescriptorContext context, IDictionary dictionary) {
-                return baseConverter.CreateInstance(context, dictionary);
+                return _baseConverter.CreateInstance(context, dictionary);
             }
             
             public override bool GetCreateInstanceSupported(ITypeDescriptorContext context) {
-                return baseConverter.GetCreateInstanceSupported(context);
+                return _baseConverter.GetCreateInstanceSupported(context);
             }
             
             public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributeVar) {
-                return baseConverter.GetProperties(context, value, attributeVar);
+                return _baseConverter.GetProperties(context, value, attributeVar);
             }
             
             public override bool GetPropertiesSupported(ITypeDescriptorContext context) {
-                return baseConverter.GetPropertiesSupported(context);
+                return _baseConverter.GetPropertiesSupported(context);
             }
             
             public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
-                return baseConverter.GetStandardValues(context);
+                return _baseConverter.GetStandardValues(context);
             }
             
             public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) {
-                return baseConverter.GetStandardValuesExclusive(context);
+                return _baseConverter.GetStandardValuesExclusive(context);
             }
             
             public override bool GetStandardValuesSupported(ITypeDescriptorContext context) {
-                return baseConverter.GetStandardValuesSupported(context);
+                return _baseConverter.GetStandardValuesSupported(context);
             }
             
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
-                if (baseType.BaseType == typeof(Enum)) {
+                if (_baseType.BaseType == typeof(Enum)) {
                     if (value.GetType() == destinationType) {
                         return value;
                     }
@@ -1681,22 +1658,22 @@
                         && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                         return  "NULL_ENUM_VALUE" ;
                     }
-                    return baseConverter.ConvertTo(context, culture, value, destinationType);
+                    return _baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
-                if (baseType == typeof(bool) 
-                    && baseType.BaseType == typeof(ValueType)) {
+                if (_baseType == typeof(bool) 
+                    && _baseType.BaseType == typeof(ValueType)) {
                     if (value == null 
                         && context != null 
                         && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                         return "";
                     }
-                    return baseConverter.ConvertTo(context, culture, value, destinationType);
+                    return _baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
                 if (context != null 
                     && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                     return "";
                 }
-                return baseConverter.ConvertTo(context, culture, value, destinationType);
+                return _baseConverter.ConvertTo(context, culture, value, destinationType);
             }
         }
         

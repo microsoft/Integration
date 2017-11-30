@@ -367,10 +367,13 @@ namespace BizTalkAdminOperations
                 LogInfo("Connecting to BizTalkMgmtdb...." + txtConnectionString.Text);
 
                 Hosts hosts;
-                using (var connection = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                using (var connection = new SqlConnection("Server=" + txtConnectionString.Text.Trim() +
+                                                          ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
                     connection.Open();
-                    using (var sqlCmd = new SqlCommand("SELECT Name HostName,NTGroupName, cast(HostTracking as bit) HostTracking, cast(AuthTrusted as bit) Trusted, CASE WHEN HostType = 1 THEN 1 ELSE 0 END AS HostType, IsHost32BitOnly Is32Bit FROM adm_host", connection))
+                    using (var sqlCmd = new SqlCommand(
+                        "SELECT Name HostName,NTGroupName, cast(HostTracking as bit) HostTracking, cast(AuthTrusted as bit) Trusted, CASE WHEN HostType = 1 THEN 1 ELSE 0 END AS HostType, IsHost32BitOnly Is32Bit FROM adm_host",
+                        connection))
                     {
                         using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
                         {
@@ -380,33 +383,34 @@ namespace BizTalkAdminOperations
 
                                 ds.Tables[0].TableName = "Host";
 
-                                hosts = new Hosts();
-                                hosts.Host = new HostsHost[ds.Tables["Host"].Rows.Count];
-                                int i = 0;
-                                foreach (DataRow dRow in ds.Tables["Host"].Rows)
+                                hosts = new Hosts
                                 {
-                                    hosts.Host[i] = new HostsHost();
+                                    Host = ds.Tables["Host"].Rows.Cast<DataRow>().Select(dRow => new HostsHost
+                                    {
+                                        authenticationTrusted = Convert.ToBoolean(dRow["Trusted"]),
+                                        hostTracking = Convert.ToBoolean(dRow["HostTracking"]),
+                                        inProcess = Convert.ToBoolean(dRow["HostType"]),
+                                        is32bit = Convert.ToBoolean(dRow["Is32Bit"]),
+                                        isDefaultHost = false,
+                                        name = dRow["HostName"].ToString(),
+                                        ntGroupName = dRow["NTGroupName"].ToString(),
+                                        HostInstance = new []
+                                        {
+                                            new HostsHostHostInstance
+                                            {
+                                                server = "",
+                                                password = "",
+                                                userName = ""
+                                            }
 
-                                    hosts.Host[i].authenticationTrusted = Convert.ToBoolean(dRow["Trusted"]);
-                                    hosts.Host[i].hostTracking = Convert.ToBoolean(dRow["HostTracking"]);
-                                    hosts.Host[i].inProcess = Convert.ToBoolean(dRow["HostType"]);
-                                    hosts.Host[i].is32bit = Convert.ToBoolean(dRow["Is32Bit"]);
-                                    hosts.Host[i].isDefaultHost = false;
-                                    hosts.Host[i].name = dRow["HostName"].ToString();
-                                    hosts.Host[i].ntGroupName = dRow["NTGroupName"].ToString();
-
-                                    hosts.Host[i].HostInstance = new HostsHostHostInstance[1];
-                                    hosts.Host[i].HostInstance[0] = new HostsHostHostInstance();
-                                    hosts.Host[i].HostInstance[0].server = "";
-                                    hosts.Host[i].HostInstance[0].password = "";
-                                    hosts.Host[i].HostInstance[0].userName = "";
-
-                                    i++;
-                                }
+                                        }
+                                    }).ToArray()
+                                };
                             }
                         }
                     }
                 }
+
 
                 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -414,8 +418,8 @@ namespace BizTalkAdminOperations
                 ns.Add("", "");
 
                 XmlSerializer x = new XmlSerializer(hosts.GetType());
-                XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-                xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                XmlWriterSettings xmlWriterSetting =
+                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
 
                 xmlWriterApps = XmlWriter.Create(xmlPath + @"\HostInstances.xml", xmlWriterSetting);
@@ -527,9 +531,8 @@ namespace BizTalkAdminOperations
                     //get all HostInstances of 'InProcess' type.
 
                     ManagementObjectSearcher searchObject = null;
-                    EnumerationOptions enumOptions = new EnumerationOptions();
-                    enumOptions.ReturnImmediately = false;
-                   
+                    EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
+
 
                     //Creating DestinationHostList
                     searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host", enumOptions);
@@ -756,13 +759,11 @@ namespace BizTalkAdminOperations
                     objRcvHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null);
                     objSndHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer", "MSBTS_SendHandler2", null);
                 }
-                PutOptions options = new PutOptions();
-                options.Type = PutType.CreateOnly;
+                PutOptions options = new PutOptions {Type = PutType.CreateOnly};
 
                 //Get Rcv Handler List from Dst
                 ManagementObjectSearcher searchObject = null;
-                EnumerationOptions enumOptions = new EnumerationOptions();
-                enumOptions.ReturnImmediately = false;
+                EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
                 searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_ReceiveHandler", enumOptions);
                 foreach (var inst in searchObject.Get())
                 {
@@ -848,43 +849,43 @@ namespace BizTalkAdminOperations
                     RcvSndHandlers rcvSndHandlers = new RcvSndHandlers();
 
                     // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    {
+                        ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                    };
 
                     // connection string to the BizTalk management database where the ports will be created
-                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
 
                     //Get All Handlers
                     ReceiveHandlerCollection rcvHandCol = btsExp.ReceiveHandlers;
                     LogInfo("Conneceted");
                     SendHandlerCollection sndHandCol = btsExp.SendHandlers;
 
-                    rcvSndHandlers.RcvSndHandler = new RcvSndHandlersRcvSndHandler[sndHandCol.Count + rcvHandCol.Count];
-
-                    int i = 0;
-
-                    foreach (ReceiveHandler rcvHandler in rcvHandCol)
-                    {
-                        if (rcvHandler.Host.Name != "BizTalkServerApplication" && rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
-                        {
-                            rcvSndHandlers.RcvSndHandler[i] = new RcvSndHandlersRcvSndHandler();
-                            rcvSndHandlers.RcvSndHandler[i].AdapterName = rcvHandler.TransportType.Name;
-                            rcvSndHandlers.RcvSndHandler[i].Direction = "0";
-                            rcvSndHandlers.RcvSndHandler[i].HostName = rcvHandler.Host.Name;
-                            i++;
-                        }
-                    }
-
-                    foreach (SendHandler sndHandler in sndHandCol)
-                    {
-                        if (sndHandler.Host.Name != "BizTalkServerApplication" && sndHandler.Host.Name != "BizTalkServerIsolatedHost")
-                        {
-                            rcvSndHandlers.RcvSndHandler[i] = new RcvSndHandlersRcvSndHandler();
-                            rcvSndHandlers.RcvSndHandler[i].AdapterName = sndHandler.TransportType.Name;
-                            rcvSndHandlers.RcvSndHandler[i].Direction = "1";
-                            rcvSndHandlers.RcvSndHandler[i].HostName = sndHandler.Host.Name;
-                            i++;
-                        }
-                    }
+                    rcvSndHandlers.RcvSndHandler = rcvHandCol
+                        .Cast<ReceiveHandler>()
+                        .Where(rcvHandler =>
+                            rcvHandler.Host.Name != "BizTalkServerApplication" &&
+                            rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
+                        .Select(rcvHandler =>
+                            new RcvSndHandlersRcvSndHandler
+                            {
+                                AdapterName = rcvHandler.TransportType.Name,
+                                Direction = "0",
+                                HostName = rcvHandler.Host.Name
+                            })
+                        .Concat(sndHandCol
+                            .Cast<SendHandler>()
+                            .Where(sndHandler =>
+                                sndHandler.Host.Name != "BizTalkServerApplication" &&
+                                sndHandler.Host.Name != "BizTalkServerIsolatedHost").Select(sndHandler =>
+                                new RcvSndHandlersRcvSndHandler
+                                {
+                                    AdapterName = sndHandler.TransportType.Name,
+                                    Direction = "1",
+                                    HostName = sndHandler.Host.Name
+                                }))
+                        .ToArray();
 
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -892,8 +893,8 @@ namespace BizTalkAdminOperations
                     ns.Add("", "");
 
                     XmlSerializer x = new XmlSerializer(rcvSndHandlers.GetType());
-                    XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-                    xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                    XmlWriterSettings xmlWriterSetting =
+                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
 
                     xmlWriterApps = XmlWriter.Create(xmlPath + @"\Handlers.xml", xmlWriterSetting);
@@ -1134,20 +1135,16 @@ namespace BizTalkAdminOperations
                     var htApps = new Dictionary<string, int>();
                     MSIAPP(appCol, htApps);
 
-                    int i = 0;
-
-                    bizTalkApps.BizTalkApplication = new BizTalkApplicationsBizTalkApplication[htApps.Count];
-
-                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
-                    {
-                        if (!bizTalkAppToIgnore.Contains(app.Name)) //ignore existing system apps
-                        {
-                            bizTalkApps.BizTalkApplication[i] = new BizTalkApplicationsBizTalkApplication();
-                            bizTalkApps.BizTalkApplication[i].DependencyCode = htApps[app.Name].ToString();
-                            bizTalkApps.BizTalkApplication[i].ApplicationName = app.Name;
-                            i++;
-                        }
-                    }
+                    bizTalkApps.BizTalkApplication = appCol
+                        .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
+                        .Where(app => !bizTalkAppToIgnore.Contains(app.Name))
+                        .Select(app =>
+                            new BizTalkApplicationsBizTalkApplication
+                            {
+                                DependencyCode = htApps[app.Name].ToString(),
+                                ApplicationName = app.Name
+                            })
+                        .ToArray();
 
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -1155,8 +1152,8 @@ namespace BizTalkAdminOperations
                     ns.Add("", "");
 
                     x = new XmlSerializer(bizTalkApps.GetType());
-                    XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-                    xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                    XmlWriterSettings xmlWriterSetting =
+                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
                     xmlWriterApps = XmlWriter.Create(xmlPath + @"\Apps.xml", xmlWriterSetting);
                     x.Serialize(xmlWriterApps, bizTalkApps, ns);
@@ -1252,9 +1249,12 @@ namespace BizTalkAdminOperations
                 for (int i = 0; i < appcount; i++)
                 {
                     // instantiate new instance of Explorer OM                
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    {
+                        ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                    };
                     // connection string to the BizTalk management database where the ports will be created
-                    btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
 
                     appName = appList[i].DcodeAppName.Split(charSeprator)[1];
 
@@ -1743,8 +1743,7 @@ namespace BizTalkAdminOperations
                 //Encrypting Passwords
                 if (File.Exists(xmlPath + @"\AppPools.xml"))
                 {
-                    FileInfo fileInfo = new FileInfo(xmlPath + @"\AppPools.xml");
-                    fileInfo.IsReadOnly = false;
+                    FileInfo fileInfo = new FileInfo(xmlPath + @"\AppPools.xml") {IsReadOnly = false};
                     fileInfo.Refresh();
                     XmlDocument xmldoc = new XmlDocument();
 
@@ -2758,45 +2757,11 @@ namespace BizTalkAdminOperations
                     //Get All Applications
                     Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
                     LogInfo("Connected.");
-                    int asmCount = 0;
-                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+
+                    asmList = new AssemblyList
                     {
-                        if (appNameCollectionString.Contains(app.Name))
-                        {
-                            BtsAssemblyCollection asmCol = app.Assemblies;
-
-                            foreach (BtsAssembly btAsm in asmCol)
-                            {
-                                if (!btAsm.IsSystem)
-                                {
-                                    asmCount++;
-                                }
-                            }
-                        }
-                    }
-                    asmList = new AssemblyList();
-                    asmList.Assembly = new AssemblyListAssembly[asmCount];
-                    int i = 0;
-                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
-                    {
-                        if (appNameCollectionString.Contains(app.Name))
-                        {
-                            BtsAssemblyCollection asmCol = app.Assemblies;
-
-                            foreach (BtsAssembly btAsm in asmCol)
-                            {
-                                if (!btAsm.IsSystem)
-                                {
-                                    asmList.Assembly[i] = new AssemblyListAssembly();
-                                    asmList.Assembly[i].AppName = app.Name;
-                                    asmList.Assembly[i].AsmName = btAsm.Name;
-                                    asmList.Assembly[i].AsmVer = btAsm.Version;
-
-                                    i++;
-                                }
-                            }
-                        }
-                    }
+                        Assembly = GetAssemblyList(appCol, appNameCollectionString).ToArray()
+                    };
 
                     //BEGIN::asm Custom list
 
@@ -2809,8 +2774,8 @@ namespace BizTalkAdminOperations
                     ns.Add("", "");
 
                     x = new XmlSerializer(asmList.GetType());
-                    XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-                    xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                    XmlWriterSettings xmlWriterSetting =
+                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
                     xmlWriterApps = XmlWriter.Create(xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting);
                     x.Serialize(xmlWriterApps, asmList, ns);
@@ -2845,6 +2810,24 @@ namespace BizTalkAdminOperations
             finally
             {
                 xmlWriterApps?.Close();
+            }
+        }
+
+        private IEnumerable<AssemblyListAssembly> GetAssemblyList(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, string appNameCollectionString)
+        {
+            foreach (var app in appCol
+                .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
+                .Where(app => appNameCollectionString.Contains(app.Name)))
+            {
+                foreach (var btAsm in app.Assemblies.Cast<BtsAssembly>().Where(btAsm => !btAsm.IsSystem))
+                {
+                    yield return new AssemblyListAssembly
+                    {
+                        AppName = app.Name,
+                        AsmVer = btAsm.Version,
+                        AsmName = btAsm.Name
+                    };
+                }
             }
         }
 
@@ -5700,8 +5683,8 @@ namespace BizTalkAdminOperations
                 ns.Add("", "");
 
                 XmlSerializer x = new XmlSerializer(srv.GetType());
-                XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-                xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                XmlWriterSettings xmlWriterSetting =
+                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
                 xmlWriterApps = XmlWriter.Create(serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
@@ -5752,8 +5735,8 @@ namespace BizTalkAdminOperations
                 ns.Add("", "");
 
                 XmlSerializer x = new XmlSerializer(srv.GetType());
-                XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-                xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                XmlWriterSettings xmlWriterSetting =
+                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
                 xmlWriterApps = XmlWriter.Create(serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
@@ -5797,8 +5780,8 @@ namespace BizTalkAdminOperations
                 ns.Add("", "");
 
                 XmlSerializer x = new XmlSerializer(srv.GetType());
-                XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-                xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                XmlWriterSettings xmlWriterSetting =
+                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
                 xmlWriterApps = XmlWriter.Create(serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
@@ -5968,8 +5951,7 @@ namespace BizTalkAdminOperations
         {
             string configPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string configFile = Path.Combine(configPath, "MigrationTool.exe.config");
-            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = configFile;
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
             System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
             remoteRootFolder = config.AppSettings.Settings["RemoteRootFolder"].Value;
             bizTalkAppToIgnore = config.AppSettings.Settings["BizTalkAppToIgnore"].Value;
@@ -6362,12 +6344,14 @@ namespace BizTalkAdminOperations
             try
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
+                TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider
+                {
+                    Mode = CipherMode.ECB,
+                    Key = keyArray,
+                    Padding = PaddingMode.PKCS7
+                };
 
-                DES.Mode = CipherMode.ECB;
-                DES.Key = keyArray;
 
-                DES.Padding = PaddingMode.PKCS7;
                 ICryptoTransform DESEncrypt = DES.CreateEncryptor();
                 Byte[] Buffer = Encoding.ASCII.GetBytes(data);
 
@@ -6386,12 +6370,14 @@ namespace BizTalkAdminOperations
             try
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
+                TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider
+                {
+                    Mode = CipherMode.ECB,
+                    Key = keyArray,
+                    Padding = PaddingMode.PKCS7
+                };
 
-                DES.Mode = CipherMode.ECB;
-                DES.Key = keyArray;
 
-                DES.Padding = PaddingMode.PKCS7;
                 ICryptoTransform DESEncrypt = DES.CreateDecryptor();
                 Byte[] Buffer = Convert.FromBase64String(data.Replace(" ", "+"));
 
@@ -6410,10 +6396,13 @@ namespace BizTalkAdminOperations
             try
             {
 
-                BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                {
+                    ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                       ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                };
 
                 // connection string to the BizTalk management database where the ports will be created
-                btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                 HostCollection hosts = btsExp.Hosts;
                 for (int i = 0; i < cmbBoxServerSrc.Items.Count; i++)
                 {
@@ -6511,10 +6500,13 @@ namespace BizTalkAdminOperations
                         string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                         string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
-                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                        {
+                            ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                               ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                        };
 
                         // connection string to the BizTalk management database where the ports will be created
-                        btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                         //Get the Hosts Present in  Destination
                         HostCollection dsthostCollection = btsExp.Hosts;
                         string[] hostArray = new string[dsthostCollection.Count];
@@ -6575,10 +6567,13 @@ namespace BizTalkAdminOperations
                         string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                         string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
-                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                        {
+                            ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                               ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                        };
 
                         // connection string to the BizTalk management database where the ports will be created
-                        btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                         //Get the Hosts Present in  Destination
                         HostCollection dsthostCollection = btsExp.Hosts;
                         string[] hostArray = new string[dsthostCollection.Count];
@@ -6645,10 +6640,13 @@ namespace BizTalkAdminOperations
                             srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[0] + "_HostMappings.xml";
                         string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
-                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                        {
+                            ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                               ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                        };
 
                         // connection string to the BizTalk management database where the ports will be created
-                        btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                         //Get the Hosts Present in  Destination
                         HostCollection dsthostCollection = btsExp.Hosts;
                         string[] hostArray = new string[dsthostCollection.Count];

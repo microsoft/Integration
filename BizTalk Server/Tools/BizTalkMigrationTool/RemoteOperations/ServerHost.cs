@@ -573,22 +573,18 @@
         }
         
         public static ServerHostCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
-            if (mgmtScope == null) {
-                if (statMgmtScope == null) {
-                    mgmtScope = new ManagementScope();
-                    mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
-                }
-                else {
-                    mgmtScope = statMgmtScope;
-                }
+            if (mgmtScope == null)
+            {
+                mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
-            ManagementPath pathObj = new ManagementPath();
-            pathObj.ClassName = "MSBTS_ServerHost";
-            pathObj.NamespacePath = "root\\MicrosoftBizTalkServer";
+            ManagementPath pathObj = new ManagementPath
+            {
+                ClassName = "MSBTS_ServerHost",
+                NamespacePath = "root\\MicrosoftBizTalkServer"
+            };
             ManagementClass clsObject = new ManagementClass(mgmtScope, pathObj, null);
             if (enumOptions == null) {
-                enumOptions = new EnumerationOptions();
-                enumOptions.EnsureLocatable = true;
+                enumOptions = new EnumerationOptions {EnsureLocatable = true};
             }
             return new ServerHostCollection(clsObject.GetInstances(enumOptions));
         }
@@ -602,32 +598,19 @@
         }
         
         public static ServerHostCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
-            if (mgmtScope == null) {
-                if (statMgmtScope == null) {
-                    mgmtScope = new ManagementScope();
-                    mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
-                }
-                else {
-                    mgmtScope = statMgmtScope;
-                }
+            if (mgmtScope == null)
+            {
+                mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
-            ManagementObjectSearcher ObjectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_ServerHost", condition, selectedProperties));
-            EnumerationOptions enumOptions = new EnumerationOptions();
-            enumOptions.EnsureLocatable = true;
-            ObjectSearcher.Options = enumOptions;
-            return new ServerHostCollection(ObjectSearcher.Get());
+            ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_ServerHost", condition, selectedProperties));
+            EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
+            objectSearcher.Options = enumOptions;
+            return new ServerHostCollection(objectSearcher.Get());
         }
         
         [Browsable(true)]
         public static ServerHost CreateInstance() {
-            ManagementScope mgmtScope = null;
-            if (statMgmtScope == null) {
-                mgmtScope = new ManagementScope();
-                mgmtScope.Path.NamespacePath = CreatedWmiNamespace;
-            }
-            else {
-                mgmtScope = statMgmtScope;
-            }
+            var mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = CreatedWmiNamespace}};
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
             ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
             return new ServerHost(tmpMgmtClass.CreateInstance());
@@ -636,23 +619,16 @@
         [Browsable(true)]
         public static ServerHost CreateInstance(string pServer, string pUserName,string pPassword, string pDomain)
         {
-            ManagementScope mgmtScope = null;
-            if (statMgmtScope == null)
+            var mgmtScope = statMgmtScope ?? new ManagementScope
             {
-                mgmtScope = new ManagementScope();
-                mgmtScope.Path.NamespacePath = "\\\\" + pServer + "\\" + CreatedWmiNamespace;
-
-                ConnectionOptions connection = new ConnectionOptions();
-                connection.Username = pUserName;
-                connection.Password = pPassword;
-                connection.Authority = "ntlmdomain:" + pDomain;
-                mgmtScope.Options = connection;
-
-            }
-            else
-            {
-                mgmtScope = statMgmtScope;
-            }
+                Path = {NamespacePath = "\\\\" + pServer + "\\" + CreatedWmiNamespace},
+                Options = new ConnectionOptions
+                {
+                    Username = pUserName,
+                    Password = pPassword,
+                    Authority = "ntlmdomain:" + pDomain
+                }
+            };
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
             ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
             return new ServerHost(tmpMgmtClass.CreateInstance());
