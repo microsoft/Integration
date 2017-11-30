@@ -221,7 +221,7 @@ namespace RemoteOperations
 
                 return 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 1;
             }
@@ -2306,38 +2306,33 @@ public void LogException(Exception ex, string pPath)
             private int ExecuteCmd(string cmdName, string cmdArg,string pPath)
             {
                 string commandArguments = cmdArg;
-                int exitCode;
-                Process p = new Process();
-                try
+                using (var p = new Process())
                 {
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.FileName = cmdName;
-                    p.StartInfo.Arguments = commandArguments;
-                    p.StartInfo.RedirectStandardError = true;
-                    p.ErrorDataReceived += p_ErrorDataReceived;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.OutputDataReceived += p_OutputDataReceived;
-                    p.StartInfo.CreateNoWindow = true;
-                    p.Start();
-                    //Write result
-                    p.BeginOutputReadLine();
-                    p.BeginErrorReadLine();
-                    p.WaitForExit();
-                    exitCode = p.ExitCode;
-                    p.Close();
-                    //return strSuccess;
-                }
-                catch (Exception ex)
-                {
-                    exitCode = 1;
-                    LogException(ex,pPath);
-                }
-                finally
-                {
-                    p.Dispose();
+                    try
+                    {
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.FileName = cmdName;
+                        p.StartInfo.Arguments = commandArguments;
+                        p.StartInfo.RedirectStandardError = true;
+                        p.ErrorDataReceived += p_ErrorDataReceived;
+                        p.StartInfo.RedirectStandardOutput = true;
+                        p.OutputDataReceived += p_OutputDataReceived;
+                        p.StartInfo.CreateNoWindow = true;
+                        p.Start();
+                        //Write result
+                        p.BeginOutputReadLine();
+                        p.BeginErrorReadLine();
+                        p.WaitForExit();
+                        return p.ExitCode;
+                        //return strSuccess;
+                    }
+                    catch (Exception ex)
+                    {
+                        LogException(ex,pPath);
+                    }
                 }
 
-                return exitCode;
+                return 1;
             }
 
             void p_OutputDataReceived(object sender, DataReceivedEventArgs e)

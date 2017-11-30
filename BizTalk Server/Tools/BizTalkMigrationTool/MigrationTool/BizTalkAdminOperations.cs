@@ -4949,7 +4949,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Exception occured while genrating Delta of AppPools to be Imported, please check log file for details.");
                 LogException(ex);
-                throw (ex);
+                throw;
             }
         }
 
@@ -5036,7 +5036,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Exception occured while genrating Delta of WebApps to be Imported, please check log file for details.");
                 LogException(ex);
-                throw (ex);
+                throw;
             }
         }
 
@@ -5129,7 +5129,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Exception occured while genrating Delta for WebSites to be Imported, please check log file for details.");
                 LogException(ex);
-                throw (ex);
+                throw;
             }
         }
 
@@ -5157,7 +5157,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Exception occured while genrating Delta for WebSites to be Imported, please check log file for details.");
                 LogException(ex);
-                throw (ex);
+                throw;
             }
         }
       
@@ -5217,7 +5217,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Exception occured while genrating Delta for Assembly list to be Imported, please check log file for details.");
                 LogException(ex);
-                throw (ex);
+                throw;
             }
             finally
             {
@@ -5334,7 +5334,7 @@ namespace BizTalkAdminOperations
            {
                LogShortErrorMsg("Exception occured while genrating Delta for Assembly list to be Imported, please check log file for details.");
                LogException(ex);
-                throw (ex);
+                throw;
           }
             }
 
@@ -5397,7 +5397,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Exception occured while genrating Delta for BamDef to be Imported, please check log file for details.");
                 LogException(ex);
-                throw (ex);
+                throw;
             }
         }
 
@@ -5718,38 +5718,34 @@ namespace BizTalkAdminOperations
         private int ExecuteCmd(string cmdName, string cmdArg)
         {
             string commandArguments = cmdArg;
-            int exitCode;
-            Process p = new Process();
-            try
+            using (var p = new Process())
             {
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.FileName = cmdName;
-                p.StartInfo.Arguments = commandArguments;
-                p.StartInfo.RedirectStandardError = true;
-                p.ErrorDataReceived += p_ErrorDataReceived;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.OutputDataReceived += p_OutputDataReceived;
-                p.StartInfo.CreateNoWindow = true;
-                p.Start();
-                //Write result
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
-                p.WaitForExit();
-                exitCode = p.ExitCode;
-                p.Close();                
-                //return strSuccess;
-            }
-            catch (Exception ex)
-            {
-                exitCode = 1;
-                LogException(ex);
-            }
-            finally
-            {
-                p.Dispose();
+                try
+                {
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.FileName = cmdName;
+                    p.StartInfo.Arguments = commandArguments;
+                    p.StartInfo.RedirectStandardError = true;
+                    p.ErrorDataReceived += p_ErrorDataReceived;
+                    p.StartInfo.RedirectStandardOutput = true;
+                    p.OutputDataReceived += p_OutputDataReceived;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.Start();
+                    //Write result
+                    p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
+                    p.WaitForExit();
+                    return p.ExitCode;
+             
+                    //return strSuccess;
+                }
+                catch (Exception ex)
+                {
+                    LogException(ex);
+                }
             }
 
-            return exitCode;
+            return 1;
         }
 
         private void SaveSrcSqlConnection()
@@ -6167,7 +6163,7 @@ namespace BizTalkAdminOperations
                         {
                             LogShortErrorMsg("Exception occured while Exporting Policy or Vocabualry, please check log file for details.");
                             LogException(ex);
-                            throw (ex);
+                            throw;
                         }
                     }
                 }
@@ -6176,7 +6172,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Exception Occured while Exporting BREPolicyVocabulary");
                 LogInfoSyncronously("Exception Occured while Exporting BREPolicyVocabulary " + ex.Message);
-                throw ex;
+                throw;
             }
 
         }
@@ -6292,7 +6288,7 @@ namespace BizTalkAdminOperations
             {
                 LogShortErrorMsg("Failed:Importing BREPolicyVocabulary.");
                 LogInfoSyncronously("Exception Occured while Importing BREPolicyVocabulary " + ex.Message);
-                throw ex;
+                throw;
             }
 
         }
@@ -6345,7 +6341,7 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 LogInfoSyncronously("Exception while Exporting IISClientCertificateOneToOneMappings  " + ex.Message);
-                throw ex;
+                throw;
             }
         }
 
@@ -6424,7 +6420,7 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 LogInfoSyncronously("Exception while Importing IISClientCertificateOneToOneMappings  " + ex.Message);
-                throw ex;
+                throw;
             }
         }
 
@@ -6448,7 +6444,7 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 LogInfoSyncronously("Exception while Encrypting Credentials  " + ex.Message);
-                throw ex;
+                throw;
             }
 
         }
@@ -6473,7 +6469,7 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 LogInfoSyncronously("Exception while Decrypting Credentials " + ex.Message);
-                throw ex;
+                throw;
             }
 
         }
@@ -6539,7 +6535,7 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 LogInfoSyncronously("Exception while Exporting Export HostMapping Settings  " + ex.Message);
-                throw ex;
+                throw;
             }
         }
 
@@ -6786,7 +6782,7 @@ namespace BizTalkAdminOperations
             {
                 LogInfoSyncronously("Exception while Importing HostMapping Settings  " + ex.Message);
                 LogException(ex);
-                throw ex;
+                throw;
             }
         }
 
@@ -6952,8 +6948,8 @@ namespace BizTalkAdminOperations
                                     applciationAdministrators = line.Split(':')[1].Trim();
                                 if (line.Contains("Contact info"))
                                     contactInfo = line.Split(':')[1].Trim();
-                                if(line.Contains("Ticket timeout (in minutes)"))
-                                    ticketTimeOut= line.Split(':')[1].Trim();
+                                if (line.Contains("Ticket timeout (in minutes)"))
+                                    ticketTimeOut = line.Split(':')[1].Trim();
                                 if (line.Contains("User Id"))
                                 {
                                     if (line.Split(':')[1].Trim() == "(Not Masked)")
@@ -6968,7 +6964,7 @@ namespace BizTalkAdminOperations
                                     else
                                         password = "yes";
                                 }
-                                if(line.Contains("Application type"))
+                                if (line.Contains("Application type"))
                                 {
                                     if (line.Split(':')[1].Trim() == "Group")
                                         groupApp = "yes";
@@ -6985,8 +6981,8 @@ namespace BizTalkAdminOperations
                                     adminAccountSame = line.Split(':')[1].Trim();
                                 if (line.Contains("tickets allowed"))
                                     ticketsAllowed = line.Split(':')[1].Trim();
-                                if(line.Contains("validate tickets"))
-                                    validateTickets= line.Split(':')[1].Trim();
+                                if (line.Contains("validate tickets"))
+                                    validateTickets = line.Split(':')[1].Trim();
                                 if (line.Contains("timeout tickets"))
                                     timeoutTickets = line.Split(':')[1].Trim();
 
@@ -6995,60 +6991,84 @@ namespace BizTalkAdminOperations
 
                             string AppName = Path.GetFileNameWithoutExtension(files[i]).Split('_')[1];
                             //create SQL COnnection
-                            SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-                            sqlCon.Open();
-                            SqlCommand sqlcmd = new SqlCommand("select distinct(ServerName) from [dbo].[adm_OtherDatabases] where DefaultDatabaseName = 'SSO' and ServerName not like '%.com%'", sqlCon);
-                            SqlDataReader sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
-                            string srcSSOSqlInstance = string.Empty;
-                            while (sqlRed.Read())
+                            string srcSSOSqlInstance;
+                            using (var sqlCon = new SqlConnection(
+                                "Server=" + txtConnectionString.Text.Trim() +
+                                ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                             {
-                                srcSSOSqlInstance = sqlRed.GetString(0);
+                                sqlCon.Open();
+                                using (var sqlcmd = new SqlCommand(
+                                    "select distinct(ServerName) from [dbo].[adm_OtherDatabases] where DefaultDatabaseName = 'SSO' and ServerName not like '%.com%'",
+                                    sqlCon))
+                                {
+                                    using (var sqlRed = sqlcmd.ExecuteReader())
+                                    {
+                                        srcSSOSqlInstance = string.Empty;
+                                        while (sqlRed.Read())
+                                        {
+                                            srcSSOSqlInstance = sqlRed.GetString(0);
+                                        }
+                                    }
+                                }
                             }
-                            SqlCommand sqlCmd = new SqlCommand();
-                            sqlCmd.Connection = new SqlConnection("Server=" + srcSSOSqlInstance + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
-
-                            sqlCmd.CommandText = "SELECT  [ai_app_name],[ai_description],[ai_contact_info],[ai_user_group_name],[ai_admin_group_name],[ai_flags],[ai_num_fields],[ai_purge_id],[ai_audit_id],[ai_ticket_timeout] FROM [SSODB].[dbo].[SSOX_ApplicationInfo] where [ai_app_name] ='" + AppName + "'"; 
-                            DataSet ds = new DataSet();
-                            SqlDataAdapter sqlDataAd = new SqlDataAdapter(sqlCmd);
-
-                            sqlDataAd.Fill(ds);
-                     
-                            using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + "SSOApp_" + AppName +"_ToImport" + ".xml"))
+                            using (var sqlCon = new SqlConnection(
+                                "Server=" + srcSSOSqlInstance +
+                                ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                             {
-                                writer.WriteStartElement("SSO");
-                                writer.WriteStartElement("application");
-                                writer.WriteAttributeString("name", applicationName);
-                                writer.WriteElementString("description", ds.Tables[0].Rows[0].ItemArray[1].ToString());
-                                writer.WriteElementString("Contact", ds.Tables[0].Rows[0].ItemArray[2].ToString());
-                                writer.WriteElementString("appUserAccount", ds.Tables[0].Rows[0].ItemArray[3].ToString());
-                                writer.WriteElementString("appAdminAccount", ds.Tables[0].Rows[0].ItemArray[4].ToString());
-                              //  writer.WriteElementString("ticketTimeout", ticketTimeOut);
-                                writer.WriteStartElement("field");
-                                writer.WriteAttributeString("ordinal", "0");
-                                writer.WriteAttributeString("label", "User Id");
-                                writer.WriteAttributeString("masked", userID);
-                                writer.WriteEndElement();
-                                writer.WriteStartElement("field");
-                                writer.WriteAttributeString("ordinal", "1");
-                                writer.WriteAttributeString("label", "Password");
-                                writer.WriteAttributeString("masked", password);
-                                writer.WriteEndElement();
-                                writer.WriteStartElement("flags");
-                                writer.WriteAttributeString("groupApp", groupApp);
-                                writer.WriteAttributeString("adminAccountSame", adminAccountSame.ToLower());
-                                writer.WriteAttributeString("allowLocalAccounts", allowLocalAccounts.ToLower());
-                                writer.WriteAttributeString("enableApp", applicationEnabled.ToLower());
-                                writer.WriteAttributeString("allowTickets", ticketsAllowed.ToLower());
-                                if (validateTickets != string.Empty)
-                                    writer.WriteAttributeString("validateTickets", validateTickets.ToLower());
-                                if (timeoutTickets != string.Empty)
-                                    writer.WriteAttributeString("timeoutTickets", timeoutTickets.ToLower());
-                                writer.WriteEndElement();
-                                writer.WriteEndElement();
-                                writer.WriteEndElement();
+                                string text =
+                                    "SELECT  [ai_app_name],[ai_description],[ai_contact_info],[ai_user_group_name],[ai_admin_group_name],[ai_flags],[ai_num_fields],[ai_purge_id],[ai_audit_id],[ai_ticket_timeout] FROM [SSODB].[dbo].[SSOX_ApplicationInfo] where [ai_app_name] = @AppName";
+                                using (var sqlCmd = new SqlCommand(text, sqlCon))
+                                {
+                                    sqlCmd.Parameters.AddWithValue("@AppName", AppName);
+                                    using (var ds = new DataSet())
+                                    {
+                                        using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
+                                        {
+                                            sqlDataAd.Fill(ds);
+                                        }
+
+                                        using (XmlWriter writer =
+                                            XmlWriter.Create(xmlPath + @"\" + "SSOApp_" + AppName + "_ToImport" + ".xml"))
+                                        {
+                                            writer.WriteStartElement("SSO");
+                                            writer.WriteStartElement("application");
+                                            writer.WriteAttributeString("name", applicationName);
+                                            writer.WriteElementString("description",
+                                                ds.Tables[0].Rows[0].ItemArray[1].ToString());
+                                            writer.WriteElementString("Contact",
+                                                ds.Tables[0].Rows[0].ItemArray[2].ToString());
+                                            writer.WriteElementString("appUserAccount",
+                                                ds.Tables[0].Rows[0].ItemArray[3].ToString());
+                                            writer.WriteElementString("appAdminAccount",
+                                                ds.Tables[0].Rows[0].ItemArray[4].ToString());
+                                            //  writer.WriteElementString("ticketTimeout", ticketTimeOut);
+                                            writer.WriteStartElement("field");
+                                            writer.WriteAttributeString("ordinal", "0");
+                                            writer.WriteAttributeString("label", "User Id");
+                                            writer.WriteAttributeString("masked", userID);
+                                            writer.WriteEndElement();
+                                            writer.WriteStartElement("field");
+                                            writer.WriteAttributeString("ordinal", "1");
+                                            writer.WriteAttributeString("label", "Password");
+                                            writer.WriteAttributeString("masked", password);
+                                            writer.WriteEndElement();
+                                            writer.WriteStartElement("flags");
+                                            writer.WriteAttributeString("groupApp", groupApp);
+                                            writer.WriteAttributeString("adminAccountSame", adminAccountSame.ToLower());
+                                            writer.WriteAttributeString("allowLocalAccounts", allowLocalAccounts.ToLower());
+                                            writer.WriteAttributeString("enableApp", applicationEnabled.ToLower());
+                                            writer.WriteAttributeString("allowTickets", ticketsAllowed.ToLower());
+                                            if (validateTickets != string.Empty)
+                                                writer.WriteAttributeString("validateTickets", validateTickets.ToLower());
+                                            if (timeoutTickets != string.Empty)
+                                                writer.WriteAttributeString("timeoutTickets", timeoutTickets.ToLower());
+                                            writer.WriteEndElement();
+                                            writer.WriteEndElement();
+                                            writer.WriteEndElement();
+                                        }
+                                    }
+                                }
                             }
-
-
                         }
                         catch (Exception ex)
                         {
@@ -7131,7 +7151,7 @@ namespace BizTalkAdminOperations
             {
                 LogInfoSyncronously("Exception while Exporting SSO Affiliate Application " + ex.Message);
                 LogException(ex);
-                throw ex;
+                throw;
             }
 
         }
@@ -7313,7 +7333,7 @@ namespace BizTalkAdminOperations
             {
                 LogInfoSyncronously("Exception while Impoting SSO Affiliate Applications " + ex.Message);
                 LogException(ex);
-                throw ex;
+                throw;
             }
         }
 

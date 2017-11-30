@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -89,9 +90,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist $(SolutionDir)\MigrationTool\bin\$(Configuration)\Util mkdir $(SolutionDir)\MigrationTool\bin\$(Configuration)\Util
+    <PostBuildEvent>if not exist "$(SolutionDir)\MigrationTool\bin\$(Configuration)\Util" mkdir "$(SolutionDir)\MigrationTool\bin\$(Configuration)\Util"
 xcopy /Q /Y "$(TargetPath)" "$(SolutionDir)\MigrationTool\bin\$(Configuration)\Util"
-xcopy /Q /Y "$(SolutionDir)\Util\*.*" "$(SolutionDir)\MigrationTool\bin\$(Configuration)\Util"</PostBuildEvent>
+
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
