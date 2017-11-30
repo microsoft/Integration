@@ -15,10 +15,10 @@
     public class HostInstance : Component {
         
         // Private property to hold the WMI namespace in which the class resides.
-        private static string CreatedWmiNamespace = "\\ROOT\\MicrosoftBizTalkServer";
+        private static readonly string CreatedWmiNamespace = "\\ROOT\\MicrosoftBizTalkServer";
         
         // Private property to hold the name of WMI class which created this class.
-        private static string CreatedClassName = "MSBTS_HostInstance";
+        private static readonly string CreatedClassName = "MSBTS_HostInstance";
         
         // Private member variable to hold the ManagementScope which is used by the various methods.
         private static ManagementScope statMgmtScope = null;
@@ -32,7 +32,7 @@
         private bool AutoCommitProp;
         
         // Private variable to hold the embedded property representing the instance.
-        private ManagementBaseObject embeddedObj;
+        private readonly ManagementBaseObject embeddedObj;
         
         // The current WMI object used
         private ManagementBaseObject curObj;
@@ -108,11 +108,11 @@
         public string ManagementClassName {
             get {
                 string strRet = CreatedClassName;
-                if ((curObj != null)) {
-                    if ((curObj.ClassPath != null)) {
-                        strRet = ((string)(curObj["__CLASS"]));
-                        if (((strRet == null) 
-                                    || (strRet == string.Empty))) {
+                if (curObj != null) {
+                    if (curObj.ClassPath != null) {
+                        strRet = (string)curObj["__CLASS"];
+                        if (strRet == null 
+                            || strRet == string.Empty) {
                             strRet = CreatedClassName;
                         }
                     }
@@ -144,7 +144,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ManagementScope Scope {
             get {
-                if ((isEmbedded == false)) {
+                if (isEmbedded == false) {
                     return PrivateLateBoundObject.Scope;
                 }
                 else {
@@ -152,7 +152,7 @@
                 }
             }
             set {
-                if ((isEmbedded == false)) {
+                if (isEmbedded == false) {
                     PrivateLateBoundObject.Scope = value;
                 }
             }
@@ -174,7 +174,7 @@
         [Browsable(true)]
         public ManagementPath Path {
             get {
-                if ((isEmbedded == false)) {
+                if (isEmbedded == false) {
                     return PrivateLateBoundObject.Path;
                 }
                 else {
@@ -182,8 +182,8 @@
                 }
             }
             set {
-                if ((isEmbedded == false)) {
-                    if ((CheckIfProperClass(null, value, null) != true)) {
+                if (isEmbedded == false) {
+                    if (CheckIfProperClass(null, value, null) != true) {
                         throw new ArgumentException("Class name does not match.");
                     }
                     PrivateLateBoundObject.Path = value;
@@ -208,7 +208,7 @@
         [Description("The Caption property is a short description (one-line string) of the object.")]
         public string Caption {
             get {
-                return ((string)(curObj["Caption"]));
+                return (string)curObj["Caption"];
             }
         }
         
@@ -216,7 +216,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsClusterInstanceTypeNull {
             get {
-                if ((curObj["ClusterInstanceType"] == null)) {
+                if (curObj["ClusterInstanceType"] == null) {
                     return true;
                 }
                 else {
@@ -231,10 +231,10 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public ClusterInstanceTypeValues ClusterInstanceType {
             get {
-                if ((curObj["ClusterInstanceType"] == null)) {
-                    return ((ClusterInstanceTypeValues)(Convert.ToInt32(4)));
+                if (curObj["ClusterInstanceType"] == null) {
+                    return (ClusterInstanceTypeValues)Convert.ToInt32(4);
                 }
-                return ((ClusterInstanceTypeValues)(Convert.ToInt32(curObj["ClusterInstanceType"])));
+                return (ClusterInstanceTypeValues)Convert.ToInt32(curObj["ClusterInstanceType"]);
             }
         }
         
@@ -242,7 +242,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsConfigurationStateNull {
             get {
-                if ((curObj["ConfigurationState"] == null)) {
+                if (curObj["ConfigurationState"] == null) {
                     return true;
                 }
                 else {
@@ -257,10 +257,10 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public ConfigurationStateValues ConfigurationState {
             get {
-                if ((curObj["ConfigurationState"] == null)) {
-                    return ((ConfigurationStateValues)(Convert.ToInt32(0)));
+                if (curObj["ConfigurationState"] == null) {
+                    return (ConfigurationStateValues)Convert.ToInt32(0);
                 }
-                return ((ConfigurationStateValues)(Convert.ToInt32(curObj["ConfigurationState"])));
+                return (ConfigurationStateValues)Convert.ToInt32(curObj["ConfigurationState"]);
             }
         }
         
@@ -269,7 +269,7 @@
         [Description("The Description property provides a description of the object. ")]
         public string Description {
             get {
-                return ((string)(curObj["Description"]));
+                return (string)curObj["Description"];
             }
         }
         
@@ -279,7 +279,7 @@
             "longs to. Max length for this property is 80 characters.")]
         public string HostName {
             get {
-                return ((string)(curObj["HostName"]));
+                return (string)curObj["HostName"];
             }
         }
         
@@ -287,7 +287,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsHostTypeNull {
             get {
-                if ((curObj["HostType"] == null)) {
+                if (curObj["HostType"] == null) {
                     return true;
                 }
                 else {
@@ -303,10 +303,10 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public HostTypeValues HostType {
             get {
-                if ((curObj["HostType"] == null)) {
-                    return ((HostTypeValues)(Convert.ToInt32(0)));
+                if (curObj["HostType"] == null) {
+                    return (HostTypeValues)Convert.ToInt32(0);
                 }
-                return ((HostTypeValues)(Convert.ToInt32(curObj["HostType"])));
+                return (HostTypeValues)Convert.ToInt32(curObj["HostType"]);
             }
         }
         
@@ -314,7 +314,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsInstallDateNull {
             get {
-                if ((curObj["InstallDate"] == null)) {
+                if (curObj["InstallDate"] == null) {
                     return true;
                 }
                 else {
@@ -330,8 +330,8 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public DateTime InstallDate {
             get {
-                if ((curObj["InstallDate"] != null)) {
-                    return ToDateTime(((string)(curObj["InstallDate"])));
+                if (curObj["InstallDate"] != null) {
+                    return ToDateTime((string)curObj["InstallDate"]);
                 }
                 else {
                     return DateTime.MinValue;
@@ -343,7 +343,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsIsDisabledNull {
             get {
-                if ((curObj["IsDisabled"] == null)) {
+                if (curObj["IsDisabled"] == null) {
                     return true;
                 }
                 else {
@@ -359,15 +359,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public bool IsDisabled {
             get {
-                if ((curObj["IsDisabled"] == null)) {
+                if (curObj["IsDisabled"] == null) {
                     return Convert.ToBoolean(0);
                 }
-                return ((bool)(curObj["IsDisabled"]));
+                return (bool)curObj["IsDisabled"];
             }
             set {
                 curObj["IsDisabled"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -380,7 +380,7 @@
             "property. Max length for this property is 128 characters.")]
         public string Logon {
             get {
-                return ((string)(curObj["Logon"]));
+                return (string)curObj["Logon"];
             }
         }
         
@@ -391,7 +391,7 @@
             "name. Max length for this property is 123 characters.")]
         public string MgmtDbNameOverride {
             get {
-                return ((string)(curObj["MgmtDbNameOverride"]));
+                return (string)curObj["MgmtDbNameOverride"];
             }
         }
         
@@ -402,7 +402,7 @@
             "80 characters.")]
         public string MgmtDbServerOverride {
             get {
-                return ((string)(curObj["MgmtDbServerOverride"]));
+                return (string)curObj["MgmtDbServerOverride"];
             }
         }
         
@@ -412,7 +412,7 @@
             " property is 128 characters.")]
         public string Name {
             get {
-                return ((string)(curObj["Name"]));
+                return (string)curObj["Name"];
             }
             set
             {
@@ -425,7 +425,7 @@
         [Description(@"This property contains the name of the Windows group. It can be either a local or a domain Windows group. This group is granted access to the BizTalk Host Queue that is created for this BizTalk Host. The account used to host these BizTalk Host instances must be a member of the group. Max length for this property is 63 characters.")]
         public string NTGroupName {
             get {
-                return ((string)(curObj["NTGroupName"]));
+                return (string)curObj["NTGroupName"];
             }
         }
         
@@ -435,7 +435,7 @@
             "ng on. Max length for this property is 63 characters.")]
         public string RunningServer {
             get {
-                return ((string)(curObj["RunningServer"]));
+                return (string)curObj["RunningServer"];
             }
         }
         
@@ -443,7 +443,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsServiceStateNull {
             get {
-                if ((curObj["ServiceState"] == null)) {
+                if (curObj["ServiceState"] == null) {
                     return true;
                 }
                 else {
@@ -458,10 +458,10 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public ServiceStateValues ServiceState {
             get {
-                if ((curObj["ServiceState"] == null)) {
-                    return ((ServiceStateValues)(Convert.ToInt32(0)));
+                if (curObj["ServiceState"] == null) {
+                    return (ServiceStateValues)Convert.ToInt32(0);
                 }
-                return ((ServiceStateValues)(Convert.ToInt32(curObj["ServiceState"])));
+                return (ServiceStateValues)Convert.ToInt32(curObj["ServiceState"]);
             }
         }
         
@@ -470,7 +470,7 @@
         [Description(@"The Status property is a string indicating the current status of the object. Various operational and non-operational statuses can be defined. Operational statuses are ""OK"", ""Degraded"" and ""Pred Fail"". ""Pred Fail"" indicates that an element may be functioning properly but predicting a failure in the near future. An example is a SMART-enabled hard drive. Non-operational statuses can also be specified. These are ""Error"", ""Starting"", ""Stopping"" and ""Service"". The latter, ""Service"", could apply during mirror-resilvering of a disk, reload of a user permissions list, or other administrative work. Not all such work is on-line, yet the managed element is neither ""OK"" nor in one of the other states.")]
         public string Status {
             get {
-                return ((string)(curObj["Status"]));
+                return (string)curObj["Status"];
             }
         }
         
@@ -479,13 +479,13 @@
         [Description("This property contains the unique ID of the BizTalk Host instance.")]
         public string UniqueID {
             get {
-                return ((string)(curObj["UniqueID"]));
+                return (string)curObj["UniqueID"];
             }
         }
         
         private bool CheckIfProperClass(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions OptionsParam) {
-            if (((path != null) 
-                        && (string.Compare(path.ClassName, ManagementClassName, true, CultureInfo.InvariantCulture) == 0))) {
+            if (path != null 
+                && string.Compare(path.ClassName, ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                 return true;
             }
             else {
@@ -494,16 +494,16 @@
         }
         
         private bool CheckIfProperClass(ManagementBaseObject theObj) {
-            if (((theObj != null) 
-                        && (string.Compare(((string)(theObj["__CLASS"])), ManagementClassName, true, CultureInfo.InvariantCulture) == 0))) {
+            if (theObj != null 
+                && string.Compare((string)theObj["__CLASS"], ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                 return true;
             }
             else {
-                Array parentClasses = ((Array)(theObj["__DERIVATION"]));
-                if ((parentClasses != null)) {
+                Array parentClasses = (Array)theObj["__DERIVATION"];
+                if (parentClasses != null) {
                     int count = 0;
-                    for (count = 0; (count < parentClasses.Length); count = (count + 1)) {
-                        if ((string.Compare(((string)(parentClasses.GetValue(count))), ManagementClassName, true, CultureInfo.InvariantCulture) == 0)) {
+                    for (count = 0; count < parentClasses.Length; count = count + 1) {
+                        if (string.Compare((string)parentClasses.GetValue(count), ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                             return true;
                         }
                     }
@@ -513,21 +513,21 @@
         }
         
         private bool ShouldSerializeClusterInstanceType() {
-            if ((IsClusterInstanceTypeNull == false)) {
+            if (IsClusterInstanceTypeNull == false) {
                 return true;
             }
             return false;
         }
         
         private bool ShouldSerializeConfigurationState() {
-            if ((IsConfigurationStateNull == false)) {
+            if (IsConfigurationStateNull == false) {
                 return true;
             }
             return false;
         }
         
         private bool ShouldSerializeHostType() {
-            if ((IsHostTypeNull == false)) {
+            if (IsHostTypeNull == false) {
                 return true;
             }
             return false;
@@ -546,52 +546,52 @@
             string dmtf = dmtfDate;
             DateTime datetime = DateTime.MinValue;
             string tempString = string.Empty;
-            if ((dmtf == null)) {
+            if (dmtf == null) {
                 throw new ArgumentOutOfRangeException();
             }
-            if ((dmtf.Length == 0)) {
+            if (dmtf.Length == 0) {
                 throw new ArgumentOutOfRangeException();
             }
-            if ((dmtf.Length != 25)) {
+            if (dmtf.Length != 25) {
                 throw new ArgumentOutOfRangeException();
             }
             try {
                 tempString = dmtf.Substring(0, 4);
-                if (("****" != tempString)) {
+                if ("****" != tempString) {
                     year = int.Parse(tempString);
                 }
                 tempString = dmtf.Substring(4, 2);
-                if (("**" != tempString)) {
+                if ("**" != tempString) {
                     month = int.Parse(tempString);
                 }
                 tempString = dmtf.Substring(6, 2);
-                if (("**" != tempString)) {
+                if ("**" != tempString) {
                     day = int.Parse(tempString);
                 }
                 tempString = dmtf.Substring(8, 2);
-                if (("**" != tempString)) {
+                if ("**" != tempString) {
                     hour = int.Parse(tempString);
                 }
                 tempString = dmtf.Substring(10, 2);
-                if (("**" != tempString)) {
+                if ("**" != tempString) {
                     minute = int.Parse(tempString);
                 }
                 tempString = dmtf.Substring(12, 2);
-                if (("**" != tempString)) {
+                if ("**" != tempString) {
                     second = int.Parse(tempString);
                 }
                 tempString = dmtf.Substring(15, 6);
-                if (("******" != tempString)) {
-                    ticks = (long.Parse(tempString) * (TimeSpan.TicksPerMillisecond / 1000));
+                if ("******" != tempString) {
+                    ticks = long.Parse(tempString) * (TimeSpan.TicksPerMillisecond / 1000);
                 }
-                if (((((((((year < 0) 
-                            || (month < 0)) 
-                            || (day < 0)) 
-                            || (hour < 0)) 
-                            || (minute < 0)) 
-                            || (minute < 0)) 
-                            || (second < 0)) 
-                            || (ticks < 0))) {
+                if (year < 0 
+                    || month < 0 
+                    || day < 0 
+                    || hour < 0 
+                    || minute < 0 
+                    || minute < 0 
+                    || second < 0 
+                    || ticks < 0) {
                     throw new ArgumentOutOfRangeException();
                 }
             }
@@ -605,7 +605,7 @@
             int OffsetToBeAdjusted = 0;
             long OffsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
             tempString = dmtf.Substring(22, 3);
-            if ((tempString != "******")) {
+            if (tempString != "******") {
                 tempString = dmtf.Substring(21, 4);
                 try {
                     UTCOffset = int.Parse(tempString);
@@ -613,7 +613,7 @@
                 catch (Exception e) {
                     throw new ArgumentOutOfRangeException(null, e.Message);
                 }
-                OffsetToBeAdjusted = ((int)((OffsetMins - UTCOffset)));
+                OffsetToBeAdjusted = (int)(OffsetMins - UTCOffset);
                 datetime = datetime.AddMinutes(OffsetToBeAdjusted);
             }
             return datetime;
@@ -624,17 +624,17 @@
             string utcString = string.Empty;
             TimeSpan tickOffset = TimeZone.CurrentTimeZone.GetUtcOffset(date);
             long OffsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
-            if ((Math.Abs(OffsetMins) > 999)) {
+            if (Math.Abs(OffsetMins) > 999) {
                 date = date.ToUniversalTime();
                 utcString = "+000";
             }
             else {
-                if ((tickOffset.Ticks >= 0)) {
+                if (tickOffset.Ticks >= 0) {
                     utcString = string.Concat("+", (tickOffset.Ticks / TimeSpan.TicksPerMinute).ToString().PadLeft(3, '0'));
                 }
                 else {
                     string strTemp = OffsetMins.ToString();
-                    utcString = string.Concat("-", strTemp.Substring(1, (strTemp.Length - 1)).PadLeft(3, '0'));
+                    utcString = string.Concat("-", strTemp.Substring(1, strTemp.Length - 1).PadLeft(3, '0'));
                 }
             }
             string dmtfDateTime = date.Year.ToString().PadLeft(4, '0');
@@ -645,11 +645,11 @@
             dmtfDateTime = string.Concat(dmtfDateTime, date.Second.ToString().PadLeft(2, '0'));
             dmtfDateTime = string.Concat(dmtfDateTime, ".");
             DateTime dtTemp = new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second, 0);
-            long microsec = ((date.Ticks - dtTemp.Ticks) 
-                             * 1000) 
+            long microsec = (date.Ticks - dtTemp.Ticks) 
+                            * 1000 
                             / TimeSpan.TicksPerMillisecond;
             string strMicrosec = microsec.ToString();
-            if ((strMicrosec.Length > 6)) {
+            if (strMicrosec.Length > 6) {
                 strMicrosec = strMicrosec.Substring(0, 6);
             }
             dmtfDateTime = string.Concat(dmtfDateTime, strMicrosec.PadLeft(6, '0'));
@@ -658,14 +658,14 @@
         }
         
         private bool ShouldSerializeInstallDate() {
-            if ((IsInstallDateNull == false)) {
+            if (IsInstallDateNull == false) {
                 return true;
             }
             return false;
         }
         
         private bool ShouldSerializeIsDisabled() {
-            if ((IsIsDisabledNull == false)) {
+            if (IsIsDisabledNull == false) {
                 return true;
             }
             return false;
@@ -673,14 +673,14 @@
         
         private void ResetIsDisabled() {
             curObj["IsDisabled"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeServiceState() {
-            if ((IsServiceStateNull == false)) {
+            if (IsServiceStateNull == false) {
                 return true;
             }
             return false;
@@ -688,14 +688,14 @@
         
         [Browsable(true)]
         public void CommitObject() {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         [Browsable(true)]
         public void CommitObject(PutOptions putOptions) {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 PrivateLateBoundObject.Put(putOptions);
             }
         }
@@ -715,8 +715,8 @@
         
         private void InitializeObject(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions getOptions) {
             Initialize();
-            if ((path != null)) {
-                if ((CheckIfProperClass(mgmtScope, path, getOptions) != true)) {
+            if (path != null) {
+                if (CheckIfProperClass(mgmtScope, path, getOptions) != true) {
                     throw new ArgumentException("Class name does not match.");
                 }
             }
@@ -743,8 +743,8 @@
         }
         
         public static HostInstanceCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
-            if ((mgmtScope == null)) {
-                if ((statMgmtScope == null)) {
+            if (mgmtScope == null) {
+                if (statMgmtScope == null) {
                     mgmtScope = new ManagementScope();
                     mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
                 }
@@ -756,7 +756,7 @@
             pathObj.ClassName = "MSBTS_HostInstance";
             pathObj.NamespacePath = "root\\MicrosoftBizTalkServer";
             ManagementClass clsObject = new ManagementClass(mgmtScope, pathObj, null);
-            if ((enumOptions == null)) {
+            if (enumOptions == null) {
                 enumOptions = new EnumerationOptions();
                 enumOptions.EnsureLocatable = true;
             }
@@ -772,8 +772,8 @@
         }
         
         public static HostInstanceCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
-            if ((mgmtScope == null)) {
-                if ((statMgmtScope == null)) {
+            if (mgmtScope == null) {
+                if (statMgmtScope == null) {
                     mgmtScope = new ManagementScope();
                     mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
                 }
@@ -791,7 +791,7 @@
         [Browsable(true)]
         public static HostInstance CreateInstance() {
             ManagementScope mgmtScope = null;
-            if ((statMgmtScope == null)) {
+            if (statMgmtScope == null) {
                 mgmtScope = new ManagementScope();
                 mgmtScope.Path.NamespacePath = CreatedWmiNamespace;
             }
@@ -807,7 +807,7 @@
         public static HostInstance CreateInstance(string pServer, string pUserName,string pPassword, string pDomain)
         {
             ManagementScope mgmtScope = null;
-            if ((statMgmtScope == null))
+            if (statMgmtScope == null)
             {
                 mgmtScope = new ManagementScope();
                 mgmtScope.Path.NamespacePath = "\\\\" + pServer + CreatedWmiNamespace;
@@ -833,7 +833,7 @@
         }
         
         public uint GetState(out uint State) {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 ManagementBaseObject inParams = null;
                 ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("GetState", inParams, null);
                 State = Convert.ToUInt32(outParams.Properties["State"].Value);
@@ -846,7 +846,7 @@
         }
         
         public uint Install(bool grantLogOnAsService, string logon, string password) {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 ManagementBaseObject inParams = null;
                 inParams = PrivateLateBoundObject.GetMethodParameters("Install");
                 inParams["GrantLogOnAsService"] = grantLogOnAsService;
@@ -861,7 +861,7 @@
         }
         
         public uint Start() {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 ManagementBaseObject inParams = null;
                 ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("Start", inParams, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
@@ -872,7 +872,7 @@
         }
         
         public uint Stop() {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 ManagementBaseObject inParams = null;
                 ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("Stop", inParams, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
@@ -883,7 +883,7 @@
         }
         
         public uint Uninstall() {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 ManagementBaseObject inParams = null;
                 ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("Uninstall", inParams, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
@@ -954,7 +954,7 @@
         // Enumerator implementation for enumerating instances of the class.
         public class HostInstanceCollection : object, ICollection {
             
-            private ManagementObjectCollection privColObj;
+            private readonly ManagementObjectCollection privColObj;
             
             public HostInstanceCollection(ManagementObjectCollection objCollection) {
                 privColObj = objCollection;
@@ -981,8 +981,8 @@
             public virtual void CopyTo(Array array, int index) {
                 privColObj.CopyTo(array, index);
                 int nCtr;
-                for (nCtr = 0; (nCtr < array.Length); nCtr = (nCtr + 1)) {
-                    array.SetValue(new HostInstance(((ManagementObject)(array.GetValue(nCtr)))), nCtr);
+                for (nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
+                    array.SetValue(new HostInstance((ManagementObject)array.GetValue(nCtr)), nCtr);
                 }
             }
             
@@ -992,7 +992,7 @@
             
             public class HostInstanceEnumerator : object, IEnumerator {
                 
-                private ManagementObjectCollection.ManagementObjectEnumerator privObjEnum;
+                private readonly ManagementObjectCollection.ManagementObjectEnumerator privObjEnum;
                 
                 public HostInstanceEnumerator(ManagementObjectCollection.ManagementObjectEnumerator objEnum) {
                     privObjEnum = objEnum;
@@ -1000,7 +1000,7 @@
                 
                 public virtual object Current {
                     get {
-                        return new HostInstance(((ManagementObject)(privObjEnum.Current)));
+                        return new HostInstance((ManagementObject)privObjEnum.Current);
                     }
                 }
                 
@@ -1017,9 +1017,9 @@
         // TypeConverter to handle null values for ValueType properties
         public class WMIValueTypeConverter : TypeConverter {
             
-            private TypeConverter baseConverter;
+            private readonly TypeConverter baseConverter;
             
-            private Type baseType;
+            private readonly Type baseType;
             
             public WMIValueTypeConverter(Type inBaseType) {
                 baseConverter = TypeDescriptor.GetConverter(inBaseType);
@@ -1067,28 +1067,28 @@
             }
             
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
-                if ((baseType.BaseType == typeof(Enum))) {
-                    if ((value.GetType() == destinationType)) {
+                if (baseType.BaseType == typeof(Enum)) {
+                    if (value.GetType() == destinationType) {
                         return value;
                     }
-                    if ((((value == null) 
-                                && (context != null)) 
-                                && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                    if (value == null 
+                        && context != null 
+                        && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                         return  "NULL_ENUM_VALUE" ;
                     }
                     return baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
-                if (((baseType == typeof(bool)) 
-                            && (baseType.BaseType == typeof(ValueType)))) {
-                    if ((((value == null) 
-                                && (context != null)) 
-                                && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                if (baseType == typeof(bool) 
+                    && baseType.BaseType == typeof(ValueType)) {
+                    if (value == null 
+                        && context != null 
+                        && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                         return "";
                     }
                     return baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
-                if (((context != null) 
-                            && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                if (context != null 
+                    && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                     return "";
                 }
                 return baseConverter.ConvertTo(context, culture, value, destinationType);
@@ -1099,7 +1099,7 @@
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public class ManagementSystemProperties {
             
-            private ManagementBaseObject PrivateLateBoundObject;
+            private readonly ManagementBaseObject PrivateLateBoundObject;
             
             public ManagementSystemProperties(ManagementBaseObject ManagedObject) {
                 PrivateLateBoundObject = ManagedObject;
@@ -1108,70 +1108,70 @@
             [Browsable(true)]
             public int GENUS {
                 get {
-                    return ((int)(PrivateLateBoundObject["__GENUS"]));
+                    return (int)PrivateLateBoundObject["__GENUS"];
                 }
             }
             
             [Browsable(true)]
             public string CLASS {
                 get {
-                    return ((string)(PrivateLateBoundObject["__CLASS"]));
+                    return (string)PrivateLateBoundObject["__CLASS"];
                 }
             }
             
             [Browsable(true)]
             public string SUPERCLASS {
                 get {
-                    return ((string)(PrivateLateBoundObject["__SUPERCLASS"]));
+                    return (string)PrivateLateBoundObject["__SUPERCLASS"];
                 }
             }
             
             [Browsable(true)]
             public string DYNASTY {
                 get {
-                    return ((string)(PrivateLateBoundObject["__DYNASTY"]));
+                    return (string)PrivateLateBoundObject["__DYNASTY"];
                 }
             }
             
             [Browsable(true)]
             public string RELPATH {
                 get {
-                    return ((string)(PrivateLateBoundObject["__RELPATH"]));
+                    return (string)PrivateLateBoundObject["__RELPATH"];
                 }
             }
             
             [Browsable(true)]
             public int PROPERTY_COUNT {
                 get {
-                    return ((int)(PrivateLateBoundObject["__PROPERTY_COUNT"]));
+                    return (int)PrivateLateBoundObject["__PROPERTY_COUNT"];
                 }
             }
             
             [Browsable(true)]
             public string[] DERIVATION {
                 get {
-                    return ((string[])(PrivateLateBoundObject["__DERIVATION"]));
+                    return (string[])PrivateLateBoundObject["__DERIVATION"];
                 }
             }
             
             [Browsable(true)]
             public string SERVER {
                 get {
-                    return ((string)(PrivateLateBoundObject["__SERVER"]));
+                    return (string)PrivateLateBoundObject["__SERVER"];
                 }
             }
             
             [Browsable(true)]
             public string NAMESPACE {
                 get {
-                    return ((string)(PrivateLateBoundObject["__NAMESPACE"]));
+                    return (string)PrivateLateBoundObject["__NAMESPACE"];
                 }
             }
             
             [Browsable(true)]
             public string PATH {
                 get {
-                    return ((string)(PrivateLateBoundObject["__PATH"]));
+                    return (string)PrivateLateBoundObject["__PATH"];
                 }
             }
         }

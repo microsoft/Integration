@@ -8,7 +8,7 @@ namespace MigrationTool
     {
         #region Variables
         string appPath, configFile;
-        private BizTalkAdminOperations.BizTalkAdminOperations biztalkAdminOperations;
+        private readonly BizTalkAdminOperations.BizTalkAdminOperations biztalkAdminOperations;
         #endregion
         #region Constructors
         public Settings()
@@ -28,8 +28,7 @@ namespace MigrationTool
         {
              appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             configFile = System.IO.Path.Combine(appPath, "MigrationTool.exe.config");
-            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = configFile;
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
             Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
             txtAppToRefer.Text = config.AppSettings.Settings["AppToRefer"].Value;
             txtBiztalkAppToIgnore.Text = config.AppSettings.Settings["BizTalkAppToIgnore"].Value;
@@ -54,8 +53,7 @@ namespace MigrationTool
 
                  appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                  configFile = System.IO.Path.Combine(appPath, "MigrationTool.exe.config");
-                ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
-                configFileMap.ExeConfigFilename = configFile;
+                ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
                 Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
                 config.AppSettings.Settings["AppToRefer"].Value = txtAppToRefer.Text;
                 config.AppSettings.Settings["RemoteRootFolder"].Value = txtTemporaryFolder.Text;

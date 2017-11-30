@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,17 +36,20 @@ namespace BizTalkAdminOperations
         //flags
         readonly string strPerformOperationYes, strPerformOperationNo, strSuccess;
         string isAppPoolExecuted, isHostExecuted, isHandlerExecuted, isGlobalPartyBindingExecuted, isBizTalkAppExecuted;
-        int strRoboCopySuccessCode;
+        readonly int strRoboCopySuccessCode;
         //user account will be used in WMI remoting  or PsExec remoting, while service account will be used for host instance.
         public string strUserName, strUserNameForWMI, strPassword, strDomain, strFromPanel10, strSrcNode, strDstNode, strIsUtilCopied;
         public string strUserNameForHost, strPasswordForHost; //this will act as service account, while other one will work as user account
 
-        string fileFolderPath, vDir, machineName, exportedDataPath, appPath, msiPath, xmlPath, certPath, logPath, serviceFolderPath, brePath;
-        string asmPath, customDllPath, gacUtilPath, dotNetExePath, psExecPath, serverXmlPath;
-        string asmFolderName, gacUtilFolderName, certFolderName, customDllFolderName, remoteExeName, breFolderName;
-        string srcSqlInstance, srcBAMSqlInstance, dstBAMSqlInstance, dstSqlInstance, loginOperationName, specFileExt, srcBRESqlInstance, dstBRESqlInstance;
+        readonly string fileFolderPath, vDir, machineName, exportedDataPath, appPath, msiPath, xmlPath, certPath, logPath, serviceFolderPath, brePath;
+        readonly string asmPath, customDllPath, gacUtilPath, dotNetExePath, psExecPath, serverXmlPath;
+        readonly string asmFolderName, gacUtilFolderName, certFolderName, customDllFolderName, remoteExeName, breFolderName, specFileExt;
+        string srcSqlInstance, srcBAMSqlInstance, dstBAMSqlInstance, dstSqlInstance, loginOperationName, srcBRESqlInstance, dstBRESqlInstance;
         //app config
-        string bizTalkAppToIgnore, bamExePath, remoteRootFolder, baseBizTalkAppCol, strCertPass, strFoldersToCopy, strFoldersToCopyNoFiles,strWebsitesFolder,strFoldersDrive,strServicesDrive;
+        string bizTalkAppToIgnore;
+
+        readonly string bamExePath;
+        string remoteRootFolder, baseBizTalkAppCol, strCertPass, strFoldersToCopy, strFoldersToCopyNoFiles,strWebsitesFolder,strFoldersDrive,strServicesDrive;
         string strCustomDllToInclude, strToolMode, strServerType, strWindowsServiceToIgnore;
 
         public delegate void SetTextCallback(string strMsg);
@@ -592,7 +594,7 @@ namespace BizTalkAdminOperations
             try
             {
 
-                if (!(File.Exists(xmlPath + "\\" + "HostSettings.xml")))
+                if (!File.Exists(xmlPath + "\\" + "HostSettings.xml"))
                 {
                     throw new Exception("Host Settings xml is not Present.");
                 }
@@ -658,10 +660,9 @@ namespace BizTalkAdminOperations
             HostSetting myHostSetting = null;
             try
             {
-                if (machineName == strDstNode) //local 
-                    myHostSetting = HostSetting.CreateInstance();
-                else //remote
-                    myHostSetting = HostSetting.CreateInstance(strDstNode, strUserNameForWMI, strPassword, strDomain);
+                myHostSetting = machineName == strDstNode
+                    ? HostSetting.CreateInstance()
+                    : HostSetting.CreateInstance(strDstNode, strUserNameForWMI, strPassword, strDomain);
 
                 myHostSetting.AutoCommit = false;
 
@@ -691,19 +692,17 @@ namespace BizTalkAdminOperations
             ServerHost myServerHost = null;
             try
             {
-                if (machineName == strDstNode) //local 
-                    myServerHost = ServerHost.CreateInstance();
-                else //remote
-                    myServerHost = ServerHost.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
+                myServerHost = machineName == strDstNode
+                    ? ServerHost.CreateInstance()
+                    : ServerHost.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
 
                 myServerHost.ServerName = serverName;
                 myServerHost.HostName = name;
                 myServerHost.Map();
 
-                if (machineName == strDstNode) //local 
-                    myHostInstance = HostInstance.CreateInstance();
-                else
-                    myHostInstance = HostInstance.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
+                myHostInstance = machineName == strDstNode
+                    ? HostInstance.CreateInstance()
+                    : HostInstance.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
 
                 myHostInstance.Name = "Microsoft BizTalk Server " + name + " " + serverName;
                 myHostInstance.Install(true, strUserNameForHost, strPasswordForHost);
@@ -1004,7 +1003,7 @@ namespace BizTalkAdminOperations
 
         public void LogInfo(string strMsg) //UI FILLE
         {
-            if (!(string.IsNullOrEmpty(strMsg)) && !(string.IsNullOrWhiteSpace(strMsg)))
+            if (!string.IsNullOrEmpty(strMsg) && !string.IsNullOrWhiteSpace(strMsg))
             {
                 richTextBoxLogs.AppendText(strMsg);
                 richTextBoxLogs.AppendText(Environment.NewLine);
@@ -1026,7 +1025,7 @@ namespace BizTalkAdminOperations
 
         public void LogInfoInLogFile(string strMsg) //FILE 
         {
-            if (!(string.IsNullOrEmpty(strMsg)) && !(string.IsNullOrWhiteSpace(strMsg)))
+            if (!string.IsNullOrEmpty(strMsg) && !string.IsNullOrWhiteSpace(strMsg))
             {
                 try
                 {
@@ -1047,7 +1046,7 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                if (!(string.IsNullOrEmpty(strMsg)) && !(string.IsNullOrWhiteSpace(strMsg)))
+                if (!string.IsNullOrEmpty(strMsg) && !string.IsNullOrWhiteSpace(strMsg))
                 {
                     using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
                     {
@@ -1067,7 +1066,7 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                if (!(string.IsNullOrEmpty(strMsg)) && !(string.IsNullOrWhiteSpace(strMsg)))
+                if (!string.IsNullOrEmpty(strMsg) && !string.IsNullOrWhiteSpace(strMsg))
                 {
                     using (StreamWriter writer = new StreamWriter(logPath + @"\RemoteOperation_log.txt", true))
                     {
@@ -1096,7 +1095,7 @@ namespace BizTalkAdminOperations
         #region BizTalk App
         private int btnGetApplicationList_Click(object sender, EventArgs e)
         {
-            Hashtable htApps = null;
+
             XmlSerializer x = null;
             XmlWriter xmlWriterApps = null;
             try
@@ -1128,7 +1127,7 @@ namespace BizTalkAdminOperations
                     Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
                     LogInfo("Connected.");
 
-                    htApps = new Hashtable();
+                    var htApps = new Dictionary<string, int>();
                     MSIAPP(appCol, htApps);
 
                     int i = 0;
@@ -1571,8 +1570,7 @@ namespace BizTalkAdminOperations
                      "GlobalPartyBinding.xml\"  -GlobalParties " + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
             }
 
-            int returnCode;
-            returnCode = ExecuteCmd(cmdName, commandArguments);
+            var returnCode = ExecuteCmd(cmdName, commandArguments);
             if (returnCode == 0) //BTSTASK success code
             {
                 LogShortSuccessMsg("Success: Global PartyBinding Exported.");
@@ -1751,7 +1749,7 @@ namespace BizTalkAdminOperations
                     XmlNodeList nodeList = xmldoc.DocumentElement.SelectNodes("/appcmd/APPPOOL/add/processModel");
                     foreach (XmlNode node in nodeList)
                     {
-                        if (node.Attributes != null && node.Attributes["password"] != null)
+                        if (node.Attributes?["password"] != null)
                         {
                             string password = node.Attributes["password"].Value;
                             node.Attributes["password"].Value = Encrypt(password);
@@ -1820,7 +1818,7 @@ namespace BizTalkAdminOperations
                     XmlNodeList nodeList = doc.DocumentElement.SelectNodes("/appcmd/APPPOOL/add/processModel");
                     foreach (XmlNode node in nodeList)
                     {
-                        if (node.Attributes != null && node.Attributes["password"] != null)
+                        if (node.Attributes?["password"] != null)
                         {
                             string password = node.Attributes["password"].Value;
                             node.Attributes["password"].Value = Decrypt(password);
@@ -1850,7 +1848,7 @@ namespace BizTalkAdminOperations
                     //Encrypting Back Password
                     foreach (XmlNode node in nodeList)
                     {
-                        if (node.Attributes != null && node.Attributes["password"] != null)
+                        if (node.Attributes?["password"] != null)
                         {
                             string password = node.Attributes["password"].Value;
                             node.Attributes["password"].Value = Encrypt(password);
@@ -2294,7 +2292,7 @@ namespace BizTalkAdminOperations
                         {
                             StoreLocation storeLoc = (StoreLocation)Enum.Parse(typeof(StoreLocation), iStoreLocation);
                             StoreName storeNam = (StoreName)Enum.Parse(typeof(StoreName), iStoreName);
-                            if (storeLoc == StoreLocation.LocalMachine || (storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My))
+                            if (storeLoc == StoreLocation.LocalMachine || storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My)
                             {
                                 store = new X509Store(storeNam, storeLoc);
 
@@ -2574,10 +2572,15 @@ namespace BizTalkAdminOperations
                                             }
                                             else
                                             {
-                                                if (strFiles[iFile].Contains("CurrentUser"))
-                                                    certificate = new X509Certificate2(strFiles[iFile], strCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.UserKeySet);
-                                                else
-                                                    certificate = new X509Certificate2(strFiles[iFile], strCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.MachineKeySet);
+                                                certificate = strFiles[iFile].Contains("CurrentUser")
+                                                    ? new X509Certificate2(strFiles[iFile], strCertPass,
+                                                        X509KeyStorageFlags.Exportable &
+                                                        X509KeyStorageFlags.PersistKeySet &
+                                                        X509KeyStorageFlags.UserKeySet)
+                                                    : new X509Certificate2(strFiles[iFile], strCertPass,
+                                                        X509KeyStorageFlags.Exportable &
+                                                        X509KeyStorageFlags.PersistKeySet &
+                                                        X509KeyStorageFlags.MachineKeySet);
                                                 store.Add(certificate);
                                                 certsImported++;
                                                 LogInfoInLogFile("Imported Cert: " + certName);
@@ -2609,10 +2612,15 @@ namespace BizTalkAdminOperations
                                             }
                                             else
                                             {
-                                                if (strFiles[iFile].Contains("CurrentUser"))
-                                                    certificate = new X509Certificate2(strFiles[iFile], strCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.UserKeySet);
-                                                else
-                                                    certificate = new X509Certificate2(strFiles[iFile], strCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.MachineKeySet);
+                                                certificate = strFiles[iFile].Contains("CurrentUser")
+                                                    ? new X509Certificate2(strFiles[iFile], strCertPass,
+                                                        X509KeyStorageFlags.Exportable &
+                                                        X509KeyStorageFlags.PersistKeySet &
+                                                        X509KeyStorageFlags.UserKeySet)
+                                                    : new X509Certificate2(strFiles[iFile], strCertPass,
+                                                        X509KeyStorageFlags.Exportable &
+                                                        X509KeyStorageFlags.PersistKeySet &
+                                                        X509KeyStorageFlags.MachineKeySet);
 
                                                 store.Add(certificate);
                                                 certsImported++;
@@ -3034,7 +3042,7 @@ namespace BizTalkAdminOperations
                                     try
                                     {
 
-                                        if (!(string.IsNullOrEmpty(filePath)) && !(string.IsNullOrWhiteSpace(filePath)))
+                                        if (!string.IsNullOrEmpty(filePath) && !string.IsNullOrWhiteSpace(filePath))
                                         {
                                             CustomDllVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();
                                             dir = customDllPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" + CustomDllVer;
@@ -3496,7 +3504,7 @@ namespace BizTalkAdminOperations
                 }
 
                 
-                if (!(File.Exists(xmlPath + @"\BamDef.xml")))
+                if (!File.Exists(xmlPath + @"\BamDef.xml"))
                     throw new Exception("BamDef.xml is not Present");
 
                 //Get all Views
@@ -4054,123 +4062,52 @@ namespace BizTalkAdminOperations
         #region readioButton Checked Changed Events
         private void rbWebsiteYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbWebsiteYes.Checked)
-            {
-                strWebSite = strPerformOperationYes;
-            }
-            else
-            {
-                strWebSite = strPerformOperationNo;
-            }
+            strWebSite = rbWebsiteYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbAppPoolYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbAppPoolYes.Checked)
-            {
-                strAppPool = strPerformOperationYes;
-            }
-            else
-            {
-                strAppPool = strPerformOperationNo;
-            }
+            strAppPool = rbAppPoolYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbCertificateYes_CheckedChanged(object sender, EventArgs e)
         {
-
-            if (rbCertificateYes.Checked)
-            {
-                strCertificate = strPerformOperationYes;
-            }
-            else
-            {
-                strCertificate = strPerformOperationNo;
-            }
+            strCertificate = rbCertificateYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbHostInstanceYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbHostInstanceYes.Checked)
-            {
-                strHostInstance = strPerformOperationYes;
-            }
-            else
-            {
-                strHostInstance = strPerformOperationNo;
-            }
+            strHostInstance = rbHostInstanceYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbHandlersYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbHandlersYes.Checked)
-            {
-                strHandlers = strPerformOperationYes;
-            }
-            else
-            {
-                strHandlers = strPerformOperationNo;
-            }
+            strHandlers = rbHandlersYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbGlobalPartyBindingYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbGlobalPartyBindingYes.Checked)
-            {
-                strGlobalPartyBinding = strPerformOperationYes;
-            }
-            else
-            {
-                strGlobalPartyBinding = strPerformOperationNo;
-            }
+            strGlobalPartyBinding = rbGlobalPartyBindingYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbBizTalkAssembliesYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBizTalkAssembliesYes.Checked)
-            {
-                strBizTalkAssemblies = strPerformOperationYes;
-            }
-            else
-            {
-                strBizTalkAssemblies = strPerformOperationNo;
-            }
+            strBizTalkAssemblies = rbBizTalkAssembliesYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbBizTalkAppYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBizTalkAppYes.Checked)
-            {
-                strBizTalkApp = strPerformOperationYes;
-            }
-            else
-            {
-                strBizTalkApp = strPerformOperationNo;
-            }
+            strBizTalkApp = rbBizTalkAppYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbBamYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbBamYes.Checked)
-            {
-                strBam = strPerformOperationYes;
-            }
-            else
-            {
-                strBam = strPerformOperationNo;
-            }
+            strBam = rbBamYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbFileCopyYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbFileCopyYes.Checked)
-            {
-                strFileCopy = strPerformOperationYes;
-            }
-            else
-            {
-                strFileCopy = strPerformOperationNo;
-            }
+            strFileCopy = rbFileCopyYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         private void rbMigrate_CheckedChanged(object sender, EventArgs e)
@@ -4295,14 +4232,7 @@ namespace BizTalkAdminOperations
 
         private void rbServicesYes_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbServicesYes.Checked)
-            {
-                strServices = strPerformOperationYes;
-            }
-            else
-            {
-                strServices = strPerformOperationNo;
-            }
+            strServices = rbServicesYes.Checked ? strPerformOperationYes : strPerformOperationNo;
         }
 
         #endregion
@@ -4348,8 +4278,7 @@ namespace BizTalkAdminOperations
                             string remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
                             commandArguments = @"/C robocopy " + "\"" + appPath + gacUtilFolderName + "\"" + " \"" + "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + "\" " + "\"" + remoteExeName + "\"" + " /IS /R:1";
 
-                            int returnCode;
-                            returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                            var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                             if (returnCode < strRoboCopySuccessCode)  //robocopy errorcode 1 means success
                             {
@@ -4376,7 +4305,7 @@ namespace BizTalkAdminOperations
                             goto Outer;
                         }
 
-                        if ((strHostInstance == strPerformOperationYes  || (strCertificate == strPerformOperationYes && machineName != strSrcNode) || strServices == strPerformOperationYes) && (strUserNameForHost == "" || strUserNameForHost == null))
+                        if ((strHostInstance == strPerformOperationYes  || strCertificate == strPerformOperationYes && machineName != strSrcNode || strServices == strPerformOperationYes) && (strUserNameForHost == "" || strUserNameForHost == null))
                         {
                             panelLoginDialog.Visible = true;
                             loginOperationName = "serviceaccount";
@@ -4480,8 +4409,7 @@ namespace BizTalkAdminOperations
                             string remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
                             string commandArguments = @"/C robocopy " + "\"" + appPath + gacUtilFolderName + "\"" + " \"" + "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + "\" " + " /IS /R:1";
 
-                            int returnCode;
-                            returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                            var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                             if (returnCode < strRoboCopySuccessCode) //robocopy returnCode 1 means success
                             {
@@ -4497,7 +4425,7 @@ namespace BizTalkAdminOperations
 
                         EnableControls(false);
 
-                        if ((strHostInstance == strPerformOperationYes  || (strCertificate == strPerformOperationYes && machineName != strDstNode) || strServices == strPerformOperationYes) && (strUserNameForHost == "" || strUserNameForHost == null))
+                        if ((strHostInstance == strPerformOperationYes  || strCertificate == strPerformOperationYes && machineName != strDstNode || strServices == strPerformOperationYes) && (strUserNameForHost == "" || strUserNameForHost == null))
                         {
                             strExport = strPerformOperationNo;
                             panelLoginDialog.Visible = true;
@@ -5380,15 +5308,15 @@ namespace BizTalkAdminOperations
             }
         }
 
-        private void MSIAPP(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, Hashtable htApps)
+        private void MSIAPP(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, IDictionary<string, int> htApps)
         {
             foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
             {
                 if (!bizTalkAppToIgnore.Contains(app.Name)) //if (!(app.Name == "RosettaNet" || app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
                 {
-                    if (htApps.Contains(app.Name))
+                    int i;
+                    if (htApps.TryGetValue(app.Name, out i))
                     {
-                        int i = Convert.ToInt32(htApps[app.Name]);
                         i++;
                         htApps[app.Name] = i;
                     }
@@ -5529,8 +5457,7 @@ namespace BizTalkAdminOperations
                 XPathNavigator nav = doc.CreateNavigator();
 
                 // Compile a standard XPath expression
-                XPathExpression expr;
-                expr = nav.Compile("//@physicalPath");
+                var expr = nav.Compile("//@physicalPath");
                 XPathNodeIterator iterator = nav.Select(expr);
 
                 //string[] srcServer = lblServers.Text.Split(chrSep);
@@ -6407,8 +6334,7 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                byte[] keyArray;
-                keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
+                var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
                 TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
 
                 DES.Mode = CipherMode.ECB;
@@ -6432,8 +6358,7 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                byte[] keyArray;
-                keyArray = (Encoding.UTF8.GetBytes("M!grat!onkey1234"));
+                var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
                 TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
 
                 DES.Mode = CipherMode.ECB;
@@ -6592,21 +6517,21 @@ namespace BizTalkAdminOperations
                         //Removing SourceHost Which are Not Present in Destination
                         var hostName = from node in doc.Descendants("SourceHost")
                                        let attr = node.Attribute("Name")
-                                       where attr != null && !(hostArray.Contains(attr.Value))
+                                       where attr != null && !hostArray.Contains(attr.Value)
                                        select node;
                         hostName.ToList().ForEach(x => x.Remove());
 
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
                                                        let attr = node.Attribute("Name")
-                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
+                                                       where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
                                                        select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination with ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
                                                let attr = node.Attribute("Name")
-                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
+                                               where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
                                                select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
@@ -6658,21 +6583,21 @@ namespace BizTalkAdminOperations
                         //Removing SourceHost Which are Not Present in Destination
                         var hostName = from node in doc.Descendants("SourceHost")
                                        let attr = node.Attribute("Name")
-                                       where attr != null && !(hostArray.Contains(attr.Value))
+                                       where attr != null && !hostArray.Contains(attr.Value)
                                        select node;
                         hostName.ToList().ForEach(x => x.Remove());
 
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
                                                        let attr = node.Attribute("Name")
-                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
+                                                       where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
                                                        select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination wiht ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
                                                let attr = node.Attribute("Name")
-                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
+                                               where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
                                                select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
@@ -6730,21 +6655,21 @@ namespace BizTalkAdminOperations
                         //Removing SourceHost Which are Not Present in Destination
                         var hostName = from node in doc.Descendants("SourceHost")
                                        let attr = node.Attribute("Name")
-                                       where attr != null && !(hostArray.Contains(attr.Value))
+                                       where attr != null && !hostArray.Contains(attr.Value)
                                        select node;
                         hostName.ToList().ForEach(x => x.Remove());
 
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
                                                        let attr = node.Attribute("Name")
-                                                       where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
+                                                       where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
                                                        select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination wiht ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
                                                let attr = node.Attribute("Name")
-                                               where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
+                                               where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
                                                select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
@@ -6802,7 +6727,7 @@ namespace BizTalkAdminOperations
                     string[] SsoAppsList = File.ReadAllLines(xmlPath + @"\SrcSSOAppsList.txt");
                     for (int i = 0; i < SsoAppsList.Length; i++)
                     {
-                        if ((string.IsNullOrEmpty(SsoAppsList[i]) || string.IsNullOrWhiteSpace(SsoAppsList[i]) || SsoAppsList[i].Contains("Using SSO server") || SsoAppsList[i].Contains("Applications available for") || SsoAppsList[i].Contains("applications available for")))
+                        if (string.IsNullOrEmpty(SsoAppsList[i]) || string.IsNullOrWhiteSpace(SsoAppsList[i]) || SsoAppsList[i].Contains("Using SSO server") || SsoAppsList[i].Contains("Applications available for") || SsoAppsList[i].Contains("applications available for"))
 
                         {
                         }
@@ -6931,25 +6856,15 @@ namespace BizTalkAdminOperations
                                     ticketTimeOut = line.Split(':')[1].Trim();
                                 if (line.Contains("User Id"))
                                 {
-                                    if (line.Split(':')[1].Trim() == "(Not Masked)")
-                                        userID = "no";
-                                    else
-                                        userID = "yes";
+                                    userID = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
                                 }
                                 if (line.Contains("Password"))
                                 {
-                                    if (line.Split(':')[1].Trim() == "(Not Masked)")
-                                        password = "no";
-                                    else
-                                        password = "yes";
+                                    password = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
                                 }
                                 if (line.Contains("Application type"))
                                 {
-                                    if (line.Split(':')[1].Trim() == "Group")
-                                        groupApp = "yes";
-                                    else
-                                        groupApp = "no";
-
+                                    groupApp = line.Split(':')[1].Trim() == "Group" ? "yes" : "no";
                                 }
                                 if (line.Contains("Application enabled"))
                                     applicationEnabled = line.Split(':')[1].Trim();
@@ -7074,7 +6989,7 @@ namespace BizTalkAdminOperations
                         {
                             for (int j = 0; j < ssoMappingList.Length; j++)
                             {
-                                if ((string.IsNullOrEmpty(ssoMappingList[j]) || string.IsNullOrWhiteSpace(ssoMappingList[j]) || ssoMappingList[j].Contains("Using SSO server") || ssoMappingList[j].Contains("Existing mappings for application") || ssoMappingList[j].Contains("existing mappings for application")))
+                                if (string.IsNullOrEmpty(ssoMappingList[j]) || string.IsNullOrWhiteSpace(ssoMappingList[j]) || ssoMappingList[j].Contains("Using SSO server") || ssoMappingList[j].Contains("Existing mappings for application") || ssoMappingList[j].Contains("existing mappings for application"))
 
                                 {
 
@@ -7173,7 +7088,7 @@ namespace BizTalkAdminOperations
                     
                     for (int i = 0; i < dstSsoAppsList.Length; i++)
                     {
-                        if ((string.IsNullOrEmpty(dstSsoAppsList[i]) || string.IsNullOrWhiteSpace(dstSsoAppsList[i]) || dstSsoAppsList[i].Contains("Using SSO server") || dstSsoAppsList[i].Contains("Applications available for") || dstSsoAppsList[i].Contains("applications available for")))
+                        if (string.IsNullOrEmpty(dstSsoAppsList[i]) || string.IsNullOrWhiteSpace(dstSsoAppsList[i]) || dstSsoAppsList[i].Contains("Using SSO server") || dstSsoAppsList[i].Contains("Applications available for") || dstSsoAppsList[i].Contains("applications available for"))
 
                         {
                         }

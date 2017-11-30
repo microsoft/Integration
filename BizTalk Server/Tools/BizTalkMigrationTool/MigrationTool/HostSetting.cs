@@ -14,10 +14,10 @@
     public class HostSetting : Component {
         
         // Private property to hold the WMI namespace in which the class resides.
-        private static string CreatedWmiNamespace = "\\ROOT\\MicrosoftBizTalkServer";
+        private static readonly string CreatedWmiNamespace = "\\ROOT\\MicrosoftBizTalkServer";
         
         // Private property to hold the name of WMI class which created this class.
-        private static string CreatedClassName = "MSBTS_HostSetting";
+        private static readonly string CreatedClassName = "MSBTS_HostSetting";
         
         // Private member variable to hold the ManagementScope which is used by the various methods.
         private static ManagementScope statMgmtScope = null;
@@ -31,7 +31,7 @@
         private bool AutoCommitProp;
         
         // Private variable to hold the embedded property representing the instance.
-        private ManagementBaseObject embeddedObj;
+        private readonly ManagementBaseObject embeddedObj;
         
         // The current WMI object used
         private ManagementBaseObject curObj;
@@ -107,13 +107,10 @@
         public string ManagementClassName {
             get {
                 string strRet = CreatedClassName;
-                if ((curObj != null)) {
-                    if ((curObj.ClassPath != null)) {
-                        strRet = ((string)(curObj["__CLASS"]));
-                        if (((strRet == null) 
-                                    || (strRet == string.Empty))) {
-                            strRet = CreatedClassName;
-                        }
+                if (curObj?.ClassPath != null) {
+                    strRet = (string)curObj["__CLASS"];
+                    if (string.IsNullOrEmpty(strRet)) {
+                        strRet = CreatedClassName;
                     }
                 }
                 return strRet;
@@ -143,7 +140,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ManagementScope Scope {
             get {
-                if ((isEmbedded == false)) {
+                if (isEmbedded == false) {
                     return PrivateLateBoundObject.Scope;
                 }
                 else {
@@ -151,7 +148,7 @@
                 }
             }
             set {
-                if ((isEmbedded == false)) {
+                if (isEmbedded == false) {
                     PrivateLateBoundObject.Scope = value;
                 }
             }
@@ -173,7 +170,7 @@
         [Browsable(true)]
         public ManagementPath Path {
             get {
-                if ((isEmbedded == false)) {
+                if (isEmbedded == false) {
                     return PrivateLateBoundObject.Path;
                 }
                 else {
@@ -181,8 +178,8 @@
                 }
             }
             set {
-                if ((isEmbedded == false)) {
-                    if ((CheckIfProperClass(null, value, null) != true)) {
+                if (isEmbedded == false) {
+                    if (CheckIfProperClass(null, value, null) != true) {
                         throw new ArgumentException("Class name does not match.");
                     }
                     PrivateLateBoundObject.Path = value;
@@ -206,7 +203,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsAuthTrustedNull {
             get {
-                if ((curObj["AuthTrusted"] == null)) {
+                if (curObj["AuthTrusted"] == null) {
                     return true;
                 }
                 else {
@@ -222,15 +219,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public bool AuthTrusted {
             get {
-                if ((curObj["AuthTrusted"] == null)) {
+                if (curObj["AuthTrusted"] == null) {
                     return Convert.ToBoolean(0);
                 }
-                return ((bool)(curObj["AuthTrusted"]));
+                return (bool)curObj["AuthTrusted"];
             }
             set {
                 curObj["AuthTrusted"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -241,7 +238,7 @@
         [Description("A short description (one-line string) of the CIM_Setting object.")]
         public string Caption {
             get {
-                return ((string)(curObj["Caption"]));
+                return (string)curObj["Caption"];
             }
         }
         
@@ -251,7 +248,7 @@
             "uster resource group name set by the Administrator.")]
         public string ClusterResourceGroupName {
             get {
-                return ((string)(curObj["ClusterResourceGroupName"]));
+                return (string)curObj["ClusterResourceGroupName"];
             }
         }
         
@@ -259,7 +256,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDBQueueSizeThresholdNull {
             get {
-                if ((curObj["DBQueueSizeThreshold"] == null)) {
+                if (curObj["DBQueueSizeThreshold"] == null) {
                     return true;
                 }
                 else {
@@ -274,15 +271,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint DBQueueSizeThreshold {
             get {
-                if ((curObj["DBQueueSizeThreshold"] == null)) {
+                if (curObj["DBQueueSizeThreshold"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["DBQueueSizeThreshold"]));
+                return (uint)curObj["DBQueueSizeThreshold"];
             }
             set {
                 curObj["DBQueueSizeThreshold"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -292,7 +289,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDBSessionThresholdNull {
             get {
-                if ((curObj["DBSessionThreshold"] == null)) {
+                if (curObj["DBSessionThreshold"] == null) {
                     return true;
                 }
                 else {
@@ -307,15 +304,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint DBSessionThreshold {
             get {
-                if ((curObj["DBSessionThreshold"] == null)) {
+                if (curObj["DBSessionThreshold"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["DBSessionThreshold"]));
+                return (uint)curObj["DBSessionThreshold"];
             }
             set {
                 curObj["DBSessionThreshold"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -327,12 +324,12 @@
             "tion certificate. Max length for this property is 256 characters.")]
         public string DecryptCertComment {
             get {
-                return ((string)(curObj["DecryptCertComment"]));
+                return (string)curObj["DecryptCertComment"];
             }
             set {
                 curObj["DecryptCertComment"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -343,12 +340,12 @@
         [Description(@"ThumbPrint of the Decryption certificate. The Certificate Thumbprint is a digest of the certificate data and is found in the Certificate Details, and is expressed as a hexadecimal value. Example: 'FD36 90F0 EB49 F7B8 D3AB 1C69 8E02 ED84 5738 7868'. Max length for this property is 80 characters.")]
         public string DecryptCertThumbprint {
             get {
-                return ((string)(curObj["DecryptCertThumbprint"]));
+                return (string)curObj["DecryptCertThumbprint"];
             }
             set {
                 curObj["DecryptCertThumbprint"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -358,7 +355,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDeliveryQueueSizeNull {
             get {
-                if ((curObj["DeliveryQueueSize"] == null)) {
+                if (curObj["DeliveryQueueSize"] == null) {
                     return true;
                 }
                 else {
@@ -374,15 +371,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint DeliveryQueueSize {
             get {
-                if ((curObj["DeliveryQueueSize"] == null)) {
+                if (curObj["DeliveryQueueSize"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["DeliveryQueueSize"]));
+                return (uint)curObj["DeliveryQueueSize"];
             }
             set {
                 curObj["DeliveryQueueSize"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -393,7 +390,7 @@
         [Description("A description of the CIM_Setting object.")]
         public string Description {
             get {
-                return ((string)(curObj["Description"]));
+                return (string)curObj["Description"];
             }
         }
         
@@ -401,7 +398,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsGlobalMemoryThresholdNull {
             get {
-                if ((curObj["GlobalMemoryThreshold"] == null)) {
+                if (curObj["GlobalMemoryThreshold"] == null) {
                     return true;
                 }
                 else {
@@ -417,15 +414,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint GlobalMemoryThreshold {
             get {
-                if ((curObj["GlobalMemoryThreshold"] == null)) {
+                if (curObj["GlobalMemoryThreshold"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["GlobalMemoryThreshold"]));
+                return (uint)curObj["GlobalMemoryThreshold"];
             }
             set {
                 curObj["GlobalMemoryThreshold"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -435,7 +432,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsHostTrackingNull {
             get {
-                if ((curObj["HostTracking"] == null)) {
+                if (curObj["HostTracking"] == null) {
                     return true;
                 }
                 else {
@@ -451,15 +448,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public bool HostTracking {
             get {
-                if ((curObj["HostTracking"] == null)) {
+                if (curObj["HostTracking"] == null) {
                     return Convert.ToBoolean(0);
                 }
-                return ((bool)(curObj["HostTracking"]));
+                return (bool)curObj["HostTracking"];
             }
             set {
                 curObj["HostTracking"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -469,7 +466,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsHostTypeNull {
             get {
-                if ((curObj["HostType"] == null)) {
+                if (curObj["HostType"] == null) {
                     return true;
                 }
                 else {
@@ -485,10 +482,10 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public HostTypeValues HostType {
             get {
-                if ((curObj["HostType"] == null)) {
-                    return ((HostTypeValues)(Convert.ToInt32(0)));
+                if (curObj["HostType"] == null) {
+                    return (HostTypeValues)Convert.ToInt32(0);
                 }
-                return ((HostTypeValues)(Convert.ToInt32(curObj["HostType"])));
+                return (HostTypeValues)Convert.ToInt32(curObj["HostType"]);
             }
 
             set
@@ -501,7 +498,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsInflightMessageThresholdNull {
             get {
-                if ((curObj["InflightMessageThreshold"] == null)) {
+                if (curObj["InflightMessageThreshold"] == null) {
                     return true;
                 }
                 else {
@@ -517,15 +514,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint InflightMessageThreshold {
             get {
-                if ((curObj["InflightMessageThreshold"] == null)) {
+                if (curObj["InflightMessageThreshold"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["InflightMessageThreshold"]));
+                return (uint)curObj["InflightMessageThreshold"];
             }
             set {
                 curObj["InflightMessageThreshold"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -535,7 +532,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsIsDefaultNull {
             get {
-                if ((curObj["IsDefault"] == null)) {
+                if (curObj["IsDefault"] == null) {
                     return true;
                 }
                 else {
@@ -551,15 +548,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public bool IsDefault {
             get {
-                if ((curObj["IsDefault"] == null)) {
+                if (curObj["IsDefault"] == null) {
                     return Convert.ToBoolean(0);
                 }
-                return ((bool)(curObj["IsDefault"]));
+                return (bool)curObj["IsDefault"];
             }
             set {
                 curObj["IsDefault"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -569,7 +566,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsIsHost32BitOnlyNull {
             get {
-                if ((curObj["IsHost32BitOnly"] == null)) {
+                if (curObj["IsHost32BitOnly"] == null) {
                     return true;
                 }
                 else {
@@ -585,15 +582,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public bool IsHost32BitOnly {
             get {
-                if ((curObj["IsHost32BitOnly"] == null)) {
+                if (curObj["IsHost32BitOnly"] == null) {
                     return Convert.ToBoolean(0);
                 }
-                return ((bool)(curObj["IsHost32BitOnly"]));
+                return (bool)curObj["IsHost32BitOnly"];
             }
             set {
                 curObj["IsHost32BitOnly"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -605,12 +602,12 @@
             " Max length for this property is 128 characters.")]
         public string LastUsedLogon {
             get {
-                return ((string)(curObj["LastUsedLogon"]));
+                return (string)curObj["LastUsedLogon"];
             }
             set {
                 curObj["LastUsedLogon"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -620,7 +617,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessageDeliveryMaximumDelayNull {
             get {
-                if ((curObj["MessageDeliveryMaximumDelay"] == null)) {
+                if (curObj["MessageDeliveryMaximumDelay"] == null) {
                     return true;
                 }
                 else {
@@ -636,15 +633,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessageDeliveryMaximumDelay {
             get {
-                if ((curObj["MessageDeliveryMaximumDelay"] == null)) {
+                if (curObj["MessageDeliveryMaximumDelay"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessageDeliveryMaximumDelay"]));
+                return (uint)curObj["MessageDeliveryMaximumDelay"];
             }
             set {
                 curObj["MessageDeliveryMaximumDelay"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -654,7 +651,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessageDeliveryOverdriveFactorNull {
             get {
-                if ((curObj["MessageDeliveryOverdriveFactor"] == null)) {
+                if (curObj["MessageDeliveryOverdriveFactor"] == null) {
                     return true;
                 }
                 else {
@@ -670,15 +667,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessageDeliveryOverdriveFactor {
             get {
-                if ((curObj["MessageDeliveryOverdriveFactor"] == null)) {
+                if (curObj["MessageDeliveryOverdriveFactor"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessageDeliveryOverdriveFactor"]));
+                return (uint)curObj["MessageDeliveryOverdriveFactor"];
             }
             set {
                 curObj["MessageDeliveryOverdriveFactor"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -688,7 +685,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessageDeliverySampleSpaceSizeNull {
             get {
-                if ((curObj["MessageDeliverySampleSpaceSize"] == null)) {
+                if (curObj["MessageDeliverySampleSpaceSize"] == null) {
                     return true;
                 }
                 else {
@@ -704,15 +701,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessageDeliverySampleSpaceSize {
             get {
-                if ((curObj["MessageDeliverySampleSpaceSize"] == null)) {
+                if (curObj["MessageDeliverySampleSpaceSize"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessageDeliverySampleSpaceSize"]));
+                return (uint)curObj["MessageDeliverySampleSpaceSize"];
             }
             set {
                 curObj["MessageDeliverySampleSpaceSize"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -722,7 +719,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessageDeliverySampleSpaceWindowNull {
             get {
-                if ((curObj["MessageDeliverySampleSpaceWindow"] == null)) {
+                if (curObj["MessageDeliverySampleSpaceWindow"] == null) {
                     return true;
                 }
                 else {
@@ -738,15 +735,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessageDeliverySampleSpaceWindow {
             get {
-                if ((curObj["MessageDeliverySampleSpaceWindow"] == null)) {
+                if (curObj["MessageDeliverySampleSpaceWindow"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessageDeliverySampleSpaceWindow"]));
+                return (uint)curObj["MessageDeliverySampleSpaceWindow"];
             }
             set {
                 curObj["MessageDeliverySampleSpaceWindow"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -756,7 +753,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessagePublishMaximumDelayNull {
             get {
-                if ((curObj["MessagePublishMaximumDelay"] == null)) {
+                if (curObj["MessagePublishMaximumDelay"] == null) {
                     return true;
                 }
                 else {
@@ -772,15 +769,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessagePublishMaximumDelay {
             get {
-                if ((curObj["MessagePublishMaximumDelay"] == null)) {
+                if (curObj["MessagePublishMaximumDelay"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessagePublishMaximumDelay"]));
+                return (uint)curObj["MessagePublishMaximumDelay"];
             }
             set {
                 curObj["MessagePublishMaximumDelay"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -790,7 +787,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessagePublishOverdriveFactorNull {
             get {
-                if ((curObj["MessagePublishOverdriveFactor"] == null)) {
+                if (curObj["MessagePublishOverdriveFactor"] == null) {
                     return true;
                 }
                 else {
@@ -805,15 +802,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessagePublishOverdriveFactor {
             get {
-                if ((curObj["MessagePublishOverdriveFactor"] == null)) {
+                if (curObj["MessagePublishOverdriveFactor"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessagePublishOverdriveFactor"]));
+                return (uint)curObj["MessagePublishOverdriveFactor"];
             }
             set {
                 curObj["MessagePublishOverdriveFactor"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -823,7 +820,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessagePublishSampleSpaceSizeNull {
             get {
-                if ((curObj["MessagePublishSampleSpaceSize"] == null)) {
+                if (curObj["MessagePublishSampleSpaceSize"] == null) {
                     return true;
                 }
                 else {
@@ -839,15 +836,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessagePublishSampleSpaceSize {
             get {
-                if ((curObj["MessagePublishSampleSpaceSize"] == null)) {
+                if (curObj["MessagePublishSampleSpaceSize"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessagePublishSampleSpaceSize"]));
+                return (uint)curObj["MessagePublishSampleSpaceSize"];
             }
             set {
                 curObj["MessagePublishSampleSpaceSize"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -857,7 +854,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsMessagePublishSampleSpaceWindowNull {
             get {
-                if ((curObj["MessagePublishSampleSpaceWindow"] == null)) {
+                if (curObj["MessagePublishSampleSpaceWindow"] == null) {
                     return true;
                 }
                 else {
@@ -873,15 +870,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint MessagePublishSampleSpaceWindow {
             get {
-                if ((curObj["MessagePublishSampleSpaceWindow"] == null)) {
+                if (curObj["MessagePublishSampleSpaceWindow"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["MessagePublishSampleSpaceWindow"]));
+                return (uint)curObj["MessagePublishSampleSpaceWindow"];
             }
             set {
                 curObj["MessagePublishSampleSpaceWindow"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -894,7 +891,7 @@
             "name. Max length for this property is 123 characters.")]
         public string MgmtDbNameOverride {
             get {
-                return ((string)(curObj["MgmtDbNameOverride"]));
+                return (string)curObj["MgmtDbNameOverride"];
             }
         }
         
@@ -905,7 +902,7 @@
             "80 characters.")]
         public string MgmtDbServerOverride {
             get {
-                return ((string)(curObj["MgmtDbServerOverride"]));
+                return (string)curObj["MgmtDbServerOverride"];
             }
         }
         
@@ -915,7 +912,7 @@
             "or instance creation. Max length for this property is 80 characters.")]
         public string Name {
             get {
-                return ((string)(curObj["Name"]));
+                return (string)curObj["Name"];
                 }
 
             set { curObj["Name"] = value;
@@ -927,7 +924,7 @@
         [Description(@"This property contains the name of the Windows group. It can be either a local or a domain Windows group. This group is granted access to the BizTalk Host Queue that is created for this BizTalk Host. All accounts used to host BizTalk Host instances of this type must be members of this group.  This property is required for instance creation. Max length for this property is 63 characters.")]
         public string NTGroupName {
             get {
-                return ((string)(curObj["NTGroupName"]));
+                return (string)curObj["NTGroupName"];
             }
 
             set
@@ -940,7 +937,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsProcessMemoryThresholdNull {
             get {
-                if ((curObj["ProcessMemoryThreshold"] == null)) {
+                if (curObj["ProcessMemoryThreshold"] == null) {
                     return true;
                 }
                 else {
@@ -955,15 +952,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint ProcessMemoryThreshold {
             get {
-                if ((curObj["ProcessMemoryThreshold"] == null)) {
+                if (curObj["ProcessMemoryThreshold"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["ProcessMemoryThreshold"]));
+                return (uint)curObj["ProcessMemoryThreshold"];
             }
             set {
                 curObj["ProcessMemoryThreshold"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -974,7 +971,7 @@
         [Description("The identifier by which the CIM_Setting object is known.")]
         public string SettingID {
             get {
-                return ((string)(curObj["SettingID"]));
+                return (string)curObj["SettingID"];
             }
         }
         
@@ -982,7 +979,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsThreadPoolSizeNull {
             get {
-                if ((curObj["ThreadPoolSize"] == null)) {
+                if (curObj["ThreadPoolSize"] == null) {
                     return true;
                 }
                 else {
@@ -997,15 +994,15 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint ThreadPoolSize {
             get {
-                if ((curObj["ThreadPoolSize"] == null)) {
+                if (curObj["ThreadPoolSize"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["ThreadPoolSize"]));
+                return (uint)curObj["ThreadPoolSize"];
             }
             set {
                 curObj["ThreadPoolSize"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
@@ -1015,7 +1012,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsThreadThresholdNull {
             get {
-                if ((curObj["ThreadThreshold"] == null)) {
+                if (curObj["ThreadThreshold"] == null) {
                     return true;
                 }
                 else {
@@ -1031,23 +1028,23 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public uint ThreadThreshold {
             get {
-                if ((curObj["ThreadThreshold"] == null)) {
+                if (curObj["ThreadThreshold"] == null) {
                     return Convert.ToUInt32(0);
                 }
-                return ((uint)(curObj["ThreadThreshold"]));
+                return (uint)curObj["ThreadThreshold"];
             }
             set {
                 curObj["ThreadThreshold"] = value;
-                if (((isEmbedded == false) 
-                            && AutoCommitProp)) {
+                if (isEmbedded == false 
+                    && AutoCommitProp) {
                     PrivateLateBoundObject.Put();
                 }
             }
         }
         
         private bool CheckIfProperClass(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions OptionsParam) {
-            if (((path != null) 
-                        && (string.Compare(path.ClassName, ManagementClassName, true, CultureInfo.InvariantCulture) == 0))) {
+            if (path != null 
+                && string.Compare(path.ClassName, ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                 return true;
             }
             else {
@@ -1056,16 +1053,16 @@
         }
         
         private bool CheckIfProperClass(ManagementBaseObject theObj) {
-            if (((theObj != null) 
-                        && (string.Compare(((string)(theObj["__CLASS"])), ManagementClassName, true, CultureInfo.InvariantCulture) == 0))) {
+            if (theObj != null 
+                && string.Compare((string)theObj["__CLASS"], ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                 return true;
             }
             else {
-                Array parentClasses = ((Array)(theObj["__DERIVATION"]));
-                if ((parentClasses != null)) {
+                Array parentClasses = (Array)theObj["__DERIVATION"];
+                if (parentClasses != null) {
                     int count = 0;
-                    for (count = 0; (count < parentClasses.Length); count = (count + 1)) {
-                        if ((string.Compare(((string)(parentClasses.GetValue(count))), ManagementClassName, true, CultureInfo.InvariantCulture) == 0)) {
+                    for (count = 0; count < parentClasses.Length; count = count + 1) {
+                        if (string.Compare((string)parentClasses.GetValue(count), ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                             return true;
                         }
                     }
@@ -1075,7 +1072,7 @@
         }
         
         private bool ShouldSerializeAuthTrusted() {
-            if ((IsAuthTrustedNull == false)) {
+            if (IsAuthTrustedNull == false) {
                 return true;
             }
             return false;
@@ -1083,14 +1080,14 @@
         
         private void ResetAuthTrusted() {
             curObj["AuthTrusted"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeDBQueueSizeThreshold() {
-            if ((IsDBQueueSizeThresholdNull == false)) {
+            if (IsDBQueueSizeThresholdNull == false) {
                 return true;
             }
             return false;
@@ -1098,14 +1095,14 @@
         
         private void ResetDBQueueSizeThreshold() {
             curObj["DBQueueSizeThreshold"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeDBSessionThreshold() {
-            if ((IsDBSessionThresholdNull == false)) {
+            if (IsDBSessionThresholdNull == false) {
                 return true;
             }
             return false;
@@ -1113,30 +1110,30 @@
         
         private void ResetDBSessionThreshold() {
             curObj["DBSessionThreshold"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private void ResetDecryptCertComment() {
             curObj["DecryptCertComment"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private void ResetDecryptCertThumbprint() {
             curObj["DecryptCertThumbprint"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeDeliveryQueueSize() {
-            if ((IsDeliveryQueueSizeNull == false)) {
+            if (IsDeliveryQueueSizeNull == false) {
                 return true;
             }
             return false;
@@ -1144,14 +1141,14 @@
         
         private void ResetDeliveryQueueSize() {
             curObj["DeliveryQueueSize"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeGlobalMemoryThreshold() {
-            if ((IsGlobalMemoryThresholdNull == false)) {
+            if (IsGlobalMemoryThresholdNull == false) {
                 return true;
             }
             return false;
@@ -1159,14 +1156,14 @@
         
         private void ResetGlobalMemoryThreshold() {
             curObj["GlobalMemoryThreshold"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeHostTracking() {
-            if ((IsHostTrackingNull == false)) {
+            if (IsHostTrackingNull == false) {
                 return true;
             }
             return false;
@@ -1174,21 +1171,21 @@
         
         private void ResetHostTracking() {
             curObj["HostTracking"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeHostType() {
-            if ((IsHostTypeNull == false)) {
+            if (IsHostTypeNull == false) {
                 return true;
             }
             return false;
         }
         
         private bool ShouldSerializeInflightMessageThreshold() {
-            if ((IsInflightMessageThresholdNull == false)) {
+            if (IsInflightMessageThresholdNull == false) {
                 return true;
             }
             return false;
@@ -1196,14 +1193,14 @@
         
         private void ResetInflightMessageThreshold() {
             curObj["InflightMessageThreshold"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeIsDefault() {
-            if ((IsIsDefaultNull == false)) {
+            if (IsIsDefaultNull == false) {
                 return true;
             }
             return false;
@@ -1211,14 +1208,14 @@
         
         private void ResetIsDefault() {
             curObj["IsDefault"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeIsHost32BitOnly() {
-            if ((IsIsHost32BitOnlyNull == false)) {
+            if (IsIsHost32BitOnlyNull == false) {
                 return true;
             }
             return false;
@@ -1226,22 +1223,22 @@
         
         private void ResetIsHost32BitOnly() {
             curObj["IsHost32BitOnly"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private void ResetLastUsedLogon() {
             curObj["LastUsedLogon"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliveryMaximumDelay() {
-            if ((IsMessageDeliveryMaximumDelayNull == false)) {
+            if (IsMessageDeliveryMaximumDelayNull == false) {
                 return true;
             }
             return false;
@@ -1249,14 +1246,14 @@
         
         private void ResetMessageDeliveryMaximumDelay() {
             curObj["MessageDeliveryMaximumDelay"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliveryOverdriveFactor() {
-            if ((IsMessageDeliveryOverdriveFactorNull == false)) {
+            if (IsMessageDeliveryOverdriveFactorNull == false) {
                 return true;
             }
             return false;
@@ -1264,14 +1261,14 @@
         
         private void ResetMessageDeliveryOverdriveFactor() {
             curObj["MessageDeliveryOverdriveFactor"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliverySampleSpaceSize() {
-            if ((IsMessageDeliverySampleSpaceSizeNull == false)) {
+            if (IsMessageDeliverySampleSpaceSizeNull == false) {
                 return true;
             }
             return false;
@@ -1279,14 +1276,14 @@
         
         private void ResetMessageDeliverySampleSpaceSize() {
             curObj["MessageDeliverySampleSpaceSize"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessageDeliverySampleSpaceWindow() {
-            if ((IsMessageDeliverySampleSpaceWindowNull == false)) {
+            if (IsMessageDeliverySampleSpaceWindowNull == false) {
                 return true;
             }
             return false;
@@ -1294,14 +1291,14 @@
         
         private void ResetMessageDeliverySampleSpaceWindow() {
             curObj["MessageDeliverySampleSpaceWindow"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishMaximumDelay() {
-            if ((IsMessagePublishMaximumDelayNull == false)) {
+            if (IsMessagePublishMaximumDelayNull == false) {
                 return true;
             }
             return false;
@@ -1309,14 +1306,14 @@
         
         private void ResetMessagePublishMaximumDelay() {
             curObj["MessagePublishMaximumDelay"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishOverdriveFactor() {
-            if ((IsMessagePublishOverdriveFactorNull == false)) {
+            if (IsMessagePublishOverdriveFactorNull == false) {
                 return true;
             }
             return false;
@@ -1324,14 +1321,14 @@
         
         private void ResetMessagePublishOverdriveFactor() {
             curObj["MessagePublishOverdriveFactor"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishSampleSpaceSize() {
-            if ((IsMessagePublishSampleSpaceSizeNull == false)) {
+            if (IsMessagePublishSampleSpaceSizeNull == false) {
                 return true;
             }
             return false;
@@ -1339,14 +1336,14 @@
         
         private void ResetMessagePublishSampleSpaceSize() {
             curObj["MessagePublishSampleSpaceSize"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeMessagePublishSampleSpaceWindow() {
-            if ((IsMessagePublishSampleSpaceWindowNull == false)) {
+            if (IsMessagePublishSampleSpaceWindowNull == false) {
                 return true;
             }
             return false;
@@ -1354,14 +1351,14 @@
         
         private void ResetMessagePublishSampleSpaceWindow() {
             curObj["MessagePublishSampleSpaceWindow"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeProcessMemoryThreshold() {
-            if ((IsProcessMemoryThresholdNull == false)) {
+            if (IsProcessMemoryThresholdNull == false) {
                 return true;
             }
             return false;
@@ -1369,14 +1366,14 @@
         
         private void ResetProcessMemoryThreshold() {
             curObj["ProcessMemoryThreshold"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeThreadPoolSize() {
-            if ((IsThreadPoolSizeNull == false)) {
+            if (IsThreadPoolSizeNull == false) {
                 return true;
             }
             return false;
@@ -1384,14 +1381,14 @@
         
         private void ResetThreadPoolSize() {
             curObj["ThreadPoolSize"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         private bool ShouldSerializeThreadThreshold() {
-            if ((IsThreadThresholdNull == false)) {
+            if (IsThreadThresholdNull == false) {
                 return true;
             }
             return false;
@@ -1399,22 +1396,22 @@
         
         private void ResetThreadThreshold() {
             curObj["ThreadThreshold"] = null;
-            if (((isEmbedded == false) 
-                        && AutoCommitProp)) {
+            if (isEmbedded == false 
+                && AutoCommitProp) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         [Browsable(true)]
         public void CommitObject() {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 PrivateLateBoundObject.Put();
             }
         }
         
         [Browsable(true)]
         public void CommitObject(PutOptions putOptions) {
-            if ((isEmbedded == false)) {
+            if (isEmbedded == false) {
                 PrivateLateBoundObject.Put(putOptions);
             }
         }
@@ -1434,8 +1431,8 @@
         
         private void InitializeObject(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions getOptions) {
             Initialize();
-            if ((path != null)) {
-                if ((CheckIfProperClass(mgmtScope, path, getOptions) != true)) {
+            if (path != null) {
+                if (CheckIfProperClass(mgmtScope, path, getOptions) != true) {
                     throw new ArgumentException("Class name does not match.");
                 }
             }
@@ -1462,8 +1459,8 @@
         }
         
         public static HostSettingCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
-            if ((mgmtScope == null)) {
-                if ((statMgmtScope == null)) {
+            if (mgmtScope == null) {
+                if (statMgmtScope == null) {
                     mgmtScope = new ManagementScope();
                     mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
                 }
@@ -1475,7 +1472,7 @@
             pathObj.ClassName = "MSBTS_HostSetting";
             pathObj.NamespacePath = "root\\MicrosoftBizTalkServer";
             ManagementClass clsObject = new ManagementClass(mgmtScope, pathObj, null);
-            if ((enumOptions == null)) {
+            if (enumOptions == null) {
                 enumOptions = new EnumerationOptions();
                 enumOptions.EnsureLocatable = true;
             }
@@ -1491,8 +1488,8 @@
         }
         
         public static HostSettingCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
-            if ((mgmtScope == null)) {
-                if ((statMgmtScope == null)) {
+            if (mgmtScope == null) {
+                if (statMgmtScope == null) {
                     mgmtScope = new ManagementScope();
                     mgmtScope.Path.NamespacePath = "root\\MicrosoftBizTalkServer";
                 }
@@ -1510,7 +1507,7 @@
         [Browsable(true)]
         public static HostSetting CreateInstance() {
             ManagementScope mgmtScope = null;
-            if ((statMgmtScope == null)) {                
+            if (statMgmtScope == null) {                
                 mgmtScope = new ManagementScope();
                 mgmtScope.Path.NamespacePath = CreatedWmiNamespace;               
             }
@@ -1525,7 +1522,7 @@
         public static HostSetting CreateInstance(string pServer, string pUserName,string pPassword, string pDomain)
         {
             ManagementScope mgmtScope = null;
-            if ((statMgmtScope == null))
+            if (statMgmtScope == null)
             {
                 mgmtScope = new ManagementScope();
                 mgmtScope.Path.NamespacePath = "\\\\" + pServer +  CreatedWmiNamespace;
@@ -1562,7 +1559,7 @@
         // Enumerator implementation for enumerating instances of the class.
         public class HostSettingCollection : object, ICollection {
             
-            private ManagementObjectCollection privColObj;
+            private readonly ManagementObjectCollection privColObj;
             
             public HostSettingCollection(ManagementObjectCollection objCollection) {
                 privColObj = objCollection;
@@ -1589,8 +1586,8 @@
             public virtual void CopyTo(Array array, int index) {
                 privColObj.CopyTo(array, index);
                 int nCtr;
-                for (nCtr = 0; (nCtr < array.Length); nCtr = (nCtr + 1)) {
-                    array.SetValue(new HostSetting(((ManagementObject)(array.GetValue(nCtr)))), nCtr);
+                for (nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
+                    array.SetValue(new HostSetting((ManagementObject)array.GetValue(nCtr)), nCtr);
                 }
             }
             
@@ -1600,7 +1597,7 @@
             
             public class HostSettingEnumerator : object, IEnumerator {
                 
-                private ManagementObjectCollection.ManagementObjectEnumerator privObjEnum;
+                private readonly ManagementObjectCollection.ManagementObjectEnumerator privObjEnum;
                 
                 public HostSettingEnumerator(ManagementObjectCollection.ManagementObjectEnumerator objEnum) {
                     privObjEnum = objEnum;
@@ -1608,7 +1605,7 @@
                 
                 public virtual object Current {
                     get {
-                        return new HostSetting(((ManagementObject)(privObjEnum.Current)));
+                        return new HostSetting((ManagementObject)privObjEnum.Current);
                     }
                 }
                 
@@ -1625,9 +1622,9 @@
         // TypeConverter to handle null values for ValueType properties
         public class WMIValueTypeConverter : TypeConverter {
             
-            private TypeConverter baseConverter;
+            private readonly TypeConverter baseConverter;
             
-            private Type baseType;
+            private readonly Type baseType;
             
             public WMIValueTypeConverter(Type inBaseType) {
                 baseConverter = TypeDescriptor.GetConverter(inBaseType);
@@ -1675,28 +1672,28 @@
             }
             
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
-                if ((baseType.BaseType == typeof(Enum))) {
-                    if ((value.GetType() == destinationType)) {
+                if (baseType.BaseType == typeof(Enum)) {
+                    if (value.GetType() == destinationType) {
                         return value;
                     }
-                    if ((((value == null) 
-                                && (context != null)) 
-                                && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                    if (value == null 
+                        && context != null 
+                        && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                         return  "NULL_ENUM_VALUE" ;
                     }
                     return baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
-                if (((baseType == typeof(bool)) 
-                            && (baseType.BaseType == typeof(ValueType)))) {
-                    if ((((value == null) 
-                                && (context != null)) 
-                                && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                if (baseType == typeof(bool) 
+                    && baseType.BaseType == typeof(ValueType)) {
+                    if (value == null 
+                        && context != null 
+                        && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                         return "";
                     }
                     return baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
-                if (((context != null) 
-                            && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                if (context != null 
+                    && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
                     return "";
                 }
                 return baseConverter.ConvertTo(context, culture, value, destinationType);
@@ -1707,7 +1704,7 @@
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public class ManagementSystemProperties {
             
-            private ManagementBaseObject PrivateLateBoundObject;
+            private readonly ManagementBaseObject PrivateLateBoundObject;
             
             public ManagementSystemProperties(ManagementBaseObject ManagedObject) {
                 PrivateLateBoundObject = ManagedObject;
@@ -1716,70 +1713,70 @@
             [Browsable(true)]
             public int GENUS {
                 get {
-                    return ((int)(PrivateLateBoundObject["__GENUS"]));
+                    return (int)PrivateLateBoundObject["__GENUS"];
                 }
             }
             
             [Browsable(true)]
             public string CLASS {
                 get {
-                    return ((string)(PrivateLateBoundObject["__CLASS"]));
+                    return (string)PrivateLateBoundObject["__CLASS"];
                 }
             }
             
             [Browsable(true)]
             public string SUPERCLASS {
                 get {
-                    return ((string)(PrivateLateBoundObject["__SUPERCLASS"]));
+                    return (string)PrivateLateBoundObject["__SUPERCLASS"];
                 }
             }
             
             [Browsable(true)]
             public string DYNASTY {
                 get {
-                    return ((string)(PrivateLateBoundObject["__DYNASTY"]));
+                    return (string)PrivateLateBoundObject["__DYNASTY"];
                 }
             }
             
             [Browsable(true)]
             public string RELPATH {
                 get {
-                    return ((string)(PrivateLateBoundObject["__RELPATH"]));
+                    return (string)PrivateLateBoundObject["__RELPATH"];
                 }
             }
             
             [Browsable(true)]
             public int PROPERTY_COUNT {
                 get {
-                    return ((int)(PrivateLateBoundObject["__PROPERTY_COUNT"]));
+                    return (int)PrivateLateBoundObject["__PROPERTY_COUNT"];
                 }
             }
             
             [Browsable(true)]
             public string[] DERIVATION {
                 get {
-                    return ((string[])(PrivateLateBoundObject["__DERIVATION"]));
+                    return (string[])PrivateLateBoundObject["__DERIVATION"];
                 }
             }
             
             [Browsable(true)]
             public string SERVER {
                 get {
-                    return ((string)(PrivateLateBoundObject["__SERVER"]));
+                    return (string)PrivateLateBoundObject["__SERVER"];
                 }
             }
             
             [Browsable(true)]
             public string NAMESPACE {
                 get {
-                    return ((string)(PrivateLateBoundObject["__NAMESPACE"]));
+                    return (string)PrivateLateBoundObject["__NAMESPACE"];
                 }
             }
             
             [Browsable(true)]
             public string PATH {
                 get {
-                    return ((string)(PrivateLateBoundObject["__PATH"]));
+                    return (string)PrivateLateBoundObject["__PATH"];
                 }
             }
         }

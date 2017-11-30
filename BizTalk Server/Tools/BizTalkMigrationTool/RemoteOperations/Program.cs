@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,13 +17,14 @@ using Microsoft.Web.Administration;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 using Microsoft.BizTalk.Management;
+using ApplicationCollection = Microsoft.BizTalk.ExplorerOM.ApplicationCollection;
 
 namespace RemoteOperations
 {
-   
+
     class Program
     {
-        
+
         static int Main(string[] args)
         {
             //args 0 : rootPAth --- place of invocation, path of directroy from where this exe invoked
@@ -32,14 +32,12 @@ namespace RemoteOperations
             //args 2 : target machine Export Folder
 
             string rootPath = args[0];
-            string appPath;
-            string certPath;
-            
+
             try
             {
-                appPath = rootPath;
-               
-                certPath = appPath + @"\CERT";
+                var appPath = rootPath;
+
+                var certPath = appPath + @"\CERT";
                 RemoteExportImportFunctions expo = new RemoteExportImportFunctions();
 
                 if (args[1] == "ExportCert")
@@ -52,11 +50,12 @@ namespace RemoteOperations
                     }
 
                     if (!Directory.Exists(certPath))
-                    {   //recreate                                            
+                    {
+                        //recreate                                            
                         Directory.CreateDirectory(certPath);
                         expo.LogInfo("Created cert folder", rootPath);
                     }
-                    
+
                     expo.btnExportCert_Click(rootPath, args[2]);
                 }
 
@@ -70,20 +69,21 @@ namespace RemoteOperations
                     }
 
                     if (!Directory.Exists(certPath))
-                    {   //recreate                                            
+                    {
+                        //recreate                                            
                         Directory.CreateDirectory(certPath);
                         expo.LogInfo("Created cert folder", rootPath);
                     }
-                    
+
                     expo.btnImportCert_Click(rootPath, args[2]);
                 }
 
                 if (args[1] == "ExportDll")
                 {
-                    string pDLLPath = args[2];
+                    string pDllPath = args[2];
                     string strCustomDllFilter = args[3];
                     string strCustomDllPath = args[4];
-                    expo.btnExportAssemblies_Click(rootPath, pDLLPath, strCustomDllFilter, strCustomDllPath, args[5]);
+                    expo.btnExportAssemblies_Click(rootPath, pDllPath, strCustomDllFilter, strCustomDllPath, args[5]);
                 }
 
                 //0 unc path, 1 Operation Name , 2 SqlInstance
@@ -117,7 +117,7 @@ namespace RemoteOperations
                 }
                 if (args[1] == "DstDllList")
                 {
-                    
+
                     expo.btnDstDllList_Click(rootPath);
                 }
 
@@ -132,24 +132,24 @@ namespace RemoteOperations
                 if (args[1] == "ExportBREList")
                 {
                     string sqlInstance = args[2];
-                    expo.ExportBrePolicyVocabulary(rootPath, sqlInstance);
+                    expo.ExportBREPolicyVocabulary(rootPath, sqlInstance);
                 }
                 if (args[1] == "ImportBREList")
                 {
                     string sqlInstance = args[2];
-                    expo.ImportBrePolicyVocabulary(rootPath, sqlInstance);
+                    expo.ImportBREPolicyVocabulary(rootPath, sqlInstance);
                 }
                 if (args[1] == "ExportIISClientCert")
                 {
-                  
+
                     expo.ExportClientCertOnetOneMappings(rootPath);
                 }
                 if (args[1] == "ImportHosts")
                 {
-                     
+
                     string usernameForHost = args[2];
-                    string passwordForHost= args[3];
-                    expo.ImportHostAndHostInstances(rootPath,  usernameForHost, passwordForHost);
+                    string passwordForHost = args[3];
+                    expo.ImportHostAndHostInstances(rootPath, usernameForHost, passwordForHost);
                 }
                 if (args[1] == "ImportIISClientCert")
                 {
@@ -163,13 +163,13 @@ namespace RemoteOperations
                 }
                 if (args[1] == "ImportWebSite")
                 {
-                    string WebsiteName = args[2];
-                    expo.ImportWebsites(rootPath, WebsiteName);
+                    string websiteName = args[2];
+                    expo.ImportWebsites(rootPath, websiteName);
                 }
                 if (args[1] == "ImportWebApp")
                 {
-                    string WebsiteName = args[2];
-                    expo.ImportWebApps(rootPath, WebsiteName);
+                    string websiteName = args[2];
+                    expo.ImportWebApps(rootPath, websiteName);
                 }
                 if (args[1] == "BTSInstallPath")
                 {
@@ -195,9 +195,9 @@ namespace RemoteOperations
                 if (args[1] == "ImportBAMAccounts")
                 {
                     string sqlInstance = args[2];
-                    string accountName= args[3];
+                    string accountName = args[3];
                     string viewName = args[4];
-                    expo.AddBAMAccounts(rootPath, sqlInstance,accountName, viewName);
+                    expo.AddBAMAccounts(rootPath, sqlInstance, accountName, viewName);
                 }
                 if (args[1] == "ImportBTTList")
                 {
@@ -224,20 +224,16 @@ namespace RemoteOperations
                 return 1;
             }
         }
+
         public class RemoteExportImportFunctions
         {
-            string machineName = Environment.MachineName;
+            readonly string _machineName = Environment.MachineName;
+
             public void btnExportCert_Click(string pRootPath, string pCertPass)
             {
-                string appPath;
-                string certPath;
                 string thumbPrint = string.Empty, certFileName = string.Empty;
-                byte[] certBytes = null;
-                X509Store store = null;
-                string commandArguments = "";
-                int returnCode;
-                appPath = pRootPath;
-                certPath = appPath + @"\CERT";
+                var appPath = pRootPath;
+                var certPath = appPath + @"\CERT";
 
                 try
                 {
@@ -246,16 +242,18 @@ namespace RemoteOperations
                     {
                         foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                         {
-                            StoreLocation storeLoc = (StoreLocation)Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName)Enum.Parse(typeof(StoreName), iStoreName);
-                            if (storeLoc == StoreLocation.LocalMachine || (storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My))
+                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
+                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                            if (storeLoc == StoreLocation.LocalMachine ||
+                                storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My)
                             {
-                                store = new X509Store(storeNam, storeLoc);
+                                var store = new X509Store(storeNam, storeLoc);
 
                                 try
                                 {
                                     store.Open(OpenFlags.ReadOnly);
-                                    LogInfo(iStoreLocation + "_" + iStoreName + "_Count:" + store.Certificates.Count, pRootPath);
+                                    LogInfo(iStoreLocation + "_" + iStoreName + "_Count:" + store.Certificates.Count,
+                                        pRootPath);
                                     foreach (X509Certificate2 certificate in store.Certificates)
                                     {
                                         // Exporting EnhancedKEyUsage for Certificates
@@ -267,12 +265,14 @@ namespace RemoteOperations
                                             {
                                                 try
                                                 {
-                                                    X509EnhancedKeyUsageExtension ext = (X509EnhancedKeyUsageExtension)extension;
+                                                    X509EnhancedKeyUsageExtension ext =
+                                                        (X509EnhancedKeyUsageExtension) extension;
                                                     OidCollection oids = ext.EnhancedKeyUsages;
                                                     enhancedKeyUsage = new string[oids.Count];
                                                     for (int j = 0; j < oids.Count; j++)
                                                     {
-                                                        if (string.IsNullOrEmpty(oids[j].FriendlyName) || string.IsNullOrWhiteSpace(oids[j].FriendlyName))
+                                                        if (string.IsNullOrEmpty(oids[j].FriendlyName) ||
+                                                            string.IsNullOrWhiteSpace(oids[j].FriendlyName))
                                                         {
                                                             // Do Nothing
                                                         }
@@ -283,7 +283,10 @@ namespace RemoteOperations
                                                 }
                                                 catch (Exception ex)
                                                 {
-                                                    LogInfo("Exception Occured when Extracting Enhanced Key Usage: " + certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + certificate.Thumbprint, pRootPath);
+                                                    LogInfo(
+                                                        "Exception Occured when Extracting Enhanced Key Usage: " +
+                                                        certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
+                                                        certificate.Thumbprint, pRootPath);
                                                     LogException(ex, pRootPath);
                                                 }
 
@@ -291,7 +294,9 @@ namespace RemoteOperations
 
                                         }
 
-                                        if (enhancedKeyUsage.Contains("ITG Smartcard") || enhancedKeyUsage.Contains("Smart Card Logon") || certificate.Issuer.Contains("login.windows.net"))
+                                        if (enhancedKeyUsage.Contains("ITG Smartcard") ||
+                                            enhancedKeyUsage.Contains("Smart Card Logon") ||
+                                            certificate.Issuer.Contains("login.windows.net"))
                                         {
                                             //Do Nothing
                                         }
@@ -300,31 +305,46 @@ namespace RemoteOperations
                                             try
                                             {
                                                 thumbPrint = certificate.Thumbprint;
-                                                LogInfo("File Name: " + certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i, pRootPath);
+                                                LogInfo(
+                                                    "File Name: " + certPath + @"\" + iStoreLocation + "_" +
+                                                    iStoreName + "_" + thumbPrint + "_" + i, pRootPath);
                                                 int dateCompare = DateTime.Compare(certificate.NotAfter, DateTime.Now);
                                                 if (dateCompare >= 0)
                                                 {
                                                     if (certificate.HasPrivateKey)
                                                     {
-                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i + ".PFX";
+                                                        certFileName =
+                                                            certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
+                                                            thumbPrint + "_" + i + ".PFX";
                                                         //certBytes = certificate.Export(X509ContentType.Pfx, strCertPass);
                                                         //File.WriteAllBytes(certFileName, certBytes);
+                                                        string commandArguments;
                                                         if (iStoreLocation == "CurrentUser")
-                                                            commandArguments = " -f -exportpfx " + " -p " + "\"" + pCertPass + "\"" + " -User " + iStoreName + " " + "\"" + thumbPrint + "\"" + " " + certFileName + " " + "ExtendedProperties";
+                                                            commandArguments =
+                                                                " -f -exportpfx " + " -p " + "\"" + pCertPass + "\"" +
+                                                                " -User " + iStoreName + " " + "\"" + thumbPrint +
+                                                                "\"" + " " + certFileName + " " + "ExtendedProperties";
                                                         else
-                                                            commandArguments = " -f -exportpfx " + " -p " + "\"" + pCertPass + "\"" + " " + iStoreName + " " + "\"" + thumbPrint + "\"" + " " + certFileName + " " + "ExtendedProperties";
-                                                        returnCode = ExecuteCmd("certutil.exe", commandArguments, pRootPath);
+                                                            commandArguments =
+                                                                " -f -exportpfx " + " -p " + "\"" + pCertPass + "\"" +
+                                                                " " + iStoreName + " " + "\"" + thumbPrint + "\"" +
+                                                                " " + certFileName + " " + "ExtendedProperties";
+                                                        var returnCode = ExecuteCmd("certutil.exe", commandArguments,
+                                                            pRootPath);
                                                         if (returnCode == 0)
                                                         {
-                                                            LogInfo("Success: Exported Cert:" + certFileName, pRootPath);
+                                                            LogInfo("Success: Exported Cert:" + certFileName,
+                                                                pRootPath);
                                                         }
                                                         else
                                                             LogInfo("Failed Exporting Cert:" + certFileName, pRootPath);
                                                     }
                                                     else
                                                     {
-                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i + ".CER";
-                                                        certBytes = certificate.Export(X509ContentType.Cert);
+                                                        certFileName =
+                                                            certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
+                                                            thumbPrint + "_" + i + ".CER";
+                                                        var certBytes = certificate.Export(X509ContentType.Cert);
                                                         File.WriteAllBytes(certFileName, certBytes);
                                                     }
                                                 }
@@ -332,7 +352,9 @@ namespace RemoteOperations
                                             }
                                             catch (Exception ex)
                                             {
-                                                LogInfo("File Name: " + certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i, pRootPath);
+                                                LogInfo(
+                                                    "File Name: " + certPath + @"\" + iStoreLocation + "_" +
+                                                    iStoreName + "_" + thumbPrint + "_" + i, pRootPath);
                                                 LogInfo("Exception in Cert: " + certFileName, pRootPath);
                                                 LogException(ex, pRootPath);
                                             }
@@ -340,10 +362,10 @@ namespace RemoteOperations
                                             {
                                                 i++;
                                             }
-                                            
+
                                         }
                                     }
-                                    
+
                                 }
                                 catch (Exception ex)
                                 {
@@ -356,15 +378,16 @@ namespace RemoteOperations
                             }
                         }
                     }
-                    LogInfo("Exported Certificates from Server: " + machineName, pRootPath);
+                    LogInfo("Exported Certificates from Server: " + _machineName, pRootPath);
 
                     if (File.Exists(pRootPath + "\\Logs\\Cert_log.txt")) //if already exist then delete
                         File.Delete(pRootPath + "\\Logs\\Cert_log.txt");
-                    File.Move(pRootPath + "\\Logs\\RemoteOperation_log.txt", pRootPath + "\\Logs\\Cert_log.txt");//rename 
+                    File.Move(pRootPath + "\\Logs\\RemoteOperation_log.txt",
+                        pRootPath + "\\Logs\\Cert_log.txt"); //rename 
                 }
                 catch (Exception ex)
                 {
-                    LogInfo("Certificate Export Failed on Server: " + machineName, pRootPath);
+                    LogInfo("Certificate Export Failed on Server: " + _machineName, pRootPath);
                     LogException(ex, pRootPath);
 
                     throw new Exception(ex.Message, ex.InnerException);
@@ -373,26 +396,22 @@ namespace RemoteOperations
 
             public void btnImportCert_Click(string pRootPath, string pCertPass)
             {
-                string appPath, thumbPrint;
-                string certPath;
-                appPath = pRootPath;
-                certPath = appPath + @"\CERT";
-                string commandArguments = " ";
-                int returnCode;
-
-                X509Store store = null; X509Certificate2 certificate = null;
+                var appPath = pRootPath;
+                var certPath = appPath + @"\CERT";
 
                 try
                 {
                     //BEGIN::new code for delta, get all cert name and write them in txt file,
+                    X509Store store;
                     using (StreamWriter writer = new StreamWriter(appPath + @"\DstCertList.txt", false))
                     {
                         foreach (string iStoreLocation in Enum.GetNames(typeof(StoreLocation)))
                         {
                             foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                             {
-                                StoreLocation storeLoc = (StoreLocation)Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                                StoreName storeNam = (StoreName)Enum.Parse(typeof(StoreName), iStoreName);
+                                StoreLocation storeLoc =
+                                    (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
+                                StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
 
                                 store = new X509Store(storeNam, storeLoc);
 
@@ -403,7 +422,7 @@ namespace RemoteOperations
                                     {
                                         try
                                         {
-                                            thumbPrint = certificateDst.Thumbprint;
+                                            var thumbPrint = certificateDst.Thumbprint;
                                             writer.WriteLine(iStoreLocation + "_" + iStoreName + "_" + thumbPrint);
                                         }
                                         catch (Exception ex)
@@ -418,14 +437,16 @@ namespace RemoteOperations
                                 }
 
                                 finally
-                                { store.Close(); }
+                                {
+                                    store.Close();
+                                }
                             }
                         }
                     }
                     //END::new code for delta, get all cert name and write them in txt file, 
 
                     string[] dstCertNameList = File.ReadAllLines(appPath + @"\DstCertList.txt"); //read all cert of Dst
-                                                                                                           //Creating CertificatesList with out StorLocation
+                    //Creating CertificatesList with out StorLocation
                     string[] dstCertList = new string[dstCertNameList.Length];
                     for (int i = 0; i < dstCertNameList.Length; i++)
                     {
@@ -433,15 +454,15 @@ namespace RemoteOperations
                     }
                     int certsImported = 0;
                     LogInfo("Calling Import Cert Function.", pRootPath);
-                    string[] strFiles = null;
 
                     foreach (string iStoreLocation in Enum.GetNames(typeof(StoreLocation)))
                     {
                         foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                         {
-                            LogInfo("Inside Cert Loop: StoreLocation: " + iStoreLocation + ", StoreName: " + iStoreName, pRootPath);
-                            StoreLocation storeLoc = (StoreLocation)Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName)Enum.Parse(typeof(StoreName), iStoreName);
+                            LogInfo("Inside Cert Loop: StoreLocation: " + iStoreLocation + ", StoreName: " + iStoreName,
+                                pRootPath);
+                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
+                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
                             //if (storeNam == StoreName.Root && storeLoc == StoreLocation.CurrentUser)
                             //    storeLoc = StoreLocation.LocalMachine;
                             //if (storeNam == StoreName.Disallowed && storeLoc == StoreLocation.CurrentUser)
@@ -462,44 +483,59 @@ namespace RemoteOperations
                             {
                                 store.Open(OpenFlags.ReadWrite);
 
-                                strFiles = Directory.GetFiles(certPath, iStoreLocation + "_" + iStoreName + "*");
+                                var strFiles = Directory.GetFiles(certPath, iStoreLocation + "_" + iStoreName + "*");
 
-                                for (int iFile = 0; iFile < strFiles.Length; iFile++)
+                                foreach (string file in strFiles)
                                 {
                                     try
                                     {
-                                        string certName = strFiles[iFile].Substring(strFiles[iFile].LastIndexOf('\\') + 1);
-                                     
+                                        string certName = file.Substring(file.LastIndexOf('\\') + 1);
+
+                                        X509Certificate2 certificate;
+                                        int returnCode;
+                                        string commandArguments;
                                         if (storeNam == StoreName.My)
                                         {
                                             certName = certName.Substring(0, certName.LastIndexOf('_'));
-                                            if (Array.IndexOf(dstCertNameList, certName) < 0)  //cert  already exists in Dst
+                                            if (Array.IndexOf(dstCertNameList, certName) < 0
+                                            ) //cert  already exists in Dst
                                             {
-                                                if (Path.GetExtension(strFiles[iFile]) == ".PFX")
+                                                if (Path.GetExtension(file) == ".PFX")
                                                 {
-                                                    if (strFiles[iFile].Contains("CurrentUser"))
-                                                        commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + pCertPass + "\"" + " -User " + storeNam + " " + "\"" + strFiles[iFile] + "\"";
+                                                    if (file.Contains("CurrentUser"))
+                                                        commandArguments =
+                                                            "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                            " -p " + "\"" + pCertPass + "\"" + " -User " + storeNam +
+                                                            " " + "\"" + file + "\"";
                                                     else
-                                                        commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + pCertPass + "\"" + " " + storeNam + " " + "\"" + strFiles[iFile] + "\"";
-                                                    
+                                                        commandArguments =
+                                                            "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                            " -p " + "\"" + pCertPass + "\"" + " " + storeNam + " " +
+                                                            "\"" + file + "\"";
+
                                                     returnCode = ExecuteCmd("CMD.EXE", commandArguments, pRootPath);
                                                     if (returnCode == 0)
                                                     {
-                                                        LogInfo("Imported Cert: " + certName,pRootPath);
+                                                        LogInfo("Imported Cert: " + certName, pRootPath);
                                                     }
                                                     else
-                                                        LogInfo("Failed Importing Cert:" + certName,pRootPath);
+                                                        LogInfo("Failed Importing Cert:" + certName, pRootPath);
                                                     certsImported++;
                                                 }
                                                 else
                                                 {
-                                                    if (strFiles[iFile].Contains("CurrentUser"))
-                                                        certificate = new X509Certificate2(strFiles[iFile], pCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.UserKeySet);
-                                                    else
-                                                        certificate = new X509Certificate2(strFiles[iFile], pCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.MachineKeySet);
+                                                    certificate = file.Contains("CurrentUser")
+                                                        ? new X509Certificate2(file, pCertPass,
+                                                            X509KeyStorageFlags.Exportable &
+                                                            X509KeyStorageFlags.PersistKeySet &
+                                                            X509KeyStorageFlags.UserKeySet)
+                                                        : new X509Certificate2(file, pCertPass,
+                                                            X509KeyStorageFlags.Exportable &
+                                                            X509KeyStorageFlags.PersistKeySet &
+                                                            X509KeyStorageFlags.MachineKeySet);
                                                     store.Add(certificate);
                                                     certsImported++;
-                                                    LogInfo("Imported Cert: " + certName,pRootPath);
+                                                    LogInfo("Imported Cert: " + certName, pRootPath);
                                                 }
 
 
@@ -509,40 +545,51 @@ namespace RemoteOperations
                                         {
                                             string certName1 = certName.Substring(0, certName.LastIndexOf('_'));
                                             certName = certName1.Substring(certName.IndexOf('_') + 1);
-                                            if (Array.IndexOf(dstCertList, certName) < 0)  //cert  already exists in Dst
+                                            if (Array.IndexOf(dstCertList, certName) < 0) //cert  already exists in Dst
                                             {
-                                                if (Path.GetExtension(strFiles[iFile]) == ".PFX")
+                                                if (Path.GetExtension(file) == ".PFX")
                                                 {
-                                                    if (strFiles[iFile].Contains("CurrentUser"))
-                                                        commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + pCertPass + "\"" + " -User " + storeNam + " " + "\"" + strFiles[iFile] + "\"";
+                                                    if (file.Contains("CurrentUser"))
+                                                        commandArguments =
+                                                            "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                            " -p " + "\"" + pCertPass + "\"" + " -User " + storeNam +
+                                                            " " + "\"" + file + "\"";
                                                     else
-                                                        commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + pCertPass + "\"" + " " + storeNam + " " + "\"" + strFiles[iFile] + "\"";
-                                                    returnCode = ExecuteCmd("CMD.EXE", commandArguments,pRootPath);
+                                                        commandArguments =
+                                                            "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                            " -p " + "\"" + pCertPass + "\"" + " " + storeNam + " " +
+                                                            "\"" + file + "\"";
+                                                    returnCode = ExecuteCmd("CMD.EXE", commandArguments, pRootPath);
                                                     if (returnCode == 0)
                                                     {
-                                                        LogInfo("Imported Cert: " + certName1,pRootPath);
+                                                        LogInfo("Imported Cert: " + certName1, pRootPath);
                                                     }
                                                     else
-                                                        LogInfo("Failed Importing Cert:" + certName1,pRootPath);
+                                                        LogInfo("Failed Importing Cert:" + certName1, pRootPath);
                                                     certsImported++;
                                                 }
                                                 else
                                                 {
-                                                    if (strFiles[iFile].Contains("CurrentUser"))
-                                                        certificate = new X509Certificate2(strFiles[iFile], pCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.UserKeySet);
-                                                    else
-                                                        certificate = new X509Certificate2(strFiles[iFile], pCertPass, X509KeyStorageFlags.Exportable & X509KeyStorageFlags.PersistKeySet & X509KeyStorageFlags.MachineKeySet);
+                                                    certificate = file.Contains("CurrentUser")
+                                                        ? new X509Certificate2(file, pCertPass,
+                                                            X509KeyStorageFlags.Exportable &
+                                                            X509KeyStorageFlags.PersistKeySet &
+                                                            X509KeyStorageFlags.UserKeySet)
+                                                        : new X509Certificate2(file, pCertPass,
+                                                            X509KeyStorageFlags.Exportable &
+                                                            X509KeyStorageFlags.PersistKeySet &
+                                                            X509KeyStorageFlags.MachineKeySet);
 
                                                     store.Add(certificate);
                                                     certsImported++;
-                                                    LogInfo("Imported Cert: " + certName1,pRootPath);
+                                                    LogInfo("Imported Cert: " + certName1, pRootPath);
                                                 }
                                             }
                                         }
                                     }
                                     catch (Exception ex)
                                     {
-                                        LogInfo("Exception in cert:" + strFiles[iFile], pRootPath);
+                                        LogInfo("Exception in cert:" + file, pRootPath);
                                         LogException(ex, pRootPath);
                                     }
                                 }
@@ -558,10 +605,8 @@ namespace RemoteOperations
                         }
                     }
 
-                    if (certsImported > 0)
-                        LogInfo("Success: Imported Cert.", pRootPath);
-                    else
-                        LogInfo("No new certificates to import.", pRootPath);
+                    LogInfo(certsImported > 0 ? "Success: Imported Cert." : "No new certificates to import.",
+                        pRootPath);
 
                     try
                     {
@@ -574,40 +619,38 @@ namespace RemoteOperations
                     {
                         LogException(ex, pRootPath);
                     }
-                    LogInfo("Imported Certificates to Server: " + machineName, pRootPath);
+                    LogInfo("Imported Certificates to Server: " + _machineName, pRootPath);
                     if (File.Exists(pRootPath + "\\Logs\\Cert_log.txt")) //if already exist then delete
                         File.Delete(pRootPath + "\\Logs\\Cert_log.txt");
-                    File.Move(pRootPath + "\\Logs\\RemoteOperation_log.txt", pRootPath + "\\Logs\\Cert_log.txt");//rename
+                    File.Move(pRootPath + "\\Logs\\RemoteOperation_log.txt",
+                        pRootPath + "\\Logs\\Cert_log.txt"); //rename
                 }
                 catch (Exception ex)
                 {
-                    LogInfo("Certificate Import Failed on Server: " + machineName, pRootPath);
+                    LogInfo("Certificate Import Failed on Server: " + _machineName, pRootPath);
                     LogException(ex, pRootPath);
                     throw new Exception(ex.Message, ex.InnerException);
                 }
             }
 
-            public void btnExportAssemblies_Click(string pRootPath, string pDllPath, string pCustomDllToInclude, string pCustomDllPath, string pServerType)
+            public void btnExportAssemblies_Click(string pRootPath, string pDllPath, string pCustomDllToInclude,
+                string pCustomDllPath, string pServerType)
             {
-                XmlSerializer configSerializer = null;
                 AssemblyList asmList = null;
-                string asmPath1;
-                string asmPath2, asmPath3, asmPath4, asmPath5;
-                string[] findDLL = null; string[] customDll = null;
-                string ver = string.Empty;
-                string dir = string.Empty;
+                string[] customDll = null;
                 string appPath = pRootPath;
                 string asmPath = appPath + "\\ExportedData\\DLL";
                 string xmlPath = appPath + "\\ExportedData\\XMLFiles";
                 int asmListCount = 0;
                 int customDlls = 0;
-                char[] chrSep = { ',' };
+                char[] chrSep = {','};
                 try
                 {
                     if (pServerType == "BizTalk")
                     {
-                        configSerializer = new XmlSerializer(typeof(AssemblyList));
-                        asmList = (AssemblyList)configSerializer.Deserialize(new XmlTextReader(xmlPath + @"\SrcBizTalkAssembly.xml"));
+                        var configSerializer = new XmlSerializer(typeof(AssemblyList));
+                        asmList = (AssemblyList) configSerializer.Deserialize(
+                            new XmlTextReader(xmlPath + @"\SrcBizTalkAssembly.xml"));
                         asmListCount = asmList.Assembly.Length;
                         LogInfo("Total Biztalk Assemblies: " + asmListCount, pRootPath);
                     }
@@ -615,54 +658,57 @@ namespace RemoteOperations
 
                     string appName = string.Empty;
 
-                    asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
-                    asmPath2 = @"C:\Windows\assembly\GAC\";
-                    asmPath3 = @"C:\Windows\assembly\GAC_32\";
-                    asmPath4 = @"C:\Windows\assembly\GAC_64\";
-                    asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
+                    var asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
+                    var asmPath2 = @"C:\Windows\assembly\GAC\";
+                    var asmPath3 = @"C:\Windows\assembly\GAC_32\";
+                    var asmPath4 = @"C:\Windows\assembly\GAC_64\";
+                    var asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
                     if (pCustomDllToInclude != string.Empty)
                     {
-                        string[] CustomDllFilters = pCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                        string[] customDllFilters =
+                            pCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
                         int customDllCount = 0;
-                        for (int i = 0; i < CustomDllFilters.Length; i++)
+                        foreach (string filter in customDllFilters)
                         {
-                            //BEGIN::custom asm list code                         
-                            string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
-                            customDllCount = customDllCount + customDll_1.Length + customDll_2.Length + customDll_3.Length + customDll_4.Length + customDll_5.Length;
+//BEGIN::custom asm list code                         
+                            string[] customDll1 = Directory.GetFiles(asmPath1, filter, SearchOption.AllDirectories);
+                            string[] customDll2 = Directory.GetFiles(asmPath2, filter, SearchOption.AllDirectories);
+                            string[] customDll3 = Directory.GetFiles(asmPath3, filter, SearchOption.AllDirectories);
+                            string[] customDll4 = Directory.GetFiles(asmPath4, filter, SearchOption.AllDirectories);
+                            string[] customDll5 = Directory.GetFiles(asmPath5, filter, SearchOption.AllDirectories);
+                            customDllCount = customDllCount + customDll1.Length + customDll2.Length +
+                                             customDll3.Length + customDll4.Length + customDll5.Length;
                         }
 
                         customDll = new string[customDllCount];
                         LogInfo("Initial Custom Dll count: " + customDll.Length, pRootPath);
                         int customDllLength = 0;
-                        for (int i = 0; i < CustomDllFilters.Length; i++)
+                        foreach (string filter in customDllFilters)
                         {
-                            //BEGIN::custom asm list code                         
-                            string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
+//BEGIN::custom asm list code                         
+                            string[] customDll1 = Directory.GetFiles(asmPath1, filter, SearchOption.AllDirectories);
+                            string[] customDll2 = Directory.GetFiles(asmPath2, filter, SearchOption.AllDirectories);
+                            string[] customDll3 = Directory.GetFiles(asmPath3, filter, SearchOption.AllDirectories);
+                            string[] customDll4 = Directory.GetFiles(asmPath4, filter, SearchOption.AllDirectories);
+                            string[] customDll5 = Directory.GetFiles(asmPath5, filter, SearchOption.AllDirectories);
 
-                            customDll_1.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_1.Length;
-                            customDll_2.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_2.Length;
-                            customDll_3.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_3.Length;
-                            customDll_4.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_4.Length;
-                            customDll_5.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_5.Length;
+                            customDll1.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll1.Length;
+                            customDll2.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll2.Length;
+                            customDll3.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll3.Length;
+                            customDll4.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll4.Length;
+                            customDll5.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll5.Length;
                         }
                         customDll = customDll.Distinct().ToArray();
                         Array.Sort(customDll);
                         //END::custom asm list code                                                                                    
                     }
+                    string dir;
                     if (pServerType == "BizTalk")
                     {
                         List<string> bizTalkDll = new List<string>();
@@ -670,16 +716,21 @@ namespace RemoteOperations
                         {
                             try
                             {
-                                findDLL = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
+                                var findDll = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName + ".dll",
+                                    SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
                                 {
                                     LogInfo("Did not Find Assembly:" + asmList.Assembly[i].AsmName, pRootPath);
                                 }
@@ -687,7 +738,7 @@ namespace RemoteOperations
                                 {
                                     int fileCount = 0;
 
-                                    foreach (string filePath in findDLL)
+                                    foreach (string filePath in findDll)
                                     {
                                         fileCount++;
                                         try
@@ -695,7 +746,8 @@ namespace RemoteOperations
                                             if (pCustomDllToInclude != string.Empty)
                                             {
                                                 //BEGIN::custom asm list code
-                                                while (Array.IndexOf(customDll, filePath) > -1) //if same dll is part of custom DLL then empty that entry in list.
+                                                while (Array.IndexOf(customDll, filePath) > -1
+                                                ) //if same dll is part of custom DLL then empty that entry in list.
                                                 {
 
                                                     customDll[Array.IndexOf(customDll, filePath)] = string.Empty;
@@ -703,8 +755,9 @@ namespace RemoteOperations
                                                 }
                                                 //END::custom asm list code
                                             }
-                                            ver = AssemblyName.GetAssemblyName(filePath).Version.ToString();
-                                            dir = pDllPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" + ver;
+                                            var ver = AssemblyName.GetAssemblyName(filePath).Version.ToString();
+                                            dir = pDllPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" +
+                                                  ver;
                                             LogInfo(dir, pRootPath);
                                             if (!Directory.Exists(dir))
                                             {
@@ -716,12 +769,16 @@ namespace RemoteOperations
 
                                         }
                                         catch (Exception ex)
-                                        { LogException(ex, pRootPath); }
+                                        {
+                                            LogException(ex, pRootPath);
+                                        }
                                     }
                                 }
                             }
                             catch (Exception ex)
-                            { LogException(ex, pRootPath); }
+                            {
+                                LogException(ex, pRootPath);
+                            }
                         }
                         string[] distinctBizTalkDll = bizTalkDll.Distinct().ToArray();
                         using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcBizTalkAssemblyList.txt", false))
@@ -733,7 +790,7 @@ namespace RemoteOperations
                         }
 
                     }
-                   
+
                     if (pCustomDllToInclude != string.Empty)
                     {
                         LogInfo("Final Custom Dll count: " + (customDll.Length - customDlls), pRootPath);
@@ -749,24 +806,26 @@ namespace RemoteOperations
                             {
                                 try
                                 {
-                                 
-                                    if (!(string.IsNullOrEmpty(filePath))&&!(string.IsNullOrWhiteSpace(filePath)))
+
+                                    if (!string.IsNullOrEmpty(filePath) && !string.IsNullOrWhiteSpace(filePath))
                                     {
-                                        string CustomDllVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();
-                                        dir = pCustomDllPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" + CustomDllVer;
+                                        string customDllVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();
+                                        dir = pCustomDllPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" +
+                                              customDllVer;
 
                                         if (!Directory.Exists(dir))
                                         {
                                             Directory.CreateDirectory(dir);
                                         }
                                         File.Copy(filePath, dir + "\\" + Path.GetFileName(filePath), true);
-                                        writer.WriteLine(Path.GetFileNameWithoutExtension(filePath) + "_" + CustomDllVer);
+                                        writer.WriteLine(
+                                            Path.GetFileNameWithoutExtension(filePath) + "_" + customDllVer);
                                         //writer.WriteLine(filePath);
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    LogInfo("Assembly copy failed: " + Path.GetFileName(filePath),pRootPath);
+                                    LogInfo("Assembly copy failed: " + Path.GetFileName(filePath), pRootPath);
                                     LogException(ex, pRootPath);
                                 }
                             }
@@ -782,61 +841,59 @@ namespace RemoteOperations
 
             public void btnDstCustomDllList_Click(string pRootPath, string pCustomDllToInclude)
             {
-                string asmPath1;
-                string asmPath2, asmPath3, asmPath4, asmPath5;
-
                 string ver = string.Empty;
                 string dir = string.Empty;
                 string appPath = pRootPath;
                 string asmPath = appPath + "\\ExportedData\\DLL";
                 string xmlPath = appPath + "\\ExportedData\\XMLFiles";
-                char[] chrSep = { ',' };
-                string[] customDllDst = null;
+                char[] chrSep = {','};
                 try
                 {
                     LogInfo("Inside btnDstCustomDllList_Click.", pRootPath);
-                    asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
-                    asmPath2 = @"C:\Windows\assembly\GAC\";
-                    asmPath3 = @"C:\Windows\assembly\GAC_32\";
-                    asmPath4 = @"C:\Windows\assembly\GAC_64\";
-                    asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
+                    var asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
+                    var asmPath2 = @"C:\Windows\assembly\GAC\";
+                    var asmPath3 = @"C:\Windows\assembly\GAC_32\";
+                    var asmPath4 = @"C:\Windows\assembly\GAC_64\";
+                    var asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
                     ///////////////////////////////////////////////////////
-                    string[] CustomDllFilters = pCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                    string[] customDllFilters =
+                        pCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
                     int customDllCount = 0;
-                    for (int i = 0; i < CustomDllFilters.Length; i++)
+                    foreach (string filter in customDllFilters)
                     {
-                        //BEGIN::custom asm list code                         
-                        string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
-                        customDllCount = customDllCount + customDll_1.Length + customDll_2.Length + customDll_3.Length + customDll_4.Length + customDll_5.Length;
+//BEGIN::custom asm list code                         
+                        string[] customDll1 = Directory.GetFiles(asmPath1, filter, SearchOption.AllDirectories);
+                        string[] customDll2 = Directory.GetFiles(asmPath2, filter, SearchOption.AllDirectories);
+                        string[] customDll3 = Directory.GetFiles(asmPath3, filter, SearchOption.AllDirectories);
+                        string[] customDll4 = Directory.GetFiles(asmPath4, filter, SearchOption.AllDirectories);
+                        string[] customDll5 = Directory.GetFiles(asmPath5, filter, SearchOption.AllDirectories);
+                        customDllCount = customDllCount + customDll1.Length + customDll2.Length + customDll3.Length +
+                                         customDll4.Length + customDll5.Length;
                     }
 
-                    customDllDst = new string[customDllCount];
+                    var customDllDst = new string[customDllCount];
                     LogInfo("Custom Dll Count Dst: " + customDllDst.Length, pRootPath);
                     int customDllLength = 0;
-                    for (int i = 0; i < CustomDllFilters.Length; i++)
+                    foreach (string filter in customDllFilters)
                     {
-                        //BEGIN::custom asm list code                         
-                        string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                        string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
+//BEGIN::custom asm list code                         
+                        string[] customDll1 = Directory.GetFiles(asmPath1, filter, SearchOption.AllDirectories);
+                        string[] customDll2 = Directory.GetFiles(asmPath2, filter, SearchOption.AllDirectories);
+                        string[] customDll3 = Directory.GetFiles(asmPath3, filter, SearchOption.AllDirectories);
+                        string[] customDll4 = Directory.GetFiles(asmPath4, filter, SearchOption.AllDirectories);
+                        string[] customDll5 = Directory.GetFiles(asmPath5, filter, SearchOption.AllDirectories);
 
-                        customDll_1.CopyTo(customDllDst, customDllLength);
-                        customDllLength = customDllLength + customDll_1.Length;
-                        customDll_2.CopyTo(customDllDst, customDllLength);
-                        customDllLength = customDllLength + customDll_2.Length;
-                        customDll_3.CopyTo(customDllDst, customDllLength);
-                        customDllLength = customDllLength + customDll_3.Length;
-                        customDll_4.CopyTo(customDllDst, customDllLength);
-                        customDllLength = customDllLength + customDll_4.Length;
-                        customDll_5.CopyTo(customDllDst, customDllLength);
-                        customDllLength = customDllLength + customDll_5.Length;
+                        customDll1.CopyTo(customDllDst, customDllLength);
+                        customDllLength = customDllLength + customDll1.Length;
+                        customDll2.CopyTo(customDllDst, customDllLength);
+                        customDllLength = customDllLength + customDll2.Length;
+                        customDll3.CopyTo(customDllDst, customDllLength);
+                        customDllLength = customDllLength + customDll3.Length;
+                        customDll4.CopyTo(customDllDst, customDllLength);
+                        customDllLength = customDllLength + customDll4.Length;
+                        customDll5.CopyTo(customDllDst, customDllLength);
+                        customDllLength = customDllLength + customDll5.Length;
                     }
 
                     customDllDst = customDllDst.Distinct().ToArray();
@@ -849,20 +906,19 @@ namespace RemoteOperations
                         {
                             if (filePath != string.Empty)
                             {
-                                string CustomDllVer = "";
                                 try
                                 {
-                                    CustomDllVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();                                  
-                                    writer.WriteLine(Path.GetFileNameWithoutExtension(filePath) + "_" + CustomDllVer);                                    
+                                    var customDllVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();
+                                    writer.WriteLine(Path.GetFileNameWithoutExtension(filePath) + "_" + customDllVer);
                                 }
                                 catch (Exception ex)
                                 {
-                                    LogException(ex,pRootPath);
+                                    LogException(ex, pRootPath);
                                 }
                             }
                             //writer.WriteLine(filePath);
-                        }               
-                    }   
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -873,20 +929,17 @@ namespace RemoteOperations
 
             public void btnDstDllList_Click(string pRootPath)
             {
-                
-                string asmPath1;
-                string asmPath2, asmPath3, asmPath4, asmPath5;
                 string appPath = pRootPath;
                 string xmlPath = appPath + "\\ExportedData\\XMLFiles";
                 try
                 {
                     LogInfo("Inside btnDstDllList_Click.", pRootPath);
                     string[] srcBizTalkDllLines = File.ReadAllLines(xmlPath + @"\SrcBizTalkAssemblyList.txt");
-                    asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
-                     asmPath2 = @"C:\Windows\assembly\GAC\";
-                     asmPath3 = @"C:\Windows\assembly\GAC_32\";
-                     asmPath4 = @"C:\Windows\assembly\GAC_64\";
-                     asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
+                    var asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
+                    var asmPath2 = @"C:\Windows\assembly\GAC\";
+                    var asmPath3 = @"C:\Windows\assembly\GAC_32\";
+                    var asmPath4 = @"C:\Windows\assembly\GAC_64\";
+                    var asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
                     //Creating DestinationBiztalk Assembly List
                     int dllCount = 0;
@@ -894,12 +947,18 @@ namespace RemoteOperations
                     {
                         string biztalkDllName = srcBizTalkDll.Substring(0, srcBizTalkDll.LastIndexOf('_'));
 
-                        string[] assemblyDll_1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        dllCount = dllCount + assemblyDll_1.Length + assemblyDll_2.Length + assemblyDll_3.Length + assemblyDll_4.Length + assemblyDll_5.Length;
+                        string[] assemblyDll1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        dllCount = dllCount + assemblyDll1.Length + assemblyDll2.Length + assemblyDll3.Length +
+                                   assemblyDll4.Length + assemblyDll5.Length;
                     }
                     string[] dllDst = new string[dllCount];
                     int dllLength = 0;
@@ -907,22 +966,27 @@ namespace RemoteOperations
                     {
                         string biztalkDllName = srcBizTalkDll.Substring(0, srcBizTalkDll.LastIndexOf('_'));
 
-                        string[] assemblyDll_1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll", SearchOption.AllDirectories);
+                        string[] assemblyDll1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
 
-                        assemblyDll_1.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_1.Length;
-                        assemblyDll_2.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_2.Length;
-                        assemblyDll_3.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_3.Length;
-                        assemblyDll_4.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_4.Length;
-                        assemblyDll_5.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_5.Length;
+                        assemblyDll1.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll1.Length;
+                        assemblyDll2.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll2.Length;
+                        assemblyDll3.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll3.Length;
+                        assemblyDll4.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll4.Length;
+                        assemblyDll5.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll5.Length;
                     }
                     dllDst = dllDst.Distinct().ToArray();
                     Array.Sort(dllDst);
@@ -934,333 +998,362 @@ namespace RemoteOperations
                         {
                             if (filePathDll != string.Empty)
                             {
-                                string DllVer = AssemblyName.GetAssemblyName(filePathDll).Version.ToString();
-                                writer.WriteLine(Path.GetFileNameWithoutExtension(filePathDll) + "_" + DllVer);
+                                string dllVer = AssemblyName.GetAssemblyName(filePathDll).Version.ToString();
+                                writer.WriteLine(Path.GetFileNameWithoutExtension(filePathDll) + "_" + dllVer);
                             }
 
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     LogException(ex, pRootPath);
                     throw new Exception(ex.Message, ex.InnerException);
                 }
 
             }
+
             public void btnExportAdapterHandlers_Click(string pRootPath, string pSqlServerInstanceName)
-{
-    string appPath = pRootPath;
-    string xmlPath = appPath + "\\ExportedData\\XMLFiles";
-    XmlWriter xmlWriterApps = null;
-    try
-    {
-
-        LogInfo("Connecting to BizTalkMgmtdb...." + pSqlServerInstanceName, pRootPath);
-        RcvSndHandlers rcvSndHandlers = new RcvSndHandlers();
-
-        // instantiate new instance of Explorer OM
-        BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
-
-        // connection string to the BizTalk management database where the ports will be created
-        btsExp.ConnectionString = "Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
-
-        //Get All Handlers
-        ReceiveHandlerCollection rcvHandCol = btsExp.ReceiveHandlers;
-        LogInfo("Conneceted", pRootPath);
-        SendHandlerCollection sndHandCol = btsExp.SendHandlers;
-
-        rcvSndHandlers.RcvSndHandler = new RcvSndHandlersRcvSndHandler[sndHandCol.Count + rcvHandCol.Count];
-
-        int i = 0;
-
-        foreach (ReceiveHandler rcvHandler in rcvHandCol)
-        {
-            if (rcvHandler.Host.Name != "BizTalkServerApplication" && rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
             {
-                rcvSndHandlers.RcvSndHandler[i] = new RcvSndHandlersRcvSndHandler();
-                rcvSndHandlers.RcvSndHandler[i].AdapterName = rcvHandler.TransportType.Name;
-                rcvSndHandlers.RcvSndHandler[i].Direction = "0";
-                rcvSndHandlers.RcvSndHandler[i].HostName = rcvHandler.Host.Name;
-                i++;
-            }
-        }
-
-        foreach (SendHandler sndHandler in sndHandCol)
-        {
-            if (sndHandler.Host.Name != "BizTalkServerApplication" && sndHandler.Host.Name != "BizTalkServerIsolatedHost")
-            {
-                rcvSndHandlers.RcvSndHandler[i] = new RcvSndHandlersRcvSndHandler();
-                rcvSndHandlers.RcvSndHandler[i].AdapterName = sndHandler.TransportType.Name;
-                rcvSndHandlers.RcvSndHandler[i].Direction = "1";
-                rcvSndHandlers.RcvSndHandler[i].HostName = sndHandler.Host.Name;
-                i++;
-            }
-        }
-
-        XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-        //Add lib namespace with empty prefix
-        ns.Add("", "");
-
-        XmlSerializer x = new XmlSerializer(rcvSndHandlers.GetType());
-        XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-        xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
-
-
-        xmlWriterApps = XmlWriter.Create(xmlPath + @"\Handlers.xml", xmlWriterSetting);
-        x.Serialize(xmlWriterApps, rcvSndHandlers, ns);
-
-        LogInfo("Handlers list genrated, please check XML folder", pRootPath);
-    }
-    catch (Exception ex)
-    {
-        LogInfo("Adapter Handlers Export:: some Exception, pls check log.", pRootPath);
-        LogException(ex, pRootPath);
-        throw new Exception(ex.Message, ex.InnerException);
-    }
-    finally
-    {
-        if (xmlWriterApps != null)
-            xmlWriterApps.Close();
-    }
-}
-
-public void btnGetAssembliesList_Click(string pRootPath, string pSqlServerInstanceName, string pAppNameCollection)
-{
-    AssemblyList asmList = null;
-    XmlSerializer x = null;
-    XmlWriter xmlWriterApps = null;
-    string appPath = pRootPath;
-    string xmlPath = appPath + "\\ExportedData\\XMLFiles";
-    try
-    {
-        BizTalkApplications bizTalkApps = new BizTalkApplications();
-
-        // instantiate new instance of Explorer OM
-        BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
-        LogInfo("Connecting to BizTalkMgmtDb..." + pSqlServerInstanceName, pRootPath);
-        // connection string to the BizTalk management database where the ports will be created
-        btsExp.ConnectionString = "Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
-                    //Get All Applications
-                    Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
-        LogInfo("Connected.", pRootPath);
-        int asmCount = 0;
-        foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
-        {
-            if (pAppNameCollection.Contains(app.Name))
-            {
-                BtsAssemblyCollection asmCol = app.Assemblies;
-                foreach (BtsAssembly btAsm in asmCol)
+                string appPath = pRootPath;
+                string xmlPath = appPath + "\\ExportedData\\XMLFiles";
+                XmlWriter xmlWriterApps = null;
+                try
                 {
-                    if (!btAsm.IsSystem)
+
+                    LogInfo("Connecting to BizTalkMgmtdb...." + pSqlServerInstanceName, pRootPath);
+                    RcvSndHandlers rcvSndHandlers = new RcvSndHandlers();
+
+                    // instantiate new instance of Explorer OM
+                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
                     {
-                        asmCount++;
-                    }
-                }
-            }
-        }
-        asmList = new AssemblyList();
-        asmList.Assembly = new AssemblyListAssembly[asmCount];
-        int i = 0;
-        foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
-        {
-            if (pAppNameCollection.Contains(app.Name))
-            {
-                BtsAssemblyCollection asmCol = app.Assemblies;
+                        ConnectionString = "Server=" + pSqlServerInstanceName +
+                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                    };
 
-                foreach (BtsAssembly btAsm in asmCol)
-                {
-                    if (!btAsm.IsSystem)
+                    // connection string to the BizTalk management database where the ports will be created
+
+                    //Get All Handlers
+                    ReceiveHandlerCollection rcvHandCol = btsExp.ReceiveHandlers;
+                    LogInfo("Conneceted", pRootPath);
+                    SendHandlerCollection sndHandCol = btsExp.SendHandlers;
+
+                    rcvSndHandlers.RcvSndHandler = new RcvSndHandlersRcvSndHandler[sndHandCol.Count + rcvHandCol.Count];
+
+                    int i = 0;
+
+                    foreach (ReceiveHandler rcvHandler in rcvHandCol)
                     {
-                        asmList.Assembly[i] = new AssemblyListAssembly();
-                        asmList.Assembly[i].AppName = app.Name;
-                        asmList.Assembly[i].AsmName = btAsm.Name;
-                        asmList.Assembly[i].AsmVer = btAsm.Version;
-                        i++;
-                    }
-                }
-            }
-        }
-
-        XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-        //Add lib namespace with empty prefix
-        ns.Add("", "");
-
-        x = new XmlSerializer(asmList.GetType());
-        XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-        xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
-
-        xmlWriterApps = XmlWriter.Create(xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting);
-        x.Serialize(xmlWriterApps, asmList, ns);
-        LogInfo("Asm list genrated in XML folder.", pRootPath);
-    }
-    catch (Exception ex)
-    {
-        LogInfo("Exception occured, please check log file for details.", pRootPath);
-        LogException(ex, pRootPath);
-        throw new Exception(ex.Message, ex.InnerException);
-    }
-    finally
-    {
-        if (xmlWriterApps != null)
-            xmlWriterApps.Close();
-    }
-}
-
-public void btnGetApplicationList_Click(string pRootPath, string pSqlServerInstanceName, string pBizTalkAppToIgnore)
-{
-    Hashtable htApps = null;
-    XmlSerializer x = null;
-    XmlWriter xmlWriterApps = null;
-
-    string appPath = pRootPath;
-    string xmlPath = appPath + "\\ExportedData\\XMLFiles";
-
-    try
-    {
-        BizTalkApplications bizTalkApps = new BizTalkApplications();
-
-        // instantiate new instance of Explorer OM
-        BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
-        LogInfo("Connecting to BizTalkMgmtdb...." + pSqlServerInstanceName, pRootPath);
-        // connection string to the BizTalk management database where the ports will be created
-        btsExp.ConnectionString = "Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
-                    //Get All Applications
-                    Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
-        LogInfo("Connected.", pRootPath);
-
-        htApps = new Hashtable();
-        MSIAPP(appCol, htApps, pBizTalkAppToIgnore);
-
-        int i = 0;
-
-        bizTalkApps.BizTalkApplication = new BizTalkApplicationsBizTalkApplication[htApps.Count];
-
-        foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
-        {
-            if (!pBizTalkAppToIgnore.Contains(app.Name)) //if (!(app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
-            {
-                bizTalkApps.BizTalkApplication[i] = new BizTalkApplicationsBizTalkApplication();
-                bizTalkApps.BizTalkApplication[i].DependencyCode = htApps[app.Name].ToString();
-                bizTalkApps.BizTalkApplication[i].ApplicationName = app.Name;
-                i++;
-            }
-        }
-
-        XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-        //Add lib namespace with empty prefix
-        ns.Add("", "");
-
-        x = new XmlSerializer(bizTalkApps.GetType());
-        XmlWriterSettings xmlWriterSetting = new XmlWriterSettings();
-        xmlWriterSetting.NamespaceHandling = NamespaceHandling.OmitDuplicates;
-
-        xmlWriterApps = XmlWriter.Create(xmlPath + @"\Apps.xml", xmlWriterSetting);
-        x.Serialize(xmlWriterApps, bizTalkApps, ns);
-        LogInfo("App list with dependency code genrated in XML folder.", pRootPath);
-    }
-    catch (Exception ex)
-    {
-        LogException(ex, pRootPath);
-        throw new Exception(ex.Message, ex.InnerException);
-    }
-    finally
-    {
-        if (xmlWriterApps != null)
-            xmlWriterApps.Close();
-    }
-}
-
-private void MSIAPP(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, Hashtable htApps, string pBizTalkAppToIgnore)
-{
-    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
-    {
-        if (!pBizTalkAppToIgnore.Contains(app.Name)) //if (!(app.Name == "RosettaNet" || app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
-        {
-            if (htApps.Contains(app.Name))
-            {
-                int i = Convert.ToInt32(htApps[app.Name]);
-                i++;
-                htApps[app.Name] = i;
-            }
-            else
-            {
-                htApps.Add(app.Name, 1);
-            }
-            if (app.References.Count > 1)
-                MSIAPP(app.References, htApps, pBizTalkAppToIgnore);
-        }
-    }
-}
-
-public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnore, string pUserNameNoDomain, string pFileName)
-{
-    try
-    {
-        char[] chrSep = { ',' };
-        string appPath = pRootPath;
-        string xmlPath = appPath + "\\ExportedData\\XMLFiles";
-        string[] serviceName = pWindowsServiceToIgnore.Split(chrSep);
-
-        LogInfo("Starting WMI query to get list of services from remote server.", pRootPath);
-
-        SelectQuery query = new SelectQuery("select name,startname,pathname,displayname from Win32_Service");
-
-        using (StreamWriter writer = new StreamWriter(xmlPath + "\\" + pFileName + ".txt", false))
-        {
-            using (ManagementObjectSearcher searcher =
-                new ManagementObjectSearcher(query))
-            {
-                foreach (var service in searcher.Get())
-                {
-                    if (service["startname"] != null && (service["startname"].ToString().ToLower().Contains(pUserNameNoDomain)|| service["startname"].ToString().ToLower().Contains(pUserNameNoDomain.ToLower())))
-                    {
-                        bool blFound = true;
-                        for (int i = 0; i < serviceName.Length; i++)
+                        if (rcvHandler.Host.Name != "BizTalkServerApplication" &&
+                            rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
                         {
-                            if (service["name"].ToString().Contains(serviceName[i]))
+                            rcvSndHandlers.RcvSndHandler[i] =
+                                new RcvSndHandlersRcvSndHandler
+                                {
+                                    AdapterName = rcvHandler.TransportType.Name,
+                                    Direction = "0",
+                                    HostName = rcvHandler.Host.Name
+                                };
+                            i++;
+                        }
+                    }
+
+                    foreach (SendHandler sndHandler in sndHandCol)
+                    {
+                        if (sndHandler.Host.Name != "BizTalkServerApplication" &&
+                            sndHandler.Host.Name != "BizTalkServerIsolatedHost")
+                        {
+                            rcvSndHandlers.RcvSndHandler[i] =
+                                new RcvSndHandlersRcvSndHandler
+                                {
+                                    AdapterName = sndHandler.TransportType.Name,
+                                    Direction = "1",
+                                    HostName = sndHandler.Host.Name
+                                };
+                            i++;
+                        }
+                    }
+
+                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+
+                    //Add lib namespace with empty prefix
+                    ns.Add("", "");
+
+                    XmlSerializer x = new XmlSerializer(rcvSndHandlers.GetType());
+                    XmlWriterSettings xmlWriterSetting =
+                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
+
+
+                    xmlWriterApps = XmlWriter.Create(xmlPath + @"\Handlers.xml", xmlWriterSetting);
+                    x.Serialize(xmlWriterApps, rcvSndHandlers, ns);
+
+                    LogInfo("Handlers list genrated, please check XML folder", pRootPath);
+                }
+                catch (Exception ex)
+                {
+                    LogInfo("Adapter Handlers Export:: some Exception, pls check log.", pRootPath);
+                    LogException(ex, pRootPath);
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
+                finally
+                {
+                    if (xmlWriterApps != null)
+                        xmlWriterApps.Close();
+                }
+            }
+
+            public void btnGetAssembliesList_Click(string pRootPath, string pSqlServerInstanceName,
+                string pAppNameCollection)
+            {
+                XmlWriter xmlWriterApps = null;
+                string appPath = pRootPath;
+                string xmlPath = appPath + "\\ExportedData\\XMLFiles";
+                try
+                {
+                    BizTalkApplications bizTalkApps = new BizTalkApplications();
+
+                    // instantiate new instance of Explorer OM
+                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                    LogInfo("Connecting to BizTalkMgmtDb..." + pSqlServerInstanceName, pRootPath);
+                    // connection string to the BizTalk management database where the ports will be created
+                    btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
+                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                    //Get All Applications
+                    var appCol = btsExp.Applications;
+                    LogInfo("Connected.", pRootPath);
+                    int asmCount = 0;
+                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                    {
+                        if (pAppNameCollection.Contains(app.Name))
+                        {
+                            BtsAssemblyCollection asmCol = app.Assemblies;
+                            foreach (BtsAssembly btAsm in asmCol)
                             {
-                                blFound = false;
+                                if (!btAsm.IsSystem)
+                                {
+                                    asmCount++;
+                                }
                             }
                         }
-                        if (blFound)
+                    }
+                    var asmList = new AssemblyList {Assembly = new AssemblyListAssembly[asmCount]};
+                    int i = 0;
+                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                    {
+                        if (pAppNameCollection.Contains(app.Name))
                         {
-                            string strPathName = service["pathname"].ToString();
-                                            writer.WriteLine(service["name"] + "," + strPathName.Trim('"') + "," + service["displayname"]);
+                            BtsAssemblyCollection asmCol = app.Assemblies;
+
+                            foreach (BtsAssembly btAsm in asmCol)
+                            {
+                                if (!btAsm.IsSystem)
+                                {
+                                    asmList.Assembly[i] = new AssemblyListAssembly
+                                    {
+                                        AppName = app.Name,
+                                        AsmName = btAsm.Name,
+                                        AsmVer = btAsm.Version
+                                    };
+                                    i++;
+                                }
+                            }
                         }
+                    }
+
+                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+
+                    //Add lib namespace with empty prefix
+                    ns.Add("", "");
+
+                    var xmlSerializer = new XmlSerializer(asmList.GetType());
+                    XmlWriterSettings xmlWriterSetting =
+                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
+
+                    xmlWriterApps = XmlWriter.Create(xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting);
+                    xmlSerializer.Serialize(xmlWriterApps, asmList, ns);
+                    LogInfo("Asm list genrated in XML folder.", pRootPath);
+                }
+                catch (Exception ex)
+                {
+                    LogInfo("Exception occured, please check log file for details.", pRootPath);
+                    LogException(ex, pRootPath);
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
+                finally
+                {
+                    if (xmlWriterApps != null)
+                        xmlWriterApps.Close();
+                }
+            }
+
+            public void btnGetApplicationList_Click(string pRootPath, string pSqlServerInstanceName,
+                string pBizTalkAppToIgnore)
+            {
+                XmlWriter xmlWriterApps = null;
+
+                string appPath = pRootPath;
+                string xmlPath = appPath + "\\ExportedData\\XMLFiles";
+
+                try
+                {
+                    BizTalkApplications bizTalkApps = new BizTalkApplications();
+
+                    // instantiate new instance of Explorer OM
+                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                    LogInfo("Connecting to BizTalkMgmtdb...." + pSqlServerInstanceName, pRootPath);
+                    // connection string to the BizTalk management database where the ports will be created
+                    btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
+                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                    //Get All Applications
+                    var appCol = btsExp.Applications;
+                    LogInfo("Connected.", pRootPath);
+
+                    var htApps = new Dictionary<string, int>();
+                    Msiapp(appCol, htApps, pBizTalkAppToIgnore);
+
+                    int i = 0;
+
+                    bizTalkApps.BizTalkApplication = new BizTalkApplicationsBizTalkApplication[htApps.Count];
+
+                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                    {
+                        if (!pBizTalkAppToIgnore.Contains(app.Name)
+                        ) //if (!(app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
+                        {
+                            bizTalkApps.BizTalkApplication[i] =
+                                new BizTalkApplicationsBizTalkApplication
+                                {
+                                    DependencyCode = htApps[app.Name].ToString(),
+                                    ApplicationName = app.Name
+                                };
+                            i++;
+                        }
+                    }
+
+                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+
+                    //Add lib namespace with empty prefix
+                    ns.Add("", "");
+
+                    var xmlSerializer = new XmlSerializer(bizTalkApps.GetType());
+                    XmlWriterSettings xmlWriterSetting =
+                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
+
+                    xmlWriterApps = XmlWriter.Create(xmlPath + @"\Apps.xml", xmlWriterSetting);
+                    xmlSerializer.Serialize(xmlWriterApps, bizTalkApps, ns);
+                    LogInfo("App list with dependency code genrated in XML folder.", pRootPath);
+                }
+                catch (Exception ex)
+                {
+                    LogException(ex, pRootPath);
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
+                finally
+                {
+                    if (xmlWriterApps != null)
+                        xmlWriterApps.Close();
+                }
+            }
+
+            private void Msiapp(ApplicationCollection appCol, IDictionary<string, int> htApps,
+                string pBizTalkAppToIgnore)
+            {
+                foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                {
+                    if (!pBizTalkAppToIgnore.Contains(app.Name)
+                    ) //if (!(app.Name == "RosettaNet" || app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
+                    {
+                        int i;
+                        if (htApps.TryGetValue(app.Name, out i))
+                        {
+                            i++;
+                            htApps[app.Name] = i;
+                        }
+                        else
+                        {
+                            htApps.Add(app.Name, 1);
+                        }
+                        if (app.References.Count > 1)
+                            Msiapp(app.References, htApps, pBizTalkAppToIgnore);
                     }
                 }
             }
-        }
-        LogInfo("ServiceList Created:" + pFileName, pRootPath);
-    }
-    catch (Exception ex)
-    {
-        LogException(ex, pRootPath);
-        throw new Exception(ex.Message, ex.InnerException);
-    }
-}
 
- public void ExportBrePolicyVocabulary(string pRootPath, string pSqlServerInstanceName)
-  {
-                string srcBRESqlInstance=null;
+            public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnore, string pUserNameNoDomain,
+                string pFileName)
+            {
+                try
+                {
+                    char[] chrSep = {','};
+                    string appPath = pRootPath;
+                    string xmlPath = appPath + "\\ExportedData\\XMLFiles";
+                    string[] serviceName = pWindowsServiceToIgnore.Split(chrSep);
+
+                    LogInfo("Starting WMI query to get list of services from remote server.", pRootPath);
+
+                    SelectQuery query =
+                        new SelectQuery("select name,startname,pathname,displayname from Win32_Service");
+
+                    using (StreamWriter writer = new StreamWriter(xmlPath + "\\" + pFileName + ".txt", false))
+                    {
+                        using (ManagementObjectSearcher searcher =
+                            new ManagementObjectSearcher(query))
+                        {
+                            foreach (var service in searcher.Get())
+                            {
+                                if (service["startname"] != null &&
+                                    (service["startname"].ToString().ToLower().Contains(pUserNameNoDomain) ||
+                                     service["startname"].ToString().ToLower().Contains(pUserNameNoDomain.ToLower())))
+                                {
+                                    bool blFound = true;
+                                    foreach (string name in serviceName)
+                                    {
+                                        if (service["name"].ToString().Contains(name))
+                                        {
+                                            blFound = false;
+                                        }
+                                    }
+                                    if (blFound)
+                                    {
+                                        string strPathName = service["pathname"].ToString();
+                                        writer.WriteLine(service["name"] + "," + strPathName.Trim('"') + "," +
+                                                         service["displayname"]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    LogInfo("ServiceList Created:" + pFileName, pRootPath);
+                }
+                catch (Exception ex)
+                {
+                    LogException(ex, pRootPath);
+                    throw new Exception(ex.Message, ex.InnerException);
+                }
+            }
+
+            public void ExportBREPolicyVocabulary(string pRootPath, string pSqlServerInstanceName)
+            {
+                string srcBRESqlInstance = null;
                 string brePath = pRootPath + "\\ExportedData\\BRE";
                 try
                 {
                     //Getting the List of Policies associated to Application
-                    SqlConnection sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
+                    SqlConnection sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName +
+                                                             ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
                     sqlCon.Open();
-                    string sqlQuery = "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
+                    string sqlQuery =
+                        "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
                     SqlDataAdapter sqlDataAd = new SqlDataAdapter(sqlQuery, sqlCon);
                     DataSet ds = new DataSet();
                     sqlDataAd.Fill(ds);
-                    string[] arrBrePolicies = new string[ds.Tables[0].Rows.Count];
+                    string[] arrBREPolicies = new string[ds.Tables[0].Rows.Count];
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                     {
-                        arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[1];
+                        arrBREPolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." +
+                                            ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] +
+                                            "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[
+                                                1];
                     }
 
                     //Creating BRERuleEngineDb Connection
@@ -1271,16 +1364,20 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                         srcBRESqlInstance = sqlRed.GetString(0);
                     }
                     //Creating Business RuleEngineDB COnnection
-                    SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder("Server = " + srcBRESqlInstance + "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
+                    SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder(
+                        "Server = " + srcBRESqlInstance +
+                        "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
                     SqlRuleStore sqlRulesStore = new SqlRuleStore(sqlBRE.ConnectionString);
-                    RuleSetDeploymentDriver rulesetDepDriver = new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
+                    RuleSetDeploymentDriver rulesetDepDriver =
+                        new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
                     RuleSetInfoCollection rulesetinfos = sqlRulesStore.GetRuleSets(RuleStore.Filter.All);
                     // Creating Folders to Export Polices and Vocabualries
 
                     foreach (RuleSetInfo ruleSetInfo in rulesetinfos)
                     {
-                        string policy = String.Format("{0}.{1}.{2}", ruleSetInfo.Name, ruleSetInfo.MajorRevision, ruleSetInfo.MinorRevision);
-                        if (arrBrePolicies.Contains(policy))
+                        string policy = String.Format("{0}.{1}.{2}", ruleSetInfo.Name, ruleSetInfo.MajorRevision,
+                            ruleSetInfo.MinorRevision);
+                        if (arrBREPolicies.Contains(policy))
                         {
                             //Do Nothing as Polices will be Exported By MSI
                         }
@@ -1291,8 +1388,10 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                                 try
                                 {
                                     //Exporting Policy
-                                    var policyName = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", ruleSetInfo.Name, ruleSetInfo.MajorRevision, ruleSetInfo.MinorRevision);
-                                    rulesetDepDriver.ExportRuleSetToFileRuleStore(ruleSetInfo, brePath + "/" + policyName);
+                                    var policyName = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", ruleSetInfo.Name,
+                                        ruleSetInfo.MajorRevision, ruleSetInfo.MinorRevision);
+                                    rulesetDepDriver.ExportRuleSetToFileRuleStore(ruleSetInfo,
+                                        brePath + "/" + policyName);
                                     LogInfo(ruleSetInfo.Name + "Policy Exported", pRootPath);
                                 }
                                 catch (Exception ex)
@@ -1303,12 +1402,14 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                                 }
                                 //Exporting vocabularyAssocated to Policy
 
-                                string vocabQuery = "select A.nRuleSetID,A.strName as policyName,B.nVocabularyID,C.nVocabularyID,C.strName as VocabularyName from re_ruleset(nolock) as A,re_ruleset_to_vocabulary_links As B,re_vocabulary As C where A.nRuleSetID = B.nReferingRuleset and B.nVocabularyID = C.nVocabularyID and C.strName not in('Predicates','Functions','Common Values','Common Sets') and A.strName = @strPolicyName";
+                                string vocabQuery =
+                                    "select A.nRuleSetID,A.strName as policyName,B.nVocabularyID,C.nVocabularyID,C.strName as VocabularyName from re_ruleset(nolock) as A,re_ruleset_to_vocabulary_links As B,re_vocabulary As C where A.nRuleSetID = B.nReferingRuleset and B.nVocabularyID = C.nVocabularyID and C.strName not in('Predicates','Functions','Common Values','Common Sets') and A.strName = @strPolicyName";
                                 SqlDataAdapter sqlVocabad = new SqlDataAdapter(vocabQuery, sqlBRE.ConnectionString);
                                 sqlVocabad.SelectCommand.Parameters.AddWithValue("@strPolicyName", ruleSetInfo.Name);
                                 DataSet dsVocab = new DataSet();
                                 sqlVocabad.Fill(dsVocab);
-                                VocabularyInfoCollection vocabularyInfos = sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
+                                VocabularyInfoCollection vocabularyInfos =
+                                    sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
                                 foreach (DataRow dr in dsVocab.Tables[0].Rows)
                                 {
                                     string vocabularyName = dr["VocabularyName"].ToString();
@@ -1318,8 +1419,11 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                                         {
                                             if (vocabularyName == vocabularyInfo.Name)
                                             {
-                                                var VocabularyName = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", vocabularyInfo.Name, vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
-                                                rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo, brePath + "/" + VocabularyName);
+                                                var formattedVocabularyName = String.Format("{0}{1}.{2}.{3}.xml",
+                                                    "Vocabualary_", vocabularyInfo.Name, vocabularyInfo.MajorRevision,
+                                                    vocabularyInfo.MinorRevision);
+                                                rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo,
+                                                    brePath + "/" + formattedVocabularyName);
                                             }
                                         }
                                         catch (Exception ex)
@@ -1337,7 +1441,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             {
                                 LogInfo("Exception occured, please check log file for details.", pRootPath);
                                 LogException(ex, pRootPath);
-                          
+
                             }
                         }
                     }
@@ -1351,14 +1455,14 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
 
             }
 
- public void ImportBrePolicyVocabulary(string pRootPath, string pSqlServerInstanceName)
+            public void ImportBREPolicyVocabulary(string pRootPath, string pSqlServerInstanceName)
             {
                 string dstBRESqlInstance = null;
                 string brePath = pRootPath + "\\ExportedData\\BRE";
-                String[] files;
                 try
                 {
-                    SqlConnection sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
+                    SqlConnection sqlCon = new SqlConnection("Server=" + pSqlServerInstanceName +
+                                                             ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI");
                     sqlCon.Open();
                     SqlCommand sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon);
                     SqlDataReader sqlRed = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -1366,14 +1470,17 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     {
                         dstBRESqlInstance = sqlRed.GetString(0);
                     }
-                    SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder("Server = " + dstBRESqlInstance + "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
+                    SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder(
+                        "Server = " + dstBRESqlInstance +
+                        "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
                     SqlRuleStore sqlRulesStore = new SqlRuleStore(sqlBRE.ConnectionString);
-                    RuleSetDeploymentDriver rulesetDepDriver = new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
+                    RuleSetDeploymentDriver rulesetDepDriver =
+                        new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
                     RuleSetInfoCollection dstrulesetinfos = sqlRulesStore.GetRuleSets(RuleStore.Filter.All);
                     VocabularyInfoCollection dstvocabularyInfos = sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
 
                     //Importing Vocabualries
-                    files = Directory.GetFiles(brePath, "Vocabualary*.xml");
+                    var files = Directory.GetFiles(brePath, "Vocabualary*.xml");
                     if (files.Length != 0)
                     {
                         string[] vocabualrySet = new string[dstvocabularyInfos.Count];
@@ -1381,7 +1488,9 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                         //Creating a Set of Vocabularies which are Present in DstSqlInstance
                         foreach (VocabularyInfo dstvocabularyInfo in dstvocabularyInfos)
                         {
-                            vocabualrySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", dstvocabularyInfo.Name, dstvocabularyInfo.MajorRevision, dstvocabularyInfo.MinorRevision);
+                            vocabualrySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_",
+                                dstvocabularyInfo.Name, dstvocabularyInfo.MajorRevision,
+                                dstvocabularyInfo.MinorRevision);
                             i++;
                         }
 
@@ -1397,7 +1506,8 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             else
                             {
                                 FileRuleStore fileRuleStore = new FileRuleStore(file);
-                                VocabularyInfoCollection vocabularyInfoList = fileRuleStore.GetVocabularies(RuleStore.Filter.All);
+                                VocabularyInfoCollection vocabularyInfoList =
+                                    fileRuleStore.GetVocabularies(RuleStore.Filter.All);
 
                                 foreach (VocabularyInfo vocabularyInfo in vocabularyInfoList)
 
@@ -1405,7 +1515,8 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
 
                                     try
                                     {
-                                        VocabularyInfo vi = new VocabularyInfo(vocabularyInfo.Name, vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
+                                        VocabularyInfo vi = new VocabularyInfo(vocabularyInfo.Name,
+                                            vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
                                         Vocabulary oVoc = fileRuleStore.GetVocabulary(vi);
                                         sqlRulesStore.Add(oVoc, true);
                                         LogInfo(file + "Imported", pRootPath);
@@ -1431,7 +1542,8 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                         //Creating Policies Present in DestSQLInstance
                         foreach (RuleSetInfo dstruleSetInfo in dstrulesetinfos)
                         {
-                            policySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", dstruleSetInfo.Name, dstruleSetInfo.MajorRevision, dstruleSetInfo.MinorRevision);
+                            policySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", dstruleSetInfo.Name,
+                                dstruleSetInfo.MajorRevision, dstruleSetInfo.MinorRevision);
                             i++;
                         }
                         foreach (string file in files)
@@ -1472,22 +1584,26 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
 
             }
 
- public void ExportHostMapSettings(string pRootPath, string pSqlServerInstanceName,string srcServerList)
- {
-             
+            public void ExportHostMapSettings(string pRootPath, string pSqlServerInstanceName, string srcServerList)
+            {
+
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
                 try
                 {
 
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    {
+                        ConnectionString = "Server=" + pSqlServerInstanceName +
+                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                    };
 
                     // connection string to the BizTalk management database where the ports will be created
-                    btsExp.ConnectionString = "Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                     HostCollection hosts = btsExp.Hosts;
-                  string[]  srcServers = srcServerList.Split(',');
-                    for (int i = 0; i < srcServers.Length; i++)
+                    string[] srcServers = srcServerList.Split(',');
+                    foreach (string server in srcServers)
                     {
-                        using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + "Src_" + srcServers[i] + "_HostMappings.xml"))
+                        using (XmlWriter writer =
+                            XmlWriter.Create(xmlPath + @"\" + "Src_" + server + "_HostMappings.xml"))
                         {
                             writer.WriteStartElement("SettingsMap");
                             writer.WriteStartElement("HostMappings");
@@ -1503,26 +1619,27 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             //  Get all the HostInstances of the Destination Server
                             HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
                             string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-                            
+
                             int j = 0;
                             foreach (HostInstance ht in dstHostInstancesColletion)
                             {
-                                if (ht.Name.EndsWith(srcServers[i])|| ht.Name.EndsWith(srcServers[i].ToLower()))
+                                if (ht.Name.EndsWith(server) || ht.Name.EndsWith(server.ToLower()))
                                 {
-                                    
+
                                     hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                     j++;
                                 }
 
                             }
                             hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                      
+
                             writer.WriteStartElement("HostInstanceMappings");
                             for (j = 0; j < hostInstancesArray.Length; j++)
                             {
                                 writer.WriteStartElement("SourceHostInstance");
-                                writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + srcServers[i]);
-                                writer.WriteElementString("DestinationHostInstances", hostInstancesArray[j] + ":" + "{ServerName}");
+                                writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + server);
+                                writer.WriteElementString("DestinationHostInstances",
+                                    hostInstancesArray[j] + ":" + "{ServerName}");
                                 writer.WriteEndElement();
 
                             }
@@ -1546,16 +1663,15 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 {
                     LogInfo("Host Mappings: Creating Host Mappings.", pRootPath);
                     XmlDocument xd = new XmlDocument();
-                    string[] srcservers = new string[] { };
-                    string[] dstservers = new string[] { };
+                    string[] srcservers;
                     //Getting the List of Source Servers
                     if (File.Exists(xmlPath + "\\" + "SrcServers.xml"))
                     {
                         xd.Load(xmlPath + "\\" + "SrcServers.xml");
                         XmlNode srcnodeList = xd.DocumentElement.SelectSingleNode("/Servers");
 
-                        string SrcServerList = srcnodeList.SelectSingleNode("SrcNodes").InnerText;
-                        srcservers = SrcServerList.Split(',');
+                        string srcServerList = srcnodeList.SelectSingleNode("SrcNodes").InnerText;
+                        srcservers = srcServerList.Split(',');
                     }
                     else
                     {
@@ -1566,7 +1682,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     XmlNode dstnodeList = xd.DocumentElement.SelectSingleNode("/Servers");
 
                     string dstServerList = dstnodeList.SelectSingleNode("DstNodes").InnerText;
-                    dstservers = dstServerList.Split(',');
+                    var dstservers = dstServerList.Split(',');
 
                     String[] files = Directory.GetFiles(xmlPath, "Src_*_HostMappings.xml");
                     if (files.Length == 0)
@@ -1581,10 +1697,14 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                             string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                             // instantiate new instance of Explorer OM
-                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                            {
+                                ConnectionString =
+                                    "Server=" + pSqlServerInstanceName +
+                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                            };
 
                             // connection string to the BizTalk management database where the ports will be created
-                            btsExp.ConnectionString = "Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                             //Get the Hosts Present in  Destination
                             HostCollection dsthostCollection = btsExp.Hosts;
                             string[] hostArray = new string[dsthostCollection.Count];
@@ -1602,7 +1722,8 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             j = 0;
                             foreach (HostInstance ht in dstHostInstancesColletion)
                             {
-                                if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i])|| ht.Name.EndsWith(dstservers[i].ToLower())))
+                                if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                    (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                                 {
                                     hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                     j++;
@@ -1613,27 +1734,29 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             XDocument doc = XDocument.Load(srcHostMappingFile);
                             //Removing SourceHost Which are Not Present in Destination
                             var hostName = from node in doc.Descendants("SourceHost")
-                                           let attr = node.Attribute("Name")
-                                           where attr != null && !(hostArray.Contains(attr.Value))
-                                           select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && !hostArray.Contains(attr.Value)
+                                select node;
                             hostName.ToList().ForEach(x => x.Remove());
 
                             //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                             var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
-                                                           let attr = node.Attribute("Name")
-                                                           where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
-                                                           select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                                select node;
                             hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                             //Updating Host Instances of Destination wiht ComputerName
                             var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
-                                                   let attr = node.Attribute("Name")
-                                                   where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
-                                                   select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                                select node;
                             foreach (XElement itemElement in hostInstanceName)
                             {
-                                
-                                itemElement.Element("DestinationHostInstances").Value = itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" + dstservers[i];
+
+                                itemElement.Element("DestinationHostInstances").Value =
+                                    itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" +
+                                    dstservers[i];
                             }
                             doc.Save(dstHostMappingFile);
                         }
@@ -1646,10 +1769,14 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                             string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                             // instantiate new instance of Explorer OM
-                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                            {
+                                ConnectionString =
+                                    "Server=" + pSqlServerInstanceName +
+                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                            };
 
                             // connection string to the BizTalk management database where the ports will be created
-                            btsExp.ConnectionString = "Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                             //Get the Hosts Present in  Destination
                             HostCollection dsthostCollection = btsExp.Hosts;
                             string[] hostArray = new string[dsthostCollection.Count];
@@ -1667,7 +1794,8 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             j = 0;
                             foreach (HostInstance ht in dstHostInstancesColletion)
                             {
-                                if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
+                                if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                    (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                                 {
                                     hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                     j++;
@@ -1678,46 +1806,50 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             XDocument doc = XDocument.Load(srcHostMappingFile);
                             //Removing SourceHost Which are Not Present in Destination
                             var hostName = from node in doc.Descendants("SourceHost")
-                                           let attr = node.Attribute("Name")
-                                           where attr != null && !(hostArray.Contains(attr.Value))
-                                           select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && !hostArray.Contains(attr.Value)
+                                select node;
                             hostName.ToList().ForEach(x => x.Remove());
 
                             //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                             var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
-                                                           let attr = node.Attribute("Name")
-                                                           where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
-                                                           select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                                select node;
                             hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                             //Updating Host Instances of Destination wiht ComputerName
                             var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
-                                                   let attr = node.Attribute("Name")
-                                                   where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
-                                                   select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                                select node;
                             foreach (XElement itemElement in hostInstanceName)
                             {
-                             
-                                itemElement.Element("DestinationHostInstances").Value = itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" + dstservers[i];
+
+                                itemElement.Element("DestinationHostInstances").Value =
+                                    itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" +
+                                    dstservers[i];
                             }
                             doc.Save(dstHostMappingFile);
                         }
                     }
                     if (dstservers.Length > srcservers.Length)
                     {
-                        string srcHostMappingFile = string.Empty;
                         for (int i = 0; i < dstservers.Length; i++)
                         {
-                            if (i < srcservers.Length)
-                                 srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
-                            else
-                                srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[0] + "_HostMappings.xml";
+                            var srcHostMappingFile = i < srcservers.Length
+                                ? xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml"
+                                : xmlPath + @"\" + "Src_" + srcservers[0] + "_HostMappings.xml";
                             string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                             // instantiate new instance of Explorer OM
-                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
+                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                            {
+                                ConnectionString =
+                                    "Server=" + pSqlServerInstanceName +
+                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                            };
 
                             // connection string to the BizTalk management database where the ports will be created
-                            btsExp.ConnectionString = "Server=" + pSqlServerInstanceName + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                             //Get the Hosts Present in  Destination
                             HostCollection dsthostCollection = btsExp.Hosts;
                             string[] hostArray = new string[dsthostCollection.Count];
@@ -1735,39 +1867,42 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             j = 0;
                             foreach (HostInstance ht in dstHostInstancesColletion)
                             {
-                                if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
+                                if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                    (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                                 {
                                     hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                     j++;
                                 }
                             }
                             hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                            
+
 
                             XDocument doc = XDocument.Load(srcHostMappingFile);
                             //Removing SourceHost Which are Not Present in Destination
                             var hostName = from node in doc.Descendants("SourceHost")
-                                           let attr = node.Attribute("Name")
-                                           where attr != null && !(hostArray.Contains(attr.Value))
-                                           select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && !hostArray.Contains(attr.Value)
+                                select node;
                             hostName.ToList().ForEach(x => x.Remove());
 
                             //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                             var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
-                                                           let attr = node.Attribute("Name")
-                                                           where attr != null && !(hostInstancesArray.Contains(attr.Value.Split(':')[0]))
-                                                           select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                                select node;
                             hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                             //Updating Host Instances of Destination wiht ComputerName
                             var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
-                                                   let attr = node.Attribute("Name")
-                                                   where attr != null && (hostInstancesArray.Contains(attr.Value.Split(':')[0]))
-                                                   select node;
+                                let attr = node.Attribute("Name")
+                                where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                                select node;
                             foreach (XElement itemElement in hostInstanceName)
                             {
-                               
-                                itemElement.Element("DestinationHostInstances").Value = itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" + dstservers[i];
+
+                                itemElement.Element("DestinationHostInstances").Value =
+                                    itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" +
+                                    dstservers[i];
                             }
                             doc.Save(dstHostMappingFile);
                         }
@@ -1785,7 +1920,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
             public void ExportClientCertOnetOneMappings(string pRootPath)
             {
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-                
+
                 try
                 {
                     using (ServerManager serverManager = new ServerManager())
@@ -1794,26 +1929,37 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                         {
                             try
                             {
-                                Microsoft.Web.Administration.Configuration config = serverManager.GetApplicationHostConfiguration();
-                                ConfigurationSection iisClientCertificateMappingAuthenticationSection = config.GetSection("system.webServer/security/authentication/iisClientCertificateMappingAuthentication", site.Name);
-                                ConfigurationElementCollection oneToOneMappingsCollection = iisClientCertificateMappingAuthenticationSection.GetCollection("oneToOneMappings");
+                                Microsoft.Web.Administration.Configuration config =
+                                    serverManager.GetApplicationHostConfiguration();
+                                ConfigurationSection iisClientCertificateMappingAuthenticationSection =
+                                    config.GetSection(
+                                        "system.webServer/security/authentication/iisClientCertificateMappingAuthentication",
+                                        site.Name);
+                                ConfigurationElementCollection oneToOneMappingsCollection =
+                                    iisClientCertificateMappingAuthenticationSection.GetCollection("oneToOneMappings");
                                 //Checking whether OneToOneCertifcationMappings are Present
                                 if (oneToOneMappingsCollection.Count == 0)
                                 {
-                                    LogInfo(site.Name + " Website:Does not Contain  OneToOneCLientCertificateMappings", pRootPath);
+                                    LogInfo(site.Name + " Website:Does not Contain  OneToOneCLientCertificateMappings",
+                                        pRootPath);
                                 }
                                 else
                                 {
-                                    using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + site.Name + "_ClientCertMappings.xml"))
+                                    using (XmlWriter writer =
+                                        XmlWriter.Create(xmlPath + @"\" + site.Name + "_ClientCertMappings.xml"))
                                     {
                                         writer.WriteStartElement("OneToOneMappings");
                                         foreach (var onetoone in oneToOneMappingsCollection)
                                         {
                                             writer.WriteStartElement("OneToOneMapping");
-                                            writer.WriteElementString("enabled", onetoone.GetAttributeValue("enabled").ToString());
-                                            writer.WriteElementString("userName", onetoone.GetAttributeValue("userName").ToString());
-                                            writer.WriteElementString("password", Encrypt(onetoone.GetAttributeValue("password").ToString()));
-                                            writer.WriteElementString("certificate", onetoone.GetAttributeValue("certificate").ToString());
+                                            writer.WriteElementString("enabled",
+                                                onetoone.GetAttributeValue("enabled").ToString());
+                                            writer.WriteElementString("userName",
+                                                onetoone.GetAttributeValue("userName").ToString());
+                                            writer.WriteElementString("password",
+                                                Encrypt(onetoone.GetAttributeValue("password").ToString()));
+                                            writer.WriteElementString("certificate",
+                                                onetoone.GetAttributeValue("certificate").ToString());
                                             writer.WriteEndElement();
 
                                         }
@@ -1825,7 +1971,7 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                             {
                                 LogInfo("Exception occured, please check log file for details.", pRootPath);
                                 LogException(ex, pRootPath);
-                
+
                             }
                         }
                     }
@@ -1847,7 +1993,8 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     {
                         foreach (Site site in serverManager.Sites)
                         {
-                            try {
+                            try
+                            {
                                 string websiteMappingFile = site.Name + "_ClientCertMappings.xml";
                                 DirectoryInfo di = new DirectoryInfo(xmlPath);
                                 FileInfo[] files = di.GetFiles(websiteMappingFile);
@@ -1858,17 +2005,26 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                                 else
                                 {
                                     XmlDocument xmldoc = new XmlDocument();
-                                    FileStream fs = new FileStream(xmlPath + @"\" + websiteMappingFile, FileMode.Open, FileAccess.Read);
+                                    FileStream fs = new FileStream(xmlPath + @"\" + websiteMappingFile, FileMode.Open,
+                                        FileAccess.Read);
                                     xmldoc.Load(fs);
-                                    XmlNodeList nodeList = xmldoc.DocumentElement.SelectNodes("/OneToOneMappings/OneToOneMapping");
+                                    XmlNodeList nodeList =
+                                        xmldoc.DocumentElement.SelectNodes("/OneToOneMappings/OneToOneMapping");
                                     foreach (XmlNode node in nodeList)
                                     {
-                                        Microsoft.Web.Administration.Configuration config = serverManager.GetApplicationHostConfiguration();
+                                        Microsoft.Web.Administration.Configuration config =
+                                            serverManager.GetApplicationHostConfiguration();
 
-                                        ConfigurationSection iisClientCertificateMappingAuthenticationSection = config.GetSection("system.webServer/security/authentication/iisClientCertificateMappingAuthentication", site.Name);
+                                        ConfigurationSection iisClientCertificateMappingAuthenticationSection =
+                                            config.GetSection(
+                                                "system.webServer/security/authentication/iisClientCertificateMappingAuthentication",
+                                                site.Name);
                                         iisClientCertificateMappingAuthenticationSection["enabled"] = true;
-                                        iisClientCertificateMappingAuthenticationSection["oneToOneCertificateMappingsEnabled"] = true;
-                                        ConfigurationElementCollection oneToOneMappingsCollection = iisClientCertificateMappingAuthenticationSection.GetCollection("oneToOneMappings");
+                                        iisClientCertificateMappingAuthenticationSection[
+                                            "oneToOneCertificateMappingsEnabled"] = true;
+                                        ConfigurationElementCollection oneToOneMappingsCollection =
+                                            iisClientCertificateMappingAuthenticationSection.GetCollection(
+                                                "oneToOneMappings");
                                         string[] certificatearray = new string[oneToOneMappingsCollection.Count];
                                         int i = 0;
                                         //Getting All the Certifcates which is already Present in Destination System
@@ -1877,25 +2033,34 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                                             foreach (var onetoone in oneToOneMappingsCollection)
                                             {
 
-                                                certificatearray[i] = onetoone.GetAttributeValue("certificate").ToString();
+                                                certificatearray[i] =
+                                                    onetoone.GetAttributeValue("certificate").ToString();
                                                 i++;
                                             }
                                         }
                                         if (certificatearray.Contains(node.SelectSingleNode("certificate").InnerText))
                                         {
-                                            LogInfo(node.SelectSingleNode("certificate").InnerText + " already Exsists in Website: " + site.Name, pRootPath);
+                                            LogInfo(
+                                                node.SelectSingleNode("certificate").InnerText +
+                                                " already Exsists in Website: " + site.Name, pRootPath);
                                         }
                                         else
                                         {
-                                            ConfigurationElement addElement = oneToOneMappingsCollection.CreateElement("add");
-                                            addElement["enabled"] = Convert.ToBoolean(node.SelectSingleNode("enabled").InnerText);
+                                            ConfigurationElement addElement =
+                                                oneToOneMappingsCollection.CreateElement("add");
+                                            addElement["enabled"] =
+                                                Convert.ToBoolean(node.SelectSingleNode("enabled").InnerText);
                                             addElement["userName"] = node.SelectSingleNode("userName").InnerText;
-                                            addElement["password"] = Decrypt(node.SelectSingleNode("password").InnerText);
+                                            addElement["password"] =
+                                                Decrypt(node.SelectSingleNode("password").InnerText);
                                             addElement["certificate"] = node.SelectSingleNode("certificate").InnerText;
                                             oneToOneMappingsCollection.Add(addElement);
-                                            ConfigurationSection accessSection = config.GetSection("system.webServer/security/access", site.Name);
+                                            ConfigurationSection accessSection =
+                                                config.GetSection("system.webServer/security/access", site.Name);
                                             accessSection["sslFlags"] = @"Ssl, SslNegotiateCert";
-                                            LogInfo(node.SelectSingleNode("certificate").InnerText + " added in" + site.Name, pRootPath);
+                                            LogInfo(
+                                                node.SelectSingleNode("certificate").InnerText + " added in" +
+                                                site.Name, pRootPath);
                                         }
                                     }
                                     serverManager.CommitChanges();
@@ -1920,12 +2085,12 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 }
             }
 
-            public void ImportHostAndHostInstances(string pRootPath,string strUserNameForHost, string strPasswordForHost)
+            public void ImportHostAndHostInstances(string pRootPath, string strUserNameForHost,
+                string strPasswordForHost)
             {
-             
+
                 //string dstHostList = string.Empty, dstHostInstanceList = string.Empty;
                 List<string> dstHostList = new List<string>();
-                List<string> dstHostInstanceList = new List<string>();
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
                 LogInfo("Host: Import started..", pRootPath);
                 if (!File.Exists(xmlPath + @"\HostInstances.xml"))
@@ -1933,29 +2098,27 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlPath + "\\HostInstances.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("HostInstances xml file is empty.");
 
                 //Getting the List of DestinationServers
                 XmlDocument xd = new XmlDocument();
 
-                string[] dstservers = new string[] { };
                 xd.Load(xmlPath + "\\" + "Servers.xml");
                 XmlNode dstnodeList = xd.DocumentElement.SelectSingleNode("/Servers");
 
                 string dstServerList = dstnodeList.SelectSingleNode("DstNodes").InnerText;
-                dstservers = dstServerList.Split(',');
+                var dstservers = dstServerList.Split(',');
                 XmlSerializer configSerializer = new XmlSerializer(typeof(Hosts));
-                Hosts input = (Hosts)configSerializer.Deserialize(new XmlTextReader(xmlPath + @"\HostInstances.xml"));
+                Hosts input = (Hosts) configSerializer.Deserialize(new XmlTextReader(xmlPath + @"\HostInstances.xml"));
 
                 //get all HostInstances of 'InProcess' type.
 
-                ManagementObjectSearcher searchObject = null;
-                EnumerationOptions enumOptions = new EnumerationOptions();
-                enumOptions.ReturnImmediately = false;
+                EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
                 //Creating DestinationHostList
-                searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host", enumOptions);
+                var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host",
+                    enumOptions);
                 foreach (var inst in searchObject.Get())
                 {
                     //dstHostList = dstHostList + inst["Name"].ToString().ToUpper() + ",";
@@ -1966,22 +2129,26 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 {
                     if (!dstHostList.Contains(host.name.ToUpper()))
                     {
-                        CreateHost(host.name, host.inProcess ? HostSetting.HostTypeValues.In_process : HostSetting.HostTypeValues.Isolated, host.ntGroupName, host.authenticationTrusted, host.hostTracking, host.is32bit,
+                        CreateHost(host.name,
+                            host.inProcess
+                                ? HostSetting.HostTypeValues.In_process
+                                : HostSetting.HostTypeValues.Isolated, host.ntGroupName, host.authenticationTrusted,
+                            host.hostTracking, host.is32bit,
                             host.isDefaultHost, pRootPath);
                     }
                     else
                         LogInfo("Host already exist: " + host.name, pRootPath);
                 }
 
-                int i = 0;
-                for (i = 0; i < dstservers.Length; i++)
+                foreach (string server in dstservers)
                 {
-                    //Creating DestinationHostInstanceListForeachnode
-                    dstHostInstanceList = new List<string>();
-                    searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_HostInstance", enumOptions);
+//Creating DestinationHostInstanceListForeachnode
+                    var dstHostInstanceList = new List<string>();
+                    searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
+                        "Select * from MSBTS_HostInstance", enumOptions);
                     foreach (var inst in searchObject.Get())
                     {
-                        if (inst["RunningServer"].ToString().ToUpper() == dstservers[i])
+                        if (inst["RunningServer"].ToString().ToUpper() == server)
                             // dstHostInstanceList = dstHostInstanceList + inst["HostName"].ToString().ToUpper() + ",";
                             dstHostInstanceList.Add(inst["HostName"].ToString().ToUpper());
                     }
@@ -1990,21 +2157,22 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     {
                         if (!dstHostInstanceList.Contains(host.name.ToUpper()))
                         {
-                            CreateHostInstance(dstservers[i], host.name, strUserNameForHost, strPasswordForHost,  pRootPath);
+                            CreateHostInstance(server, host.name, strUserNameForHost, strPasswordForHost,
+                                pRootPath);
                         }
                         else
-                            LogInfo("Host Instance already exist: " + host.name + " on " + dstservers[i], pRootPath);
+                            LogInfo("Host Instance already exist: " + host.name + " on " + server, pRootPath);
                     }
                 }
             }
 
-            private void CreateHost(string name, HostSetting.HostTypeValues hostType, string ntGroupName, bool authTrusted, bool hostTracking, bool is32bit, bool defaultHost, string pRootPath)
+            private void CreateHost(string name, HostSetting.HostTypeValues hostType, string ntGroupName,
+                bool authTrusted, bool hostTracking, bool is32Bit, bool defaultHost, string pRootPath)
             {
-                HostSetting myHostSetting = null;
                 try
                 {
 
-                    myHostSetting = HostSetting.CreateInstance();
+                    var myHostSetting = HostSetting.CreateInstance();
 
                     myHostSetting.AutoCommit = false;
 
@@ -2012,80 +2180,83 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     myHostSetting.HostType = hostType;
                     myHostSetting.NTGroupName = ntGroupName;
                     myHostSetting.AuthTrusted = authTrusted;
-                    myHostSetting.IsHost32BitOnly = is32bit;
+                    myHostSetting.IsHost32BitOnly = is32Bit;
                     myHostSetting.HostTracking = hostTracking;
                     myHostSetting.IsDefault = defaultHost;
 
                     myHostSetting.CommitObject();
 
-                    LogInfo("Host created successfully: " + name,pRootPath);
+                    LogInfo("Host created successfully: " + name, pRootPath);
                 }
 
                 catch (Exception ex)
                 {
-                    LogInfo("Error Creating Host: " + name,pRootPath);
-                    LogException(ex,pRootPath);
+                    LogInfo("Error Creating Host: " + name, pRootPath);
+                    LogException(ex, pRootPath);
                 }
             }
 
-            private void CreateHostInstance(string serverName, string name, string strUserNameForHost, string strPasswordForHost, string pRootPath)
+            private void CreateHostInstance(string serverName, string name, string strUserNameForHost,
+                string strPasswordForHost, string pRootPath)
             {
-                HostInstance myHostInstance = null;
-                ServerHost myServerHost = null;
                 try
                 {
 
-                    myServerHost = ServerHost.CreateInstance();
+                    var myServerHost = ServerHost.CreateInstance();
 
                     myServerHost.ServerName = serverName;
                     myServerHost.HostName = name;
                     myServerHost.Map();
 
 
-                    myHostInstance = HostInstance.CreateInstance();
+                    var myHostInstance = HostInstance.CreateInstance();
 
                     myHostInstance.Name = "Microsoft BizTalk Server " + name + " " + serverName;
                     myHostInstance.Install(true, strUserNameForHost, strPasswordForHost);
 
-                    LogInfo("Host Instance created successfully: " + name + ", " + serverName,pRootPath);
+                    LogInfo("Host Instance created successfully: " + name + ", " + serverName, pRootPath);
                 }
                 catch (Exception ex)
                 {
-                    LogInfo("Error creating HostInstance: " + name + ", " + serverName,pRootPath);
-                    LogException(ex,pRootPath);
+                    LogInfo("Error creating HostInstance: " + name + ", " + serverName, pRootPath);
+                    LogException(ex, pRootPath);
                 }
             }
 
             public void ImportAppPools(string pRootPath)
             {
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-               string  commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add apppool /in /xml < \"" + xmlPath + "\\AppPoolToImport.xml" + "\"";
-                
-                int returnCode = ExecuteCmd("CMD.EXE", commandArguments,pRootPath);
+                string commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add apppool /in /xml < \"" +
+                                          xmlPath + "\\AppPoolToImport.xml" + "\"";
+
+                int returnCode = ExecuteCmd("CMD.EXE", commandArguments, pRootPath);
                 if (returnCode == 0)
-                    LogInfo("Success: Imported AppPools on Server "+ machineName,pRootPath);
+                    LogInfo("Success: Imported AppPools on Server " + _machineName, pRootPath);
                 else
-                    LogInfo("Failed: Importing AppPools on Server "+ machineName,pRootPath);
+                    LogInfo("Failed: Importing AppPools on Server " + _machineName, pRootPath);
 
 
             }
 
-            public void ImportWebsites(string pRootPath,string webSiteName)
+            public void ImportWebsites(string pRootPath, string webSiteName)
             {
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-                string commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" + xmlPath + "\\WebSite_" + webSiteName + "_ToImport.xml" + "\"";
-                
+                string commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" +
+                                          xmlPath + "\\WebSite_" + webSiteName + "_ToImport.xml" + "\"";
+
                 int returnCode = ExecuteCmd("CMD.EXE", commandArguments, pRootPath);
                 if (returnCode == 0)
-                    LogInfo("Success: Imported Website "+ webSiteName, pRootPath);
+                    LogInfo("Success: Imported Website " + webSiteName, pRootPath);
                 else
                     LogInfo("Failed: Importing Website " + webSiteName, pRootPath);
             }
+
             public void ImportWebApps(string pRootPath, string webSiteName)
             {
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-                string commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add app /in /xml /< \"" + xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml" + "\"";
-                
+                string commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add app /in /xml /< \"" +
+                                          xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml" + "\"";
+
                 int returnCode = ExecuteCmd("CMD.EXE", commandArguments, pRootPath);
                 if (returnCode == 0)
                     LogInfo("Success: Imported WebApps for Website " + webSiteName, pRootPath);
@@ -2093,26 +2264,24 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     LogInfo("Failed: Importing WebApps for Website " + webSiteName, pRootPath);
             }
 
-            public void BtsInstallPath(string pRootPath,string Operation)
+            public void BtsInstallPath(string pRootPath, string operation)
             {
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-                string commandArguments = string.Empty;
                 try
                 {
-                    if(Operation=="Export")
-                        commandArguments = "/C SET BTSINSTALLPATH > \"" + xmlPath + "\\SrcBTSInstallPath.txt" + "\"";
-                    else
-                        commandArguments = "/C SET BTSINSTALLPATH > \"" + xmlPath + "\\DstBTSInstallPath.txt" + "\"";
+                    var commandArguments = operation == "Export"
+                        ? "/C SET BTSINSTALLPATH > \"" + xmlPath + "\\SrcBTSInstallPath.txt" + "\""
+                        : "/C SET BTSINSTALLPATH > \"" + xmlPath + "\\DstBTSInstallPath.txt" + "\"";
 
                     int returnCode = ExecuteCmd("CMD.EXE", commandArguments, pRootPath);
-                    if (returnCode == 0)
-                        LogInfo("Success:Created BTSInstallPath.txt.",pRootPath );
-                    else
-                        LogInfo("Failed: Creating BTSInstallPath.txt.", pRootPath);
+                    LogInfo(
+                        returnCode == 0
+                            ? "Success:Created BTSInstallPath.txt."
+                            : "Failed: Creating BTSInstallPath.txt.", pRootPath);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    LogInfo("Error creating BTSInstallPath",pRootPath);
+                    LogInfo("Error creating BTSInstallPath", pRootPath);
                     LogException(ex, pRootPath);
                 }
             }
@@ -2123,32 +2292,35 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 {
                     string bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
                     string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-                    string commandArguments = " get-defxml -FileName:\"" + xmlPath + "\\BamDef.xml\" -Server:" + pSqlServerInstanceName + " -Database:BAMPrimaryImport";
-                    int returnCode = ExecuteCmd(bamExePath, commandArguments,pRootPath);
+                    string commandArguments = " get-defxml -FileName:\"" + xmlPath + "\\BamDef.xml\" -Server:" +
+                                              pSqlServerInstanceName + " -Database:BAMPrimaryImport";
+                    int returnCode = ExecuteCmd(bamExePath, commandArguments, pRootPath);
                     if (returnCode == 0)
                         LogInfo("Success: BAM Definition Exported.", pRootPath);
                     else
                         throw new Exception("Failed: BAM Definition Export");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
                 }
 
             }
+
             public void ImportBAMDefinition(string pRootPath, string pSqlServerInstanceName)
             {
                 try
                 {
-                    
+
                     string bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
                     string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-                    string commandArguments = " deploy-all -DefinitionFile:\"" + xmlPath + "\\BamDefToImport.xml\" -Server:" + pSqlServerInstanceName
-                        + " -Database:BAMPrimaryImport";
+                    string commandArguments = " deploy-all -DefinitionFile:\"" + xmlPath +
+                                              "\\BamDefToImport.xml\" -Server:" + pSqlServerInstanceName
+                                              + " -Database:BAMPrimaryImport";
                     int returnCode = ExecuteCmd(bamExePath, commandArguments, pRootPath);
                     if (returnCode == 0)
-                        LogInfo("Success: BamDef Imported.",pRootPath);
+                        LogInfo("Success: BamDef Imported.", pRootPath);
                     else
                         throw new Exception("BamDef import failed, hence aborting account import.");
                 }
@@ -2159,15 +2331,17 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 }
             }
 
-            public void AddBAMAccounts(string pRootPath, string pSqlServerInstanceName,string accountName,string viewName)
+            public void AddBAMAccounts(string pRootPath, string pSqlServerInstanceName, string accountName,
+                string viewName)
             {
                 try
                 {
                     string bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
-                    string commandArguments = " add-account -AccountName:\"" + accountName + "\" -View:\"" + viewName + "\" -Server:"
-                                   + pSqlServerInstanceName
-                                  + " -Database:BAMPrimaryImport";
-                   int returnCode = ExecuteCmd(bamExePath, commandArguments,pRootPath);
+                    string commandArguments = " add-account -AccountName:\"" + accountName + "\" -View:\"" + viewName +
+                                              "\" -Server:"
+                                              + pSqlServerInstanceName
+                                              + " -Database:BAMPrimaryImport";
+                    int returnCode = ExecuteCmd(bamExePath, commandArguments, pRootPath);
                     if (returnCode == 0)
                         LogInfo("Account: " + accountName + " added to view: " + viewName, pRootPath);
                     else
@@ -2180,18 +2354,22 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                 }
             }
 
-            public void ImportBTTDefiniton(string pRootPath, string pSqlServerInstanceName,string bttFile)
+            public void ImportBTTDefiniton(string pRootPath, string pSqlServerInstanceName, string bttFile)
             {
                 try
                 {
                     string bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
-                    string bttDeployExePath = bamExePath.Substring(0, bamExePath.LastIndexOf("\\") + 1) + "bttDeploy.exe ";
-                    string commandArguments = " /mgdb \"" + pSqlServerInstanceName + "\\BizTalkMgmtDb" + "\" \"" + bttFile + "\"";
-                   int returnCode = ExecuteCmd(bttDeployExePath, commandArguments,pRootPath);
+                    string bttDeployExePath =
+                        bamExePath.Substring(0, bamExePath.LastIndexOf("\\") + 1) + "bttDeploy.exe ";
+                    string commandArguments = " /mgdb \"" + pSqlServerInstanceName + "\\BizTalkMgmtDb" + "\" \"" +
+                                              bttFile + "\"";
+                    int returnCode = ExecuteCmd(bttDeployExePath, commandArguments, pRootPath);
                     if (returnCode == 0)
-                        LogInfo("Sucess: BTT File Imported " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1),pRootPath);
+                        LogInfo("Sucess: BTT File Imported " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1),
+                            pRootPath);
                     else
-                        LogInfo("Failed: BTT File Import " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1),pRootPath);
+                        LogInfo("Failed: BTT File Import " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1),
+                            pRootPath);
                 }
                 catch (Exception ex)
                 {
@@ -2199,19 +2377,22 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
                     LogException(ex, pRootPath);
                 }
             }
-            public void ExportBAMAccounts(string pRootPath, string pSqlServerInstanceName,string viewName)
+
+            public void ExportBAMAccounts(string pRootPath, string pSqlServerInstanceName, string viewName)
             {
                 try
                 {
                     string bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
                     string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
-                    string commandArguments = "/C " + "\"\"" + bamExePath + "\"" + " get-accounts -View:\"" + viewName + "\" -Server:" + pSqlServerInstanceName
-                               + " -Database:BAMPrimaryImport > \"" + xmlPath + "\\BamView_" + viewName + ".txt\"\"";
+                    string commandArguments = "/C " + "\"\"" + bamExePath + "\"" + " get-accounts -View:\"" + viewName +
+                                              "\" -Server:" + pSqlServerInstanceName
+                                              + " -Database:BAMPrimaryImport > \"" + xmlPath + "\\BamView_" + viewName +
+                                              ".txt\"\"";
                     int returnCode = ExecuteCmd("CMD.EXE", commandArguments, pRootPath);
                     if (returnCode == 0)
-                        LogInfo("Success: Get BAM Accounts for View: " + viewName,pRootPath);
+                        LogInfo("Success: Get BAM Accounts for View: " + viewName, pRootPath);
                     else
-                        LogInfo("Failed: Get BAM Accounts for View: " + viewName,pRootPath);
+                        LogInfo("Failed: Get BAM Accounts for View: " + viewName, pRootPath);
                 }
                 catch (Exception ex)
                 {
@@ -2224,22 +2405,23 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
             {
                 try
                 {
-                    byte[] keyArray;
-                    keyArray = (Encoding.UTF8.GetBytes("M!grat!onkey1234"));
-                    TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
+                    var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
+                    TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
+                    {
+                        Mode = CipherMode.ECB,
+                        Key = keyArray,
+                        Padding = PaddingMode.PKCS7
+                    };
 
-                    DES.Mode = CipherMode.ECB;
-                    DES.Key = keyArray;
 
-                    DES.Padding = PaddingMode.PKCS7;
-                    ICryptoTransform DESEncrypt = DES.CreateEncryptor();
-                    Byte[] Buffer = Encoding.ASCII.GetBytes(data);
+                    ICryptoTransform desEncrypt = des.CreateEncryptor();
+                    Byte[] buffer = Encoding.ASCII.GetBytes(data);
 
-                    return Convert.ToBase64String(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
+                    return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
                 }
                 catch (Exception ex)
                 {
-                   
+
                     throw new Exception(ex.Message, ex.InnerException);
                 }
 
@@ -2249,54 +2431,57 @@ public void btnGetServices_Click(string pRootPath, string pWindowsServiceToIgnor
             {
                 try
                 {
-                    byte[] keyArray;
-                    keyArray = (Encoding.UTF8.GetBytes("M!grat!onkey1234"));
-                    TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
+                    var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
+                    TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
+                    {
+                        Mode = CipherMode.ECB,
+                        Key = keyArray,
+                        Padding = PaddingMode.PKCS7
+                    };
 
-                    DES.Mode = CipherMode.ECB;
-                    DES.Key = keyArray;
 
-                    DES.Padding = PaddingMode.PKCS7;
-                    ICryptoTransform DESEncrypt = DES.CreateDecryptor();
-                    Byte[] Buffer = Convert.FromBase64String(data.Replace(" ", "+"));
+                    ICryptoTransform desEncrypt = des.CreateDecryptor();
+                    Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
 
-                    return Encoding.UTF8.GetString(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
+                    return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
                 }
                 catch (Exception ex)
                 {
-                    
+
                     throw new Exception(ex.Message, ex.InnerException);
                 }
 
             }
+
             public void LogInfo(string strMsg, string pPath)
-{
-    string appPath = pPath;
-    string logPath = appPath + @"\Logs";
+            {
+                string appPath = pPath;
+                string logPath = appPath + @"\Logs";
 
-    if (strMsg != "")
-    {
-        using (StreamWriter writer = new StreamWriter(logPath + @"\RemoteOperation_log.txt", true))
-        {
-            writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + strMsg);
-        }
-    }
-}
+                if (strMsg != "")
+                {
+                    using (StreamWriter writer = new StreamWriter(logPath + @"\RemoteOperation_log.txt", true))
+                    {
+                        writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + strMsg);
+                    }
+                }
+            }
 
-public void LogException(Exception ex, string pPath)
-{
-    string appPath = pPath;
-    string logPath = appPath + @"\Logs";
+            public void LogException(Exception ex, string pPath)
+            {
+                string appPath = pPath;
+                string logPath = appPath + @"\Logs";
 
-    using (StreamWriter writer = new StreamWriter(logPath + @"\RemoteOperation_log.txt", true))
-    {
-        writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + "Exception Message:  " + ex.Message);
-        writer.WriteLine("Inner Exception:  " + ex.InnerException);
-        writer.WriteLine("StackTrace:  " + ex.StackTrace);
-    }
-}
+                using (StreamWriter writer = new StreamWriter(logPath + @"\RemoteOperation_log.txt", true))
+                {
+                    writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + "Exception Message:  " +
+                                     ex.Message);
+                    writer.WriteLine("Inner Exception:  " + ex.InnerException);
+                    writer.WriteLine("StackTrace:  " + ex.StackTrace);
+                }
+            }
 
-            private int ExecuteCmd(string cmdName, string cmdArg,string pPath)
+            private int ExecuteCmd(string cmdName, string cmdArg, string pPath)
             {
                 string commandArguments = cmdArg;
                 using (var p = new Process())
@@ -2321,7 +2506,7 @@ public void LogException(Exception ex, string pPath)
                     }
                     catch (Exception ex)
                     {
-                        LogException(ex,pPath);
+                        LogException(ex, pPath);
                     }
                 }
 
@@ -2335,9 +2520,9 @@ public void LogException(Exception ex, string pPath)
 
             void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
             {
-               // LogInfo(e.Data, logPath);
+                // LogInfo(e.Data, logPath);
             }
-           
+
         }
     }
 }
