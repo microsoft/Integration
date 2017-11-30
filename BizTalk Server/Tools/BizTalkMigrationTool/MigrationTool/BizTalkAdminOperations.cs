@@ -30,95 +30,155 @@ namespace BizTalkAdminOperations
     public partial class BizTalkAdminOperations : Form
     {
         #region Variables
+
         //operations variable
-        string strWebSite, strAppPool, strCertificate, strHostInstance, strFileCopy, strBam, strHandlers, strGlobalPartyBinding, strBizTalkAssemblies, strServices;
-        string strBizTalkApp, strExport;
+        private string _strWebSite,
+            _strAppPool,
+            _strCertificate,
+            _strHostInstance,
+            _strFileCopy,
+            _strBam,
+            _strHandlers,
+            _strGlobalPartyBinding,
+            _strBizTalkAssemblies,
+            _strServices;
+
+        private string _strBizTalkApp, _strExport;
+
         //flags
-        readonly string strPerformOperationYes, strPerformOperationNo, strSuccess;
-        string isAppPoolExecuted, isHostExecuted, isHandlerExecuted, isGlobalPartyBindingExecuted, isBizTalkAppExecuted;
-        readonly int strRoboCopySuccessCode;
+        private readonly string _strPerformOperationYes, _strPerformOperationNo, _strSuccess;
+
+        private string _isAppPoolExecuted, _isHostExecuted, _isHandlerExecuted, _isBizTalkAppExecuted;
+
+        private readonly int _strRoboCopySuccessCode;
+
         //user account will be used in WMI remoting  or PsExec remoting, while service account will be used for host instance.
-        public string strUserName, strUserNameForWMI, strPassword, strDomain, strFromPanel10, strSrcNode, strDstNode, strIsUtilCopied;
-        public string strUserNameForHost, strPasswordForHost; //this will act as service account, while other one will work as user account
+        public string strUserName,
+            strUserNameForWMI,
+            strPassword,
+            strDomain,
+            strFromPanel10,
+            strSrcNode,
+            strDstNode,
+            strIsUtilCopied;
 
-        readonly string fileFolderPath, vDir, machineName, exportedDataPath, appPath, msiPath, xmlPath, certPath, logPath, serviceFolderPath, brePath;
-        readonly string asmPath, customDllPath, gacUtilPath, dotNetExePath, psExecPath, serverXmlPath;
-        readonly string asmFolderName, gacUtilFolderName, certFolderName, customDllFolderName, remoteExeName, breFolderName, specFileExt;
-        string srcSqlInstance, srcBAMSqlInstance, dstBAMSqlInstance, dstSqlInstance, loginOperationName, srcBRESqlInstance, dstBRESqlInstance;
+        public string strUserNameForHost, strPasswordForHost
+            ; //this will act as service account, while other one will work as user account
+
+        private readonly string _fileFolderPath,
+            _vDir,
+            _machineName,
+            _exportedDataPath,
+            _appPath,
+            _msiPath,
+            _xmlPath,
+            _certPath,
+            _logPath,
+            _serviceFolderPath,
+            _brePath;
+
+        private readonly string _asmPath, _customDllPath, _gacUtilPath, _psExecPath, _serverXmlPath;
+
+        private readonly string _asmFolderName,
+            _gacUtilFolderName,
+            _certFolderName,
+            _customDllFolderName,
+            _remoteExeName,
+            _specFileExt;
+
+        private string _srcSqlInstance,
+            _srcBAMSqlInstance,
+            _dstBAMSqlInstance,
+            _dstSqlInstance,
+            _loginOperationName,
+            _srcBRESqlInstance,
+            _dstBRESqlInstance;
+
         //app config
-        string bizTalkAppToIgnore;
+        private string _bizTalkAppToIgnore;
 
-        readonly string bamExePath;
-        string remoteRootFolder, baseBizTalkAppCol, strCertPass, strFoldersToCopy, strFoldersToCopyNoFiles,strWebsitesFolder,strFoldersDrive,strServicesDrive;
-        string strCustomDllToInclude, strToolMode, strServerType, strWindowsServiceToIgnore;
+        private readonly string _bamExePath;
+
+        private string _remoteRootFolder,
+            _baseBizTalkAppCol,
+            _strCertPass,
+            _strFoldersToCopy,
+            _strFoldersToCopyNoFiles,
+            _strWebsitesFolder,
+            _strFoldersDrive,
+            _strServicesDrive;
+
+        private string _strCustomDllToInclude, _strToolMode, _strServerType, _strWindowsServiceToIgnore;
 
         public delegate void SetTextCallback(string strMsg);
+
         #endregion
+
         public BizTalkAdminOperations() //constructor
         {
-            strWebSite = "n";
-            strAppPool = "n";
-            strCertificate = "n";
-            strHandlers = "n";
-            strGlobalPartyBinding = "n";
-            strBizTalkAssemblies = "n";
-            strBizTalkApp = "n";
-            strFileCopy = "n";
-            strPerformOperationYes = "y";
-            strPerformOperationNo = "n";
-            strSuccess = "1";
-            strRoboCopySuccessCode = 8;
+            _strWebSite = "n";
+            _strAppPool = "n";
+            _strCertificate = "n";
+            _strHandlers = "n";
+            _strGlobalPartyBinding = "n";
+            _strBizTalkAssemblies = "n";
+            _strBizTalkApp = "n";
+            _strFileCopy = "n";
+            _strPerformOperationYes = "y";
+            _strPerformOperationNo = "n";
+            _strSuccess = "1";
+            _strRoboCopySuccessCode = 8;
             InitializeComponent();
 
-            appPath = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            exportedDataPath = appPath + @"\ExportedData";
+            _appPath = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            _exportedDataPath = _appPath + @"\ExportedData";
 
-            fileFolderPath = exportedDataPath + "\\FileFolder";
-            serviceFolderPath = exportedDataPath + "\\ServiceFolder";
-            vDir = exportedDataPath + "\\VDir";
+            _fileFolderPath = _exportedDataPath + "\\FileFolder";
+            _serviceFolderPath = _exportedDataPath + "\\ServiceFolder";
+            _vDir = _exportedDataPath + "\\VDir";
 
-            msiPath = exportedDataPath + @"\MSI";
-            xmlPath = exportedDataPath + @"\XMLFiles";  //xmlpath renamed to XmlBinding
-            certFolderName = "\\CERT";
-            certPath = exportedDataPath + certFolderName;//@"\CERT";
-            breFolderName = "\\BRE";
-            brePath = exportedDataPath + breFolderName;
-            asmFolderName = "\\DLL";
-            asmPath = exportedDataPath + asmFolderName;//@"\DLL";
-            customDllFolderName = "\\CustomDLL";
-            customDllPath = exportedDataPath + customDllFolderName;
-            logPath = appPath + @"\Logs";
-            gacUtilFolderName = "\\Util";
-            gacUtilPath = appPath + gacUtilFolderName + "\\GacUtil.exe";
-            psExecPath = appPath + gacUtilFolderName + "\\PsExec.exe";
-            dotNetExePath = appPath + gacUtilFolderName + "\\RemoteOperations.exe";
-            remoteExeName = "RemoteOperations.exe";
-            serverXmlPath = xmlPath + "\\Servers.xml";
+            _msiPath = _exportedDataPath + @"\MSI";
+            _xmlPath = _exportedDataPath + @"\XMLFiles"; //xmlpath renamed to XmlBinding
+            _certFolderName = "\\CERT";
+            _certPath = _exportedDataPath + _certFolderName; //@"\CERT";
+            var breFolderName = "\\BRE";
+            _brePath = _exportedDataPath + breFolderName;
+            _asmFolderName = "\\DLL";
+            _asmPath = _exportedDataPath + _asmFolderName; //@"\DLL";
+            _customDllFolderName = "\\CustomDLL";
+            _customDllPath = _exportedDataPath + _customDllFolderName;
+            _logPath = _appPath + @"\Logs";
+            _gacUtilFolderName = "\\Util";
+            _gacUtilPath = _appPath + _gacUtilFolderName + "\\GacUtil.exe";
+            _psExecPath = _appPath + _gacUtilFolderName + "\\PsExec.exe";
+            _remoteExeName = "RemoteOperations.exe";
+            _serverXmlPath = _xmlPath + "\\Servers.xml";
 
-            specFileExt = "_Spec.xml";
-            isAppPoolExecuted = strPerformOperationYes;
-            isHostExecuted = strPerformOperationYes;
-            isHandlerExecuted = strPerformOperationYes;
-            isGlobalPartyBindingExecuted = strPerformOperationYes;
-            isBizTalkAppExecuted = strPerformOperationYes;
-            strIsUtilCopied = strPerformOperationNo;
+            _specFileExt = "_Spec.xml";
+            _isAppPoolExecuted = _strPerformOperationYes;
+            _isHostExecuted = _strPerformOperationYes;
+            _isHandlerExecuted = _strPerformOperationYes;
+            _isBizTalkAppExecuted = _strPerformOperationYes;
+            strIsUtilCopied = _strPerformOperationNo;
 
-            remoteRootFolder = ConfigurationManager.AppSettings["RemoteRootFolder"];// +"\\" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
-            bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
-            bizTalkAppToIgnore = ConfigurationManager.AppSettings["BizTalkAppToIgnore"];
-            baseBizTalkAppCol = ConfigurationManager.AppSettings["AppToRefer"];
-            strCertPass = ConfigurationManager.AppSettings["CertPass"];
-            strFoldersToCopy = ConfigurationManager.AppSettings["FoldersToCopy"];
-            strFoldersToCopyNoFiles = ConfigurationManager.AppSettings["FoldersToCopyNoFiles"];
-            strCustomDllToInclude = ConfigurationManager.AppSettings["CustomDllToInclude"];
-            strWindowsServiceToIgnore = ConfigurationManager.AppSettings["WindowsServiceToIgnore"];
-            strWebsitesFolder = ConfigurationManager.AppSettings["WebSitesDriveDestination"];
-            strFoldersDrive = ConfigurationManager.AppSettings["FoldersDriveDestination"];
-            strServicesDrive = ConfigurationManager.AppSettings["ServicesDriveDestination"];
+            _remoteRootFolder =
+                ConfigurationManager.AppSettings
+                    ["RemoteRootFolder"]; // +"\\" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
+            _bamExePath = Environment.GetEnvironmentVariable("BTSINSTALLPATH") + @"Tracking\bm.exe";
+            _bizTalkAppToIgnore = ConfigurationManager.AppSettings["BizTalkAppToIgnore"];
+            _baseBizTalkAppCol = ConfigurationManager.AppSettings["AppToRefer"];
+            _strCertPass = ConfigurationManager.AppSettings["CertPass"];
+            _strFoldersToCopy = ConfigurationManager.AppSettings["FoldersToCopy"];
+            _strFoldersToCopyNoFiles = ConfigurationManager.AppSettings["FoldersToCopyNoFiles"];
+            _strCustomDllToInclude = ConfigurationManager.AppSettings["CustomDllToInclude"];
+            _strWindowsServiceToIgnore = ConfigurationManager.AppSettings["WindowsServiceToIgnore"];
+            _strWebsitesFolder = ConfigurationManager.AppSettings["WebSitesDriveDestination"];
+            _strFoldersDrive = ConfigurationManager.AppSettings["FoldersDriveDestination"];
+            _strServicesDrive = ConfigurationManager.AppSettings["ServicesDriveDestination"];
 
-            strToolMode = "Backup";
-            strServerType = "BizTalk";
-            machineName = Environment.MachineName;
+            _strToolMode = "Backup";
+            _strServerType = "BizTalk";
+            _machineName = Environment.MachineName;
         }
 
 
@@ -126,22 +186,18 @@ namespace BizTalkAdminOperations
 
         private void btnExportFolders_Click(object sender, EventArgs e)
         {
-            string strSrc = "";
-            int returnCode;
-            string strDst = "";
-            string commandArguments = "";
-
-            char[] chrSep = { ',' };
+            char[] chrSep = {','};
 
             try
             {
                 LogInfo("Folders: Export started.");
 
-                if (strServerType == "BizTalk" && (cmbBoxServerSrc.Items.Count == 0 || cmbBoxServerSrc.SelectedItem == null))
+                if (_strServerType == "BizTalk" &&
+                    (cmbBoxServerSrc.Items.Count == 0 || cmbBoxServerSrc.SelectedItem == null))
                 {
                     LogShortErrorMsg("Please mention Src Sql Instance and select node from DropDown.");
                 }
-                else if (strServerType == "App" && strSrcNode == string.Empty)
+                else if (_strServerType == "App" && strSrcNode == string.Empty)
                 {
                     LogShortErrorMsg("Please mention Src App Server.");
                 }
@@ -149,39 +205,50 @@ namespace BizTalkAdminOperations
                 {
                     try
                     {
-                        if (Directory.Exists(fileFolderPath))
+                        if (Directory.Exists(_fileFolderPath))
                         {
-                            Directory.Delete(fileFolderPath, true);
-                            Directory.CreateDirectory(fileFolderPath);
+                            Directory.Delete(_fileFolderPath, true);
+                            Directory.CreateDirectory(_fileFolderPath);
                         }
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Error while cleaning file folder, hence aboting folder export " + ex.Message + ", " + ex.StackTrace);
+                        throw new Exception("Error while cleaning file folder, hence aboting folder export " +
+                                            ex.Message + ", " + ex.StackTrace);
                     }
 
-                    if (strToolMode == "Backup") //if backup mode is set then copy to local.
+                    if (_strToolMode == "Backup") //if backup mode is set then copy to local.
                     {
+                        string strSrc;
+                        string commandArguments;
+                        string strDst;
+                        int returnCode;
                         try
                         {
-                            if (strFoldersToCopyNoFiles != string.Empty)
+                            if (_strFoldersToCopyNoFiles != string.Empty)
                             {
                                 //folders list from app.config, no files                                     
                                 //Folders to copy, no files, from APP.Config                         
                                 LogInfo("Exporting only folder structure with permissions, without files.");
-                                string[] arrFoldersToCopyNoFiles = strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                                string[] arrFoldersToCopyNoFiles =
+                                    _strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
                                 foreach (string folderPath in arrFoldersToCopyNoFiles)
                                 {
                                     string folderPathTrimed = folderPath.Trim();
                                     string driveInfo = Path.GetPathRoot(folderPathTrimed);
                                     string driveLetter = driveInfo.Substring(0, 1);
-                                    string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
+                                    string pathWithoutDrive =
+                                        folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
                                     strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
-                                    strDst = fileFolderPath + "\\" + folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));//"\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                    strDst = _fileFolderPath + "\\" +
+                                             folderPathTrimed.Substring(
+                                                 folderPath.LastIndexOf(
+                                                     '\\')); //"\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                     LogInfo("Copy started from:" + strSrc + " To " + strDst);
-                                    commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPY:ATSOU /R:1";  //copy folders only with all permissons
+                                    commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                                       "/E /COPY:ATSOU /R:1"; //copy folders only with all permissons
                                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                                    if (returnCode < strRoboCopySuccessCode)
+                                    if (returnCode < _strRoboCopySuccessCode)
                                         LogShortSuccessMsg("Success: Exported Folders.");
                                     else
                                         LogShortErrorMsg("Failed: Exporting Folders");
@@ -195,25 +262,31 @@ namespace BizTalkAdminOperations
                         }
 
                         try
-                        {   //folders list from app.config                             
-                            string genFolders = strFoldersToCopy;
+                        {
+                            //folders list from app.config                             
+                            string genFolders = _strFoldersToCopy;
                             if (genFolders != string.Empty)
                             {
                                 LogInfo("Exporting both folder structure with permissons and files.");
-                                string[] genFolderPath = genFolders.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                                string[] genFolderPath =
+                                    genFolders.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
 
                                 foreach (string folderPath in genFolderPath)
                                 {
                                     string folderPathTrimed = folderPath.Trim();
                                     string driveInfo = Path.GetPathRoot(folderPathTrimed);
                                     string driveLetter = driveInfo.Substring(0, 1);
-                                    string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
+                                    string pathWithoutDrive =
+                                        folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
                                     strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
-                                    strDst = fileFolderPath + "\\" + folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
+                                    strDst = _fileFolderPath + "\\" +
+                                             folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
                                     LogInfo("Copy started from: " + strSrc + " To: " + strDst);
-                                    commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /MIN:1 /R:1";  // /xc /xn /xo exclude existing file and folders
+                                    commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" +
+                                                       strDst + "\" " +
+                                                       "/E /COPYALL /MIN:1 /R:1"; // /xc /xn /xo exclude existing file and folders
                                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                                    if (returnCode < strRoboCopySuccessCode)
+                                    if (returnCode < _strRoboCopySuccessCode)
                                         LogShortSuccessMsg("Success: Exported Folders/Files.");
                                     else
                                         LogShortErrorMsg("Failed: Exporting Folders/Files.");
@@ -222,13 +295,15 @@ namespace BizTalkAdminOperations
                         }
                         catch (Exception ex)
                         {
-                            LogErrorInfo("Exception while copying folders as mentioned in App.Config for FoldersToCopyWithFiles key.");
+                            LogErrorInfo(
+                                "Exception while copying folders as mentioned in App.Config for FoldersToCopyWithFiles key.");
                             LogException(ex);
                         }
                     }
                     else
                     {
-                        LogInfo("As Folder Copy Mode is set to Migration hence at Import Click Folders will be moved directly from Source to Destination.");
+                        LogInfo(
+                            "As Folder Copy Mode is set to Migration hence at Import Click Folders will be moved directly from Source to Destination.");
                     }
                 }
                 //SharePermissons
@@ -242,37 +317,38 @@ namespace BizTalkAdminOperations
 
         private void btnImportFolders_Click(object sender, EventArgs e)
         {
-            string strSrc = "";
-            int returnCode;
-            string strDst = "";
-            string commandArguments = "";
-
-            char[] chrSep = { ',' };
+            char[] chrSep = {','};
 
             try
             {
                 LogInfo("Folders: Import Started.");
-                if (strServerType == "BizTalk" && (cmbBoxServerDst.Items.Count == 0 || cmbBoxServerDst.SelectedItem == null))
+                if (_strServerType == "BizTalk" &&
+                    (cmbBoxServerDst.Items.Count == 0 || cmbBoxServerDst.SelectedItem == null))
                 {
                     LogShortErrorMsg("Please mention Dst Sql Instance and select node from DropDown.");
                 }
-                else if (strServerType == "App" && strDstNode == string.Empty)
+                else if (_strServerType == "App" && strDstNode == string.Empty)
                 {
                     LogShortErrorMsg("Please mention Dst App Server.");
                 }
                 else
                 {
-                    if (strToolMode == "Migrate" && (strSrcNode == string.Empty || strSrcNode == null))
+                    if (_strToolMode == "Migrate" && string.IsNullOrEmpty(strSrcNode))
                         throw new Exception("Please select source node from dropdown.");
 
+                    string strSrc;
+                    string strDst;
+                    string commandArguments;
+                    int returnCode;
                     try
                     {
                         //folders list from app.config, no files                                     
                         //Folders to copy, no files, from APP.Config                        
-                        if (strFoldersToCopyNoFiles != string.Empty)
+                        if (_strFoldersToCopyNoFiles != string.Empty)
                         {
                             LogInfo("Importing only folder strutcture with permissons, no files.");
-                            string[] arrFoldersToCopyNoFiles = strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                            string[] arrFoldersToCopyNoFiles =
+                                _strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
 
                             foreach (string folderPath in arrFoldersToCopyNoFiles)
                             {
@@ -281,18 +357,23 @@ namespace BizTalkAdminOperations
                                 string driveLetter = driveInfo.Substring(0, 1);
                                 string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
 
-                                if (strToolMode == "Migrate") //if mirgration then source will be Src otherwise it will be local
+                                if (_strToolMode == "Migrate"
+                                ) //if mirgration then source will be Src otherwise it will be local
                                     strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                 else
-                                    strSrc = fileFolderPath + "\\" + folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
-                                if(string.IsNullOrEmpty(strFoldersDrive)||string.IsNullOrWhiteSpace(strFoldersDrive))
-                                strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                    strSrc = _fileFolderPath + "\\" +
+                                             folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
+                                if (string.IsNullOrEmpty(_strFoldersDrive) ||
+                                    string.IsNullOrWhiteSpace(_strFoldersDrive))
+                                    strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                 else
-                                    strDst = "\\\\" + strDstNode + "\\" + strFoldersDrive.Trim().Substring(0,1) + "$\\" + pathWithoutDrive;
+                                    strDst = "\\\\" + strDstNode + "\\" + _strFoldersDrive.Trim().Substring(0, 1) +
+                                             "$\\" + pathWithoutDrive;
                                 LogInfo("Copy started from: " + strSrc + " To " + strDst);
-                                commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPY:ATSOU /R:1";  //copy folders only with all permissons
+                                commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                                   "/E /COPY:ATSOU /R:1"; //copy folders only with all permissons
                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                                if (returnCode < strRoboCopySuccessCode)
+                                if (returnCode < _strRoboCopySuccessCode)
                                     LogShortSuccessMsg("Success: Imported Folders.");
                                 else
                                     LogShortErrorMsg("Failed: Importing Folders.");
@@ -307,8 +388,9 @@ namespace BizTalkAdminOperations
 
 
                     try
-                    {   //folders list from app.config                     
-                        string genFolders = strFoldersToCopy;
+                    {
+                        //folders list from app.config                     
+                        string genFolders = _strFoldersToCopy;
                         if (genFolders != string.Empty)
                         {
                             LogInfo("Importing both folder strutcture with permissons and files.");
@@ -321,18 +403,21 @@ namespace BizTalkAdminOperations
                                 string driveLetter = driveInfo.Substring(0, 1);
                                 string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
 
-                                if (strToolMode == "Migrate")
+                                if (_strToolMode == "Migrate")
                                     strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                 else
-                                    strSrc = fileFolderPath + "\\" + folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
+                                    strSrc = _fileFolderPath + "\\" +
+                                             folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
 
-                              
-                                    strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
-                              
+
+                                strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+
                                 LogInfo("Copy started from: " + strSrc + " To " + strDst);
-                                commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /MIN:1 /R:1";  // /xc /xn /xo exclude existing file and folders
+                                commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst +
+                                                   "\" " +
+                                                   "/E /COPYALL /MIN:1 /R:1"; // /xc /xn /xo exclude existing file and folders
                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                                if (returnCode < strRoboCopySuccessCode)
+                                if (returnCode < _strRoboCopySuccessCode)
                                     LogShortSuccessMsg("Success: Imported Folders/Files.");
                                 else
                                     LogShortErrorMsg("Failed: Importing Folders/Files.");
@@ -341,7 +426,8 @@ namespace BizTalkAdminOperations
                     }
                     catch (Exception ex)
                     {
-                        LogErrorInfo("Exception while copying folders as mentioned in App.Config for FoldersToCopyWithFiles key.");
+                        LogErrorInfo(
+                            "Exception while copying folders as mentioned in App.Config for FoldersToCopyWithFiles key.");
                         LogException(ex);
                     }
                 }
@@ -357,10 +443,11 @@ namespace BizTalkAdminOperations
         #endregion
 
         #region Host
+
         private void btnGetHost_Click(object sender, EventArgs e)
         {
             //Cursor.Current = Cursors.WaitCursor;
-            XmlWriter xmlWriterApps = null; int result;
+            XmlWriter xmlWriterApps = null;
             try
             {
                 LogInfo("Host Instances: Export started.");
@@ -394,7 +481,7 @@ namespace BizTalkAdminOperations
                                         isDefaultHost = false,
                                         name = dRow["HostName"].ToString(),
                                         ntGroupName = dRow["NTGroupName"].ToString(),
-                                        HostInstance = new []
+                                        HostInstance = new[]
                                         {
                                             new HostsHostHostInstance
                                             {
@@ -422,23 +509,30 @@ namespace BizTalkAdminOperations
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
 
-                xmlWriterApps = XmlWriter.Create(xmlPath + @"\HostInstances.xml", xmlWriterSetting);
+                xmlWriterApps = XmlWriter.Create(_xmlPath + @"\HostInstances.xml", xmlWriterSetting);
                 x.Serialize(xmlWriterApps, hosts, ns);
 
                 LogShortSuccessMsg("Success: Exported Host Instances.");
                 //Exporting HostSettings
                 LogInfo("Host Settings: Export started.");
-                string commandArguments = "";
-                string xmlPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(xmlPath);
-                if (machineName == strSrcNode)
+                string commandArguments;
+                string xmlPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_xmlPath);
+                int result;
+                if (_machineName == strSrcNode)
                 {
-                    commandArguments = "ExportSettings -Destination:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                    commandArguments = "ExportSettings -Destination:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" +
+                                       " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" +
+                                       "BizTalkMgmtDb\"";
                     //Create and start BTSTask.exe process                    
                     result = ExecuteCmd("BTSTask.exe", commandArguments);
                 }
                 else
                 {
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " BTSTASK ExportSettings -Destination:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       " BTSTASK ExportSettings -Destination:\"" + xmlPathUnc + "\\" +
+                                       "HostSettings.xml\"" + " -Server:\"" + txtConnectionString.Text.Trim() +
+                                       "\" -Database:\"" + "BizTalkMgmtDb\"";
                     result = ExecuteCmd("CMD.EXE", commandArguments);
                 }
 
@@ -447,30 +541,36 @@ namespace BizTalkAdminOperations
                 else
                     LogShortErrorMsg("Failed: Exporting Host Settings.");
                 //Exporting HostMapping Settings
-                String[] files = Directory.GetFiles(xmlPath, "Src_*_HostMappings.xml");
+                String[] files = Directory.GetFiles(_xmlPath, "Src_*_HostMappings.xml");
 
                 foreach (string file in files)
                 {
                     File.Delete(file);
                 }
                 XmlDocument xd = new XmlDocument();
-                if (machineName == strSrcNode)
+                if (_machineName == strSrcNode)
                 {
                     LogInfo("Host Mappings: Export started.");
 
                     ExportHostMapSettings();
                     LogShortSuccessMsg("Success: Exported Host Mappings.");
                 }
-                else//Remote
+                else //Remote
                 {
                     LogInfo("Host Mappings: Export started.");
-                    xd.Load(xmlPath + "\\" + "Servers.xml");
+                    xd.Load(_xmlPath + "\\" + "Servers.xml");
                     XmlNode srcnodeList = xd.DocumentElement.SelectSingleNode("/Servers");
-                    string SrcServerList = srcnodeList.SelectSingleNode("SrcNodes").InnerText;
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                    remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportHostMapSettings\" \"" + txtConnectionString.Text.Trim() + "\" \"" + SrcServerList + "\"\"";
-                    int returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate app xml and save it back to local
+                    string srcServerList = srcnodeList.SelectSingleNode("SrcNodes").InnerText;
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"ExportHostMapSettings\" \"" +
+                                       txtConnectionString.Text.Trim() + "\" \"" + srcServerList + "\"\"";
+                    int returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate app xml and save it back to local
 
                     if (returnCode == 0)
                     {
@@ -485,10 +585,10 @@ namespace BizTalkAdminOperations
 
                 }
                 //Creating Src ServerList.xml
-                xd.Load(serverXmlPath);
-                if (File.Exists(xmlPath + "\\" + "SrcServers.xml"))
-                    File.Delete(xmlPath + "\\" + "SrcServers.xml");
-                xd.Save(xmlPath + "\\" + "SrcServers.xml");
+                xd.Load(_serverXmlPath);
+                if (File.Exists(_xmlPath + "\\" + "SrcServers.xml"))
+                    File.Delete(_xmlPath + "\\" + "SrcServers.xml");
+                xd.Save(_xmlPath + "\\" + "SrcServers.xml");
                 LogInfoInLogFile("Created SourceServerList");
 
             }
@@ -506,27 +606,26 @@ namespace BizTalkAdminOperations
 
         private void btnSetHostAndHostInstances_Click(object sender, EventArgs e)
         {
-            string commandArguments = "";
-            int result = 0;
+            string commandArguments;
 
-          //  string dstHostList = string.Empty, dstHostInstanceList = string.Empty;
+            //  string dstHostList = string.Empty, dstHostInstanceList = string.Empty;
             List<string> dstHostList = new List<string>();
-            List<string> dstHostInstanceList = new List<string>();
             try
             {
-                if (machineName == strDstNode)
+                if (_machineName == strDstNode)
                 {
                     LogInfo("Host: Import started..");
-                    if (!File.Exists(xmlPath + @"\HostInstances.xml"))
+                    if (!File.Exists(_xmlPath + @"\HostInstances.xml"))
                         throw new Exception("HostInstances xml file does not exist.");
                     //check file is empty or not
                     XmlDocument doc = new XmlDocument();
-                    doc.Load(xmlPath + "\\HostInstances.xml");
-                    if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                    doc.Load(_xmlPath + "\\HostInstances.xml");
+                    if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                         throw new Exception("HostInstances xml file is empty.");
 
                     XmlSerializer configSerializer = new XmlSerializer(typeof(Hosts));
-                    Hosts input = (Hosts)configSerializer.Deserialize(new XmlTextReader(xmlPath + @"\HostInstances.xml"));
+                    Hosts input =
+                        (Hosts) configSerializer.Deserialize(new XmlTextReader(_xmlPath + @"\HostInstances.xml"));
 
                     //get all HostInstances of 'InProcess' type.
 
@@ -535,7 +634,8 @@ namespace BizTalkAdminOperations
 
 
                     //Creating DestinationHostList
-                    searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host", enumOptions);
+                    searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
+                        "Select * from MSBTS_Host", enumOptions);
                     foreach (var inst in searchObject.Get())
                     {
                         //dstHostList = dstHostList + inst["Name"].ToString().ToUpper() + ",";
@@ -546,7 +646,11 @@ namespace BizTalkAdminOperations
                     {
                         if (!dstHostList.Contains(host.name.ToUpper()))
                         {
-                            CreateHost(host.name, host.inProcess ? HostSetting.HostTypeValues.In_process : HostSetting.HostTypeValues.Isolated, host.ntGroupName, host.authenticationTrusted, host.hostTracking, host.is32bit,
+                            CreateHost(host.name,
+                                host.inProcess
+                                    ? HostSetting.HostTypeValues.In_process
+                                    : HostSetting.HostTypeValues.Isolated, host.ntGroupName, host.authenticationTrusted,
+                                host.hostTracking, host.is32bit,
                                 host.isDefaultHost);
                         }
                         else
@@ -557,8 +661,9 @@ namespace BizTalkAdminOperations
                     for (i = 0; i < cmbBoxServerDst.Items.Count; i++)
                     {
                         //Creating DestinationHostInstanceListForeachnode
-                        dstHostInstanceList = new List<string>();
-                        searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_HostInstance", enumOptions);
+                        var dstHostInstanceList = new List<string>();
+                        searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
+                            "Select * from MSBTS_HostInstance", enumOptions);
                         foreach (var inst in searchObject.Get())
                         {
                             if (inst["RunningServer"].ToString().ToUpper() == cmbBoxServerDst.Items[i].ToString())
@@ -570,23 +675,32 @@ namespace BizTalkAdminOperations
                         {
                             if (!dstHostInstanceList.Contains(host.name.ToUpper()))
                             {
-                                CreateHostInstance(cmbBoxServerDst.Items[i].ToString(), host.name, strUserName, strPassword);
+                                CreateHostInstance(cmbBoxServerDst.Items[i].ToString(), host.name, strUserName,
+                                    strPassword);
                             }
                             else
-                                LogInfo("Host Instance already exist: " + host.name + " on " + cmbBoxServerDst.Items[i]);
+                                LogInfo("Host Instance already exist: " + host.name + " on " +
+                                        cmbBoxServerDst.Items[i]);
                         }
                     }
 
-                    isHostExecuted = strPerformOperationYes;
+                    _isHostExecuted = _strPerformOperationYes;
                 }
                 else
                 {
-                   
-                    string appPathUnc = ConvertPathToUncPath(appPath);
 
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                    remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ImportHosts\" \"" + strUserNameForHost + "\" \"" + strPasswordForHost + "\"\"";
-                    int returnCode = ExecuteCmd("CMD.EXE", commandArguments); //dlls will be copied and pasted back to Local machine, hence machineName used in commandArgument.
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"ImportHosts\" \"" + strUserNameForHost + "\" \"" +
+                                       strPasswordForHost + "\"\"";
+                    int returnCode =
+                        ExecuteCmd("CMD.EXE",
+                            commandArguments); //dlls will be copied and pasted back to Local machine, hence machineName used in commandArgument.
 
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: Imported Host and HostInstances.");
@@ -596,63 +710,81 @@ namespace BizTalkAdminOperations
             }
             catch (Exception ex)
             {
-                isHostExecuted = strPerformOperationNo;
+                _isHostExecuted = _strPerformOperationNo;
                 LogException(ex);
             }
             try
             {
 
-                if (!File.Exists(xmlPath + "\\" + "HostSettings.xml"))
+                if (!File.Exists(_xmlPath + "\\" + "HostSettings.xml"))
                 {
                     throw new Exception("Host Settings xml is not Present.");
                 }
 
-                String[] files = Directory.GetFiles(xmlPath, "Dst_*_HostMappings.xml");
+                String[] files = Directory.GetFiles(_xmlPath, "Dst_*_HostMappings.xml");
                 foreach (string file in files)
                 {
                     File.Delete(file);
                 }
-                if (machineName == strDstNode)
+                if (_machineName == strDstNode)
                 {
                     ImportHostMapSettings();
                 }
                 else
                 {
 
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                    remoteRootFolder + "\\" + remoteExeName + "\"  \"\\\\" + machineName + "\\" + appPathUnc + "\" \"ImportHostMapSettings\" \"" + txtConnectionStringDst.Text.Trim() + "\"\"";
-                    int returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\"  \"\\\\" + _machineName + "\\" +
+                                       appPathUnc + "\" \"ImportHostMapSettings\" \"" +
+                                       txtConnectionStringDst.Text.Trim() + "\"\"";
+                    int returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
 
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: Created Destination Host Mapping Xml File");
                     else
                         LogShortErrorMsg("Failed: Creating Destination Host Mapping Xml File");
                 }
-                files = Directory.GetFiles(xmlPath, "Dst_*_HostMappings.xml");
+                files = Directory.GetFiles(_xmlPath, "Dst_*_HostMappings.xml");
                 if (files.Length != 0)
                 {
                     foreach (string file in files)
                     {
                         LogInfo("Host Settings: Import started.");
-                        string xmlPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(xmlPath);
-                        string filePathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(file);
-                        if (machineName == strDstNode)
+                        string xmlPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_xmlPath);
+                        string filePathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(file);
+                        int result;
+                        if (_machineName == strDstNode)
                         {
-                            commandArguments = "ImportSettings -Source:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" + " -Map:\"" + filePathUnc + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                            commandArguments = "ImportSettings -Source:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" +
+                                               " -Map:\"" + filePathUnc + "\" -Server:\"" +
+                                               txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
+                                               "BizTalkMgmtDb\"";
                             //Create and start BTSTask.exe process            
                             result = ExecuteCmd("BTSTask.exe", commandArguments);
                         }
                         else //Remote
                         {
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " BTSTASK ImportSettings -Source:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" + " -Map:\"" + filePathUnc + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               " -accepteula" + " BTSTASK ImportSettings -Source:\"" + xmlPathUnc +
+                                               "\\" + "HostSettings.xml\"" + " -Map:\"" + filePathUnc +
+                                               "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
+                                               "\" -Database:\"" + "BizTalkMgmtDb\"";
                             result = ExecuteCmd("CMD.EXE", commandArguments);
                         }
 
                         if (result == 0)
-                            LogShortSuccessMsg("Success: Imported Host Settings on " + Path.GetFileNameWithoutExtension(file).Split('_')[1].Split('_')[0] + " Server.");
+                            LogShortSuccessMsg("Success: Imported Host Settings on " +
+                                               Path.GetFileNameWithoutExtension(file).Split('_')[1].Split('_')[0] +
+                                               " Server.");
                         else
-                            LogShortErrorMsg("Failed: Importing Host Settings on" + Path.GetFileNameWithoutExtension(file).Split('_')[1].Split('_')[0] + " Server.");
+                            LogShortErrorMsg("Failed: Importing Host Settings on" +
+                                             Path.GetFileNameWithoutExtension(file).Split('_')[1].Split('_')[0] +
+                                             " Server.");
                     }
                 }
 
@@ -663,12 +795,12 @@ namespace BizTalkAdminOperations
             }
         }
 
-        private void CreateHost(string name, HostSetting.HostTypeValues hostType, string ntGroupName, bool authTrusted, bool hostTracking, bool is32bit, bool defaultHost)
+        private void CreateHost(string name, HostSetting.HostTypeValues hostType, string ntGroupName, bool authTrusted,
+            bool hostTracking, bool is32Bit, bool defaultHost)
         {
-            HostSetting myHostSetting = null;
             try
             {
-                myHostSetting = machineName == strDstNode
+                var myHostSetting = _machineName == strDstNode
                     ? HostSetting.CreateInstance()
                     : HostSetting.CreateInstance(strDstNode, strUserNameForWMI, strPassword, strDomain);
 
@@ -678,7 +810,7 @@ namespace BizTalkAdminOperations
                 myHostSetting.HostType = hostType;
                 myHostSetting.NTGroupName = ntGroupName;
                 myHostSetting.AuthTrusted = authTrusted;
-                myHostSetting.IsHost32BitOnly = is32bit;
+                myHostSetting.IsHost32BitOnly = is32Bit;
                 myHostSetting.HostTracking = hostTracking;
                 myHostSetting.IsDefault = defaultHost;
 
@@ -696,11 +828,9 @@ namespace BizTalkAdminOperations
 
         private void CreateHostInstance(string serverName, string name, string userName, string password)
         {
-            HostInstance myHostInstance = null;
-            ServerHost myServerHost = null;
             try
             {
-                myServerHost = machineName == strDstNode
+                var myServerHost = _machineName == strDstNode
                     ? ServerHost.CreateInstance()
                     : ServerHost.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
 
@@ -708,7 +838,7 @@ namespace BizTalkAdminOperations
                 myServerHost.HostName = name;
                 myServerHost.Map();
 
-                myHostInstance = machineName == strDstNode
+                var myHostInstance = _machineName == strDstNode
                     ? HostInstance.CreateInstance()
                     : HostInstance.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
 
@@ -723,114 +853,131 @@ namespace BizTalkAdminOperations
                 LogException(ex);
             }
         }
+
         #endregion
 
         #region Handlers
+
         private void btnImportAdapterHandler_Click(object sender, EventArgs e)
         {
-            string Direction = "", dstRcvHandlerList = "", dstSndHandlerList = "", HostName = "", AdapterName = "";
-            char[] charSeprator = { ',' };
-            ManagementClass objRcvHandlerClass = null;
-            ManagementClass objSndHandlerClass = null;
+            string dstRcvHandlerList = "", dstSndHandlerList = "", hostName = "", adapterName = "";
+            char[] charSeprator = {','};
 
             try
             {
                 LogInfo("Handlers: Import started");
-                if (!File.Exists(xmlPath + @"\Handlers.xml"))
+                if (!File.Exists(_xmlPath + @"\Handlers.xml"))
                     throw new Exception("Handlers xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlPath + "\\Handlers.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                doc.Load(_xmlPath + "\\Handlers.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("Handlers xml file is empty.");
 
                 XmlSerializer configSerializer = new XmlSerializer(typeof(RcvSndHandlers));
-                RcvSndHandlers rcvSndHandlers = (RcvSndHandlers)configSerializer.Deserialize(new XmlTextReader(xmlPath + @"\Handlers.xml"));
+                RcvSndHandlers rcvSndHandlers =
+                    (RcvSndHandlers) configSerializer.Deserialize(new XmlTextReader(_xmlPath + @"\Handlers.xml"));
 
-                ManagementObject objHandler = null;
-                if (machineName == strDstNode) //local 
+                ManagementClass objSndHandlerClass;
+                ManagementClass objRcvHandlerClass;
+                if (_machineName == strDstNode) //local 
                 {
-                    objRcvHandlerClass = new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null);
-                    objSndHandlerClass = new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_SendHandler2", null);
+                    objRcvHandlerClass =
+                        new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null);
+                    objSndHandlerClass =
+                        new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_SendHandler2", null);
                 }
                 else //remote
                 {
-                    objRcvHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null);
-                    objSndHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer", "MSBTS_SendHandler2", null);
+                    objRcvHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer",
+                        "MSBTS_ReceiveHandler", null);
+                    objSndHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer",
+                        "MSBTS_SendHandler2", null);
                 }
                 PutOptions options = new PutOptions {Type = PutType.CreateOnly};
 
                 //Get Rcv Handler List from Dst
-                ManagementObjectSearcher searchObject = null;
                 EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
-                searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_ReceiveHandler", enumOptions);
+                var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
+                    "Select * from MSBTS_ReceiveHandler", enumOptions);
                 foreach (var inst in searchObject.Get())
                 {
-                    dstRcvHandlerList = dstRcvHandlerList + inst["HostName"].ToString().ToUpper() + "_" + inst["AdapterName"].ToString().ToUpper() + ",";
+                    dstRcvHandlerList = dstRcvHandlerList + inst["HostName"].ToString().ToUpper() + "_" +
+                                        inst["AdapterName"].ToString().ToUpper() + ",";
                 }
-                string[] dstRcvHandlerArray = dstRcvHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
+                string[] dstRcvHandlerArray =
+                    dstRcvHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
                 //Get Snd Handler List from Dst                
                 enumOptions.ReturnImmediately = false;
-                searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_SendHandler2", enumOptions);
+                searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
+                    "Select * from MSBTS_SendHandler2", enumOptions);
                 foreach (var inst in searchObject.Get())
                 {
-                    dstSndHandlerList = dstSndHandlerList + inst["HostName"].ToString().ToUpper() + "_" + inst["AdapterName"].ToString().ToUpper() + ",";
+                    dstSndHandlerList = dstSndHandlerList + inst["HostName"].ToString().ToUpper() + "_" +
+                                        inst["AdapterName"].ToString().ToUpper() + ",";
                 }
-                string[] dstSndHandlerArray = dstSndHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
+                string[] dstSndHandlerArray =
+                    dstSndHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
                 //
 
                 //create a ManagementClass object and spawn a ManagementObject instance           
-                for (int i = 0; i < rcvSndHandlers.RcvSndHandler.Length; i++)
+                foreach (RcvSndHandlersRcvSndHandler handler in rcvSndHandlers.RcvSndHandler)
                 {
                     try
                     {
-                        Direction = rcvSndHandlers.RcvSndHandler[i].Direction;
-                        HostName = rcvSndHandlers.RcvSndHandler[i].HostName;
-                        AdapterName = rcvSndHandlers.RcvSndHandler[i].AdapterName;
+                        var direction = handler.Direction;
+                        hostName = handler.HostName;
+                        adapterName = handler.AdapterName;
 
-                        if (Direction == "0")
+                        ManagementObject objHandler;
+                        if (direction == "0")
                         {
-                            if (Array.IndexOf(dstRcvHandlerArray, HostName.ToUpper() + "_" + AdapterName.ToUpper()) < 0)//!dstRcvHandlerList.Contains(HostName + "_" + AdapterName))
+                            if (Array.IndexOf(dstRcvHandlerArray, hostName.ToUpper() + "_" + adapterName.ToUpper()) < 0
+                            ) //!dstRcvHandlerList.Contains(HostName + "_" + AdapterName))
                             {
                                 objHandler = objRcvHandlerClass.CreateInstance();
                                 //set the properties for the Managementobject
-                                objHandler["AdapterName"] = AdapterName;
-                                objHandler["HostName"] = HostName;
+                                objHandler["AdapterName"] = adapterName;
+                                objHandler["HostName"] = hostName;
                                 //create the Managementobject
                                 objHandler.Put(options);
-                                LogShortSuccessMsg("Success: Receive handler created for: " + AdapterName + " and " + HostName);
+                                LogShortSuccessMsg("Success: Receive handler created for: " + adapterName + " and " +
+                                                   hostName);
                             }
                             else
-                                LogInfo("Receive handler already exist for: " + AdapterName + " and " + HostName);
+                                LogInfo("Receive handler already exist for: " + adapterName + " and " + hostName);
                         }
                         else
                         {
-                            if (Array.IndexOf(dstSndHandlerArray, HostName.ToUpper() + "_" + AdapterName.ToUpper()) < 0)//if (!dstSndHandlerList.Contains(HostName.ToUpper() + "_" + AdapterName.ToUpper()))
+                            if (Array.IndexOf(dstSndHandlerArray, hostName.ToUpper() + "_" + adapterName.ToUpper()) < 0
+                            ) //if (!dstSndHandlerList.Contains(HostName.ToUpper() + "_" + AdapterName.ToUpper()))
                             {
                                 objHandler = objSndHandlerClass.CreateInstance();
                                 //set the properties for the Managementobject
-                                objHandler["AdapterName"] = AdapterName;
-                                objHandler["HostName"] = HostName;
+                                objHandler["AdapterName"] = adapterName;
+                                objHandler["HostName"] = hostName;
                                 //create the Managementobject
                                 objHandler.Put(options);
-                                LogShortSuccessMsg("Success: Send handler created for: " + AdapterName + " and " + HostName);
+                                LogShortSuccessMsg("Success: Send handler created for: " + adapterName + " and " +
+                                                   hostName);
                             }
                             else
-                                LogInfo("Send handler already exist for: " + AdapterName + " and " + HostName);
+                                LogInfo("Send handler already exist for: " + adapterName + " and " + hostName);
                         }
                     }
                     catch (Exception ex)
                     {
-                        LogShortErrorMsg("Error creating Handler: Adapter Name: " + AdapterName + ", HostName: " + HostName);
+                        LogShortErrorMsg("Error creating Handler: Adapter Name: " + adapterName + ", HostName: " +
+                                         hostName);
                         LogException(ex);
                     }
                 }
-                isHandlerExecuted = strPerformOperationYes;
+                _isHandlerExecuted = _strPerformOperationYes;
             }
             catch (Exception ex)
             {
-                isHandlerExecuted = strPerformOperationNo;
+                _isHandlerExecuted = _strPerformOperationNo;
                 LogException(ex);
             }
 
@@ -843,7 +990,7 @@ namespace BizTalkAdminOperations
             try
             {
                 LogInfo("Handlers: Export started.");
-                if (machineName == strSrcNode)//local
+                if (_machineName == strSrcNode) //local
                 {
                     LogInfo("Connecting to BizTalkMgmtdb...." + txtConnectionString.Text);
                     RcvSndHandlers rcvSndHandlers = new RcvSndHandlers();
@@ -897,17 +1044,22 @@ namespace BizTalkAdminOperations
                         new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
 
-                    xmlWriterApps = XmlWriter.Create(xmlPath + @"\Handlers.xml", xmlWriterSetting);
+                    xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Handlers.xml", xmlWriterSetting);
                     x.Serialize(xmlWriterApps, rcvSndHandlers, ns);
                     LogShortSuccessMsg("Success: Exported Handlers.");
                 }
-                else  //remote
+                else //remote
                 {
                     LogInfo("Getting handlers from remote machine.");
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    string commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                    remoteRootFolder + "\\" + remoteExeName + "\"  \"\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportHandler\" \"" + txtConnectionString.Text.Trim() + "\"\"";
-                    int returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
+                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                              "  \"" +
+                                              _remoteRootFolder + "\\" + _remoteExeName + "\"  \"\\\\" + _machineName +
+                                              "\\" + appPathUnc + "\" \"ExportHandler\" \"" +
+                                              txtConnectionString.Text.Trim() + "\"\"";
+                    int returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
 
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: Exported Handlers.");
@@ -924,6 +1076,7 @@ namespace BizTalkAdminOperations
                 xmlWriterApps?.Close();
             }
         }
+
         #endregion
 
         #region Log Methods
@@ -940,7 +1093,7 @@ namespace BizTalkAdminOperations
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
+                using (StreamWriter writer = new StreamWriter(_logPath + @"\MigrationTool_log.txt", true))
                 {
                     writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + pShortMsg);
                 }
@@ -966,7 +1119,7 @@ namespace BizTalkAdminOperations
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
+                using (StreamWriter writer = new StreamWriter(_logPath + @"\MigrationTool_log.txt", true))
                 {
                     writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + pShortErrorMsg);
                 }
@@ -978,7 +1131,7 @@ namespace BizTalkAdminOperations
             }
         }
 
-        private void LogException(Exception ex)  //UI FILLE
+        private void LogException(Exception ex) //UI FILLE
         {
             int startIndex = richTextBoxLogs.TextLength;
             richTextBoxLogs.AppendText("Exception Message:  " + ex.Message);
@@ -992,9 +1145,10 @@ namespace BizTalkAdminOperations
             richTextBoxLogs.Refresh();
             try
             {
-                using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
+                using (StreamWriter writer = new StreamWriter(_logPath + @"\MigrationTool_log.txt", true))
                 {
-                    writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + "Exception Message:  " + ex.Message);
+                    writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + "Exception Message:  " +
+                                     ex.Message);
                     writer.WriteLine("Inner Exception:  " + ex.InnerException);
                     writer.WriteLine("StackTrace:  " + ex.StackTrace);
                 }
@@ -1016,7 +1170,7 @@ namespace BizTalkAdminOperations
 
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
+                    using (StreamWriter writer = new StreamWriter(_logPath + @"\MigrationTool_log.txt", true))
                     {
                         writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + strMsg);
                     }
@@ -1034,7 +1188,7 @@ namespace BizTalkAdminOperations
             {
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
+                    using (StreamWriter writer = new StreamWriter(_logPath + @"\MigrationTool_log.txt", true))
                     {
                         writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + strMsg);
                     }
@@ -1053,7 +1207,7 @@ namespace BizTalkAdminOperations
             {
                 if (!string.IsNullOrEmpty(strMsg) && !string.IsNullOrWhiteSpace(strMsg))
                 {
-                    using (StreamWriter writer = new StreamWriter(logPath + @"\MigrationTool_log.txt", true))
+                    using (StreamWriter writer = new StreamWriter(_logPath + @"\MigrationTool_log.txt", true))
                     {
                         writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + strMsg);
                     }
@@ -1067,15 +1221,16 @@ namespace BizTalkAdminOperations
             }
         }
 
-        private void LogErrorInfo(string strMsg)  //FILE
+        private void LogErrorInfo(string strMsg) //FILE
         {
             try
             {
                 if (!string.IsNullOrEmpty(strMsg) && !string.IsNullOrWhiteSpace(strMsg))
                 {
-                    using (StreamWriter writer = new StreamWriter(logPath + @"\RemoteOperation_log.txt", true))
+                    using (StreamWriter writer = new StreamWriter(_logPath + @"\RemoteOperation_log.txt", true))
                     {
-                        writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") + strMsg);//"-------------------------------------------------------");                    
+                        writer.WriteLine(DateTime.Now.ToString("dd:MM:yyyy HH:mm:ss:::") +
+                                         strMsg); //"-------------------------------------------------------");                    
                     }
                 }
             }
@@ -1095,13 +1250,13 @@ namespace BizTalkAdminOperations
         {
             LogErrorInfo(e.Data);
         }
+
         #endregion
 
         #region BizTalk App
+
         private int btnGetApplicationList_Click(object sender, EventArgs e)
         {
-
-            XmlSerializer x = null;
             XmlWriter xmlWriterApps = null;
             try
             {
@@ -1109,9 +1264,9 @@ namespace BizTalkAdminOperations
                 try
                 {
 
-                    if (File.Exists(xmlPath + @"\Apps.xml"))  //delete older version
+                    if (File.Exists(_xmlPath + @"\Apps.xml")) //delete older version
                     {
-                        File.Delete(xmlPath + @"\Apps.xml");
+                        File.Delete(_xmlPath + @"\Apps.xml");
                     }
                 }
                 catch (Exception ex)
@@ -1119,7 +1274,7 @@ namespace BizTalkAdminOperations
                     LogException(ex);
                     throw new Exception("Error while deleting existing Apps.xml file.");
                 }
-                if (machineName == strSrcNode) //local
+                if (_machineName == strSrcNode) //local
                 {
                     BizTalkApplications bizTalkApps = new BizTalkApplications();
 
@@ -1127,7 +1282,8 @@ namespace BizTalkAdminOperations
                     BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
                     LogInfo("Connecting to BizTalkMgmtdb...." + txtConnectionString.Text);
                     // connection string to the BizTalk management database where the ports will be created
-                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                     //Get All Applications
                     Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
                     LogInfo("Connected.");
@@ -1137,7 +1293,7 @@ namespace BizTalkAdminOperations
 
                     bizTalkApps.BizTalkApplication = appCol
                         .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
-                        .Where(app => !bizTalkAppToIgnore.Contains(app.Name))
+                        .Where(app => !_bizTalkAppToIgnore.Contains(app.Name))
                         .Select(app =>
                             new BizTalkApplicationsBizTalkApplication
                             {
@@ -1151,11 +1307,11 @@ namespace BizTalkAdminOperations
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    x = new XmlSerializer(bizTalkApps.GetType());
+                    var x = new XmlSerializer(bizTalkApps.GetType());
                     XmlWriterSettings xmlWriterSetting =
                         new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                    xmlWriterApps = XmlWriter.Create(xmlPath + @"\Apps.xml", xmlWriterSetting);
+                    xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Apps.xml", xmlWriterSetting);
                     x.Serialize(xmlWriterApps, bizTalkApps, ns);
                     LogInfo("Success: Created Apps.xml.");
                     return 0;
@@ -1163,10 +1319,16 @@ namespace BizTalkAdminOperations
                 else //remote
                 {
                     LogInfo("Getting App list from remote machine.");
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    string commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                    remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportAppList\" \"" + txtConnectionString.Text.Trim() + "\" \"" + bizTalkAppToIgnore + "\"\"";
-                    int returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate app xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
+                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                              "  \"" +
+                                              _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
+                                              _machineName +
+                                              "\\" + appPathUnc + "\" \"ExportAppList\" \"" +
+                                              txtConnectionString.Text.Trim() + "\" \"" + _bizTalkAppToIgnore + "\"\"";
+                    int returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate app xml and save it back to local
 
                     if (returnCode == 0)
                     {
@@ -1190,26 +1352,26 @@ namespace BizTalkAdminOperations
                 xmlWriterApps?.Close();
             }
         }
+
         private void btnImportApps_Click(object sender, EventArgs e)
         {
-            int result;
             try
             {
                 LogInfo("BizTalk App: Import Started.");
-                if (!File.Exists(xmlPath + @"\Apps.xml"))
+                if (!File.Exists(_xmlPath + @"\Apps.xml"))
                     throw new Exception("Apps xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlPath + "\\Apps.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                doc.Load(_xmlPath + "\\Apps.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("Apps xml file is empty.");
 
                 try
                 {
-                    if (File.Exists(xmlPath + @"\AppsToImport.xml"))  //delete older version
+                    if (File.Exists(_xmlPath + @"\AppsToImport.xml")) //delete older version
                     {
-                        File.Delete(xmlPath + @"\AppsToImport.xml");
+                        File.Delete(_xmlPath + @"\AppsToImport.xml");
                     }
                 }
                 catch (Exception ex)
@@ -1221,31 +1383,29 @@ namespace BizTalkAdminOperations
                 UpdateAppXmlFile();
 
                 //check file is empty or not                
-                doc.Load(xmlPath + "\\AppsToImport.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                doc.Load(_xmlPath + "\\AppsToImport.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("AppsToImport xml file is empty.");
 
                 //read new updated App List
-                XElement xelement = XElement.Load(xmlPath + @"\AppsToImport.xml");
+                XElement xelement = XElement.Load(_xmlPath + @"\AppsToImport.xml");
 
                 var appList = (from element in xelement.Descendants("BizTalkApplication")
-                               let dCode = (int)element.Attribute("DependencyCode")
-                               orderby dCode descending
-                               select new
-                               {
-                                   DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
-                               })
-                       .ToList();
+                        let dCode = (int) element.Attribute("DependencyCode")
+                        orderby dCode descending
+                        select new
+                        {
+                            DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
+                        })
+                    .ToList();
 
                 int appcount = appList.Count;
-                string appName = string.Empty;
 
-                char[] charSeprator = { ',' };
-                string commandArguments = "";
+                char[] charSeprator = {','};
 
                 LogInfo("Total Apps: " + appcount);
 
-                string msiPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(msiPath);
+                string msiPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_msiPath);
                 for (int i = 0; i < appcount; i++)
                 {
                     // instantiate new instance of Explorer OM                
@@ -1256,17 +1416,22 @@ namespace BizTalkAdminOperations
                     };
                     // connection string to the BizTalk management database where the ports will be created
 
-                    appName = appList[i].DcodeAppName.Split(charSeprator)[1];
+                    var appName = appList[i].DcodeAppName.Split(charSeprator)[1];
 
                     LogInfo(": Current Sequence:" + (i + 1) + ": App Name:" + appName);
 
-                    if (machineName == strDstNode) //local
+                    int result;
+                    string commandArguments;
+                    if (_machineName == strDstNode) //local
                     {
-                        if (File.Exists(msiPath + "\\" + appName + ".msi"))
+                        if (File.Exists(_msiPath + "\\" + appName + ".msi"))
                         {
                             //Import MSI
-                            commandArguments = "ImportApp -Package:\"" + msiPath + "\\" + appName + ".msi\"" + " -ApplicationName:\"" +
-                                           appName + "\" -Overwrite -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                            commandArguments = "ImportApp -Package:\"" + _msiPath + "\\" + appName + ".msi\"" +
+                                               " -ApplicationName:\"" +
+                                               appName + "\" -Overwrite -Server:\"" +
+                                               txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
+                                               "BizTalkMgmtDb\"";
                             //Create and start BTSTask.exe process                    
                             result = ExecuteCmd("BTSTask.exe", commandArguments);
 
@@ -1279,8 +1444,10 @@ namespace BizTalkAdminOperations
                         {
                             //Create App
                             LogInfo("MSI file does not exist for: " + appName);
-                            commandArguments = "addapp -ApplicationName:\"" + appName + "\" -Description:\"BizTalk application for " + appName + "\" -Server:\"" + txtConnectionStringDst.Text.Trim()
-                                + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                            commandArguments = "addapp -ApplicationName:\"" + appName +
+                                               "\" -Description:\"BizTalk application for " + appName +
+                                               "\" -Server:\"" + txtConnectionStringDst.Text.Trim()
+                                               + "\" -Database:\"" + "BizTalkMgmtDb\"";
                             result = ExecuteCmd("BTSTask.exe", commandArguments);
                             if (result == 0) //success
                             {
@@ -1293,12 +1460,14 @@ namespace BizTalkAdminOperations
                                     {
                                         if (app.Name == appName)
                                         {
-                                            string[] baseBizTalkApp = baseBizTalkAppCol.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
-                                            for (int baseAppCount = 0; baseAppCount < baseBizTalkApp.Length; baseAppCount++)
+                                            string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
+                                                StringSplitOptions.RemoveEmptyEntries);
+                                            foreach (string baseBTSApp in baseBizTalkApp)
                                             {
                                                 foreach (Microsoft.BizTalk.ExplorerOM.Application baseApp in appCol)
                                                 {
-                                                    if (baseApp.Name.Equals(baseBizTalkApp[baseAppCount].Trim())) //Update function for compare value//
+                                                    if (baseApp.Name.Equals(baseBTSApp.Trim())
+                                                    ) //Update function for compare value//
                                                     {
                                                         app.AddReference(baseApp);
                                                         LogInfo("Success: Added reference of: " + baseApp.Name);
@@ -1321,13 +1490,18 @@ namespace BizTalkAdminOperations
                     }
                     else //remote
                     {
-                        if (File.Exists(msiPath + "\\" + appName + ".msi"))
+                        if (File.Exists(_msiPath + "\\" + appName + ".msi"))
                         {
                             //Import MSI, Set arguments for BTSTask.exe               
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword
-                                + "\"" + " -accepteula" + " BTSTask ImportApp -Package:\"" + msiPathUnc + "\\" + appName + ".msi\"" + " -ApplicationName:\"" +
-                                           appName + "\" -Overwrite -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
-                            
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                               "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword
+                                               + "\"" + " -accepteula" + " BTSTask ImportApp -Package:\"" + msiPathUnc +
+                                               "\\" + appName + ".msi\"" + " -ApplicationName:\"" +
+                                               appName + "\" -Overwrite -Server:\"" +
+                                               txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
+                                               "BizTalkMgmtDb\"\"";
+
                             //Create and start BTSTask.exe process                    
                             result = ExecuteCmd("CMD.exe", commandArguments);
 
@@ -1337,11 +1511,16 @@ namespace BizTalkAdminOperations
                                 LogShortErrorMsg("Failed: Importing App.");
                         }
                         else
-                        {   //Create App                            
+                        {
+                            //Create App                            
                             LogInfo("MSI file does not exist for: " + appName);
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword
-                                + "\"" + " -accepteula" + " BTSTask addapp -ApplicationName:\"" + appName + "\" -Description:\"BizTalk application for " + appName
-                                + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                               "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword
+                                               + "\"" + " -accepteula" + " BTSTask addapp -ApplicationName:\"" +
+                                               appName + "\" -Description:\"BizTalk application for " + appName
+                                               + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
+                                               "\" -Database:\"" + "BizTalkMgmtDb\"\"";
                             //Create and start BTSTask.exe process                    
                             result = ExecuteCmd("CMD.exe", commandArguments);
                             if (result == 0) //success
@@ -1354,12 +1533,13 @@ namespace BizTalkAdminOperations
                                     {
                                         if (app.Name == appName)
                                         {
-                                            string[] baseBizTalkApp = baseBizTalkAppCol.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
-                                            for (int baseAppCount = 0; baseAppCount < baseBizTalkApp.Length; baseAppCount++)
+                                            string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
+                                                StringSplitOptions.RemoveEmptyEntries);
+                                            foreach (string baseBTSApp in baseBizTalkApp)
                                             {
                                                 foreach (Microsoft.BizTalk.ExplorerOM.Application baseApp in appCol)
                                                 {
-                                                    if (baseApp.Name == baseBizTalkApp[baseAppCount].Trim())
+                                                    if (baseApp.Name == baseBTSApp.Trim())
                                                     {
                                                         app.AddReference(baseApp);
                                                         LogInfo("Success: Added reffernce of: " + baseApp);
@@ -1379,29 +1559,36 @@ namespace BizTalkAdminOperations
                                 LogShortErrorMsg("Failed: Creating App.");
                         }
                     }
-                    if (result != 0)  //error
+                    if (result != 0) //error
                     {
-                        if (baseBizTalkAppCol.Contains(appName))
+                        if (_baseBizTalkAppCol.Contains(appName))
                         {
-                            isBizTalkAppExecuted = strPerformOperationNo;
-                            LogShortErrorMsg("Application: " + appName + " import failed hence remainng apps won't be imported.");
+                            _isBizTalkAppExecuted = _strPerformOperationNo;
+                            LogShortErrorMsg("Application: " + appName +
+                                             " import failed hence remainng apps won't be imported.");
                         }
                     }
                     else //import Binding
                     {
-                        if (machineName == strDstNode) //local
+                        if (_machineName == strDstNode) //local
                         {
-                            commandArguments = "ImportBindings  -Source:\"" + msiPathUnc + "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" +
-                                       appName + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                            commandArguments = "ImportBindings  -Source:\"" + msiPathUnc + "\\" + appName +
+                                               "_Binding.xml\"" + " -ApplicationName:\"" +
+                                               appName + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
+                                               "\" -Database:\"" + "BizTalkMgmtDb\"";
                             result = ExecuteCmd("BTSTask.exe", commandArguments);
 
                         }
                         else //remote
                         {
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword
-                                 + "\"" + " -accepteula" + " BTSTask ImportBindings  -Source:\"" + msiPathUnc + "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" +
-                                       appName + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
-                            
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                               "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword
+                                               + "\"" + " -accepteula" + " BTSTask ImportBindings  -Source:\"" +
+                                               msiPathUnc + "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" +
+                                               appName + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
+                                               "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+
                             result = ExecuteCmd("CMD.exe", commandArguments);
                         }
 
@@ -1411,16 +1598,14 @@ namespace BizTalkAdminOperations
                             LogShortErrorMsg("Failed: Importing Binding.");
                     }
                     //if there was  error while importing msi and msi is one show stopper msi then break loop, do not import other MSI. for example MSI EBIS
-                    if (isBizTalkAppExecuted == strPerformOperationNo)
+                    if (_isBizTalkAppExecuted == _strPerformOperationNo)
                     {
-                        isGlobalPartyBindingExecuted = strPerformOperationNo;
                         break;
                     }
                 }
             }
             catch (Exception ex)
             {
-                isGlobalPartyBindingExecuted = strPerformOperationNo;
                 LogException(ex);
             }
 
@@ -1429,10 +1614,7 @@ namespace BizTalkAdminOperations
 
         private void btnExportApps_Click(object sender, EventArgs e)
         {
-            string appName = string.Empty;
-            char[] charSeprator = { ',' };
-            string commandArguments = "";
-            int result;
+            char[] charSeprator = {','};
             string cmdName = "CMD.EXE";
 
             try
@@ -1440,27 +1622,27 @@ namespace BizTalkAdminOperations
                 LogInfo("BizTalk App: Export started.");
                 if (btnGetApplicationList_Click(sender, e) == 0)
                 {
-                    XElement xelement = XElement.Load(xmlPath + @"\Apps.xml");
+                    XElement xelement = XElement.Load(_xmlPath + @"\Apps.xml");
 
                     var appList = (from element in xelement.Descendants("BizTalkApplication")
-                                   let dCode = (int)element.Attribute("DependencyCode")
-                                   orderby dCode descending
-                                   select new
-                                   {
-                                       DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
-                                   })
-                           .ToList();
+                            let dCode = (int) element.Attribute("DependencyCode")
+                            orderby dCode descending
+                            select new
+                            {
+                                DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
+                            })
+                        .ToList();
 
                     int appcount = appList.Count;
 
                     LogInfo("Total Apps: " + appcount);
-                    string msiPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(msiPath);
+                    string msiPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_msiPath);
 
                     //clean MSI directory
                     try
                     {
-                        Directory.Delete(msiPath, true);
-                        Directory.CreateDirectory(msiPath);
+                        Directory.Delete(_msiPath, true);
+                        Directory.CreateDirectory(_msiPath);
                     }
                     catch (Exception ex)
                     {
@@ -1468,21 +1650,29 @@ namespace BizTalkAdminOperations
                     }
                     for (int i = 0; i < appcount; i++)
                     {
-                        appName = appList[i].DcodeAppName.Split(charSeprator)[1];
+                        var appName = appList[i].DcodeAppName.Split(charSeprator)[1];
 
                         LogInfo("Current Sequence:" + (i + 1) + ": App Name:" + appName);
 
                         //get Spec File
-                        if (machineName == strSrcNode)
+                        int result;
+                        string commandArguments;
+                        if (_machineName == strSrcNode)
                         {
                             commandArguments = "ListApp -ApplicationName:\"" + appName + "\" -ResourceSpec:\"" +
-                                                    msiPathUnc + "\\" + appName + specFileExt + "\"" + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                                               msiPathUnc + "\\" + appName + _specFileExt + "\"" + " -Server:\"" +
+                                               txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
                             result = ExecuteCmd("BTSTASK.exe", commandArguments);
                         }
                         else
                         {
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " BTSTASK ListApp -ApplicationName:\"" + appName + "\" -ResourceSpec:\"" +
-                                                    msiPathUnc + "\\" + appName + specFileExt + "\"" + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               " -accepteula" + " BTSTASK ListApp -ApplicationName:\"" + appName +
+                                               "\" -ResourceSpec:\"" +
+                                               msiPathUnc + "\\" + appName + _specFileExt + "\"" + " -Server:\"" +
+                                               txtConnectionString.Text.Trim() + "\" -Database:\"" +
+                                               "BizTalkMgmtDb\"\"";
                             result = ExecuteCmd(cmdName, commandArguments);
                         }
 
@@ -1496,16 +1686,24 @@ namespace BizTalkAdminOperations
                         result = UpdateResourceSpecFile(appName);
 
                         //export MSI using spec file.    
-                        if (machineName == strSrcNode)
+                        if (_machineName == strSrcNode)
                         {
                             commandArguments = "ExportApp -ApplicationName:\"" + appName + "\" -Package:\"" +
-                                                msiPathUnc + "\\" + appName + ".msi\"" + " -ResourceSpec:\"" + msiPathUnc + "\\" + appName + specFileExt + "\"" + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                                               msiPathUnc + "\\" + appName + ".msi\"" + " -ResourceSpec:\"" +
+                                               msiPathUnc + "\\" + appName + _specFileExt + "\"" + " -Server:\"" +
+                                               txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
                             result = ExecuteCmd("BTSTASK.exe", commandArguments);
                         }
                         else
                         {
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " BTSTASK ExportApp -ApplicationName:\"" + appName + "\" -Package:\"" +
-                                                msiPathUnc + "\\" + appName + ".msi\"" + " -ResourceSpec:\"" + msiPathUnc + "\\" + appName + specFileExt + "\"" + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               " -accepteula" + " BTSTASK ExportApp -ApplicationName:\"" + appName +
+                                               "\" -Package:\"" +
+                                               msiPathUnc + "\\" + appName + ".msi\"" + " -ResourceSpec:\"" +
+                                               msiPathUnc + "\\" + appName + _specFileExt + "\"" + " -Server:\"" +
+                                               txtConnectionString.Text.Trim() + "\" -Database:\"" +
+                                               "BizTalkMgmtDb\"\"";
                             result = ExecuteCmd(cmdName, commandArguments);
                         }
 
@@ -1515,16 +1713,23 @@ namespace BizTalkAdminOperations
                             LogShortErrorMsg("Failed: Exporting MSI file.");
 
                         //export Binding   
-                        if (machineName == strSrcNode)
+                        if (_machineName == strSrcNode)
                         {
-                            commandArguments = "ExportBindings -Destination:\"" + msiPathUnc + "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" + appName + "\"" +
-                                                      " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                            commandArguments = "ExportBindings -Destination:\"" + msiPathUnc + "\\" + appName +
+                                               "_Binding.xml\"" + " -ApplicationName:\"" + appName + "\"" +
+                                               " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" +
+                                               "BizTalkMgmtDb\"";
                             result = ExecuteCmd("BTSTASK.exe", commandArguments);
                         }
                         else
                         {
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " BTSTASK ExportBindings -Destination:\"" + msiPathUnc + "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" + appName + "\"" +
-                                                      " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               " -accepteula" + " BTSTASK ExportBindings -Destination:\"" + msiPathUnc +
+                                               "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" + appName +
+                                               "\"" +
+                                               " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" +
+                                               "BizTalkMgmtDb\"\"";
                             result = ExecuteCmd(cmdName, commandArguments);
                         }
 
@@ -1544,33 +1749,40 @@ namespace BizTalkAdminOperations
             {
                 LogException(ex);
             }
-         
+
 
         }
+
         #endregion
 
         #region GlobalPartyBinding
+
         private void btnExportGlobalPartyBinding_Click(object sender, EventArgs e)
         {
             string commandArguments;
-            string cmdName = "CMD.exe";
+            string cmdName;
 
-            string xmlPathUnc = ConvertPathToUncPath(xmlPath);
+            string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
 
-            if (machineName == strSrcNode)//local
+            if (_machineName == strSrcNode) //local
             {
                 cmdName = "BTSTASK.exe";
                 LogInfo("Global PartyBinding: Export started.");
-                commandArguments = "ExportBindings -Destination:\"" + xmlPath + "\\"
-                   + "GlobalPartyBinding.xml\"  -GlobalParties " + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                commandArguments = "ExportBindings -Destination:\"" + _xmlPath + "\\"
+                                   + "GlobalPartyBinding.xml\"  -GlobalParties " + " -Server:\"" +
+                                   txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"";
             }
             else //remote
             {
                 cmdName = "CMD.EXE";
                 LogInfo("Global PartyBinding: Export started from remote server.");
-                commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword
-                    + "\"" + " -accepteula" + " BTSTask ExportBindings -Destination:\"" + "\\\\" + machineName + "\\" + xmlPathUnc + "\\" +
-                     "GlobalPartyBinding.xml\"  -GlobalParties " + " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+                commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
+                                   strUserName +
+                                   "\"" + " -p " + "\"" + strPassword
+                                   + "\"" + " -accepteula" + " BTSTask ExportBindings -Destination:\"" + "\\\\" +
+                                   _machineName + "\\" + xmlPathUnc + "\\" +
+                                   "GlobalPartyBinding.xml\"  -GlobalParties " + " -Server:\"" +
+                                   txtConnectionString.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
             }
 
             var returnCode = ExecuteCmd(cmdName, commandArguments);
@@ -1586,22 +1798,23 @@ namespace BizTalkAdminOperations
             {
                 try
                 {
-                    if (Directory.Exists(brePath))
+                    if (Directory.Exists(_brePath))
                     {
-                        Directory.Delete(brePath, true);
-                        Directory.CreateDirectory(brePath);
+                        Directory.Delete(_brePath, true);
+                        Directory.CreateDirectory(_brePath);
                     }
                     else
                     {
-                        Directory.CreateDirectory(brePath);
+                        Directory.CreateDirectory(_brePath);
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning Policies or Vocabulary folder, hence aborting  export " + ex.Message + ", " + ex.StackTrace);
+                    throw new Exception("Error while cleaning Policies or Vocabulary folder, hence aborting  export " +
+                                        ex.Message + ", " + ex.StackTrace);
                 }
-                if (machineName == strSrcNode)
+                if (_machineName == strSrcNode)
                 {
                     LogInfo("BRE: Export started.");
                     ExportBrePolicyVocabulary();
@@ -1610,10 +1823,16 @@ namespace BizTalkAdminOperations
                 else
                 {
                     LogInfo("BRE: Export started.");
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                   remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportBREList\" \"" + txtConnectionString.Text.Trim() + "\" \"";
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"ExportBREList\" \"" + txtConnectionString.Text.Trim() +
+                                       "\" \"";
+                    returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
                     if (returnCode == 0)
                     {
                         LogShortSuccessMsg("Success: Exported BRE Polices and Vocabualaries.xml.");
@@ -1630,41 +1849,46 @@ namespace BizTalkAdminOperations
             {
                 LogException(ex);
             }
-          
+
 
         }
 
         private void btnImportGlobalPartyBinding_Click(object sender, EventArgs e)
         {
-            string cmdName = "CMD.EXE";
             string commandArguments;
             int returnCode;
-            string xmlPathUnc = ConvertPathToUncPath(xmlPath);
+            string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
 
             try
             {
                 LogInfo("Global Party Binding: Import started.");
-                if (!File.Exists(xmlPath + @"\GlobalPartyBinding.xml"))
+                if (!File.Exists(_xmlPath + @"\GlobalPartyBinding.xml"))
                     throw new Exception("GlobalPartyBinding xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlPath + "\\GlobalPartyBinding.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                doc.Load(_xmlPath + "\\GlobalPartyBinding.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("GlobalPartyBinding xml file is empty.");
 
-                if (machineName == strDstNode)//local
+                string cmdName;
+                if (_machineName == strDstNode) //local
                 {
                     cmdName = "BTSTASK.exe";
-                    commandArguments = "ImportBindings -Source:\"" + xmlPath + "\\" + "GlobalPartyBinding.xml\"" + " -Server:\"" + txtConnectionStringDst.Text.Trim() +
-                        "\" -Database:\"" + "BizTalkMgmtDb\"";
+                    commandArguments = "ImportBindings -Source:\"" + _xmlPath + "\\" + "GlobalPartyBinding.xml\"" +
+                                       " -Server:\"" + txtConnectionStringDst.Text.Trim() +
+                                       "\" -Database:\"" + "BizTalkMgmtDb\"";
                 }
                 else //remote
                 {
                     cmdName = "CMD.EXE";
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
-                        " BTSTask ImportBindings -Source:\"" + "\\\\" + machineName + "\\" + xmlPathUnc + "\\" + "GlobalPartyBinding.xml\"" +
-                        " -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       " BTSTask ImportBindings -Source:\"" + "\\\\" + _machineName + "\\" +
+                                       xmlPathUnc +
+                                       "\\" + "GlobalPartyBinding.xml\"" +
+                                       " -Server:\"" + txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
+                                       "BizTalkMgmtDb\"\"";
                 }
 
                 returnCode = ExecuteCmd(cmdName, commandArguments);
@@ -1683,7 +1907,7 @@ namespace BizTalkAdminOperations
             }
             try
             {
-                if (machineName == strDstNode) //local
+                if (_machineName == strDstNode) //local
                 {
                     LogInfo("BRE: Import Started.");
                     ImportBrePolicyVocabulary();
@@ -1692,10 +1916,16 @@ namespace BizTalkAdminOperations
                 else
                 {
                     LogInfo("BRE: Import Started.");
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                   remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ImportBREList\" \"" + txtConnectionStringDst.Text.Trim() + "\" \"";
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"ImportBREList\" \"" + txtConnectionStringDst.Text.Trim() +
+                                       "\" \"";
+                    returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
                     if (returnCode == 0)
                     {
                         LogShortSuccessMsg("Success: Imported BRE Polices and Vocabualaries.xml.");
@@ -1713,25 +1943,30 @@ namespace BizTalkAdminOperations
 
                 LogException(ex);
             }
-         
+
         }
+
         #endregion
 
         #region WebSite AppPools
+
         private void btnExportAppPools_Click(object sender, EventArgs e)
         {
             LogInfo("App Pool: Export started.");
 
-            if (File.Exists(xmlPath + @"\AppPools.xml")) //Create a Fresh Copy
-                File.Delete(xmlPath + @"\AppPools.xml");
+            if (File.Exists(_xmlPath + @"\AppPools.xml")) //Create a Fresh Copy
+                File.Delete(_xmlPath + @"\AppPools.xml");
 
-            string commandArguments = string.Empty;
+            string commandArguments;
 
-            if (machineName == strSrcNode) //local            
-                commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /config /xml /> \"" + xmlPath + "\\AppPools.xml" + "\"";
-            else  //remote            
-                commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /config /xml /> \"" + xmlPath + "\\AppPools.xml" + "\"\"";
+            if (_machineName == strSrcNode) //local            
+                commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /config /xml /> \"" +
+                                   _xmlPath + "\\AppPools.xml" + "\"";
+            else //remote            
+                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
+                                   strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                   + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /config /xml /> \"" +
+                                   _xmlPath + "\\AppPools.xml" + "\"\"";
 
             int returnCode = ExecuteCmd("CMD.EXE", commandArguments);
             if (returnCode == 0)
@@ -1741,13 +1976,13 @@ namespace BizTalkAdminOperations
             try
             {
                 //Encrypting Passwords
-                if (File.Exists(xmlPath + @"\AppPools.xml"))
+                if (File.Exists(_xmlPath + @"\AppPools.xml"))
                 {
-                    FileInfo fileInfo = new FileInfo(xmlPath + @"\AppPools.xml") {IsReadOnly = false};
+                    FileInfo fileInfo = new FileInfo(_xmlPath + @"\AppPools.xml") {IsReadOnly = false};
                     fileInfo.Refresh();
                     XmlDocument xmldoc = new XmlDocument();
 
-                    xmldoc.Load(xmlPath + @"\AppPools.xml");
+                    xmldoc.Load(_xmlPath + @"\AppPools.xml");
                     XmlNodeList nodeList = xmldoc.DocumentElement.SelectNodes("/appcmd/APPPOOL/add/processModel");
                     foreach (XmlNode node in nodeList)
                     {
@@ -1757,7 +1992,7 @@ namespace BizTalkAdminOperations
                             node.Attributes["password"].Value = Encrypt(password);
                         }
                     }
-                    xmldoc.Save(xmlPath + @"\AppPools.xml");
+                    xmldoc.Save(_xmlPath + @"\AppPools.xml");
                 }
             }
             catch (Exception ex)
@@ -1768,34 +2003,37 @@ namespace BizTalkAdminOperations
 
         private void btnImportAppPools_Click(object sender, EventArgs e)
         {
-            string commandArguments;
-            int returnCode;
             try
             {
                 LogInfo("App Pool: Import started.");
-                if (!File.Exists(xmlPath + @"\AppPools.xml"))
+                if (!File.Exists(_xmlPath + @"\AppPools.xml"))
                     throw new Exception("AppPools xml file does not exist.");
 
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlPath + "\\AppPools.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                doc.Load(_xmlPath + "\\AppPools.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("AppPools xml file is empty.");
 
                 //Genrate AppPool List from Dst
-                if (machineName == strDstNode) //local                
-                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /text:APPPOOL.NAME  > \"" + xmlPath + "\\AppPoolList.txt" + "\"";
-                else  //remote                
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                        + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /text:APPPOOL.NAME  > \"" + xmlPath + "\\AppPoolList.txt" + "\"\"";
+                string commandArguments;
+                if (_machineName == strDstNode) //local                
+                    commandArguments =
+                        "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /text:APPPOOL.NAME  > \"" +
+                        _xmlPath + "\\AppPoolList.txt" + "\"";
+                else //remote                
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                       + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /text:APPPOOL.NAME  > \"" +
+                                       _xmlPath + "\\AppPoolList.txt" + "\"\"";
                 //execute
-                returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                 if (returnCode == 0)
                     LogInfo("Success: Created AppPoolList.txt.");
                 else
                 {
                     try
                     {
-                        string[] dstAppPoolTemp = File.ReadAllLines(xmlPath + "\\AppPoolList.txt");
+                        string[] dstAppPoolTemp = File.ReadAllLines(_xmlPath + "\\AppPoolList.txt");
                         if (dstAppPoolTemp.Length == 0)
                         {
                             //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -1804,17 +2042,19 @@ namespace BizTalkAdminOperations
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Failed: Creating AppPoolList.txt from Dst." + Environment.NewLine + ex.Message, ex.InnerException);
+                        throw new Exception(
+                            "Failed: Creating AppPoolList.txt from Dst." + Environment.NewLine + ex.Message,
+                            ex.InnerException);
                     }
                 }
                 //Delete AppPools from Xmls which alread there in Dst
                 UpdateAppPoolXml();
 
                 doc = new XmlDocument();
-                doc.Load(xmlPath + "\\AppPoolToImport.xml");
+                doc.Load(_xmlPath + "\\AppPoolToImport.xml");
 
 
-                if (doc.DocumentElement.ChildNodes.Count > 0)//if file not empty.
+                if (doc.DocumentElement.ChildNodes.Count > 0) //if file not empty.
                 {
                     // Decrypting Password
                     XmlNodeList nodeList = doc.DocumentElement.SelectNodes("/appcmd/APPPOOL/add/processModel");
@@ -1826,19 +2066,23 @@ namespace BizTalkAdminOperations
                             node.Attributes["password"].Value = Decrypt(password);
                         }
                     }
-                    doc.Save(xmlPath + "\\AppPoolToImport.xml");
+                    doc.Save(_xmlPath + "\\AppPoolToImport.xml");
 
 
                     //actual AppPool Import
-                    if (machineName == strDstNode) //local                
-                        commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add apppool /in /xml < \"" + xmlPath + "\\AppPoolToImport.xml" + "\"";
-                    else  //remote 
+                    if (_machineName == strDstNode) //local                
+                        commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add apppool /in /xml < \"" +
+                                           _xmlPath + "\\AppPoolToImport.xml" + "\"";
+                    else //remote 
                     {
                         //commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
                         //    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe add apppool /in /xml < \"" + xmlPath + "\\AppPoolToImport.xml" + "\"\"";
-                        string appPathUnc = ConvertPathToUncPath(appPath);
-                        commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                                remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"ImportAppPool\"\"";
+                        string appPathUnc = ConvertPathToUncPath(_appPath);
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
+                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                           "  \"" +
+                                           _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
+                                           "\\" + appPathUnc + "\"" + " \"ImportAppPool\"\"";
                     }
                     //execute  
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -1856,7 +2100,7 @@ namespace BizTalkAdminOperations
                             node.Attributes["password"].Value = Encrypt(password);
                         }
                     }
-                    doc.Save(xmlPath + "\\AppPoolToImport.xml");
+                    doc.Save(_xmlPath + "\\AppPoolToImport.xml");
 
                 }
                 else
@@ -1870,69 +2114,45 @@ namespace BizTalkAdminOperations
 
         private void btnExportWebSites_Click(object sender, EventArgs e)
         {
-            string commandArguments = string.Empty;
-            int returnCode;
-
             try
             {
                 LogInfo("WebSite: Export started.");
 
-                if (strToolMode == "Backup")
+                if (_strToolMode == "Backup")
                 {
                     try
                     {
-                        if (Directory.Exists(vDir))
+                        if (Directory.Exists(_vDir))
                         {
-                            Directory.Delete(vDir, true);
-                            Directory.CreateDirectory(vDir);
+                            Directory.Delete(_vDir, true);
+                            Directory.CreateDirectory(_vDir);
                         }
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Error while cleaning Virtual Directory folder, hence aborting folder export " + ex.Message + ", " + ex.StackTrace);
+                        throw new Exception(
+                            "Error while cleaning Virtual Directory folder, hence aborting folder export " +
+                            ex.Message + ", " + ex.StackTrace);
                     }
                 }
 
                 //export website list in txt file
-                if (machineName == strSrcNode) //local
-                {   //get list of Website in txt file, one line one website                
-                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" + xmlPath + "\\SrcWebSiteList.txt" + "\"";
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-
-                    if (returnCode == 0)
-                        LogInfoInLogFile("Created SrcWebSiteList.txt.");
-                    else
-                    {
-                        try
-                        {
-                            string[] srcLinesTemp = File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
-                            if (srcLinesTemp.Length == 0)
-                            {
-                                //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
-                                //if no file is genrated in that case first line in try will genrate exception which will abort import process.
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("Failed: Creating SrcWebSiteList.txt" + Environment.NewLine + ex.Message, ex.InnerException);
-                        }
-
-                    }
-
-                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /config /xml /> \"" + xmlPath + "\\WebSites.xml" + "\"";
-                }
-                else  //remote
+                string commandArguments;
+                int returnCode;
+                if (_machineName == strSrcNode) //local
                 {
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                        + " C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" + xmlPath + "\\SrcWebSiteList.txt" + "\"\"";
+                    //get list of Website in txt file, one line one website                
+                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
+                                       _xmlPath + "\\SrcWebSiteList.txt" + "\"";
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+
                     if (returnCode == 0)
                         LogInfoInLogFile("Created SrcWebSiteList.txt.");
                     else
                     {
                         try
                         {
-                            string[] srcLinesTemp = File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
+                            string[] srcLinesTemp = File.ReadAllLines(_xmlPath + "\\SrcWebSiteList.txt");
                             if (srcLinesTemp.Length == 0)
                             {
                                 //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -1941,11 +2161,47 @@ namespace BizTalkAdminOperations
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception("Failed: Creating SrcWebSiteList.txt" + Environment.NewLine + ex.Message, ex.InnerException);
+                            throw new Exception(
+                                "Failed: Creating SrcWebSiteList.txt" + Environment.NewLine + ex.Message,
+                                ex.InnerException);
+                        }
+
+                    }
+
+                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /config /xml /> \"" +
+                                       _xmlPath + "\\WebSites.xml" + "\"";
+                }
+                else //remote
+                {
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                       + " C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
+                                       _xmlPath + "\\SrcWebSiteList.txt" + "\"\"";
+                    returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                    if (returnCode == 0)
+                        LogInfoInLogFile("Created SrcWebSiteList.txt.");
+                    else
+                    {
+                        try
+                        {
+                            string[] srcLinesTemp = File.ReadAllLines(_xmlPath + "\\SrcWebSiteList.txt");
+                            if (srcLinesTemp.Length == 0)
+                            {
+                                //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
+                                //if no file is genrated in that case first line in try will genrate exception which will abort import process.
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(
+                                "Failed: Creating SrcWebSiteList.txt" + Environment.NewLine + ex.Message,
+                                ex.InnerException);
                         }
                     }
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                        + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list site /config /xml /> \"" + xmlPath + "\\WebSites.xml" + "\"\"";
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                       + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list site /config /xml /> \"" +
+                                       _xmlPath + "\\WebSites.xml" + "\"\"";
                 }
 
                 //execute actual WebSite export
@@ -1961,10 +2217,10 @@ namespace BizTalkAdminOperations
                 UpdateSrcWebSiteXml();
 
 
-                string[] srcWebSites = Directory.GetFiles(xmlPath, "WebSite_*_ToExport.xml", SearchOption.AllDirectories);
-                for (int i = 0; i < srcWebSites.Length; i++)
+                string[] srcWebSites =
+                    Directory.GetFiles(_xmlPath, "WebSite_*_ToExport.xml", SearchOption.AllDirectories);
+                foreach (string webSiteFilePath in srcWebSites)
                 {
-                    string webSiteFilePath = srcWebSites[i];
                     string webSiteFileName = Path.GetFileNameWithoutExtension(webSiteFilePath);
                     string webSiteName = webSiteFileName.Substring(8, webSiteFileName.Length - 17);
                     //Move vDir to Local
@@ -1972,16 +2228,19 @@ namespace BizTalkAdminOperations
 
                     //split and export web app per website   
                     LogInfo("Web App: Export started.");
-                    if (machineName == strSrcNode) //local                         
+                    if (_machineName == strSrcNode) //local                         
                     {
-                        commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apps /site.name:\"" + webSiteName + "\" /config /xml /> \""
-                            + xmlPath + "\\WebApps_" + webSiteName + "_ToExport.xml" + "\"";
+                        commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apps /site.name:\"" +
+                                           webSiteName + "\" /config /xml /> \""
+                                           + _xmlPath + "\\WebApps_" + webSiteName + "_ToExport.xml" + "\"";
                     }
-                    else  //remote                           
+                    else //remote                           
                     {
-                        commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                            + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apps /site.name:\"" + webSiteName + "\" /config /xml /> \""
-                            + xmlPath + "\\WebApps_" + webSiteName + "_ToExport.xml" + "\"\"";
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
+                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                           + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apps /site.name:\"" +
+                                           webSiteName + "\" /config /xml /> \""
+                                           + _xmlPath + "\\WebApps_" + webSiteName + "_ToExport.xml" + "\"\"";
                     }
 
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -1991,7 +2250,7 @@ namespace BizTalkAdminOperations
                         LogShortErrorMsg("Failed: Exporting WebApps.");
                 }
 
-                if (machineName == strSrcNode) //local  
+                if (_machineName == strSrcNode) //local  
                 {
                     LogInfo("IISClientCertMappings: Export started.");
                     ExportClientCertOnetOneMappings();
@@ -2000,11 +2259,16 @@ namespace BizTalkAdminOperations
                 else
                 {
                     LogInfo("IISClientCertMappings: Export started.");
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                     commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                             remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"ExportIISClientCert\"\"";
-                    
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\"" + " \"ExportIISClientCert\"\"";
+
+                    returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
                     if (returnCode == 0)
                     {
                         LogShortSuccessMsg("Success: Exported IISClientCertMappings.");
@@ -2018,15 +2282,19 @@ namespace BizTalkAdminOperations
                 }
                 LogInfoInLogFile("SrcBTSInstallPath:Export Started.");
                 //Export BTSInstallPath into txt file
-                if (machineName == strSrcNode) //local  
+                if (_machineName == strSrcNode) //local  
                 {
-                    commandArguments = "/C SET BTSINSTALLPATH > \""+xmlPath +  "\\SrcBTSInstallPath.txt" + "\"";
+                    commandArguments = "/C SET BTSINSTALLPATH > \"" + _xmlPath + "\\SrcBTSInstallPath.txt" + "\"";
                 }
-                else//Remote
+                else //Remote
                 {
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-         remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"BTSInstallPath\" \"" + "Export" + "\" \"";
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"BTSInstallPath\" \"" + "Export" + "\" \"";
                 }
                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                 if (returnCode == 0)
@@ -2046,39 +2314,43 @@ namespace BizTalkAdminOperations
 
         private void btnImportWebSites_Click(object sender, EventArgs e)
         {
-            string commandArguments=string.Empty;
-            int returnCode;
-
             try
             {
                 LogInfo("Website: Import started.");
-                if (!File.Exists(xmlPath + @"\WebSites.xml"))
+                if (!File.Exists(_xmlPath + @"\WebSites.xml"))
                     throw new Exception("WebSites xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlPath + "\\WebSites.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                doc.Load(_xmlPath + "\\WebSites.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("WebSites xml file is empty.");
 
-                if (strServerType == "BizTalk" && (cmbBoxServerDst.Items.Count == 0 || cmbBoxServerDst.SelectedItem == null))
+                if (_strServerType == "BizTalk" &&
+                    (cmbBoxServerDst.Items.Count == 0 || cmbBoxServerDst.SelectedItem == null))
                     throw new Exception("Please select Dst node.");
 
-                if (strServerType == "App" && (txtConnectionStringDst.Text == "SERVER NAME" || txtConnectionStringDst.Text.Trim() == ""))
+                if (_strServerType == "App" && (txtConnectionStringDst.Text == "SERVER NAME" ||
+                                                txtConnectionStringDst.Text.Trim() == ""))
                     throw new Exception("Please enter Dst App server.");
 
                 //Export Destination BTSInstallPath into txt file
-                if (machineName == strDstNode) //local  
+                string commandArguments;
+                if (_machineName == strDstNode) //local  
                 {
-                    commandArguments = "/C SET BTSINSTALLPATH > \"" + xmlPath + "\\DstBTSInstallPath.txt" + "\"";
+                    commandArguments = "/C SET BTSINSTALLPATH > \"" + _xmlPath + "\\DstBTSInstallPath.txt" + "\"";
                 }
                 else
                 {
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-         remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"BTSInstallPath\" \"" + "Import" + "\" \"";
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"BTSInstallPath\" \"" + "Import" + "\" \"";
                 }
-                returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                 if (returnCode == 0)
                     LogInfoInLogFile("Success: Exported DstBTSInstallPath.");
                 else
@@ -2086,11 +2358,14 @@ namespace BizTalkAdminOperations
                     throw new Exception("Failed: Exporting DstBTSInstallPath.");
                 }
                 //Get WebSite Name Only from Destiantion in Txt file
-                if (machineName == strDstNode) //local                            
-                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" + xmlPath + "\\DstWebSiteList.txt" + "\"";
+                if (_machineName == strDstNode) //local                            
+                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
+                                       _xmlPath + "\\DstWebSiteList.txt" + "\"";
                 else //remote            
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                                + " C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" + xmlPath + "\\DstWebSiteList.txt" + "\"\"";
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                       + " C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
+                                       _xmlPath + "\\DstWebSiteList.txt" + "\"\"";
 
                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                 if (returnCode == 0)
@@ -2099,7 +2374,7 @@ namespace BizTalkAdminOperations
                 {
                     try
                     {
-                        string[] dstLinesTemp = File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
+                        string[] dstLinesTemp = File.ReadAllLines(_xmlPath + "\\DstWebSiteList.txt");
                         if (dstLinesTemp.Length == 0)
                         {
                             //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -2108,7 +2383,8 @@ namespace BizTalkAdminOperations
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Failed: Creating DstWebSiteList.txt" + Environment.NewLine + ex.Message, ex.InnerException);
+                        throw new Exception("Failed: Creating DstWebSiteList.txt" + Environment.NewLine + ex.Message,
+                            ex.InnerException);
                     }
                 }
 
@@ -2116,55 +2392,65 @@ namespace BizTalkAdminOperations
                 UpdateWebSiteXml();
                 LogInfo("Generated Delta of Website to be imported.");
 
-                string[] dstLines = File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
-                string[] srcLines = File.ReadAllLines(xmlPath + "\\SrcWebSiteList.txt");
+                string[] dstLines = File.ReadAllLines(_xmlPath + "\\DstWebSiteList.txt");
+                string[] srcLines = File.ReadAllLines(_xmlPath + "\\SrcWebSiteList.txt");
 
-                for (int srcLineCount = 0; srcLineCount < srcLines.Length; srcLineCount++)
+                foreach (string srcLine in srcLines)
                 {
                     int matches = 0;
-                    for (int dstLineCount = 0; dstLineCount < dstLines.Length; dstLineCount++)
+                    foreach (string dstLine in dstLines)
                     {
-                        if (dstLines[dstLineCount] == srcLines[srcLineCount])
+                        if (dstLine == srcLine)
                             matches = 1;
                     }
 
-                    if (matches != 1)  //if no match which mean website is not existing in dest then create website in dest
+                    if (matches != 1
+                    ) //if no match which mean website is not existing in dest then create website in dest
                     {
                         //actual web site import.
-                        if (machineName == strDstNode) //local
+                        if (_machineName == strDstNode) //local
                         {
-                            MoveWebAppFolders(xmlPath + "\\WebSite_" + srcLines[srcLineCount] + "_ToImport.xml", srcLines[srcLineCount]); //while mvoing DstWebSite Folders subfolders which correspond to App folders, might also move, need to stop that
-                            commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" + xmlPath + "\\WebSite_" + srcLines[srcLineCount] + "_ToImport.xml" + "\"";
+                            MoveWebAppFolders(_xmlPath + "\\WebSite_" + srcLine + "_ToImport.xml",
+                                srcLine); //while mvoing DstWebSite Folders subfolders which correspond to App folders, might also move, need to stop that
+                            commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" +
+                                               _xmlPath + "\\WebSite_" + srcLine + "_ToImport.xml" + "\"";
                         }
-                        else  //remote
+                        else //remote
                         {
-                            MoveWebAppFolders(xmlPath + "\\WebSite_" + srcLines[srcLineCount] + "_ToImport.xml", srcLines[srcLineCount]);
+                            MoveWebAppFolders(_xmlPath + "\\WebSite_" + srcLine + "_ToImport.xml", srcLine);
                             //commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
                             //    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" + xmlPath + "\\WebSite_" + srcLines[srcLineCount] + "_ToImport.xml" + "\"\"";
-                            string appPathUnc = ConvertPathToUncPath(appPath);
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                 remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ImportWebSite\" \"" + srcLines[srcLineCount] + "\" \"";
+                            string appPathUnc = ConvertPathToUncPath(_appPath);
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                               "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               " -accepteula" + "  \"" +
+                                               _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
+                                               _machineName + "\\" + appPathUnc + "\" \"ImportWebSite\" \"" + srcLine +
+                                               "\" \"";
                         }
 
                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                         if (returnCode == 0)
-                            LogShortSuccessMsg("Success: Imported WebSite: " + srcLines[srcLineCount]);
+                            LogShortSuccessMsg("Success: Imported WebSite: " + srcLine);
                         else
-                            LogShortErrorMsg("Failed: Importing Website: " + srcLines[srcLineCount]);
+                            LogShortErrorMsg("Failed: Importing Website: " + srcLine);
 
                     }
                     else
-                        LogInfo("WebSite already exist: " + srcLines[srcLineCount]);
-
+                        LogInfo("WebSite already exist: " + srcLine);
                 }
 
                 //Generate DstWebAppList
                 LogInfo("WebApp: Import started.");
-                if (machineName == strDstNode) //local                
-                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list app /text:app.name /> \"" + xmlPath + "\\DstWebAppList.txt" + "\"";
+                if (_machineName == strDstNode) //local                
+                    commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list app /text:app.name /> \"" +
+                                       _xmlPath + "\\DstWebAppList.txt" + "\"";
                 else //remote                
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                                + " C:\\windows\\system32\\inetsrv\\appcmd.exe list app /text:app.name /> \"" + xmlPath + "\\DstWebAppList.txt" + "\"\"";
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                       + " C:\\windows\\system32\\inetsrv\\appcmd.exe list app /text:app.name /> \"" +
+                                       _xmlPath + "\\DstWebAppList.txt" + "\"\"";
 
                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                 if (returnCode == 0)
@@ -2173,7 +2459,7 @@ namespace BizTalkAdminOperations
                 {
                     try
                     {
-                        string[] dstLinesTemp = File.ReadAllLines(xmlPath + "\\DstWebAppList.txt");
+                        string[] dstLinesTemp = File.ReadAllLines(_xmlPath + "\\DstWebAppList.txt");
                         if (dstLinesTemp.Length == 0)
                         {
                             //empty file, may be no web site in destination. in this case non zere error code of appcmd can be ignored.
@@ -2182,39 +2468,46 @@ namespace BizTalkAdminOperations
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Failed: Creating DstWebAppList.txt" + Environment.NewLine + ex.Message, ex.InnerException);
+                        throw new Exception("Failed: Creating DstWebAppList.txt" + Environment.NewLine + ex.Message,
+                            ex.InnerException);
                     }
                 }
 
-                string[] srcWebApps = Directory.GetFiles(xmlPath, "WebApps_*_ToExport.xml", SearchOption.AllDirectories);
-                for (int i = 0; i < srcWebApps.Length; i++)
+                string[] srcWebApps =
+                    Directory.GetFiles(_xmlPath, "WebApps_*_ToExport.xml", SearchOption.AllDirectories);
+                foreach (string webAppFilePath in srcWebApps)
                 {
-                    string webAppFilePath = srcWebApps[i];
                     string webAppFileName = Path.GetFileNameWithoutExtension(webAppFilePath);
                     string webSiteName = webAppFileName.Substring(8, webAppFileName.Length - 17);
                     //Update WebApps xml, remove Apps which are already there in Dst
                     UpdateWebAppXml(webAppFileName + ".xml", webSiteName);
                     //WebApps_DefaultWebsite2_ToImport.xml
                     doc = new XmlDocument();
-                    doc.Load(xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml");
+                    doc.Load(_xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml");
 
                     if (doc.DocumentElement.ChildNodes.Count > 0) //if file not empty
                     {
                         LogInfo("Generated Delta of WebApps to be imported.");
                         //actual web app import
-                        if (machineName == strDstNode) //local
+                        if (_machineName == strDstNode) //local
                         {
-                            MoveWebAppFolders(xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml", webSiteName);
-                            commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add app /in /xml /< \"" + xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml" + "\"";
+                            MoveWebAppFolders(_xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml", webSiteName);
+                            commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add app /in /xml /< \"" +
+                                               _xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml" + "\"";
                         }
-                        else  //remote
+                        else //remote
                         {
-                            MoveWebAppFolders(xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml", webSiteName);
+                            MoveWebAppFolders(_xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml", webSiteName);
                             //commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
                             //    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" + "\\WebApps_" + webSiteName + "_ToImport.xml" + "\"\"";
-                            string appPathUnc = ConvertPathToUncPath(appPath);
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                 remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ImportWebApp\" \"" + webSiteName + "\" \"";
+                            string appPathUnc = ConvertPathToUncPath(_appPath);
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                               "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               " -accepteula" + "  \"" +
+                                               _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
+                                               _machineName + "\\" + appPathUnc + "\" \"ImportWebApp\" \"" +
+                                               webSiteName + "\" \"";
                         }
 
                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -2227,7 +2520,7 @@ namespace BizTalkAdminOperations
                         LogInfo("WebAppsToImport.xml is empty.");
                 }
 
-                if (machineName == strDstNode) //local
+                if (_machineName == strDstNode) //local
                 {
                     LogInfo("IISClientCertMappings: Import started.");
                     ImportClientCertOnetOneMappings();
@@ -2236,18 +2529,23 @@ namespace BizTalkAdminOperations
                 else
                 {
                     LogInfo("IISClientCertMappings: Import Started.");
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                            remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"ImportIISClientCert\"\"";
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\"" + " \"ImportIISClientCert\"\"";
+                    returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
                     if (returnCode == 0)
                     {
-                        LogShortSuccessMsg("Success: Imported IISClientCertMappings on "+strDstNode +" Server.");
+                        LogShortSuccessMsg("Success: Imported IISClientCertMappings on " + strDstNode + " Server.");
 
                     }
                     else
                     {
-                        LogShortErrorMsg("Failed: Importing IISClientCertMappings on "+strDstNode +" Server.");
+                        LogShortErrorMsg("Failed: Importing IISClientCertMappings on " + strDstNode + " Server.");
 
                     }
                 }
@@ -2257,46 +2555,49 @@ namespace BizTalkAdminOperations
                 LogException(ex);
             }
         }
+
         #endregion
 
         #region Certificate
+
         private void btnExportCert_Click(object sender, EventArgs e)
         {
-            byte[] certBytes = null;
-            X509Store store = null;
-            string certFileName = string.Empty, thumbPrint = string.Empty;
-            string commandArguments = "";
-            int returnCode;
+            string certFileName = string.Empty;
             try
-            {   //Clean Cert Folder   
+            {
+                //Clean Cert Folder   
                 LogInfo("CERT: Export started.");
                 try
                 {
-                    if (Directory.Exists(certPath))
+                    if (Directory.Exists(_certPath))
                     {
-                        Directory.Delete(certPath, true);
-                        Directory.CreateDirectory(certPath);
+                        Directory.Delete(_certPath, true);
+                        Directory.CreateDirectory(_certPath);
                     }
                     else
-                        Directory.CreateDirectory(certPath);
+                        Directory.CreateDirectory(_certPath);
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning cert folder, hence aborting CERT export " + ex.Message + ", " + ex.StackTrace);
+                    throw new Exception("Error while cleaning cert folder, hence aborting CERT export " + ex.Message +
+                                        ", " + ex.StackTrace);
                 }
 
-                if (machineName == strSrcNode)//local
+                int returnCode;
+                string commandArguments;
+                if (_machineName == strSrcNode) //local
                 {
                     int i = 0;
                     foreach (string iStoreLocation in Enum.GetNames(typeof(StoreLocation)))
                     {
                         foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                         {
-                            StoreLocation storeLoc = (StoreLocation)Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName)Enum.Parse(typeof(StoreName), iStoreName);
-                            if (storeLoc == StoreLocation.LocalMachine || storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My)
+                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
+                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                            if (storeLoc == StoreLocation.LocalMachine ||
+                                storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My)
                             {
-                                store = new X509Store(storeNam, storeLoc);
+                                var store = new X509Store(storeNam, storeLoc);
 
                                 try
 
@@ -2316,12 +2617,14 @@ namespace BizTalkAdminOperations
                                             {
                                                 try
                                                 {
-                                                    X509EnhancedKeyUsageExtension ext = (X509EnhancedKeyUsageExtension)extension;
+                                                    X509EnhancedKeyUsageExtension ext =
+                                                        (X509EnhancedKeyUsageExtension) extension;
                                                     OidCollection oids = ext.EnhancedKeyUsages;
                                                     enhancedKeyUsage = new string[oids.Count];
                                                     for (int j = 0; j < oids.Count; j++)
                                                     {
-                                                        if (string.IsNullOrEmpty(oids[j].FriendlyName) || string.IsNullOrWhiteSpace(oids[j].FriendlyName))
+                                                        if (string.IsNullOrEmpty(oids[j].FriendlyName) ||
+                                                            string.IsNullOrWhiteSpace(oids[j].FriendlyName))
                                                         {
                                                             // Do Nothing
                                                         }
@@ -2333,7 +2636,9 @@ namespace BizTalkAdminOperations
                                                 }
                                                 catch (Exception ex)
                                                 {
-                                                    LogInfo("Exception Occured when Extracting Enhanced Key Usage: " + certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + certificate.Thumbprint);
+                                                    LogInfo("Exception Occured when Extracting Enhanced Key Usage: " +
+                                                            _certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
+                                                            certificate.Thumbprint);
                                                     LogException(ex);
                                                 }
 
@@ -2341,7 +2646,9 @@ namespace BizTalkAdminOperations
 
                                         }
 
-                                        if (enhancedKeyUsage.Contains("ITG Smartcard") || enhancedKeyUsage.Contains("Smart Card Logon") || certificate.Issuer.Contains("login.windows.net"))
+                                        if (enhancedKeyUsage.Contains("ITG Smartcard") ||
+                                            enhancedKeyUsage.Contains("Smart Card Logon") ||
+                                            certificate.Issuer.Contains("login.windows.net"))
                                         {
                                             //Do Nothing
                                         }
@@ -2350,20 +2657,30 @@ namespace BizTalkAdminOperations
                                         {
                                             try
                                             {
-                                                thumbPrint = certificate.Thumbprint;
+                                                var thumbPrint = certificate.Thumbprint;
                                                 int dateCompare = DateTime.Compare(certificate.NotAfter, DateTime.Now);
                                                 if (dateCompare >= 0)
                                                 {
                                                     if (certificate.HasPrivateKey)
                                                     {
-                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i + ".PFX";
+                                                        certFileName =
+                                                            _certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
+                                                            thumbPrint + "_" + i + ".PFX";
                                                         //certBytes = certificate.Export(X509ContentType.Pfx, strCertPass);
                                                         //File.WriteAllBytes(certFileName, certBytes);
                                                         if (iStoreLocation == "CurrentUser")
-                                                            commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -exportpfx " + " -p " + "\"" + strCertPass + "\"" + " -User " + iStoreName + " " + "\"" + thumbPrint + "\"" + " " + certFileName + " " + "ExtendedProperties";
+                                                            commandArguments =
+                                                                "/C C:\\windows\\system32\\certutil.exe -f -exportpfx " +
+                                                                " -p " + "\"" + _strCertPass + "\"" + " -User " +
+                                                                iStoreName + " " + "\"" + thumbPrint + "\"" + " " +
+                                                                certFileName + " " + "ExtendedProperties";
                                                         else
-                                                            commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -exportpfx " + " -p " + "\"" + strCertPass + "\"" + " " + iStoreName + " " + "\"" + thumbPrint + "\"" + " " + certFileName + " " + "ExtendedProperties";
-                                                        
+                                                            commandArguments =
+                                                                "/C C:\\windows\\system32\\certutil.exe -f -exportpfx " +
+                                                                " -p " + "\"" + _strCertPass + "\"" + " " + iStoreName +
+                                                                " " + "\"" + thumbPrint + "\"" + " " + certFileName +
+                                                                " " + "ExtendedProperties";
+
                                                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                                                         if (returnCode == 0)
                                                         {
@@ -2374,10 +2691,12 @@ namespace BizTalkAdminOperations
                                                     }
                                                     else
                                                     {
-                                                        certFileName = certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" + thumbPrint + "_" + i + ".CER";
-                                                        certBytes = certificate.Export(X509ContentType.Cert);
+                                                        certFileName =
+                                                            _certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
+                                                            thumbPrint + "_" + i + ".CER";
+                                                        var certBytes = certificate.Export(X509ContentType.Cert);
                                                         File.WriteAllBytes(certFileName, certBytes);
-                                                        
+
                                                     }
                                                 }
                                             }
@@ -2387,7 +2706,9 @@ namespace BizTalkAdminOperations
                                                 LogException(ex);
                                             }
                                             finally
-                                            { i++; }
+                                            {
+                                                i++;
+                                            }
                                         }
 
                                     }
@@ -2396,10 +2717,14 @@ namespace BizTalkAdminOperations
 
 
                                 catch (Exception ex)
-                                { LogException(ex); }
+                                {
+                                    LogException(ex);
+                                }
 
                                 finally
-                                { store.Close(); }
+                                {
+                                    store.Close();
+                                }
                             }
                         }
                     }
@@ -2407,35 +2732,37 @@ namespace BizTalkAdminOperations
                 }
                 else //remote
                 {
-                    string strSrc = "";
-                    string strDst = "";
-                    
-
                     //export cert on remote machine, locally       
                     LogInfo("CERT: Exporting from Remote Machine.");
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserNameForHost + "\"" + " -p " + "\"" + strPasswordForHost + "\"" + " -accepteula" + "  \"" +
-                        remoteRootFolder + "\\" + remoteExeName + "\" \"" + remoteRootFolder + "\" \"ExportCert\" \"" + strCertPass + "\"\"";
-                    
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserNameForHost + "\"" + " -p " + "\"" + strPasswordForHost + "\"" +
+                                       " -accepteula" + "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + _remoteRootFolder +
+                                       "\" \"ExportCert\" \"" + _strCertPass + "\"\"";
+
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                     if (returnCode == 0)
                     {
                         LogShortSuccessMsg("Success: Exported Cert.");
 
-                        LogInfo("Moving cert files to local: " + machineName + " from remote: " + strSrcNode);
+                        LogInfo("Moving cert files to local: " + _machineName + " from remote: " + strSrcNode);
                         //bring back that cert folder to local machine                
-                        string remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
-                        strSrc = "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + certFolderName;
-                        commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + certPath + "\" " + "/MOVE /R:1";
-                        returnCode = ExecuteCmd("CMD.EXE", commandArguments); //copy Cert Folder to Remote destination server
+                        string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
+                        var strSrc = "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + _certFolderName;
+                        commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + _certPath + "\" " +
+                                           "/MOVE /R:1";
+                        returnCode =
+                            ExecuteCmd("CMD.EXE", commandArguments); //copy Cert Folder to Remote destination server
 
 
                         strSrc = "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + "\\Logs";
-                        strDst = logPath;
-                        commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/MOVE /R:1";
+                        var strDst = _logPath;
+                        commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                           "/MOVE /R:1";
                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
-                        if (returnCode < strRoboCopySuccessCode)
+                        if (returnCode < _strRoboCopySuccessCode)
                             LogShortSuccessMsg("Success: Copied Certificates to local.");
                         else
                             LogShortErrorMsg("Failed: Copying Certificates to local ");
@@ -2455,24 +2782,22 @@ namespace BizTalkAdminOperations
 
         private void btnImportCert_Click(object sender, EventArgs e)
         {
-            X509Store store = null; X509Certificate2 certificate = null;
-            string thumbPrint = string.Empty;
             int returnCode;
-            string[] strFiles = null;
-            string commandArguments = " ";
+            string commandArguments;
 
-            if (machineName == strDstNode)//local
+            if (_machineName == strDstNode) //local
             {
                 LogInfo("CERT: Import started.");
                 //BEGIN::new code for delta, get all cert name and write them in txt file,
-                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstCertList.txt", false))
+                X509Store store;
+                using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstCertList.txt", false))
                 {
                     foreach (string iStoreLocation in Enum.GetNames(typeof(StoreLocation)))
                     {
                         foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                         {
-                            StoreLocation storeLoc = (StoreLocation)Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName)Enum.Parse(typeof(StoreName), iStoreName);
+                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
+                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
 
                             store = new X509Store(storeNam, storeLoc);
 
@@ -2483,7 +2808,7 @@ namespace BizTalkAdminOperations
                                 {
                                     try
                                     {
-                                        thumbPrint = certificateDst.Thumbprint;
+                                        var thumbPrint = certificateDst.Thumbprint;
                                         if (certificateDst.HasPrivateKey)
                                         {
                                             writer.WriteLine(iStoreLocation + "_" + iStoreName + "_" + thumbPrint);
@@ -2500,16 +2825,20 @@ namespace BizTalkAdminOperations
                                 }
                             }
                             catch (Exception ex)
-                            { LogException(ex); }
+                            {
+                                LogException(ex);
+                            }
 
                             finally
-                            { store.Close(); }
+                            {
+                                store.Close();
+                            }
                         }
                     }
                 }
                 //END::new code for delta, get all cert name and write them in txt file, 
 
-                string[] dstCertNameList = File.ReadAllLines(xmlPath + @"\DstCertList.txt"); //read all cert of Dst
+                string[] dstCertNameList = File.ReadAllLines(_xmlPath + @"\DstCertList.txt"); //read all cert of Dst
                 //Creating CertificatesList with out StorLocation
                 string[] dstCertList = new string[dstCertNameList.Length];
                 for (int i = 0; i < dstCertNameList.Length; i++)
@@ -2521,8 +2850,8 @@ namespace BizTalkAdminOperations
                 {
                     foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                     {
-                        StoreLocation storeLoc = (StoreLocation)Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                        StoreName storeNam = (StoreName)Enum.Parse(typeof(StoreName), iStoreName);
+                        StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
+                        StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
                         //if (storeNam == StoreName.Root && storeLoc == StoreLocation.CurrentUser)
                         //    storeLoc = StoreLocation.LocalMachine;
                         //if (storeNam == StoreName.Disallowed && storeLoc == StoreLocation.CurrentUser)
@@ -2543,26 +2872,32 @@ namespace BizTalkAdminOperations
                         {
                             store.Open(OpenFlags.ReadWrite);
 
-                            strFiles = Directory.GetFiles(certPath, iStoreLocation + "_" + iStoreName + "*");
+                            var strFiles = Directory.GetFiles(_certPath, iStoreLocation + "_" + iStoreName + "*");
 
-                            for (int iFile = 0; iFile < strFiles.Length; iFile++)
+                            foreach (string strFile in strFiles)
                             {
-                                string certName = strFiles[iFile].Substring(strFiles[iFile].LastIndexOf('\\') + 1);
+                                string certName = strFile.Substring(strFile.LastIndexOf('\\') + 1);
                                 try
                                 {
-                                   
+                                    X509Certificate2 certificate;
                                     if (storeNam == StoreName.My)
                                     {
                                         certName = certName.Substring(0, certName.LastIndexOf('_'));
-                                        if (Array.IndexOf(dstCertNameList, certName) < 0)  //cert  already exists in Dst
+                                        if (Array.IndexOf(dstCertNameList, certName) < 0) //cert  already exists in Dst
                                         {
-                                            if (Path.GetExtension(strFiles[iFile]) == ".PFX")
+                                            if (Path.GetExtension(strFile) == ".PFX")
                                             {
-                                                if (strFiles[iFile].Contains("CurrentUser"))
-                                                    commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + strCertPass + "\"" + " -User " + storeNam + " " + "\"" + strFiles[iFile] + "\"" ;
+                                                if (strFile.Contains("CurrentUser"))
+                                                    commandArguments =
+                                                        "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                        " -p " + "\"" + _strCertPass + "\"" + " -User " + storeNam +
+                                                        " " + "\"" + strFile + "\"";
                                                 else
-                                                    commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + strCertPass + "\"" + " " + storeNam + " " + "\"" + strFiles[iFile] + "\"";
-                                                
+                                                    commandArguments =
+                                                        "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                        " -p " + "\"" + _strCertPass + "\"" + " " + storeNam + " " +
+                                                        "\"" + strFile + "\"";
+
                                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                                                 if (returnCode == 0)
                                                 {
@@ -2574,12 +2909,12 @@ namespace BizTalkAdminOperations
                                             }
                                             else
                                             {
-                                                certificate = strFiles[iFile].Contains("CurrentUser")
-                                                    ? new X509Certificate2(strFiles[iFile], strCertPass,
+                                                certificate = strFile.Contains("CurrentUser")
+                                                    ? new X509Certificate2(strFile, _strCertPass,
                                                         X509KeyStorageFlags.Exportable &
                                                         X509KeyStorageFlags.PersistKeySet &
                                                         X509KeyStorageFlags.UserKeySet)
-                                                    : new X509Certificate2(strFiles[iFile], strCertPass,
+                                                    : new X509Certificate2(strFile, _strCertPass,
                                                         X509KeyStorageFlags.Exportable &
                                                         X509KeyStorageFlags.PersistKeySet &
                                                         X509KeyStorageFlags.MachineKeySet);
@@ -2587,22 +2922,28 @@ namespace BizTalkAdminOperations
                                                 certsImported++;
                                                 LogInfoInLogFile("Imported Cert: " + certName);
                                             }
-                                                
-                                            
+
+
                                         }
                                     }
                                     else
                                     {
                                         string certName1 = certName.Substring(0, certName.LastIndexOf('_'));
                                         certName = certName1.Substring(certName.IndexOf('_') + 1);
-                                        if (Array.IndexOf(dstCertList, certName) < 0)  //cert  already exists in Dst
+                                        if (Array.IndexOf(dstCertList, certName) < 0) //cert  already exists in Dst
                                         {
-                                            if (Path.GetExtension(strFiles[iFile]) == ".PFX")
+                                            if (Path.GetExtension(strFile) == ".PFX")
                                             {
-                                                if (strFiles[iFile].Contains("CurrentUser"))
-                                                    commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + strCertPass + "\"" + " -User " + storeNam + " " + "\"" + strFiles[iFile] + "\"";
+                                                if (strFile.Contains("CurrentUser"))
+                                                    commandArguments =
+                                                        "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                        " -p " + "\"" + _strCertPass + "\"" + " -User " + storeNam +
+                                                        " " + "\"" + strFile + "\"";
                                                 else
-                                                    commandArguments = "/C C:\\windows\\system32\\certutil.exe -f -importpfx " + " -p " + "\"" + strCertPass + "\"" + " " + storeNam + " " + "\"" + strFiles[iFile] + "\"";
+                                                    commandArguments =
+                                                        "/C C:\\windows\\system32\\certutil.exe -f -importpfx " +
+                                                        " -p " + "\"" + _strCertPass + "\"" + " " + storeNam + " " +
+                                                        "\"" + strFile + "\"";
                                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                                                 if (returnCode == 0)
                                                 {
@@ -2614,12 +2955,12 @@ namespace BizTalkAdminOperations
                                             }
                                             else
                                             {
-                                                certificate = strFiles[iFile].Contains("CurrentUser")
-                                                    ? new X509Certificate2(strFiles[iFile], strCertPass,
+                                                certificate = strFile.Contains("CurrentUser")
+                                                    ? new X509Certificate2(strFile, _strCertPass,
                                                         X509KeyStorageFlags.Exportable &
                                                         X509KeyStorageFlags.PersistKeySet &
                                                         X509KeyStorageFlags.UserKeySet)
-                                                    : new X509Certificate2(strFiles[iFile], strCertPass,
+                                                    : new X509Certificate2(strFile, _strCertPass,
                                                         X509KeyStorageFlags.Exportable &
                                                         X509KeyStorageFlags.PersistKeySet &
                                                         X509KeyStorageFlags.MachineKeySet);
@@ -2633,7 +2974,7 @@ namespace BizTalkAdminOperations
                                 }
                                 catch (Exception ex)
                                 {
-                                    LogInfo("Exception: Cert File Name: " + strFiles[iFile]);
+                                    LogInfo("Exception: Cert File Name: " + strFile);
                                     LogException(ex);
                                 }
                             }
@@ -2652,26 +2993,29 @@ namespace BizTalkAdminOperations
                     LogShortSuccessMsg("Success: Imported Cert.");
                 else
                     LogInfo("No new certificates to import.");
-           
+
             }
-            else  //remote
+            else //remote
             {
                 LogInfo("CERT: Import started.");
                 LogInfo("Copying certificates to remote Machine: " + strDstNode);
                 //copy cert from local to remote
-                string strSrc = certPath;
-                string remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
-                string strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + certFolderName;
-                 commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
+                string strSrc = _certPath;
+                string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
+                string strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _certFolderName;
+                commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
                 returnCode = ExecuteCmd("CMD.EXE", commandArguments); //copy cert Folder to Remote destination server
 
-                if (returnCode < strRoboCopySuccessCode)
+                if (returnCode < _strRoboCopySuccessCode)
                 {
                     LogShortSuccessMsg("Success: Certificates copied to remote.");
                     LogInfo("Certificate Import started on Remote Machine.");
                     //now execute .net exe on remote machine
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + strUserNameForHost + " -p " + "\"" + strPasswordForHost + "\"" + " -accepteula" + "  \"" +
-                       remoteRootFolder + "\\" + remoteExeName + "\" \"" + remoteRootFolder + "\" \"ImportCert\" \"" + strCertPass + "\"\"";
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                       strUserNameForHost + " -p " + "\"" + strPasswordForHost + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + _remoteRootFolder +
+                                       "\" \"ImportCert\" \"" + _strCertPass + "\"\"";
 
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
@@ -2684,81 +3028,78 @@ namespace BizTalkAdminOperations
                     LogShortErrorMsg("Failed: Certificate copy to remote.");
 
                 strSrc = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + "\\Logs";
-                strDst = logPath;
+                strDst = _logPath;
                 commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/MOVE /R:1";
                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
-                if (returnCode < strRoboCopySuccessCode)
+                if (returnCode < _strRoboCopySuccessCode)
                     LogInfoInLogFile("Copied Certificate log to local.");
                 else
                     LogShortErrorMsg("Failed: Copying Cert Logs to local ");
             }
-            
+
 
         }
+
         #endregion
 
         #region Assemblies
+
         private int btnGetAssembliesList_Click(object sender, EventArgs e)
         {
-            AssemblyList asmList = null;
-            XmlSerializer x = null;
             XmlWriter xmlWriterApps = null;
             string appNameCollectionString = string.Empty;
-            int returnCode;
-            char[] charSeprator = { ',' };
+            char[] charSeprator = {','};
 
             try
             {
                 LogInfo("Assembly: Getting Assembly List.");
-                if (File.Exists(xmlPath + @"\SrcBizTalkAssembly.xml")) //delete if existing, create fresh copy
+                if (File.Exists(_xmlPath + @"\SrcBizTalkAssembly.xml")) //delete if existing, create fresh copy
                 {
-                    File.Delete(xmlPath + @"\SrcBizTalkAssembly.xml");
+                    File.Delete(_xmlPath + @"\SrcBizTalkAssembly.xml");
                 }
                 //read App.xml
                 //if App.xml is not existing then create one.
-                if (!File.Exists(xmlPath + @"\Apps.xml")) //if Apps.xml does not exist then create
+                if (!File.Exists(_xmlPath + @"\Apps.xml")) //if Apps.xml does not exist then create
                 {
                     if (btnGetApplicationList_Click(sender, e) == 1)
                         throw new Exception("Failed: Creating Apps.xml");
                 }
 
-                XElement xelement = XElement.Load(xmlPath + @"\Apps.xml");
+                XElement xelement = XElement.Load(_xmlPath + @"\Apps.xml");
 
                 var appList = (from element in xelement.Descendants("BizTalkApplication")
-                               let dCode = (string)element.Attribute("DependencyCode")
-                               orderby dCode descending
-                               select new
-                               {
-                                   DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
-                               })
-                       .ToList();
+                        let dCode = (string) element.Attribute("DependencyCode")
+                        orderby dCode descending
+                        select new
+                        {
+                            DcodeAppName = dCode + "," + element.Attribute("ApplicationName").Value
+                        })
+                    .ToList();
 
                 int appcount = appList.Count;
-
-                string msiPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(msiPath);
 
                 for (int iAppCount = 0; iAppCount < appcount; iAppCount++)
                 {
                     //appNameCollectionString = appNameCollectionString + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1].ToString();//
-                    appNameCollectionString = appNameCollectionString.TrimStart(',') + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1];
+                    appNameCollectionString = appNameCollectionString.TrimStart(',') + ',' +
+                                              appList[iAppCount].DcodeAppName.Split(charSeprator)[1];
                 }
 
 
-                if (machineName == strSrcNode) //local
+                if (_machineName == strSrcNode) //local
                 {
-                    BizTalkApplications bizTalkApps = new BizTalkApplications();
-
                     // instantiate new instance of Explorer OM
                     BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
                     LogInfo("Connecting to BizTalkMgmtDb..." + txtConnectionString.Text);
                     // connection string to the BizTalk management database
-                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                     //Get All Applications
                     Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
                     LogInfo("Connected.");
 
-                    asmList = new AssemblyList
+                    var asmList = new AssemblyList
                     {
                         Assembly = GetAssemblyList(appCol, appNameCollectionString).ToArray()
                     };
@@ -2773,11 +3114,11 @@ namespace BizTalkAdminOperations
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    x = new XmlSerializer(asmList.GetType());
+                    var x = new XmlSerializer(asmList.GetType());
                     XmlWriterSettings xmlWriterSetting =
                         new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                    xmlWriterApps = XmlWriter.Create(xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting);
+                    xmlWriterApps = XmlWriter.Create(_xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting);
                     x.Serialize(xmlWriterApps, asmList, ns);
                     LogInfo("Success: Created SrcBizTalkAssembly.xml.");
                     return 0;
@@ -2785,10 +3126,16 @@ namespace BizTalkAdminOperations
                 else //remote
                 {
                     LogInfo("Assembly: Getting Assembly list.");
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    string commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                    remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportAsmList\" \"" + txtConnectionString.Text.Trim() + "\" \"" + appNameCollectionString + "\"\"";
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
+                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                              "  \"" +
+                                              _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
+                                              _machineName +
+                                              "\\" + appPathUnc + "\" \"ExportAsmList\" \"" +
+                                              txtConnectionString.Text.Trim() + "\" \"" + appNameCollectionString +
+                                              "\"\"";
+                    var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                     if (returnCode == 0)
                     {
                         LogInfo("Success: Created SrcBizTalkAssembly.xml.");
@@ -2813,7 +3160,8 @@ namespace BizTalkAdminOperations
             }
         }
 
-        private IEnumerable<AssemblyListAssembly> GetAssemblyList(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, string appNameCollectionString)
+        private IEnumerable<AssemblyListAssembly> GetAssemblyList(
+            Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, string appNameCollectionString)
         {
             foreach (var app in appCol
                 .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
@@ -2834,53 +3182,48 @@ namespace BizTalkAdminOperations
         private void btnExportAssemblies_Click(object sender, EventArgs e)
         {
             //Cursor.Current = Cursors.WaitCursor;
-            XmlSerializer configSerializer = null;
             AssemblyList asmList = null;
-            string asmPath1, asmPath2, asmPath3, asmPath4, asmPath5;
-            int returnCode;
-            string[] findDLL = null; string[] customDll = null;
-            string ver = string.Empty;
-            string dir = string.Empty;
+            string[] customDll = null;
             int asmListCount = 0;
             int customDlls = 0;
-            char[] chrSep = { ',' };
+            char[] chrSep = {','};
 
             try
             {
                 LogInfo("Assemblies: Export started.");
-                if (strServerType == "BizTalk")
+                if (_strServerType == "BizTalk")
                 {
                     if (btnGetAssembliesList_Click(sender, e) == 1)
                         throw new Exception("Failed: Creating Assembly List");
 
-                    if (!File.Exists(xmlPath + @"\SrcBizTalkAssembly.xml"))
-                        throw new Exception("File: " + xmlPath + @"\SrcBizTalkAssembly.xml does not exist, Assembly Export is termintated please check logs for root cause.");
+                    if (!File.Exists(_xmlPath + @"\SrcBizTalkAssembly.xml"))
+                        throw new Exception("File: " + _xmlPath +
+                                            @"\SrcBizTalkAssembly.xml does not exist, Assembly Export is termintated please check logs for root cause.");
 
-                    configSerializer = new XmlSerializer(typeof(AssemblyList));
-                    asmList = (AssemblyList)configSerializer.Deserialize(new XmlTextReader(xmlPath + @"\SrcBizTalkAssembly.xml"));
+                    var configSerializer = new XmlSerializer(typeof(AssemblyList));
+                    asmList = (AssemblyList) configSerializer.Deserialize(
+                        new XmlTextReader(_xmlPath + @"\SrcBizTalkAssembly.xml"));
 
                     asmListCount = asmList.Assembly.Length;
-
-                    string appName = string.Empty;
                 }
-                asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
-                asmPath2 = @"C:\Windows\assembly\GAC\";
-                asmPath3 = @"C:\Windows\assembly\GAC_32\";
-                asmPath4 = @"C:\Windows\assembly\GAC_64\";
-                asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
+                var asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
+                var asmPath2 = @"C:\Windows\assembly\GAC\";
+                var asmPath3 = @"C:\Windows\assembly\GAC_32\";
+                var asmPath4 = @"C:\Windows\assembly\GAC_64\";
+                var asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
                 try
                 {
-                    if (Directory.Exists(asmPath))  //Recreate DLL Folder
+                    if (Directory.Exists(_asmPath)) //Recreate DLL Folder
                     {
-                        Directory.Delete(asmPath, true);
-                        Directory.CreateDirectory(asmPath);
+                        Directory.Delete(_asmPath, true);
+                        Directory.CreateDirectory(_asmPath);
                     }
 
-                    if (Directory.Exists(customDllPath))  //Recreate Custom Dll Folder
+                    if (Directory.Exists(_customDllPath)) //Recreate Custom Dll Folder
                     {
-                        Directory.Delete(customDllPath, true);
-                        Directory.CreateDirectory(customDllPath);
+                        Directory.Delete(_customDllPath, true);
+                        Directory.CreateDirectory(_customDllPath);
                     }
                 }
                 catch (Exception ex)
@@ -2889,45 +3232,57 @@ namespace BizTalkAdminOperations
                     throw new Exception("Error while cleaning DLL Folders.");
                 }
 
-                if (machineName == strSrcNode) //local
+                if (_machineName == strSrcNode) //local
                 {
-                    if (strCustomDllToInclude != string.Empty)  //if custom Dll filter not empty
+                    if (_strCustomDllToInclude != string.Empty) //if custom Dll filter not empty
                     {
-                        string[] CustomDllFilters = strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                        string[] customDllFilters =
+                            _strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
                         int customDllCount = 0;
-                        for (int i = 0; i < CustomDllFilters.Length; i++)
+                        foreach (string customDllFilter in customDllFilters)
                         {
-                            //BEGIN::custom asm list code                         
-                            string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
-                            customDllCount = customDllCount + customDll_1.Length + customDll_2.Length + customDll_3.Length + customDll_4.Length + customDll_5.Length;
+//BEGIN::custom asm list code                         
+                            string[] customDll1 =
+                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll2 =
+                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll3 =
+                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll4 =
+                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll5 =
+                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
+                            customDllCount = customDllCount + customDll1.Length + customDll2.Length +
+                                             customDll3.Length + customDll4.Length + customDll5.Length;
                         }
 
                         customDll = new string[customDllCount];
                         LogInfo("Initial Custom Assembly count: " + customDll.Length);
                         int customDllLength = 0;
-                        for (int i = 0; i < CustomDllFilters.Length; i++)
+                        foreach (string customDllFilter in customDllFilters)
                         {
-                            //BEGIN::custom asm list code                         
-                            string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
+//BEGIN::custom asm list code                         
+                            string[] customDll1 =
+                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll2 =
+                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll3 =
+                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll4 =
+                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll5 =
+                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
 
-                            customDll_1.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_1.Length;
-                            customDll_2.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_2.Length;
-                            customDll_3.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_3.Length;
-                            customDll_4.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_4.Length;
-                            customDll_5.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll_5.Length;
+                            customDll1.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll1.Length;
+                            customDll2.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll2.Length;
+                            customDll3.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll3.Length;
+                            customDll4.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll4.Length;
+                            customDll5.CopyTo(customDll, customDllLength);
+                            customDllLength = customDllLength + customDll5.Length;
                         }
 
                         customDll = customDll.Distinct().ToArray();
@@ -2935,7 +3290,8 @@ namespace BizTalkAdminOperations
 
                         //END::custom asm list code
                     }
-                    if (strServerType == "BizTalk")
+                    string dir;
+                    if (_strServerType == "BizTalk")
                     {
                         LogInfo("BizTalk Dll: Export started.");
                         List<string> bizTalkDll = new List<string>();
@@ -2943,33 +3299,37 @@ namespace BizTalkAdminOperations
                         {
                             try
                             {
-                                findDLL = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
-                                if (findDLL.Length == 0)
-                                    findDLL = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName + ".dll", SearchOption.AllDirectories);
+                                var findDll = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName + ".dll",
+                                    SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
+                                if (findDll.Length == 0)
+                                    findDll = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName + ".dll",
+                                        SearchOption.AllDirectories);
 
-                                if (findDLL.Length == 0)
+                                if (findDll.Length == 0)
                                 {
                                     LogShortErrorMsg("Did not Find Assembly:" + asmList.Assembly[i].AsmName);
                                 }
                                 else
                                 {
-                                    int fileCount = 0;
-
-                                    foreach (string filePath in findDLL)
+                                    foreach (string filePath in findDll)
                                     {
-                                        fileCount++;
                                         try
                                         {
-                                            if (strCustomDllToInclude != string.Empty) //if custom Dll fileter not empty
+                                            if (_strCustomDllToInclude != string.Empty
+                                            ) //if custom Dll fileter not empty
                                             {
                                                 //BEGIN::custom asm list code
-                                                while (Array.IndexOf(customDll, filePath) > -1) //if same dll is part of custom DLL then empty that entry in list.
+                                                while (Array.IndexOf(customDll, filePath) > -1
+                                                ) //if same dll is part of custom DLL then empty that entry in list.
                                                 {
 
                                                     customDll[Array.IndexOf(customDll, filePath)] = string.Empty;
@@ -2977,8 +3337,9 @@ namespace BizTalkAdminOperations
                                                 }
                                                 //END::custom asm list code
                                             }
-                                            ver = AssemblyName.GetAssemblyName(filePath).Version.ToString();
-                                            dir = asmPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" + ver;
+                                            var ver = AssemblyName.GetAssemblyName(filePath).Version.ToString();
+                                            dir = _asmPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" +
+                                                  ver;
 
                                             if (!Directory.Exists(dir))
                                             {
@@ -2986,51 +3347,58 @@ namespace BizTalkAdminOperations
                                             }
                                             //dir = ConvertPathToUncPath(dir);
                                             File.Copy(filePath, dir + "\\" + Path.GetFileName(filePath), true);
-                                            LogInfoInLogFile("Assembly copied: " + Path.GetFileName(filePath) + ", " + ver);
+                                            LogInfoInLogFile(
+                                                "Assembly copied: " + Path.GetFileName(filePath) + ", " + ver);
                                             // writer.WriteLine(Path.GetFileNameWithoutExtension(filePath) + "_" + ver);
                                             bizTalkDll.Add(Path.GetFileNameWithoutExtension(filePath) + "_" + ver);
-                                            }
+                                        }
                                         catch (Exception ex)
-                                        { LogException(ex); }
+                                        {
+                                            LogException(ex);
+                                        }
                                     }
 
                                 }
                             }
                             catch (Exception ex)
-                            { LogException(ex); }
+                            {
+                                LogException(ex);
+                            }
                         }
                         string[] distinctBizTalkDll = bizTalkDll.Distinct().ToArray();
-                        using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcBizTalkAssemblyList.txt", false))
+                        using (StreamWriter writer = new StreamWriter(_xmlPath + @"\SrcBizTalkAssemblyList.txt", false))
                         {
                             foreach (string dll in distinctBizTalkDll)
                             {
                                 writer.WriteLine(dll);
                             }
                         }
-                            LogShortSuccessMsg("Success: Exported BizTalk Dll");
-                    
+                        LogShortSuccessMsg("Success: Exported BizTalk Dll");
+
                     }
 
-                    if (strCustomDllToInclude != string.Empty) //if custom Dll fileter not empty
+                    if (_strCustomDllToInclude != string.Empty) //if custom Dll fileter not empty
                     {
                         LogInfo("Final Custom Assembly count: " + (customDll.Length - customDlls));
                         LogInfo("Custom Dll: Export started.");
                         //write custom dll paths in txt file
                         try
                         {
-                            using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcCustomAssemblyList.txt", false))
+                            using (StreamWriter writer =
+                                new StreamWriter(_xmlPath + @"\SrcCustomAssemblyList.txt", false))
                             {
                                 //copy custom dlls in CustomDll Folder
                                 foreach (string filePath in customDll)
                                 {
-                                    string CustomDllVer = "";
+                                    string customDllVer = "";
                                     try
                                     {
 
                                         if (!string.IsNullOrEmpty(filePath) && !string.IsNullOrWhiteSpace(filePath))
                                         {
-                                            CustomDllVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();
-                                            dir = customDllPath + "\\" + Path.GetFileNameWithoutExtension(filePath) + "_" + CustomDllVer;
+                                            customDllVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();
+                                            dir = _customDllPath + "\\" + Path.GetFileNameWithoutExtension(filePath) +
+                                                  "_" + customDllVer;
 
                                             if (!Directory.Exists(dir))
                                             {
@@ -3038,13 +3406,16 @@ namespace BizTalkAdminOperations
                                             }
                                             //dir = ConvertPathToUncPath(dir);
                                             File.Copy(filePath, dir + "\\" + Path.GetFileName(filePath), true);
-                                            writer.WriteLine(Path.GetFileNameWithoutExtension(filePath) + "_" + CustomDllVer);
-                                            LogInfoInLogFile("Assembly copied: " + Path.GetFileName(filePath) + ", " + CustomDllVer);
+                                            writer.WriteLine(Path.GetFileNameWithoutExtension(filePath) + "_" +
+                                                             customDllVer);
+                                            LogInfoInLogFile("Assembly copied: " + Path.GetFileName(filePath) + ", " +
+                                                             customDllVer);
                                         }
                                     }
                                     catch (Exception ex)
                                     {
-                                        LogShortErrorMsg("Assembly copy failed: " + Path.GetFileName(filePath) + ", " + CustomDllVer);
+                                        LogShortErrorMsg("Assembly copy failed: " + Path.GetFileName(filePath) + ", " +
+                                                         customDllVer);
                                         LogException(ex);
                                     }
                                 }
@@ -3058,14 +3429,20 @@ namespace BizTalkAdminOperations
 
                     }
                 }
-                else  //remote
+                else //remote
                 {
-                    string customDllPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(customDllPath);
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    string asmPathUnc = ConvertPathToUncPath(asmPath);
-                    string commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                         remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"ExportDll\" \"\\\\" + machineName + "\\" + asmPathUnc + "\" \"" + strCustomDllToInclude + "\" \"" + customDllPathUnc + "\" \"" + strServerType + "\"\"";
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments); //dlls will be copied and pasted back to Local machine, hence machineName used in commandArgument.
+                    string customDllPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_customDllPath);
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    string asmPathUnc = ConvertPathToUncPath(_asmPath);
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
+                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                              "  \"" +
+                                              _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
+                                              _machineName +
+                                              "\\" + appPathUnc + "\"" + " \"ExportDll\" \"\\\\" + _machineName + "\\" +
+                                              asmPathUnc + "\" \"" + _strCustomDllToInclude + "\" \"" +
+                                              customDllPathUnc + "\" \"" + _strServerType + "\"\"";
+                    var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: Biztalk Assemblies Exported.");
@@ -3078,33 +3455,29 @@ namespace BizTalkAdminOperations
                 LogException(ex);
             }
         }
-        
+
         private void btnImportAssemblies_Click(object sender, EventArgs e)
         {
-           // XmlSerializer configSerializer = null;
-          //  AssemblyList asmList = null;
-            string filePath = string.Empty;
-            string commandArguments = string.Empty, customAssemblyVer = string.Empty;
+            // XmlSerializer configSerializer = null;
+            //  AssemblyList asmList = null;
             int returnCode = 0;
-            string[] customDllDst = null;
-          //  int asmListCount = 0;
-            bool importBizTalkDll = true;
-            char[] chrSep = { ',' };
+            //  int asmListCount = 0;
+            char[] chrSep = {','};
 
             try
             {
                 LogInfo("Assembly: Import started.");
-            
-                if(!File.Exists(xmlPath + @"\SrcBizTalkAssemblyList.txt"))
+
+                if (!File.Exists(_xmlPath + @"\SrcBizTalkAssemblyList.txt"))
                     throw new Exception("SrcBizTalkAssemblyList txt file does not exist.");
 
-         
+
 
                 try
                 {
-                    if (File.Exists(xmlPath + @"\BizTalkAssemblyToImport.txt"))  //delete older version
+                    if (File.Exists(_xmlPath + @"\BizTalkAssemblyToImport.txt")) //delete older version
                     {
-                        File.Delete(xmlPath + @"\BizTalkAssemblyToImport.txt");
+                        File.Delete(_xmlPath + @"\BizTalkAssemblyToImport.txt");
                     }
                 }
                 catch (Exception ex)
@@ -3113,18 +3486,19 @@ namespace BizTalkAdminOperations
                     throw new Exception("Error while deleting BizTalkAssemblyToImport txt file.");
                 }
 
-                if (strServerType == "BizTalk")
+                if (_strServerType == "BizTalk")
                 {
                     //update AssemblyList, remove those rows where App already exists in Dst
                     UpdateAssemblyFile();
                     LogInfo("Generated Delta of BizTalk Assembly list to be imported.");
-                    
+
                 }
 
-                if (strCustomDllToInclude != string.Empty)
+                string commandArguments;
+                if (_strCustomDllToInclude != string.Empty)
                 {
                     // BEGIN::custom DLL Code::Get  "DstCustomAssemblyList.txt"
-                    if (machineName == strDstNode) //local
+                    if (_machineName == strDstNode) //local
                     {
                         string asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
                         string asmPath2 = @"C:\Windows\assembly\GAC\";
@@ -3132,54 +3506,68 @@ namespace BizTalkAdminOperations
                         string asmPath4 = @"C:\Windows\assembly\GAC_64\";
                         string asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
-                        string[] CustomDllFilters = strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                        string[] customDllFilters =
+                            _strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
                         int customDllCount = 0;
-                        for (int i = 0; i < CustomDllFilters.Length; i++)
+                        foreach (string customDllFilter in customDllFilters)
                         {
-                            //BEGIN::custom asm list code                         
-                            string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
-                            customDllCount = customDllCount + customDll_1.Length + customDll_2.Length + customDll_3.Length + customDll_4.Length + customDll_5.Length;
+//BEGIN::custom asm list code                         
+                            string[] customDll1 =
+                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll2 =
+                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll3 =
+                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll4 =
+                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll5 =
+                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
+                            customDllCount = customDllCount + customDll1.Length + customDll2.Length +
+                                             customDll3.Length + customDll4.Length + customDll5.Length;
                         }
 
-                        customDllDst = new string[customDllCount];
+                        var customDllDst = new string[customDllCount];
                         int customDllLength = 0;
-                        for (int i = 0; i < CustomDllFilters.Length; i++)
+                        foreach (string customDllFilter in customDllFilters)
                         {
-                            //BEGIN::custom asm list code                         
-                            string[] customDll_1 = Directory.GetFiles(asmPath1, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_2 = Directory.GetFiles(asmPath2, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_3 = Directory.GetFiles(asmPath3, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_4 = Directory.GetFiles(asmPath4, CustomDllFilters[i], SearchOption.AllDirectories);
-                            string[] customDll_5 = Directory.GetFiles(asmPath5, CustomDllFilters[i], SearchOption.AllDirectories);
+//BEGIN::custom asm list code                         
+                            string[] customDll1 =
+                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll2 =
+                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll3 =
+                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll4 =
+                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
+                            string[] customDll5 =
+                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
 
-                            customDll_1.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll_1.Length;
-                            customDll_2.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll_2.Length;
-                            customDll_3.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll_3.Length;
-                            customDll_4.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll_4.Length;
-                            customDll_5.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll_5.Length;
+                            customDll1.CopyTo(customDllDst, customDllLength);
+                            customDllLength = customDllLength + customDll1.Length;
+                            customDll2.CopyTo(customDllDst, customDllLength);
+                            customDllLength = customDllLength + customDll2.Length;
+                            customDll3.CopyTo(customDllDst, customDllLength);
+                            customDllLength = customDllLength + customDll3.Length;
+                            customDll4.CopyTo(customDllDst, customDllLength);
+                            customDllLength = customDllLength + customDll4.Length;
+                            customDll5.CopyTo(customDllDst, customDllLength);
+                            customDllLength = customDllLength + customDll5.Length;
                         }
 
                         customDllDst = customDllDst.Distinct().ToArray();
                         Array.Sort(customDllDst);
 
                         //write custom dll paths in txt file
-                        using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstCustomAssemblyList.txt", false))
+                        using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstCustomAssemblyList.txt", false))
                         {
                             foreach (string filePathCusDll in customDllDst)
                             {
                                 if (filePathCusDll != string.Empty)
                                 {
-                                    string CustomDllVer = AssemblyName.GetAssemblyName(filePathCusDll).Version.ToString();
-                                    writer.WriteLine(Path.GetFileNameWithoutExtension(filePathCusDll) + "_" + CustomDllVer);
+                                    string customDllVer =
+                                        AssemblyName.GetAssemblyName(filePathCusDll).Version.ToString();
+                                    writer.WriteLine(Path.GetFileNameWithoutExtension(filePathCusDll) + "_" +
+                                                     customDllVer);
                                 }
 
                             }
@@ -3187,11 +3575,16 @@ namespace BizTalkAdminOperations
                     }
                     else //remote, get list of Custom Dlls from Dst
                     {
-                        string appPathUnc = ConvertPathToUncPath(appPath);
-                        string asmPathUnc = ConvertPathToUncPath(asmPath);
-                        commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                             remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"DstCustomDllList\" \"" + strCustomDllToInclude + "\"\"";
-                        returnCode = ExecuteCmd("CMD.EXE", commandArguments); //DstCustomAssemblyList.txt will be Generated in XML Folder
+                        string appPathUnc = ConvertPathToUncPath(_appPath);
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
+                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                           "  \"" +
+                                           _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
+                                           "\\" + appPathUnc + "\"" + " \"DstCustomDllList\" \"" +
+                                           _strCustomDllToInclude + "\"\"";
+                        returnCode =
+                            ExecuteCmd("CMD.EXE",
+                                commandArguments); //DstCustomAssemblyList.txt will be Generated in XML Folder
 
                         if (returnCode == 0)
                             LogInfo("Created DstCustomAssemblyList.txt.");
@@ -3204,18 +3597,19 @@ namespace BizTalkAdminOperations
                 }
                 //now compare both DstCustomAssemblyList.txt and SrcCustomAssemblyList.txt
 
-                if (strCustomDllToInclude != string.Empty)
+                if (_strCustomDllToInclude != string.Empty)
                 {
 
-                    string[] srcLines = File.ReadAllLines(xmlPath + @"\SrcCustomAssemblyList.txt");
-                    string[] dstLines = File.ReadAllLines(xmlPath + @"\DstCustomAssemblyList.txt");
+                    string[] srcLines = File.ReadAllLines(_xmlPath + @"\SrcCustomAssemblyList.txt");
+                    string[] dstLines = File.ReadAllLines(_xmlPath + @"\DstCustomAssemblyList.txt");
 
                     foreach (string srcFilePath in srcLines)
                     {
-                        if (Array.IndexOf(dstLines, srcFilePath) > -1) //if same dll is part of custom DLL then empty that entry in list.                                                    
+                        if (Array.IndexOf(dstLines, srcFilePath) > -1
+                        ) //if same dll is part of custom DLL then empty that entry in list.                                                    
                             srcLines[Array.IndexOf(srcLines, srcFilePath)] = string.Empty;
                     }
-                    using (StreamWriter writer = new StreamWriter(xmlPath + @"\CustomAssemblyToImport.txt", false))
+                    using (StreamWriter writer = new StreamWriter(_xmlPath + @"\CustomAssemblyToImport.txt", false))
                     {
                         foreach (string filePathDll in srcLines)
                         {
@@ -3232,72 +3626,81 @@ namespace BizTalkAdminOperations
                 }
                 //actual gacing code
                 //remote copy 
-                if (machineName != strDstNode)  //if gacing has to be done on remote box then copy BizTalk DLL and Custom Dll folder on remote
+                if (_machineName != strDstNode
+                ) //if gacing has to be done on remote box then copy BizTalk DLL and Custom Dll folder on remote
                 {
-                    string strSrc, strDst, remoteRootFolderUnc = string.Empty;
-                    remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
-                    if (strServerType == "BizTalk" && importBizTalkDll)
+                    string strSrc, strDst;
+                    var remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
+                    if (_strServerType == "BizTalk")
                     {
                         //copy BizTalk Dll Folder
-                        strSrc = asmPath;
+                        strSrc = _asmPath;
 
-                        strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + asmFolderName;
-                        commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
-                        returnCode = ExecuteCmd("CMD.EXE", commandArguments); //copy DLL Folder to Remote destination server 
-                        if (returnCode < strRoboCopySuccessCode)
+                        strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _asmFolderName;
+                        commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                           "/E /COPYALL /R:1";
+                        returnCode =
+                            ExecuteCmd("CMD.EXE", commandArguments); //copy DLL Folder to Remote destination server 
+                        if (returnCode < _strRoboCopySuccessCode)
                             LogShortSuccessMsg("Success: Copied DLL folder to remote.");
                         else
                             LogShortErrorMsg("Failed: Copying DLL folder to remote.");
                     }
                     //custom Dll Folder
-                    strSrc = customDllPath;
-                    strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + customDllFolderName;
-                    commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments); //copy Custom DLL Folder to Remote destination server 
-                    if (returnCode < strRoboCopySuccessCode)
+                    strSrc = _customDllPath;
+                    strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _customDllFolderName;
+                    commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                       "/E /COPYALL /R:1";
+                    returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //copy Custom DLL Folder to Remote destination server 
+                    if (returnCode < _strRoboCopySuccessCode)
                         LogShortSuccessMsg("Success: Copied Custom DLL folder to remote.");
                     else
                         LogShortErrorMsg("Failed: Copying Custom DLL folder to remote.");
                 }
 
-                if (strCustomDllToInclude != string.Empty)
+                string filePath;
+                if (_strCustomDllToInclude != string.Empty)
                 {
-                    string[] srcLines = File.ReadAllLines(xmlPath + @"\CustomAssemblyToImport.txt");
+                    string[] srcLines = File.ReadAllLines(_xmlPath + @"\CustomAssemblyToImport.txt");
                     int flagCustomDllExists = 0;
                     LogInfo("Custom Dll Import Started.");
-                    for (int i = 0; i < srcLines.Length; i++)  //Custom DLL
+                    foreach (string srcLine in srcLines)
                     {
-                        if (srcLines[i] != string.Empty)
+                        if (srcLine != string.Empty)
                         {
                             flagCustomDllExists++;
                             try
                             {
-                                string dllName = srcLines[i].Substring(0, srcLines[i].LastIndexOf("_"));
-                                string dllNameRemote = srcLines[i] + "\\" + dllName + ".dll";
-                                filePath = customDllPath + "\\" + srcLines[i] + "\\" + dllName + ".dll";
-                                customAssemblyVer = AssemblyName.GetAssemblyName(filePath).Version.ToString();
-                                if (machineName == strDstNode) //local
+                                string dllName = srcLine.Substring(0, srcLine.LastIndexOf("_"));
+                                string dllNameRemote = srcLine + "\\" + dllName + ".dll";
+                                filePath = _customDllPath + "\\" + srcLine + "\\" + dllName + ".dll";
+                                if (_machineName == strDstNode) //local
                                 {
                                     if (File.Exists(filePath))
                                     {
-                                        returnCode = ExecuteCmd(gacUtilPath, String.Format("/i \"{0}\"", filePath));
+                                        returnCode = ExecuteCmd(_gacUtilPath, String.Format("/i \"{0}\"", filePath));
                                     }
                                 }
                                 else //remote, Custom DLL folder already copied above, now just execute gacutil using PsExec
                                 {
-                                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\" " + " -accepteula" +" "+
-                                        remoteRootFolder + "\\GacUtil.exe -i " + " \"" + remoteRootFolder + customDllFolderName + "\\" + dllNameRemote + "\"\"";
+                                    commandArguments =
+                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
+                                        strUserName + "\"" + " -p " + "\"" + strPassword + "\" " + " -accepteula" +
+                                        " " +
+                                        _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
+                                        _customDllFolderName + "\\" + dllNameRemote + "\"\"";
                                     returnCode = ExecuteCmd("CMD.EXE", commandArguments); //gac dll remotely
                                 }
 
                                 if (returnCode == 0)
                                 {
-                                    LogInfo("Gaced Assembly: " + srcLines[i]);
-                                    
+                                    LogInfo("Gaced Assembly: " + srcLine);
+
                                 }
                                 else
-                                    LogShortErrorMsg("Failed: Gac Assembly: " + srcLines[i]);
-                                
+                                    LogShortErrorMsg("Failed: Gac Assembly: " + srcLine);
+
                             }
                             catch (Exception ex)
                             {
@@ -3311,44 +3714,48 @@ namespace BizTalkAdminOperations
                         LogShortSuccessMsg("Success: Custom Assemblies Imported");
                 }
 
-               
-                if(strServerType== "BizTalk")
+
+                if (_strServerType == "BizTalk")
                 {
-                    string[] srcLines = File.ReadAllLines(xmlPath + @"\BizTalkAssemblyToImport.txt");
+                    string[] srcLines = File.ReadAllLines(_xmlPath + @"\BizTalkAssemblyToImport.txt");
                     int flagBizTalkDllExists = 0;
                     LogInfo("BizTalk Assembly Import Started.");
-                    for (int i = 0; i < srcLines.Length; i++)  
+                    foreach (string srcLine in srcLines)
                     {
-                        if (srcLines[i] != string.Empty)
+                        if (srcLine != string.Empty)
                         {
                             flagBizTalkDllExists++;
                             try
                             {
-                                string dllName = srcLines[i].Substring(0, srcLines[i].LastIndexOf("_"));
-                                string dllNameRemote = srcLines[i] + "\\" + dllName + ".dll";
-                                filePath = asmPath + "\\" + srcLines[i] + "\\" + dllName + ".dll";
-                               
-                                if (machineName == strDstNode) //local
+                                string dllName = srcLine.Substring(0, srcLine.LastIndexOf("_"));
+                                string dllNameRemote = srcLine + "\\" + dllName + ".dll";
+                                filePath = _asmPath + "\\" + srcLine + "\\" + dllName + ".dll";
+
+                                if (_machineName == strDstNode) //local
                                 {
                                     if (File.Exists(filePath))
                                     {
-                                        returnCode = ExecuteCmd(gacUtilPath, String.Format("/i \"{0}\"", filePath));
+                                        returnCode = ExecuteCmd(_gacUtilPath, String.Format("/i \"{0}\"", filePath));
                                     }
                                 }
                                 else //remote 
                                 {
-                                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\" " + " -accepteula" + " " +
-                                        remoteRootFolder + "\\GacUtil.exe -i " + " \"" + remoteRootFolder + asmFolderName + "\\" + dllNameRemote + "\"\"";
+                                    commandArguments =
+                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
+                                        strUserName + "\"" + " -p " + "\"" + strPassword + "\" " + " -accepteula" +
+                                        " " +
+                                        _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
+                                        _asmFolderName + "\\" + dllNameRemote + "\"\"";
                                     returnCode = ExecuteCmd("CMD.EXE", commandArguments); //gac dll remotely
                                 }
 
                                 if (returnCode == 0)
                                 {
-                                    LogInfo("Gaced Assembly: " + srcLines[i]);
+                                    LogInfo("Gaced Assembly: " + srcLine);
 
                                 }
                                 else
-                                    LogShortErrorMsg("Failed: Gac Assembly: " + srcLines[i]);
+                                    LogShortErrorMsg("Failed: Gac Assembly: " + srcLine);
 
                             }
                             catch (Exception ex)
@@ -3362,14 +3769,15 @@ namespace BizTalkAdminOperations
                     else
                         LogShortSuccessMsg("Success: BizTalk Assemblies Imported");
                 }
-                if (machineName != strDstNode)
+                if (_machineName != strDstNode)
                 {
                     //Delete Folders
                     try
                     {
-                      string  remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
-                      string asmFolder=  "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + asmFolderName;
-                        string customDllFolder= "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + customDllFolderName;
+                        string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
+                        string asmFolder = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _asmFolderName;
+                        string customDllFolder =
+                            "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _customDllFolderName;
                         if (Directory.Exists(asmFolder))
                         {
                             Directory.Delete(asmFolder, true);
@@ -3379,7 +3787,7 @@ namespace BizTalkAdminOperations
                             Directory.Delete(customDllFolder, true);
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         LogException(ex);
                     }
@@ -3397,47 +3805,45 @@ namespace BizTalkAdminOperations
 
         private string btnBamExport_Click(object sender, EventArgs e)
         {
-            string commandArguments;
-            int returnCode=0;
             try
             {
                 LogInfo("BAM: Export started.");
 
                 LogInfo("Cleaning already existing Bam Files.");
-                try  //cleaning process before starting export.
+                try //cleaning process before starting export.
                 {
-                    if (File.Exists(xmlPath + "\\BamDef.xml"))
+                    if (File.Exists(_xmlPath + "\\BamDef.xml"))
                     {
-                        File.Delete(xmlPath + "\\BamDef.xml");
+                        File.Delete(_xmlPath + "\\BamDef.xml");
                         LogInfoInLogFile("Deleted BamDef.xml.");
                     }
 
-                    if (File.Exists(xmlPath + "\\BamDefToImport.xml"))
+                    if (File.Exists(_xmlPath + "\\BamDefToImport.xml"))
                     {
-                        File.Delete(xmlPath + "\\BamDefToImport.xml");
+                        File.Delete(_xmlPath + "\\BamDefToImport.xml");
                         LogInfoInLogFile("Deleted BamDefToImport.xml.");
                     }
 
-                    if (File.Exists(xmlPath + @"\SrcBamViewsList.txt"))
+                    if (File.Exists(_xmlPath + @"\SrcBamViewsList.txt"))
                     {
-                        File.Delete(xmlPath + @"\SrcBamViewsList.txt");
+                        File.Delete(_xmlPath + @"\SrcBamViewsList.txt");
                         LogInfoInLogFile("Deleted SrcBamViewsList.txt.");
                     }
 
-                    if (File.Exists(xmlPath + @"\DstBamActivitiesList.txt"))
+                    if (File.Exists(_xmlPath + @"\DstBamActivitiesList.txt"))
                     {
-                        File.Delete(xmlPath + @"\DstBamActivitiesList.txt");
+                        File.Delete(_xmlPath + @"\DstBamActivitiesList.txt");
                         LogInfoInLogFile("Deleted DstBamActivitiesList.txt.");
                     }
 
-                    string[] bamViewFiles = Directory.GetFiles(xmlPath, "BamView_*.txt", SearchOption.AllDirectories);
+                    string[] bamViewFiles = Directory.GetFiles(_xmlPath, "BamView_*.txt", SearchOption.AllDirectories);
                     foreach (string bamViewFile in bamViewFiles)
                     {
                         File.Delete(bamViewFile);
                         LogInfoInLogFile("Deleted " + bamViewFile);
                     }
 
-                    string[] bttFiles = Directory.GetFiles(xmlPath, "BTT_*.xml", SearchOption.AllDirectories);
+                    string[] bttFiles = Directory.GetFiles(_xmlPath, "BTT_*.xml", SearchOption.AllDirectories);
                     foreach (string bttFile in bttFiles)
                     {
                         File.Delete(bttFile);
@@ -3447,10 +3853,13 @@ namespace BizTalkAdminOperations
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning Bam Files, please clean them manually and resume operation." + ex.Message);
+                    throw new Exception(
+                        "Error while cleaning Bam Files, please clean them manually and resume operation." +
+                        ex.Message);
                 }
 
-                using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() +
+                                                      ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
                     sqlCon.Open();
 
@@ -3460,17 +3869,20 @@ namespace BizTalkAdminOperations
                         {
                             while (sqlRed.Read())
                             {
-                                srcBAMSqlInstance = sqlRed.GetString(0);
+                                _srcBAMSqlInstance = sqlRed.GetString(0);
                             }
                         }
                     }
                 }
 
-                LogInfo("Connecting to BamPrimaryImport...." + srcBAMSqlInstance);
-                if (machineName == strSrcNode)
+                LogInfo("Connecting to BamPrimaryImport...." + _srcBAMSqlInstance);
+                string commandArguments;
+                int returnCode;
+                if (_machineName == strSrcNode)
                 {
-                    commandArguments = " get-defxml -FileName:\"" + xmlPath + "\\BamDef.xml\" -Server:" + srcBAMSqlInstance + " -Database:BAMPrimaryImport";
-                    returnCode = ExecuteCmd(bamExePath, commandArguments);
+                    commandArguments = " get-defxml -FileName:\"" + _xmlPath + "\\BamDef.xml\" -Server:" +
+                                       _srcBAMSqlInstance + " -Database:BAMPrimaryImport";
+                    returnCode = ExecuteCmd(_bamExePath, commandArguments);
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: BAM Definition Exported.");
                     else
@@ -3480,29 +3892,38 @@ namespace BizTalkAdminOperations
                 }
                 else
                 {
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-         remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportBamDefinition\" \"" + srcBAMSqlInstance + "\" \"";
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"ExportBamDefinition\" \"" + _srcBAMSqlInstance + "\" \"";
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                     if (returnCode == 0)
-                        LogShortSuccessMsg("Success: Triggered BAM Defintion Export Remotely,Please Check Remote operation Log for Further Details.");
+                        LogShortSuccessMsg(
+                            "Success: Triggered BAM Defintion Export Remotely,Please Check Remote operation Log for Further Details.");
                     else
                     {
                         throw new Exception("Failed: Triggering BAM Defintion Export");
                     }
                 }
 
-                
-                if (!File.Exists(xmlPath + @"\BamDef.xml"))
+
+                if (!File.Exists(_xmlPath + @"\BamDef.xml"))
                     throw new Exception("BamDef.xml is not Present");
 
                 //Get all Views
                 LogInfo("BAM: Get all views.");
 
-                using (var connection = new SqlConnection("Server=" + srcBAMSqlInstance + ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI"))
+                using (var connection = new SqlConnection("Server=" + _srcBAMSqlInstance +
+                                                          ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI"))
                 {
                     connection.Open();
-                    using (var sqlCmd = new SqlCommand("SELECT ViewName FROM bam_Metadata_Views;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;", connection))
+                    using (var sqlCmd =
+                        new SqlCommand(
+                            "SELECT ViewName FROM bam_Metadata_Views;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;",
+                            connection))
                     {
                         using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
                         {
@@ -3513,7 +3934,8 @@ namespace BizTalkAdminOperations
 
                                 ds.Tables[0].TableName = "BamViews";
                                 ds.Tables[1].TableName = "BttFiles";
-                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcBamViewsList.txt", false))
+                                using (StreamWriter writer =
+                                    new StreamWriter(_xmlPath + @"\SrcBamViewsList.txt", false))
                                 {
                                     foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
                                     {
@@ -3525,32 +3947,46 @@ namespace BizTalkAdminOperations
                                 foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
                                 {
                                     LogInfoInLogFile("BAM: Get Accounts for View: " + dRow["ViewName"]);
-                                    if (machineName == strSrcNode)
+                                    if (_machineName == strSrcNode)
                                     {
-                                        commandArguments = "/C " + "\"\"" + bamExePath + "\"" + " get-accounts -View:\"" + dRow["ViewName"] + "\" -Server:" + srcBAMSqlInstance
-                                                           + " -Database:BAMPrimaryImport > \"" + xmlPath + "\\BamView_" + dRow["ViewName"] + ".txt\"\"";
+                                        commandArguments =
+                                            "/C " + "\"\"" + _bamExePath + "\"" + " get-accounts -View:\"" +
+                                            dRow["ViewName"] + "\" -Server:" + _srcBAMSqlInstance
+                                            + " -Database:BAMPrimaryImport > \"" + _xmlPath + "\\BamView_" +
+                                            dRow["ViewName"] + ".txt\"\"";
                                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                                         if (returnCode == 0)
-                                            LogShortSuccessMsg("Success: Get BAM Accounts for View: " + dRow["ViewName"]);
+                                            LogShortSuccessMsg(
+                                                "Success: Get BAM Accounts for View: " + dRow["ViewName"]);
                                         else
                                             LogShortErrorMsg("Failed: Get BAM Accounts for View: " + dRow["ViewName"]);
                                     }
                                     else
                                     {
-                                        string appPathUnc = ConvertPathToUncPath(appPath);
-                                        commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                                                           remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ExportBAMAccounts\" \"" + srcBAMSqlInstance + "\" \"" + dRow["ViewName"] + "\"\"";
+                                        string appPathUnc = ConvertPathToUncPath(_appPath);
+                                        commandArguments =
+                                            "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
+                                            strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                            "  \"" +
+                                            _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
+                                            _machineName +
+                                            "\\" + appPathUnc + "\" \"ExportBAMAccounts\" \"" + _srcBAMSqlInstance +
+                                            "\" \"" + dRow["ViewName"] + "\"\"";
 
                                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                                         if (returnCode == 0)
-                                            LogShortSuccessMsg("Success:  Remotely Trigggered  BAM Accounts for View: " + dRow["ViewName"] + ",Please Check Remote operation Log for Further Details.");
+                                            LogShortSuccessMsg(
+                                                "Success:  Remotely Trigggered  BAM Accounts for View: " +
+                                                dRow["ViewName"] +
+                                                ",Please Check Remote operation Log for Further Details.");
                                         else
-                                            LogShortErrorMsg("Failed: Triggering Remotely BAM Accounts for View: " + dRow["ViewName"]);
+                                            LogShortErrorMsg("Failed: Triggering Remotely BAM Accounts for View: " +
+                                                             dRow["ViewName"]);
                                     }
 
-                    
+
                                 }
 
                                 //BTT Files
@@ -3561,7 +3997,7 @@ namespace BizTalkAdminOperations
                                     string activityName = dRow["ActivityName"].ToString();
                                     XmlDocument xDoc = new XmlDocument();
                                     xDoc.LoadXml(bttXml);
-                                    xDoc.Save(xmlPath + "\\BTT_" + activityName + ".xml");
+                                    xDoc.Save(_xmlPath + "\\BTT_" + activityName + ".xml");
                                 }
                             }
                         }
@@ -3575,47 +4011,51 @@ namespace BizTalkAdminOperations
             {
                 LogException(ex);
             }
-            return strSuccess;
+            return _strSuccess;
         }
 
         private string btnBamImport_Click(object sender, EventArgs e)
         {
             string commandArguments;
-            int returnCode=0;
+            int returnCode;
             try
             {
                 LogInfo("BAM: Import started.");
-               
-                if (!File.Exists(xmlPath + @"\BamDef.xml"))
+
+                if (!File.Exists(_xmlPath + @"\BamDef.xml"))
                     throw new Exception("BamDef xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
-                doc.Load(xmlPath + "\\BamDef.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file is empty.                
+                doc.Load(_xmlPath + "\\BamDef.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file is empty.                
                     throw new Exception("BamDef xml file is empty.");
 
                 LogInfo("Cleaning already existing Bam Files: BamDefToImport.xml and DstBamActivitiesList.txt.");
-                try  //cleaning process before starting import, 2 files have to be deleted which are Generated anew.
+                try //cleaning process before starting import, 2 files have to be deleted which are Generated anew.
                 {
-                    if (File.Exists(xmlPath + "\\BamDefToImport.xml"))
+                    if (File.Exists(_xmlPath + "\\BamDefToImport.xml"))
                     {
-                        File.Delete(xmlPath + "\\BamDefToImport.xml");
+                        File.Delete(_xmlPath + "\\BamDefToImport.xml");
                         LogInfo("Deleted BamDefToImport.xml.");
                     }
 
-                    if (File.Exists(xmlPath + @"\DstBamActivitiesList.txt"))
+                    if (File.Exists(_xmlPath + @"\DstBamActivitiesList.txt"))
                     {
-                        File.Delete(xmlPath + @"\DstBamActivitiesList.txt");
+                        File.Delete(_xmlPath + @"\DstBamActivitiesList.txt");
                         LogInfo("Deleted DstBamActivitiesList.txt.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning Bam Files, please clean them manually and resume operation." + ex.Message);
+                    throw new Exception(
+                        "Error while cleaning Bam Files, please clean them manually and resume operation." +
+                        ex.Message);
                 }
 
-                using (SqlConnection sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                using (SqlConnection sqlCon = new SqlConnection(
+                    "Server=" + txtConnectionStringDst.Text.Trim() +
+                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
                     sqlCon.Open();
 
@@ -3625,18 +4065,22 @@ namespace BizTalkAdminOperations
                         {
                             while (sqlRed.Read())
                             {
-                                dstBAMSqlInstance = sqlRed.GetString(0);
+                                _dstBAMSqlInstance = sqlRed.GetString(0);
                             }
                         }
                     }
                 }
 
-                LogInfo("Connecting Dst Sql..." + dstBAMSqlInstance);
+                LogInfo("Connecting Dst Sql..." + _dstBAMSqlInstance);
                 //get existing activities from Dst machine and write into DstBamActivitiesList.txt file under XmlBinding Folder
-                using (var connection = new SqlConnection("Server=" + dstBAMSqlInstance + ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI"))
+                using (var connection = new SqlConnection("Server=" + _dstBAMSqlInstance +
+                                                          ";Initial Catalog=BamPrimaryImport;Integrated Security=SSPI"))
                 {
                     connection.Open();
-                    using (var sqlCmd = new SqlCommand("SELECT ActivityName FROM bam_Metadata_Activities;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;", connection))
+                    using (var sqlCmd =
+                        new SqlCommand(
+                            "SELECT ActivityName FROM bam_Metadata_Activities;SELECT ProfileXml, ActivityName FROM bam_Metadata_TrackingProfiles;",
+                            connection))
                     {
                         using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
                         {
@@ -3647,7 +4091,8 @@ namespace BizTalkAdminOperations
                                 ds.Tables[1].TableName = "BttFiles";
 
                                 //create DstBamActivitiesList.txt
-                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstBamActivitiesList.txt", false))
+                                using (StreamWriter writer =
+                                    new StreamWriter(_xmlPath + @"\DstBamActivitiesList.txt", false))
                                 {
                                     foreach (DataRow dRow in ds.Tables["Activites"].Rows)
                                     {
@@ -3655,7 +4100,7 @@ namespace BizTalkAdminOperations
                                     }
                                 }
                                 //create DstBamBttList.txt
-                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstBamBttList.txt", false))
+                                using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstBamBttList.txt", false))
                                 {
                                     foreach (DataRow dRow in ds.Tables["BttFiles"].Rows)
                                     {
@@ -3669,23 +4114,24 @@ namespace BizTalkAdminOperations
 
                 LogInfo("Generated BamActivities list of Dst.");
                 //update BamDef File
-                UpdateBamDefFile(xmlPath + "\\BamDef.xml", xmlPath + "\\DstBamActivitiesList.txt");
+                UpdateBamDefFile(_xmlPath + "\\BamDef.xml", _xmlPath + "\\DstBamActivitiesList.txt");
 
                 //check file is empty or not
                 doc = new XmlDocument();
-                doc.Load(xmlPath + "\\BamDefToImport.xml");
-                if (doc.DocumentElement.ChildNodes.Count == 0)//if file not empty.                
+                doc.Load(_xmlPath + "\\BamDefToImport.xml");
+                if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new Exception("BamDefToImport xml file is empty.");
 
                 LogInfo("Generated BamActivities Delta to be imported.");
 
 
                 //Now import Bam Def xml
-                if (machineName == strDstNode)
+                if (_machineName == strDstNode)
                 {
-                    commandArguments = " deploy-all -DefinitionFile:\"" + xmlPath + "\\BamDefToImport.xml\" -Server:" + dstBAMSqlInstance
-                            + " -Database:BAMPrimaryImport";
-                    returnCode = ExecuteCmd(bamExePath, commandArguments);
+                    commandArguments = " deploy-all -DefinitionFile:\"" + _xmlPath + "\\BamDefToImport.xml\" -Server:" +
+                                       _dstBAMSqlInstance
+                                       + " -Database:BAMPrimaryImport";
+                    returnCode = ExecuteCmd(_bamExePath, commandArguments);
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: BamDef Imported.");
                     else
@@ -3693,63 +4139,79 @@ namespace BizTalkAdminOperations
                 }
                 else
                 {
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-         remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ImportBamDefinition\" \"" + dstBAMSqlInstance + "\" \"";
-                    
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\" \"ImportBamDefinition\" \"" + _dstBAMSqlInstance + "\" \"";
+
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                     if (returnCode == 0)
-                        LogShortSuccessMsg("Success: Triggered BamDef Import Remotely,Please check Remote Operations Log for More Details.");
+                        LogShortSuccessMsg(
+                            "Success: Triggered BamDef Import Remotely,Please check Remote Operations Log for More Details.");
                     else
                         throw new Exception("Failed: Triggering BamDef Import , hence aborting account import.");
                 }
 
-              
+
 
                 //read all view name from exported SrcBamViewsList.txt file
-                string[] linesViewName = File.ReadAllLines(xmlPath + @"\SrcBamViewsList.txt");
+                string[] linesViewName = File.ReadAllLines(_xmlPath + @"\SrcBamViewsList.txt");
 
-                for (int countViewName = 0; countViewName < linesViewName.Length; countViewName++)
+                foreach (string lineViewName in linesViewName)
                 {
                     try
                     {
-                        string[] lines = null;
+                        string[] lines;
                         try
                         {
                             //read file with ViewName to import Accounts
-                            lines = File.ReadAllLines(xmlPath + "\\BamView_" + linesViewName[countViewName] + ".txt");
+                            lines = File.ReadAllLines(_xmlPath + "\\BamView_" + lineViewName + ".txt");
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception("Could not read file: " + xmlPath + "\\" + linesViewName[countViewName] + ".txt. " + ex.Message);
+                            throw new Exception("Could not read file: " + _xmlPath + "\\" + lineViewName + ".txt. " +
+                                                ex.Message);
                         }
                         for (int i = 6; i < lines.Length; i++)
                         {
-                            if (machineName == strDstNode)
+                            if (_machineName == strDstNode)
                             {
-                                commandArguments = " add-account -AccountName:\"" + lines[i] + "\" -View:\"" + linesViewName[countViewName] + "\" -Server:"
-                                    + dstBAMSqlInstance
-                                   + " -Database:BAMPrimaryImport";
-                                returnCode = ExecuteCmd(bamExePath, commandArguments);
+                                commandArguments = " add-account -AccountName:\"" + lines[i] + "\" -View:\"" +
+                                                   lineViewName + "\" -Server:"
+                                                   + _dstBAMSqlInstance
+                                                   + " -Database:BAMPrimaryImport";
+                                returnCode = ExecuteCmd(_bamExePath, commandArguments);
                                 if (returnCode == 0)
-                                    LogShortSuccessMsg("Account: " + lines[i] + " added to view: " + linesViewName[countViewName]);
+                                    LogShortSuccessMsg("Account: " + lines[i] + " added to view: " + lineViewName);
                                 else
-                                    LogShortErrorMsg("Account: " + lines[i] + " could not be added to view: " + linesViewName[countViewName]);
+                                    LogShortErrorMsg("Account: " + lines[i] + " could not be added to view: " +
+                                                     lineViewName);
                             }
                             else
                             {
-                                string appPathUnc = ConvertPathToUncPath(appPath);
-                                commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                          remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"ImportBAMAccounts\" \"" + dstBAMSqlInstance + "\" \"" + lines[i] + "\" \"" + linesViewName[countViewName] + "\"\"";
+                                string appPathUnc = ConvertPathToUncPath(_appPath);
+                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                                   "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                                   " -accepteula" + "  \"" +
+                                                   _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
+                                                   _machineName + "\\" + appPathUnc + "\"" +
+                                                   " \"ImportBAMAccounts\" \"" + _dstBAMSqlInstance + "\" \"" +
+                                                   lines[i] + "\" \"" + lineViewName + "\"\"";
 
                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                                
+
                                 if (returnCode == 0)
-                                    LogShortSuccessMsg(" Triggered Remotely for Account: " + lines[i] + " to add to view: " + linesViewName[countViewName] + ", Please Check Remote operation Log for Further Details");
+                                    LogShortSuccessMsg(" Triggered Remotely for Account: " + lines[i] +
+                                                       " to add to view: " + lineViewName +
+                                                       ", Please Check Remote operation Log for Further Details");
                                 else
-                                    LogShortErrorMsg("Account: " + lines[i] + " could not be added to view: " + linesViewName[countViewName] + " Remotely");
+                                    LogShortErrorMsg("Account: " + lines[i] + " could not be added to view: " +
+                                                     lineViewName + " Remotely");
                             }
-                           
+
                         }
                     }
                     catch (Exception ex)
@@ -3767,40 +4229,55 @@ namespace BizTalkAdminOperations
             try
             {
                 //btt import
-                string bttDeployExePath = bamExePath.Substring(0, bamExePath.LastIndexOf("\\") + 1) + "bttDeploy.exe ";
-                string[] bttFiles = Directory.GetFiles(xmlPath, "BTT_*.xml", SearchOption.AllDirectories);
-                string[] dstBttActivities = File.ReadAllLines(xmlPath + @"\DstBamBttList.txt");
+                string bttDeployExePath =
+                    _bamExePath.Substring(0, _bamExePath.LastIndexOf("\\") + 1) + "bttDeploy.exe ";
+                string[] bttFiles = Directory.GetFiles(_xmlPath, "BTT_*.xml", SearchOption.AllDirectories);
+                string[] dstBttActivities = File.ReadAllLines(_xmlPath + @"\DstBamBttList.txt");
 
                 foreach (string bttFile in bttFiles)
                 {
                     string srcActName = Path.GetFileNameWithoutExtension(bttFile);
-                    srcActName = srcActName.Substring(srcActName.IndexOf('_') + 1); //remove btt_ prefix and get Src Activity Name.
+                    srcActName =
+                        srcActName.Substring(srcActName.IndexOf('_') +
+                                             1); //remove btt_ prefix and get Src Activity Name.
                     if (!dstBttActivities.Contains(srcActName)) //if destination does not have that btt then import
                     {
-                        if (machineName == strDstNode)
+                        if (_machineName == strDstNode)
                         {
-                            commandArguments = " /mgdb \"" + dstSqlInstance + "\\BizTalkMgmtDb" + "\" \"" + bttFile + "\"";
+                            commandArguments = " /mgdb \"" + _dstSqlInstance + "\\BizTalkMgmtDb" + "\" \"" + bttFile +
+                                               "\"";
                             returnCode = ExecuteCmd(bttDeployExePath, commandArguments);
                             if (returnCode == 0)
-                                LogInfo("Sucess: BTT File Imported " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1));
+                                LogInfo("Sucess: BTT File Imported " +
+                                        bttFile.Substring(bttFile.LastIndexOf("\\") + 1));
                             else
-                                LogShortErrorMsg("Failed: BTT File Import " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1));
+                                LogShortErrorMsg("Failed: BTT File Import " +
+                                                 bttFile.Substring(bttFile.LastIndexOf("\\") + 1));
                         }
                         else
                         {
-                            string appPathUnc = ConvertPathToUncPath(appPath);
+                            string appPathUnc = ConvertPathToUncPath(_appPath);
                             string bttFileUnc = ConvertPathToUncPath(bttFile);
-                            commandArguments = "/C " + "\"\"" + psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                       remoteRootFolder + "\\" + remoteExeName + "\" \"" + "\\\\" + machineName + "\\" + appPathUnc + "\" \"ImportBTTList\" \"" + dstSqlInstance + "\" \"" + "\\\\" + machineName + "\\" + bttFileUnc+ "\"\"";
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                                               "\"" +
+                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               " -accepteula" + "  \"" +
+                                               _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
+                                               _machineName + "\\" + appPathUnc + "\" \"ImportBTTList\" \"" +
+                                               _dstSqlInstance + "\" \"" + "\\\\" + _machineName + "\\" + bttFileUnc +
+                                               "\"\"";
                             returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                             if (returnCode == 0)
-                                LogInfo("Sucess: Trigerred Remotely BTT File Import " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1) + ", Please Check Remote operation Log for Further Details.");
+                                LogInfo("Sucess: Trigerred Remotely BTT File Import " +
+                                        bttFile.Substring(bttFile.LastIndexOf("\\") + 1) +
+                                        ", Please Check Remote operation Log for Further Details.");
                             else
-                                LogShortErrorMsg("Failed: Triggering Remotely BTT File Import " + bttFile.Substring(bttFile.LastIndexOf("\\") + 1));
+                                LogShortErrorMsg("Failed: Triggering Remotely BTT File Import " +
+                                                 bttFile.Substring(bttFile.LastIndexOf("\\") + 1));
                         }
 
-                     
+
                     }
                 }
 
@@ -3811,51 +4288,59 @@ namespace BizTalkAdminOperations
                 LogException(ex);
             }
 
-            return strSuccess;
+            return _strSuccess;
         }
-        #endregion        
+
+        #endregion
 
         #region Services
+
         private string btnServicesExport_Click(object sender, EventArgs e)
         {
-            char[] chrSep = { ',' };
-            string strSrc, strDst, commandArguments;
-            string[] serviceName = strWindowsServiceToIgnore.Split(chrSep);
-            string userNameNoDomain = strUserNameForHost.Substring(strUserNameForHost.LastIndexOf("\\") + 1);  //userName with out domain like ectest.
-            int returnCode;
+            char[] chrSep = {','};
+            string[] serviceName = _strWindowsServiceToIgnore.Split(chrSep);
+            string userNameNoDomain =
+                strUserNameForHost.Substring(strUserNameForHost.LastIndexOf("\\") +
+                                             1); //userName with out domain like ectest.
 
             try
             {
                 LogInfo("Services: Export started.");
                 try
                 {
-                    if (Directory.Exists(serviceFolderPath))
+                    if (Directory.Exists(_serviceFolderPath))
                     {
-                        Directory.Delete(serviceFolderPath, true);
-                        Directory.CreateDirectory(serviceFolderPath);
+                        Directory.Delete(_serviceFolderPath, true);
+                        Directory.CreateDirectory(_serviceFolderPath);
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning folder, hence aboting folder export " + ex.Message + ", " + ex.StackTrace);
+                    throw new Exception("Error while cleaning folder, hence aboting folder export " + ex.Message +
+                                        ", " + ex.StackTrace);
                 }
 
-                if (machineName == strSrcNode) //local
+                int returnCode;
+                string commandArguments;
+                if (_machineName == strSrcNode) //local
                 {
-                    SelectQuery query = new SelectQuery("select name, startname, pathname, displayname from Win32_Service");
-                    using (StreamWriter writer = new StreamWriter(xmlPath + @"\SrcServiceList.txt", false))
+                    SelectQuery query =
+                        new SelectQuery("select name, startname, pathname, displayname from Win32_Service");
+                    using (StreamWriter writer = new StreamWriter(_xmlPath + @"\SrcServiceList.txt", false))
                     {
                         using (ManagementObjectSearcher searcher =
                             new ManagementObjectSearcher(query))
                         {
                             foreach (var service in searcher.Get())
                             {
-                                if (service["startname"] != null && (service["startname"].ToString().ToLower().Contains(userNameNoDomain)|| service["startname"].ToString().ToLower().Contains(userNameNoDomain.ToLower())))
+                                if (service["startname"] != null &&
+                                    (service["startname"].ToString().ToLower().Contains(userNameNoDomain) ||
+                                     service["startname"].ToString().ToLower().Contains(userNameNoDomain.ToLower())))
                                 {
                                     bool blFound = true;
-                                    for (int i = 0; i < serviceName.Length; i++)
+                                    foreach (string name in serviceName)
                                     {
-                                        if (service["name"].ToString().Contains(serviceName[i]))
+                                        if (service["name"].ToString().Contains(name))
                                         {
                                             blFound = false;
                                         }
@@ -3863,7 +4348,8 @@ namespace BizTalkAdminOperations
                                     if (blFound)
                                     {
                                         string strPathName = service["pathname"].ToString();
-                                        writer.WriteLine(service["name"] + "," + strPathName.Trim('"') + "," + service["displayname"]);
+                                        writer.WriteLine(service["name"] + "," + strPathName.Trim('"') + "," +
+                                                         service["displayname"]);
                                     }
                                 }
                             }
@@ -3871,16 +4357,20 @@ namespace BizTalkAdminOperations
                     }
                     LogShortSuccessMsg("Success: SrcServicesList Exported.");
                 }
-                else//remote
+                else //remote
                 {
-                    string customDllPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(customDllPath);
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    string asmPathUnc = ConvertPathToUncPath(asmPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                         remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"SrcServiceList\" \""
-                         + strWindowsServiceToIgnore + "\" \"" + userNameNoDomain + "\"\"";
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\"" + " \"SrcServiceList\" \""
+                                       + _strWindowsServiceToIgnore + "\" \"" + userNameNoDomain + "\"\"";
 
-                    returnCode = ExecuteCmd("CMD.EXE", commandArguments); //dlls will be copied and pasted back to Local machine, hence machineName used in commandArgument.
+                    returnCode =
+                        ExecuteCmd("CMD.EXE",
+                            commandArguments); //dlls will be copied and pasted back to Local machine, hence machineName used in commandArgument.
 
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: SrcServicesList Exported.");
@@ -3888,24 +4378,28 @@ namespace BizTalkAdminOperations
                         LogShortErrorMsg("Failed: SrcServicesList Export.");
                 }
 
-                if (strToolMode == "Backup")
+                if (_strToolMode == "Backup")
                 {
                     //read Source File and copy exe folder to local.
-                    string[] srcLines = File.ReadAllLines(xmlPath + @"\SrcServiceList.txt");
+                    string[] srcLines = File.ReadAllLines(_xmlPath + @"\SrcServiceList.txt");
 
-                    for (int i = 0; i < srcLines.Length; i++)
+                    foreach (string srcLine in srcLines)
                     {
-                        string[] srvDetails = srcLines[i].Split(chrSep);
-                        string folderPathTrimed = srvDetails[1].Substring(0, srvDetails[1].LastIndexOf("\\")); //go one step back from exe path
+                        string[] srvDetails = srcLine.Split(chrSep);
+                        string folderPathTrimed =
+                            srvDetails[1]
+                                .Substring(0, srvDetails[1].LastIndexOf("\\")); //go one step back from exe path
                         string driveInfo = Path.GetPathRoot(folderPathTrimed);
                         string driveLetter = driveInfo.Substring(0, 1);
                         string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
-                        strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
-                        strDst = serviceFolderPath + "\\" + folderPathTrimed.Substring(folderPathTrimed.LastIndexOf('\\'));
+                        var strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                        var strDst = _serviceFolderPath + "\\" +
+                                     folderPathTrimed.Substring(folderPathTrimed.LastIndexOf('\\'));
                         LogInfo("Copy started from:" + strSrc + " To " + strDst);
-                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /MIN:1 /R:1";  //copy folders only with all permissons
+                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                           "/E /COPYALL /MIN:1 /R:1"; //copy folders only with all permissons
                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                        if (returnCode < strRoboCopySuccessCode)
+                        if (returnCode < _strRoboCopySuccessCode)
                             LogShortSuccessMsg("Success: Exported Folders.");
                         else
                             LogShortErrorMsg("Failed: Exporting Folders");
@@ -3922,32 +4416,37 @@ namespace BizTalkAdminOperations
 
         private string btnServicesImport_Click(object sender, EventArgs e)
         {
-            char[] chrSep = { ',' };
-            string strSrc, strDst, commandArguments;
-            string[] serviceName = strWindowsServiceToIgnore.Split(chrSep);
-            string userNameNoDomain = strUserNameForHost.Substring(strUserNameForHost.LastIndexOf("\\") + 1);  //userName with out domain like ectest.
-            int returnCode;
+            char[] chrSep = {','};
+            string[] serviceName = _strWindowsServiceToIgnore.Split(chrSep);
+            string userNameNoDomain =
+                strUserNameForHost.Substring(strUserNameForHost.LastIndexOf("\\") +
+                                             1); //userName with out domain like ectest.
 
             try
             {
-                if (machineName == strDstNode) //local
+                int returnCode;
+                string commandArguments;
+                if (_machineName == strDstNode) //local
                 {
                     try
                     {
                         SelectQuery query = new SelectQuery("select name, startname, pathname  from Win32_Service");
-                        using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstServiceList.txt", false))
+                        using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstServiceList.txt", false))
                         {
                             using (ManagementObjectSearcher searcher =
                                 new ManagementObjectSearcher(query))
                             {
                                 foreach (var service in searcher.Get())
                                 {
-                                    if (service["startname"] != null && (service["startname"].ToString().ToLower().Contains(userNameNoDomain) || service["startname"].ToString().ToLower().Contains(userNameNoDomain.ToLower())))
+                                    if (service["startname"] != null &&
+                                        (service["startname"].ToString().ToLower().Contains(userNameNoDomain) ||
+                                         service["startname"].ToString().ToLower()
+                                             .Contains(userNameNoDomain.ToLower())))
                                     {
                                         bool blFound = true;
-                                        for (int i = 0; i < serviceName.Length; i++)
+                                        foreach (string name in serviceName)
                                         {
-                                            if (service["name"].ToString().Contains(serviceName[i]))
+                                            if (service["name"].ToString().Contains(name))
                                             {
                                                 blFound = false;
                                             }
@@ -3964,14 +4463,16 @@ namespace BizTalkAdminOperations
                         throw new Exception(ex.Message, ex.InnerException);
                     }
                 }
-                else//remote
+                else //remote
                 {
-                    string customDllPathUnc = "\\\\" + machineName + "\\" + ConvertPathToUncPath(customDllPath);
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    string asmPathUnc = ConvertPathToUncPath(asmPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                         remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"DstServiceList\" \""
-                         + strWindowsServiceToIgnore + "\" \"" + userNameNoDomain + "\"\"";
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       "  \"" +
+                                       _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
+                                       "\\" +
+                                       appPathUnc + "\"" + " \"DstServiceList\" \""
+                                       + _strWindowsServiceToIgnore + "\" \"" + userNameNoDomain + "\"\"";
 
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
@@ -3985,20 +4486,20 @@ namespace BizTalkAdminOperations
                 }
 
                 //compare source and destination
-                string[] srcLines = File.ReadAllLines(xmlPath + @"\SrcServiceList.txt");
-                string[] dstLines = File.ReadAllLines(xmlPath + @"\DstServiceList.txt");
+                string[] srcLines = File.ReadAllLines(_xmlPath + @"\SrcServiceList.txt");
+                string[] dstLines = File.ReadAllLines(_xmlPath + @"\DstServiceList.txt");
 
-                for (int i = 0; i < srcLines.Length; i++)
+                foreach (string srcLine in srcLines)
                 {
                     bool found = false;
-                    string[] srvDetails = srcLines[i].Split(chrSep);
-                    for (int j = 0; j < dstLines.Length; j++)
+                    string[] srvDetails = srcLine.Split(chrSep);
+                    foreach (string dstLine in dstLines)
                     {
-                        if (dstLines[j].Contains(srvDetails[0]))
+                        if (dstLine.Contains(srvDetails[0]))
                             found = true;
                     }
 
-                    if (found == false)  //not found in Destination Machine, then copy folder and create service.
+                    if (found == false) //not found in Destination Machine, then copy folder and create service.
                     {
                         //copy folder
                         string folderPathTrimed = srvDetails[1].Substring(0, srvDetails[1].LastIndexOf("\\"));
@@ -4006,26 +4507,39 @@ namespace BizTalkAdminOperations
                         string driveLetter = driveInfo.Substring(0, 1);
                         string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
 
-                        if (strToolMode == "Migrate")
+                        string strSrc;
+                        if (_strToolMode == "Migrate")
                             strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                         else
-                            strSrc = serviceFolderPath + "\\" + folderPathTrimed.Substring(folderPathTrimed.LastIndexOf('\\'));
-                        if(string.IsNullOrEmpty(strServicesDrive)||string.IsNullOrWhiteSpace(strServicesDrive))
-                        strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                            strSrc = _serviceFolderPath + "\\" +
+                                     folderPathTrimed.Substring(folderPathTrimed.LastIndexOf('\\'));
+                        string strDst;
+                        if (string.IsNullOrEmpty(_strServicesDrive) || string.IsNullOrWhiteSpace(_strServicesDrive))
+                            strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                         else
-                            strDst = "\\\\" + strDstNode + "\\" + strServicesDrive.Trim().Substring(0,1) + "$\\" + pathWithoutDrive;
+                            strDst = "\\\\" + strDstNode + "\\" + _strServicesDrive.Trim().Substring(0, 1) + "$\\" +
+                                     pathWithoutDrive;
                         LogInfo("Copy started from: " + strSrc + " To " + strDst);
-                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /MIN:1 /R:1";  // /xc /xn /xo exclude existing file and folders
+                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                           "/E /COPYALL /MIN:1 /R:1"; // /xc /xn /xo exclude existing file and folders
                         returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                        if (returnCode < strRoboCopySuccessCode)
+                        if (returnCode < _strRoboCopySuccessCode)
                         {
                             LogShortSuccessMsg("Success: Imported Service Folders/Files.");
                             //copy successful hence create Service
-                            if (strDstNode == machineName) //local
-                                commandArguments = @"/C sc create " + "\"" + srvDetails[0] + "\" DisplayName=\"" + srvDetails[2] + "\" binPath=\"" + srvDetails[1] + "\" start=auto obj=\"" + strUserNameForHost + "\" password=\"" + strPasswordForHost + "\"";
+                            if (strDstNode == _machineName) //local
+                                commandArguments = @"/C sc create " + "\"" + srvDetails[0] + "\" DisplayName=\"" +
+                                                   srvDetails[2] + "\" binPath=\"" + srvDetails[1] +
+                                                   "\" start=auto obj=\"" + strUserNameForHost + "\" password=\"" +
+                                                   strPasswordForHost + "\"";
                             else //remote
-                                commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                                + " sc create " + "\"" + srvDetails[0] + "\" DisplayName=\"" + srvDetails[2] + "\" binPath=\"" + srvDetails[1] + "\" start=auto obj=\"" + strUserNameForHost + "\" password=\"" + strPasswordForHost + "\"\"";
+                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " +
+                                                   "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                                   " -accepteula"
+                                                   + " sc create " + "\"" + srvDetails[0] + "\" DisplayName=\"" +
+                                                   srvDetails[2] + "\" binPath=\"" + srvDetails[1] +
+                                                   "\" start=auto obj=\"" + strUserNameForHost + "\" password=\"" +
+                                                   strPasswordForHost + "\"\"";
 
                             returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
@@ -4046,69 +4560,71 @@ namespace BizTalkAdminOperations
             }
             return "";
         }
+
         #endregion
 
         #region readioButton Checked Changed Events
+
         private void rbWebsiteYes_CheckedChanged(object sender, EventArgs e)
         {
-            strWebSite = rbWebsiteYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strWebSite = rbWebsiteYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbAppPoolYes_CheckedChanged(object sender, EventArgs e)
         {
-            strAppPool = rbAppPoolYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strAppPool = rbAppPoolYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbCertificateYes_CheckedChanged(object sender, EventArgs e)
         {
-            strCertificate = rbCertificateYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strCertificate = rbCertificateYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbHostInstanceYes_CheckedChanged(object sender, EventArgs e)
         {
-            strHostInstance = rbHostInstanceYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strHostInstance = rbHostInstanceYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbHandlersYes_CheckedChanged(object sender, EventArgs e)
         {
-            strHandlers = rbHandlersYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strHandlers = rbHandlersYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbGlobalPartyBindingYes_CheckedChanged(object sender, EventArgs e)
         {
-            strGlobalPartyBinding = rbGlobalPartyBindingYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strGlobalPartyBinding = rbGlobalPartyBindingYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbBizTalkAssembliesYes_CheckedChanged(object sender, EventArgs e)
         {
-            strBizTalkAssemblies = rbBizTalkAssembliesYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strBizTalkAssemblies = rbBizTalkAssembliesYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbBizTalkAppYes_CheckedChanged(object sender, EventArgs e)
         {
-            strBizTalkApp = rbBizTalkAppYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strBizTalkApp = rbBizTalkAppYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbBamYes_CheckedChanged(object sender, EventArgs e)
         {
-            strBam = rbBamYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strBam = rbBamYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbFileCopyYes_CheckedChanged(object sender, EventArgs e)
         {
-            strFileCopy = rbFileCopyYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strFileCopy = rbFileCopyYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         private void rbMigrate_CheckedChanged(object sender, EventArgs e)
         {
             if (rbMigrate.Checked)
             {
-                strToolMode = "Migrate";
+                _strToolMode = "Migrate";
                 LogInfo("Mode is set to Migration. Folder / VDir operation will be between Source and Destination.");
             }
             else
             {
-                strToolMode = "Backup";
+                _strToolMode = "Backup";
                 LogInfo("Mode is set to Backup. Folder / VDir operation will be between Source and Local.");
             }
 
@@ -4116,9 +4632,9 @@ namespace BizTalkAdminOperations
 
         private void rbApp_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbApp.Checked)  //if App
+            if (rbApp.Checked) //if App
             {
-                strServerType = "App";
+                _strServerType = "App";
                 panel4.Enabled = false;
                 panel5.Enabled = false;
                 panel8.Enabled = false;
@@ -4131,17 +4647,12 @@ namespace BizTalkAdminOperations
                 txtConnectionString.Text = "SERVER NAME";
                 txtConnectionStringDst.Text = "SERVER NAME";
 
-                if (File.Exists(serverXmlPath)) //reloading BizTalk Connection Info
+                if (File.Exists(_serverXmlPath)) //reloading BizTalk Connection Info
                 {
-                    char[] chrSep = { ',' };
-                    Servers srv = null;
-                    XmlSerializer configSerializer = null;
-
-                    XmlTextReader xmlTxtRed = new XmlTextReader(serverXmlPath);
-                    configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers)configSerializer.Deserialize(xmlTxtRed);
+                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
+                    var configSerializer = new XmlSerializer(typeof(Servers));
+                    var srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
                     xmlTxtRed.Close();
-                    configSerializer = null;
 
                     txtConnectionString.Text = srv.SrcAppNode;
                     txtConnectionStringDst.Text = srv.DstAppNode;
@@ -4153,9 +4664,9 @@ namespace BizTalkAdminOperations
                 if (txtConnectionStringDst.Text != string.Empty && txtConnectionStringDst.Text != "SERVER NAME")
                     strDstNode = txtConnectionStringDst.Text;
             }
-            else  //BizTalk
+            else //BizTalk
             {
-                strServerType = "BizTalk";
+                _strServerType = "BizTalk";
                 panel4.Enabled = true;
                 panel5.Enabled = true;
                 panel8.Enabled = true;
@@ -4168,28 +4679,25 @@ namespace BizTalkAdminOperations
                 txtConnectionString.Text = "SQL INSTANCE";
                 txtConnectionStringDst.Text = "SQL INSTANCE";
 
-                if (File.Exists(serverXmlPath)) //reloading BizTalk Connection Info
+                if (File.Exists(_serverXmlPath)) //reloading BizTalk Connection Info
                 {
-                    char[] chrSep = { ',' };
-                    Servers srv = null;
-                    XmlSerializer configSerializer = null;
+                    char[] chrSep = {','};
 
-                    XmlTextReader xmlTxtRed = new XmlTextReader(serverXmlPath);
-                    configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers)configSerializer.Deserialize(xmlTxtRed);
+                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
+                    var configSerializer = new XmlSerializer(typeof(Servers));
+                    var srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
                     xmlTxtRed.Close();
-                    configSerializer = null;
                     cmbBoxServerSrc.Items.Clear();
                     cmbBoxServerDst.Items.Clear();
                     if (srv.SrcSqlInstance != null)
                     {
                         txtConnectionString.Text = srv.SrcSqlInstance;
                         //lblServers.Text = srv.SrcNodes;
-                        srcSqlInstance = srv.SrcSqlInstance;
+                        _srcSqlInstance = srv.SrcSqlInstance;
                         string[] srcNodes = srv.SrcNodes.Split(chrSep);
-                        for (int i = 0; i < srcNodes.Length; i++)
+                        foreach (string srcNode in srcNodes)
                         {
-                            cmbBoxServerSrc.Items.Add(srcNodes[i]);
+                            cmbBoxServerSrc.Items.Add(srcNode);
                         }
                         cmbBoxServerSrc.Visible = true;
                     }
@@ -4203,12 +4711,12 @@ namespace BizTalkAdminOperations
                     {
                         txtConnectionStringDst.Text = srv.DstSqlInstance;
                         string[] dstNodes = srv.DstNodes.Split(chrSep);
-                        for (int i = 0; i < dstNodes.Length; i++)
+                        foreach (string dstNode in dstNodes)
                         {
-                            cmbBoxServerDst.Items.Add(dstNodes[i]);
+                            cmbBoxServerDst.Items.Add(dstNode);
                         }
                         cmbBoxServerDst.Visible = true;
-                        dstSqlInstance = srv.DstSqlInstance;
+                        _dstSqlInstance = srv.DstSqlInstance;
                     }
                     else
                     {
@@ -4221,129 +4729,176 @@ namespace BizTalkAdminOperations
 
         private void rbServicesYes_CheckedChanged(object sender, EventArgs e)
         {
-            strServices = rbServicesYes.Checked ? strPerformOperationYes : strPerformOperationNo;
+            _strServices = rbServicesYes.Checked ? _strPerformOperationYes : _strPerformOperationNo;
         }
 
         #endregion
 
         #region Events
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             richTextBoxLogs.AppendText("Esc Pressed");
             richTextBoxLogs.Refresh();
         }
+
         private void richTextBoxLogs_TextChanged_1(object sender, EventArgs e)
         {
             //if(richTextBoxLogs.len)
             richTextBoxLogs.ScrollToCaret();
             richTextBoxLogs.Refresh();
         }
+
         private void btnExportOperations_Click(object sender, EventArgs e)
         {
             try
             {
-                strExport = strPerformOperationYes;
+                _strExport = _strPerformOperationYes;
 
-                if (strServerType == "BizTalk" && (txtConnectionString.Text == "SQL INSTANCE" || txtConnectionString.Text.Trim() == "" || cmbBoxServerSrc.Items.Count == 0 || cmbBoxServerSrc.SelectedItem == null))
+                if (_strServerType == "BizTalk" && (txtConnectionString.Text == "SQL INSTANCE" ||
+                                                    txtConnectionString.Text.Trim() == "" ||
+                                                    cmbBoxServerSrc.Items.Count == 0 ||
+                                                    cmbBoxServerSrc.SelectedItem == null))
                 {
                     LogShortErrorMsg("Please mention Source Sql Instance and select node from DropDown.");
                 }
-                else if (strServerType == "App" && (txtConnectionString.Text == "SERVER NAME" || txtConnectionString.Text.Trim() == ""))
+                else if (_strServerType == "App" &&
+                         (txtConnectionString.Text == "SERVER NAME" || txtConnectionString.Text.Trim() == ""))
                 {
                     LogShortErrorMsg("Please mention Source App Server.");
                 }
                 else
                 {
-                    if (strFileCopy == strPerformOperationYes || strAppPool == strPerformOperationYes || strWebSite == strPerformOperationYes || strCertificate == strPerformOperationYes || strHostInstance == strPerformOperationYes || strHandlers == strPerformOperationYes || strBizTalkApp == strPerformOperationYes || strGlobalPartyBinding == strPerformOperationYes || strBizTalkAssemblies == strPerformOperationYes || strBam == strPerformOperationYes || strServices == strPerformOperationYes)
+                    if (_strFileCopy == _strPerformOperationYes || _strAppPool == _strPerformOperationYes ||
+                        _strWebSite == _strPerformOperationYes || _strCertificate == _strPerformOperationYes ||
+                        _strHostInstance == _strPerformOperationYes || _strHandlers == _strPerformOperationYes ||
+                        _strBizTalkApp == _strPerformOperationYes ||
+                        _strGlobalPartyBinding == _strPerformOperationYes ||
+                        _strBizTalkAssemblies == _strPerformOperationYes || _strBam == _strPerformOperationYes ||
+                        _strServices == _strPerformOperationYes)
                     {
                         #region PreRequisite Check
-                        if (machineName != strSrcNode && strIsUtilCopied == strPerformOperationNo) //remote, hence exe has to be copied.
+
+                        if (_machineName != strSrcNode && strIsUtilCopied == _strPerformOperationNo
+                        ) //remote, hence exe has to be copied.
                         {
                             LogInfo("Its Remote Export.");
                             string commandArguments = "/C sc.exe \\\\" + strSrcNode + " delete psexesvc";
 
                             LogInfo("Copying required artifacts to remote machine: " + strSrcNode);
 
-                            string remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
-                            commandArguments = @"/C robocopy " + "\"" + appPath + gacUtilFolderName + "\"" + " \"" + "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + "\" " + "\"" + remoteExeName + "\"" + " /IS /R:1";
+                            string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
+                            commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" + " \"" +
+                                               "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + "\" " + "\"" +
+                                               _remoteExeName + "\"" + " /IS /R:1";
 
                             var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
-                            if (returnCode < strRoboCopySuccessCode)  //robocopy errorcode 1 means success
+                            if (returnCode < _strRoboCopySuccessCode) //robocopy errorcode 1 means success
                             {
-                                LogShortSuccessMsg("Copy completed from: " + appPath + gacUtilFolderName + " To " + "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc);
-                                strIsUtilCopied = strPerformOperationYes;
+                                LogShortSuccessMsg("Copy completed from: " + _appPath + _gacUtilFolderName + " To " +
+                                                   "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc);
+                                strIsUtilCopied = _strPerformOperationYes;
                             }
                             else
                             {
-                                throw new Exception("Copying required artifacts to remote machine failed: " + strSrcNode);
+                                throw new Exception(
+                                    "Copying required artifacts to remote machine failed: " + strSrcNode);
                             }
                         }
+
                         #endregion
 
                         EnableControls(false);
 
-                        if ((strUserName == "" || strUserName == null) && machineName != strSrcNode) //remote operation
+                        if (string.IsNullOrEmpty(strUserName) && _machineName != strSrcNode) //remote operation
                         {
                             panelLoginDialog.Visible = true;
-                            loginOperationName = "useraccount";
-                            lblLoginDialog.Text = "For remote deployment please provide credentials which has admin rights on destination server.";
+                            _loginOperationName = "useraccount";
+                            lblLoginDialog.Text =
+                                "For remote deployment please provide credentials which has admin rights on destination server.";
                             txtUserName.Text = WindowsIdentity.GetCurrent().Name;
                             txtPassword.Text = "";
                             txtPassword.Focus();
                             goto Outer;
                         }
 
-                        if ((strHostInstance == strPerformOperationYes  || strCertificate == strPerformOperationYes && machineName != strSrcNode || strServices == strPerformOperationYes) && (strUserNameForHost == "" || strUserNameForHost == null))
+                        if ((_strHostInstance == _strPerformOperationYes ||
+                             _strCertificate == _strPerformOperationYes && _machineName != strSrcNode ||
+                             _strServices == _strPerformOperationYes) && string.IsNullOrEmpty(strUserNameForHost))
                         {
                             panelLoginDialog.Visible = true;
-                            loginOperationName = "serviceaccount";
-                            lblLoginDialog.Text = "You have selected Host/Certificate/WindowsService Please provide service account details..";
+                            _loginOperationName = "serviceaccount";
+                            lblLoginDialog.Text =
+                                "You have selected Host/Certificate/WindowsService Please provide service account details..";
                             txtUserName.Text = ""; //redmond\ectest
                             txtPassword.Text = "";
                             txtUserName.Focus();
                             goto Outer;
                         }
 
-                        if(strCertificate == strPerformOperationYes && machineName == strSrcNode)
+                        if (_strCertificate == _strPerformOperationYes && _machineName == strSrcNode)
                         {
-                            MessageBox.Show("To Export the Service Account Certificates, Login Server with Service Account and rerun the Tool.");
-                            
+                            MessageBox.Show(
+                                "To Export the Service Account Certificates, Login Server with Service Account and rerun the Tool.");
+
                         }
 
 
-                        if (strServices == strPerformOperationYes)
-                        { btnServicesExport_Click(sender, e); }
+                        if (_strServices == _strPerformOperationYes)
+                        {
+                            btnServicesExport_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strFileCopy == strPerformOperationYes)
-                        { btnExportFolders_Click(sender, e); }
+                        if (_strFileCopy == _strPerformOperationYes)
+                        {
+                            btnExportFolders_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strAppPool == strPerformOperationYes)
-                        { btnExportAppPools_Click(sender, e); }
+                        if (_strAppPool == _strPerformOperationYes)
+                        {
+                            btnExportAppPools_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strWebSite == strPerformOperationYes)
-                        { btnExportWebSites_Click(sender, e); }
+                        if (_strWebSite == _strPerformOperationYes)
+                        {
+                            btnExportWebSites_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strCertificate == strPerformOperationYes)
-                        { btnExportCert_Click(sender, e); }
+                        if (_strCertificate == _strPerformOperationYes)
+                        {
+                            btnExportCert_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strHostInstance == strPerformOperationYes)
-                        { btnGetHost_Click(sender, e); }
+                        if (_strHostInstance == _strPerformOperationYes)
+                        {
+                            btnGetHost_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strHandlers == strPerformOperationYes)
-                        { btnExportAdapterHandlers_Click(sender, e); }
+                        if (_strHandlers == _strPerformOperationYes)
+                        {
+                            btnExportAdapterHandlers_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strBizTalkApp == strPerformOperationYes)
-                        { btnExportApps_Click(sender, e); }
+                        if (_strBizTalkApp == _strPerformOperationYes)
+                        {
+                            btnExportApps_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strBizTalkAssemblies == strPerformOperationYes)
-                        { btnExportAssemblies_Click(sender, e); }
+                        if (_strBizTalkAssemblies == _strPerformOperationYes)
+                        {
+                            btnExportAssemblies_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strGlobalPartyBinding == strPerformOperationYes)
-                        { btnExportGlobalPartyBinding_Click(sender, e); }
+                        if (_strGlobalPartyBinding == _strPerformOperationYes)
+                        {
+                            btnExportGlobalPartyBinding_Click(sender, e);
+                        }
                         /***************************************/
-                        if (strBam == strPerformOperationYes)
-                        { btnBamExport_Click(sender, e); }
+                        if (_strBam == _strPerformOperationYes)
+                        {
+                            btnBamExport_Click(sender, e);
+                        }
 
                         //reset all radio buttons to know
                         rbFileCopyNo.Checked = true;
@@ -4359,11 +4914,13 @@ namespace BizTalkAdminOperations
                         rbServicesNo.Checked = true;
                         EnableControls(true);
 
-                    Outer:
+                        Outer:
                         ;
                     }
                     else
-                    { LogShortErrorMsg("Please select atleast one operation."); }
+                    {
+                        LogShortErrorMsg("Please select atleast one operation.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -4376,86 +4933,112 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                strExport = strPerformOperationNo;
-                if (strServerType == "BizTalk" && (txtConnectionStringDst.Text == "SQL INSTANCE" || txtConnectionStringDst.Text.Trim() == "" || cmbBoxServerDst.Items.Count == 0 || cmbBoxServerDst.SelectedItem == null))
+                _strExport = _strPerformOperationNo;
+                if (_strServerType == "BizTalk" && (txtConnectionStringDst.Text == "SQL INSTANCE" ||
+                                                    txtConnectionStringDst.Text.Trim() == "" ||
+                                                    cmbBoxServerDst.Items.Count == 0 ||
+                                                    cmbBoxServerDst.SelectedItem == null))
                 {
                     LogShortErrorMsg("Please mention Destination Sql Instance and select node from Drop Down.");
                 }
-                else if (strServerType == "App" && (txtConnectionStringDst.Text == "SERVER NAME" || txtConnectionStringDst.Text.Trim() == ""))
+                else if (_strServerType == "App" &&
+                         (txtConnectionStringDst.Text == "SERVER NAME" || txtConnectionStringDst.Text.Trim() == ""))
                 {
                     LogShortErrorMsg("Please mention Destination App Server.");
                 }
                 else
                 {
-                    if (strFileCopy == strPerformOperationYes || strAppPool == strPerformOperationYes || strWebSite == strPerformOperationYes || strCertificate == strPerformOperationYes || strHostInstance == strPerformOperationYes || strHandlers == strPerformOperationYes || strBizTalkApp == strPerformOperationYes || strGlobalPartyBinding == strPerformOperationYes || strBizTalkAssemblies == strPerformOperationYes || strBam == strPerformOperationYes || strServices == strPerformOperationYes)
+                    if (_strFileCopy == _strPerformOperationYes || _strAppPool == _strPerformOperationYes ||
+                        _strWebSite == _strPerformOperationYes || _strCertificate == _strPerformOperationYes ||
+                        _strHostInstance == _strPerformOperationYes || _strHandlers == _strPerformOperationYes ||
+                        _strBizTalkApp == _strPerformOperationYes ||
+                        _strGlobalPartyBinding == _strPerformOperationYes ||
+                        _strBizTalkAssemblies == _strPerformOperationYes || _strBam == _strPerformOperationYes ||
+                        _strServices == _strPerformOperationYes)
                     {
                         #region PreRequisite Check
-                        if (machineName != strDstNode && strIsUtilCopied == strPerformOperationNo) //remote, hence exe has to be copied.
+
+                        if (_machineName != strDstNode && strIsUtilCopied == _strPerformOperationNo
+                        ) //remote, hence exe has to be copied.
                         {
                             LogInfo("Its Remote Import.");
                             LogInfo("Copying required artifacts to remote machine: " + strDstNode);
 
-                            string remoteRootFolderUnc = ConvertPathToUncPath(remoteRootFolder);
-                            string commandArguments = @"/C robocopy " + "\"" + appPath + gacUtilFolderName + "\"" + " \"" + "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + "\" " + " /IS /R:1";
+                            string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
+                            string commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" +
+                                                      " \"" + "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + "\" " +
+                                                      " /IS /R:1";
 
                             var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
-                            if (returnCode < strRoboCopySuccessCode) //robocopy returnCode 1 means success
+                            if (returnCode < _strRoboCopySuccessCode) //robocopy returnCode 1 means success
                             {
-                                LogShortSuccessMsg("RemoteOperations EXE Copy completed from: " + appPath + gacUtilFolderName + " To " + "\\\\" + strDstNode + "\\" + remoteRootFolderUnc);
-                                strIsUtilCopied = strPerformOperationYes;
+                                LogShortSuccessMsg("RemoteOperations EXE Copy completed from: " + _appPath +
+                                                   _gacUtilFolderName + " To " + "\\\\" + strDstNode + "\\" +
+                                                   remoteRootFolderUnc);
+                                strIsUtilCopied = _strPerformOperationYes;
                             }
                             else
                             {
                                 throw new Exception("Copy encountered errors. Remote import can not be triggered.");
                             }
                         }
+
                         #endregion
 
                         EnableControls(false);
 
-                        if ((strHostInstance == strPerformOperationYes  || strCertificate == strPerformOperationYes && machineName != strDstNode || strServices == strPerformOperationYes) && (strUserNameForHost == "" || strUserNameForHost == null))
+                        if ((_strHostInstance == _strPerformOperationYes ||
+                             _strCertificate == _strPerformOperationYes && _machineName != strDstNode ||
+                             _strServices == _strPerformOperationYes) && string.IsNullOrEmpty(strUserNameForHost))
                         {
-                            strExport = strPerformOperationNo;
+                            _strExport = _strPerformOperationNo;
                             panelLoginDialog.Visible = true;
-                            loginOperationName = "serviceaccount";
-                            lblLoginDialog.Text = "You have selected Host/Certificate/WindowsService Please provide service account details..";
+                            _loginOperationName = "serviceaccount";
+                            lblLoginDialog.Text =
+                                "You have selected Host/Certificate/WindowsService Please provide service account details..";
                             txtUserName.Text = "";
                             txtPassword.Text = "";
                             goto Outer;
                         }
 
-                        if(strCertificate == strPerformOperationYes && machineName == strDstNode)
+                        if (_strCertificate == _strPerformOperationYes && _machineName == strDstNode)
                         {
-                            MessageBox.Show("To Import the Service Account Certificates, Login Server with Service Account and rerun the Tool.");
+                            MessageBox.Show(
+                                "To Import the Service Account Certificates, Login Server with Service Account and rerun the Tool.");
                         }
 
-                        if (machineName != strDstNode && (strUserName == "" || strUserName == null)) //remote operation
+                        if (_machineName != strDstNode && string.IsNullOrEmpty(strUserName)) //remote operation
                         {
                             panelLoginDialog.Visible = true;
-                            loginOperationName = "useraccount";
-                            lblLoginDialog.Text = "For remote deployment please provide credentials which has admin rights on destination server.";
+                            _loginOperationName = "useraccount";
+                            lblLoginDialog.Text =
+                                "For remote deployment please provide credentials which has admin rights on destination server.";
                             txtUserName.Text = WindowsIdentity.GetCurrent().Name;
                             txtPassword.Text = "";
                             goto Outer;
                         }
 
                         //windows service
-                        if (strServices == strPerformOperationYes)
+                        if (_strServices == _strPerformOperationYes)
                             btnServicesImport_Click(sender, e);
 
                         //FileCopy
-                        if (strFileCopy == strPerformOperationYes)
-                        { btnImportFolders_Click(sender, e); }
+                        if (_strFileCopy == _strPerformOperationYes)
+                        {
+                            btnImportFolders_Click(sender, e);
+                        }
 
                         //appPools
-                        if (strAppPool == strPerformOperationYes)
-                        { btnImportAppPools_Click(sender, e); }
+                        if (_strAppPool == _strPerformOperationYes)
+                        {
+                            btnImportAppPools_Click(sender, e);
+                        }
 
                         //webSites
-                        if (strWebSite == strPerformOperationYes)
+                        if (_strWebSite == _strPerformOperationYes)
                         {
-                            if (isAppPoolExecuted == strPerformOperationYes)
+                            if (_isAppPoolExecuted == _strPerformOperationYes)
                             {
                                 btnImportWebSites_Click(sender, e);
                             }
@@ -4466,23 +5049,23 @@ namespace BizTalkAdminOperations
                         }
 
                         //Certificate
-                        if (strCertificate == strPerformOperationYes)
+                        if (_strCertificate == _strPerformOperationYes)
                         {
                             btnImportCert_Click(sender, e);
                         }
 
                         //Host
                         //HostInstance:
-                        if (strHostInstance == strPerformOperationYes)
+                        if (_strHostInstance == _strPerformOperationYes)
                         {
                             //   strFromPanel10 = strPerformOperationNo;
                             btnSetHostAndHostInstances_Click(sender, e);
                         }
 
                         //Handlers
-                        if (strHandlers == strPerformOperationYes)
+                        if (_strHandlers == _strPerformOperationYes)
                         {
-                            if (isHostExecuted == strPerformOperationYes)
+                            if (_isHostExecuted == _strPerformOperationYes)
                             {
                                 btnImportAdapterHandler_Click(sender, e);
                             }
@@ -4493,39 +5076,44 @@ namespace BizTalkAdminOperations
                         }
 
                         //Assemblies
-                        if (strBizTalkAssemblies == strPerformOperationYes)
+                        if (_strBizTalkAssemblies == _strPerformOperationYes)
                         {
                             btnImportAssemblies_Click(sender, e);
                         }
 
                         //BizTalk Applications
-                        if (strBizTalkApp == strPerformOperationYes)
+                        if (_strBizTalkApp == _strPerformOperationYes)
                         {
-                            if (isHandlerExecuted == strPerformOperationYes && isHostExecuted == strPerformOperationYes)
+                            if (_isHandlerExecuted == _strPerformOperationYes &&
+                                _isHostExecuted == _strPerformOperationYes)
                             {
                                 btnImportApps_Click(sender, e);
                             }
                             else
                             {
-                                LogShortErrorMsg("BizTalk Applications Import will be skipped as Host/Handler has failed");
+                                LogShortErrorMsg(
+                                    "BizTalk Applications Import will be skipped as Host/Handler has failed");
                             }
                         }
 
                         //Global Party Binding
-                        if (strGlobalPartyBinding == strPerformOperationYes)
+                        if (_strGlobalPartyBinding == _strPerformOperationYes)
                         {
-                            if (isHandlerExecuted == strPerformOperationYes && isHostExecuted == strPerformOperationYes && isBizTalkAppExecuted == strPerformOperationYes)
+                            if (_isHandlerExecuted == _strPerformOperationYes &&
+                                _isHostExecuted == _strPerformOperationYes &&
+                                _isBizTalkAppExecuted == _strPerformOperationYes)
                             {
                                 btnImportGlobalPartyBinding_Click(sender, e);
                             }
                             else
                             {
-                                LogShortErrorMsg("Global Party Binding Import will be skipped as stleast one of Host/Handler/BizTalk App has failed");
+                                LogShortErrorMsg(
+                                    "Global Party Binding Import will be skipped as stleast one of Host/Handler/BizTalk App has failed");
                             }
                         }
 
                         //BAM
-                        if (strBam == strPerformOperationYes)
+                        if (_strBam == _strPerformOperationYes)
                         {
                             btnBamImport_Click(sender, e);
                         }
@@ -4542,10 +5130,10 @@ namespace BizTalkAdminOperations
                         rbBamNo.Checked = true;
                         rbServicesNo.Checked = true;
                         EnableControls(true);
-                        isHostExecuted = strPerformOperationYes;
-                        isHandlerExecuted = strPerformOperationYes;
-                        isAppPoolExecuted = strPerformOperationYes;
-                    Outer:
+                        _isHostExecuted = _strPerformOperationYes;
+                        _isHandlerExecuted = _strPerformOperationYes;
+                        _isAppPoolExecuted = _strPerformOperationYes;
+                        Outer:
                         ;
                     }
                     else
@@ -4567,45 +5155,45 @@ namespace BizTalkAdminOperations
 
         private void BizTalkAdminOperations_Load(object sender, EventArgs e)
         {
-            if (!Directory.Exists(exportedDataPath))
-                Directory.CreateDirectory(exportedDataPath);
+            if (!Directory.Exists(_exportedDataPath))
+                Directory.CreateDirectory(_exportedDataPath);
 
-            if (!Directory.Exists(msiPath))
-                Directory.CreateDirectory(msiPath);
+            if (!Directory.Exists(_msiPath))
+                Directory.CreateDirectory(_msiPath);
 
-            if (!Directory.Exists(xmlPath))
-                Directory.CreateDirectory(xmlPath);
+            if (!Directory.Exists(_xmlPath))
+                Directory.CreateDirectory(_xmlPath);
 
-            if (!Directory.Exists(certPath))
-                Directory.CreateDirectory(certPath);
+            if (!Directory.Exists(_certPath))
+                Directory.CreateDirectory(_certPath);
 
-            if (!Directory.Exists(asmPath))
-                Directory.CreateDirectory(asmPath);
+            if (!Directory.Exists(_asmPath))
+                Directory.CreateDirectory(_asmPath);
 
-            if (!Directory.Exists(logPath))
-                Directory.CreateDirectory(logPath);
+            if (!Directory.Exists(_logPath))
+                Directory.CreateDirectory(_logPath);
 
-            if (!Directory.Exists(customDllPath))
-                Directory.CreateDirectory(customDllPath);
+            if (!Directory.Exists(_customDllPath))
+                Directory.CreateDirectory(_customDllPath);
 
-            if (!Directory.Exists(vDir))
-                Directory.CreateDirectory(vDir);
+            if (!Directory.Exists(_vDir))
+                Directory.CreateDirectory(_vDir);
 
-            if (!Directory.Exists(fileFolderPath))
-                Directory.CreateDirectory(fileFolderPath);
+            if (!Directory.Exists(_fileFolderPath))
+                Directory.CreateDirectory(_fileFolderPath);
 
-            if (!Directory.Exists(serviceFolderPath))
-                Directory.CreateDirectory(serviceFolderPath);
+            if (!Directory.Exists(_serviceFolderPath))
+                Directory.CreateDirectory(_serviceFolderPath);
 
-            if (File.Exists(serverXmlPath))
+            if (File.Exists(_serverXmlPath))
             {
-                char[] chrSep = { ',' };
+                char[] chrSep = {','};
                 Servers srv = null;
                 XmlSerializer configSerializer = null;
 
-                XmlTextReader xmlTxtRed = new XmlTextReader(serverXmlPath);
+                XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
                 configSerializer = new XmlSerializer(typeof(Servers));
-                srv = (Servers)configSerializer.Deserialize(xmlTxtRed);
+                srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
                 xmlTxtRed.Close();
                 configSerializer = null;
 
@@ -4613,11 +5201,11 @@ namespace BizTalkAdminOperations
                 {
                     txtConnectionString.Text = srv.SrcSqlInstance;
                     //lblServers.Text = srv.SrcNodes;
-                    srcSqlInstance = srv.SrcSqlInstance;
+                    _srcSqlInstance = srv.SrcSqlInstance;
                     string[] srcNodes = srv.SrcNodes.Split(chrSep);
-                    for (int i = 0; i < srcNodes.Length; i++)
+                    foreach (string srcNode in srcNodes)
                     {
-                        cmbBoxServerSrc.Items.Add(srcNodes[i]);
+                        cmbBoxServerSrc.Items.Add(srcNode);
                     }
                     cmbBoxServerSrc.Visible = true;
                 }
@@ -4631,12 +5219,12 @@ namespace BizTalkAdminOperations
                 {
                     txtConnectionStringDst.Text = srv.DstSqlInstance;
                     string[] dstNodes = srv.DstNodes.Split(chrSep);
-                    for (int i = 0; i < dstNodes.Length; i++)
+                    foreach (string dstNode in dstNodes)
                     {
-                        cmbBoxServerDst.Items.Add(dstNodes[i]);
+                        cmbBoxServerDst.Items.Add(dstNode);
                     }
                     cmbBoxServerDst.Visible = true;
-                    dstSqlInstance = srv.DstSqlInstance;
+                    _dstSqlInstance = srv.DstSqlInstance;
                 }
                 else
                 {
@@ -4652,7 +5240,7 @@ namespace BizTalkAdminOperations
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             label18.Visible = false;
-            char[] chrSep = { '\\' };
+            char[] chrSep = {'\\'};
             if (txtUserName.Text.Trim() == "" || txtPassword.Text.Trim() == "")
             {
                 label18.Text = "UserName or Password missing.";
@@ -4660,7 +5248,7 @@ namespace BizTalkAdminOperations
             }
             else
             {
-                if (loginOperationName == "useraccount") //for remote WMI, remote BizTalkApp 
+                if (_loginOperationName == "useraccount") //for remote WMI, remote BizTalkApp 
                 {
                     strUserName = txtUserName.Text.Trim();
                     strUserNameForWMI = txtUserName.Text.Split(chrSep)[1];
@@ -4675,7 +5263,7 @@ namespace BizTalkAdminOperations
 
                 panelLoginDialog.Visible = false;
 
-                if (strExport == strPerformOperationYes)
+                if (_strExport == _strPerformOperationYes)
                     btnExportOperations_Click(sender, e);
                 else
                     btnImportOperations_Click(sender, e);
@@ -4700,19 +5288,25 @@ namespace BizTalkAdminOperations
 
         private void txtConnectionString_Validating(object sender, CancelEventArgs e)
         {
-            if (strServerType == "App" && strSrcNode != txtConnectionString.Text.Trim() && txtConnectionString.Text.Trim() != "SERVER NAME" && txtConnectionString.Text.Trim() != "SQL INSTANCE")
+            if (_strServerType == "App" && strSrcNode != txtConnectionString.Text.Trim() &&
+                txtConnectionString.Text.Trim() != "SERVER NAME" && txtConnectionString.Text.Trim() != "SQL INSTANCE")
                 TstSrcSqlConnection(true);
 
-            if (strServerType == "BizTalk" && srcSqlInstance != txtConnectionString.Text.Trim() && txtConnectionString.Text.Trim() != "SERVER NAME" && txtConnectionString.Text.Trim() != "SQL INSTANCE")
+            if (_strServerType == "BizTalk" && _srcSqlInstance != txtConnectionString.Text.Trim() &&
+                txtConnectionString.Text.Trim() != "SERVER NAME" && txtConnectionString.Text.Trim() != "SQL INSTANCE")
                 TstSrcSqlConnection(true);
         }
 
         private void txtConnectionStringDst_Validating(object sender, CancelEventArgs e)
         {
-            if (strServerType == "App" && strDstNode != txtConnectionStringDst.Text.Trim() && txtConnectionStringDst.Text.Trim() != "SERVER NAME" && txtConnectionStringDst.Text.Trim() != "SQL INSTANCE")
+            if (_strServerType == "App" && strDstNode != txtConnectionStringDst.Text.Trim() &&
+                txtConnectionStringDst.Text.Trim() != "SERVER NAME" &&
+                txtConnectionStringDst.Text.Trim() != "SQL INSTANCE")
                 TstDstSqlConnection(true);
 
-            if (strServerType == "BizTalk" && dstSqlInstance != txtConnectionStringDst.Text.Trim() && txtConnectionStringDst.Text.Trim() != "SERVER NAME" && txtConnectionStringDst.Text.Trim() != "SQL INSTANCE")
+            if (_strServerType == "BizTalk" && _dstSqlInstance != txtConnectionStringDst.Text.Trim() &&
+                txtConnectionStringDst.Text.Trim() != "SERVER NAME" &&
+                txtConnectionStringDst.Text.Trim() != "SQL INSTANCE")
                 TstDstSqlConnection(true);
         }
 
@@ -4720,33 +5314,39 @@ namespace BizTalkAdminOperations
         {
 
         }
+
         private void btnSettings_Click(object sender, EventArgs e)
         {
             var settingsForm = new Settings(this);
             settingsForm.ShowDialog();
         }
+
         #endregion
 
         #region Functions
 
         private void GetSharePermission()
         {
-            char[] chrSep = { ',' };
-            string commandArguments = "";
-            if (strFoldersToCopyNoFiles != string.Empty)
+            char[] chrSep = {','};
+            if (_strFoldersToCopyNoFiles != string.Empty)
             {
-                string[] arrFoldersToCopyNoFiles = strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                string[] arrFoldersToCopyNoFiles =
+                    _strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string folderPath in arrFoldersToCopyNoFiles)
                 {
                     string folderName = folderPath.Trim().Substring(folderPath.LastIndexOf('\\') + 1);
-                    if (machineName == strSrcNode) //local
+                    string commandArguments;
+                    if (_machineName == strSrcNode) //local
                     {
-                        commandArguments = "/C net share " + "\"\"" + folderName + " > \"" + xmlPath + "\\SharePermission_" + folderName + ".txt\"\"";
+                        commandArguments = "/C net share " + "\"\"" + folderName + " > \"" + _xmlPath +
+                                           "\\SharePermission_" + folderName + ".txt\"\"";
                     }
                     else //remote
                     {
-                        commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                    + "  net share  \"" + folderName + "\" > \"" + xmlPath + "\\SharePermission_" + folderName + ".txt\"\"";
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
+                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                           + "  net share  \"" + folderName + "\" > \"" + _xmlPath +
+                                           "\\SharePermission_" + folderName + ".txt\"\"";
                     }
 
                     int returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -4765,28 +5365,28 @@ namespace BizTalkAdminOperations
 
         private void SetSharePermission()
         {
-            char[] chrSep = { ',' };
-            char[] chrSepSpace = { ' ' };
-            string commandArguments = "", grantString = "";
-            string dstFolderPath = string.Empty;
-            if (strFoldersToCopyNoFiles != string.Empty)
+            char[] chrSep = {','};
+            if (_strFoldersToCopyNoFiles != string.Empty)
             {
-                string[] arrFoldersToCopyNoFiles = strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                string[] arrFoldersToCopyNoFiles =
+                    _strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string folderPath in arrFoldersToCopyNoFiles)
                 {
-                    grantString = " ";
+                    var grantString = " ";
                     string folderName = folderPath.Substring(folderPath.LastIndexOf('\\') + 1);
-                    if (string.IsNullOrEmpty(strFoldersDrive) || string.IsNullOrWhiteSpace(strFoldersDrive))
+                    string dstFolderPath;
+                    if (string.IsNullOrEmpty(_strFoldersDrive) || string.IsNullOrWhiteSpace(_strFoldersDrive))
                     {
                         dstFolderPath = folderPath;
                     }
                     else
-                        dstFolderPath = strFoldersDrive.Trim().Substring(0, 1) + folderPath.Substring(1);
-                    string[] srcLines = File.ReadAllLines(xmlPath + "\\SharePermission_" + folderName + ".txt");
+                        dstFolderPath = _strFoldersDrive.Trim().Substring(0, 1) + folderPath.Substring(1);
+                    string[] srcLines = File.ReadAllLines(_xmlPath + "\\SharePermission_" + folderName + ".txt");
                     int permissionLineIndex = -1;
                     for (int i = 0; i < srcLines.Length; i++)
                     {
-                        if (srcLines[i] == string.Empty)  //once u got empty line, u exit bcos that mean permission section is over.
+                        if (srcLines[i] == string.Empty
+                        ) //once u got empty line, u exit bcos that mean permission section is over.
                             break;
 
                         if (srcLines[i].Contains("Permission")) //u got the line having word Permission
@@ -4797,20 +5397,26 @@ namespace BizTalkAdminOperations
                             string[] permission = srcLines[i].Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
 
                             if (i == permissionLineIndex)
-                                grantString = grantString + "\"/GRANT:" + permission[0].Substring(18).Trim() + "," + permission[1].Trim() + "\" ";
-                            else        //GRANT:Everyone, FULL
-                                grantString = grantString + "\"/GRANT:" + permission[0].Trim() + "," + permission[1].Trim() + "\" ";
+                                grantString = grantString + "\"/GRANT:" + permission[0].Substring(18).Trim() + "," +
+                                              permission[1].Trim() + "\" ";
+                            else //GRANT:Everyone, FULL
+                                grantString = grantString + "\"/GRANT:" + permission[0].Trim() + "," +
+                                              permission[1].Trim() + "\" ";
                         }
                     }
-                    if (machineName == strDstNode) //local
+                    string commandArguments;
+                    if (_machineName == strDstNode) //local
                     {
-                        commandArguments = "/C net share " + folderName + "=\"" + dstFolderPath.Trim() + "\"" + grantString;
+                        commandArguments = "/C net share " + folderName + "=\"" + dstFolderPath.Trim() + "\"" +
+                                           grantString;
                         //net share sharename=c:\temp "/GRANT:fareast\v-somish,FULL" "/GRANT:fareast\sdhar,READ"
                     }
                     else //remote
                     {
-                        commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
-                    + " net share " + folderName + "=\"" + dstFolderPath.Trim() + "\"" + grantString.TrimEnd();
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
+                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                                           + " net share " + folderName + "=\"" + dstFolderPath.Trim() + "\"" +
+                                           grantString.TrimEnd();
                     }
 
                     int returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -4826,28 +5432,27 @@ namespace BizTalkAdminOperations
         }
 
         private void UpdateAppPoolXml()
-        {   //delete existing Apppools from Xml which are there in Dst
+        {
+            //delete existing Apppools from Xml which are there in Dst
             try
             {
-                XElement root = XElement.Load(xmlPath + "\\AppPools.xml");
+                XElement root = XElement.Load(_xmlPath + "\\AppPools.xml");
                 XNamespace ns = root.GetDefaultNamespace();
-                string[] lines = File.ReadAllLines(xmlPath + "\\AppPoolList.txt");
+                string[] lines = File.ReadAllLines(_xmlPath + "\\AppPoolList.txt");
 
                 foreach (var item in lines)
                 {
                     var applicationList = from el in root.Elements(ns + "APPPOOL")
-                                          where el.Attribute("APPPOOL.NAME").Value.Equals(item)
-                                          select el;
-                    if (applicationList != null)
-                    {
-                        applicationList.Remove();
-                    }
+                        where el.Attribute("APPPOOL.NAME").Value.Equals(item)
+                        select el;
+                    applicationList.Remove();
                 }
-                root.Save(xmlPath + "\\AppPoolToImport.xml");
+                root.Save(_xmlPath + "\\AppPoolToImport.xml");
             }
             catch (Exception ex)
             {
-                LogShortErrorMsg("Exception occured while genrating Delta of AppPools to be Imported, please check log file for details.");
+                LogShortErrorMsg(
+                    "Exception occured while genrating Delta of AppPools to be Imported, please check log file for details.");
                 LogException(ex);
                 throw;
             }
@@ -4864,77 +5469,83 @@ namespace BizTalkAdminOperations
             try
             {
                 //Reading the Src BTSInstallPath
-                if (File.Exists(xmlPath + "\\" + "SrcBTSInstallPath.txt"))
+                if (File.Exists(_xmlPath + "\\" + "SrcBTSInstallPath.txt"))
                 {
-                    string[] srcBTSInstall = File.ReadAllLines(xmlPath + @"\srcBTSInstallPath.txt");
+                    string[] srcBTSInstall = File.ReadAllLines(_xmlPath + @"\srcBTSInstallPath.txt");
 
-                    for (int j = 0; j < srcBTSInstall.Length; j++)
+                    foreach (string srcBTS in srcBTSInstall)
                     {
-                        srcDrive = srcBTSInstall[j].Split('=')[1].Split(':')[0];
-                        srcBTSInstallPath = srcDrive.ToLower() + ":" + srcBTSInstall[j].Split('=')[1].Split(':')[1];
-                        srcBTSInstallPath1 = srcDrive.ToUpper() + ":" + srcBTSInstall[j].Split('=')[1].Split(':')[1];
+                        srcDrive = srcBTS.Split('=')[1].Split(':')[0];
+                        srcBTSInstallPath = srcDrive.ToLower() + ":" + srcBTS.Split('=')[1].Split(':')[1];
+                        srcBTSInstallPath1 = srcDrive.ToUpper() + ":" + srcBTS.Split('=')[1].Split(':')[1];
                     }
                 }
 
                 //Reading the Dst BTSInstallPath
-                if (File.Exists(xmlPath + "\\" + "DstBTSInstallPath.txt"))
+                if (File.Exists(_xmlPath + "\\" + "DstBTSInstallPath.txt"))
                 {
-                    string[] dstBTSInstall = File.ReadAllLines(xmlPath + @"\DstBTSInstallPath.txt");
+                    string[] dstBTSInstall = File.ReadAllLines(_xmlPath + @"\DstBTSInstallPath.txt");
 
-                    for (int j = 0; j < dstBTSInstall.Length; j++)
+                    foreach (string dstBTS in dstBTSInstall)
                     {
-                        dstDrive = dstBTSInstall[j].Split('=')[1].Split(':')[0];
-                        dstBTSInstallPath = dstDrive.ToUpper() + ":" + dstBTSInstall[j].Split('=')[1].Split(':')[1];
+                        dstDrive = dstBTS.Split('=')[1].Split(':')[0];
+                        dstBTSInstallPath = dstDrive.ToUpper() + ":" + dstBTS.Split('=')[1].Split(':')[1];
                     }
                 }
-                XElement root = XElement.Load(xmlPath + "\\" + pWebAppsFileName);
+                XElement root = XElement.Load(_xmlPath + "\\" + pWebAppsFileName);
                 XNamespace ns = root.GetDefaultNamespace();
-                string[] lines = File.ReadAllLines(xmlPath + "\\DstWebAppList.txt");
+                string[] lines = File.ReadAllLines(_xmlPath + "\\DstWebAppList.txt");
 
                 foreach (var item in lines)
                 {
                     var applicationList = from el in root.Elements(ns + "APP")
-                                              //where el.Attribute("path").Value.Equals(item)
-                                          where el.Attribute("APP.NAME").Value.Equals(item)
-                                          select el;
+                        //where el.Attribute("path").Value.Equals(item)
+                        where el.Attribute("APP.NAME").Value.Equals(item)
+                        select el;
                     if (applicationList != null)
                     {
                         applicationList.Remove();
                     }
                 }
                 var result = from ele in root.Elements(ns + "APP")
-                             select ele;
+                    select ele;
                 foreach (var element in result)
                 {
-                    string physicalPath = element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath").Value;
+                    string physicalPath = element.Element(ns + "application").Element("virtualDirectory")
+                        .Attribute("physicalPath").Value;
                     if (physicalPath.Contains(srcBTSInstallPath))
                     {
                         physicalPath = physicalPath.Replace(srcBTSInstallPath, dstBTSInstallPath);
-                        element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath").SetValue(physicalPath);
+                        element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath")
+                            .SetValue(physicalPath);
 
                     }
                     if (physicalPath.Contains(srcBTSInstallPath1))
                     {
                         physicalPath = physicalPath.Replace(srcBTSInstallPath1, dstBTSInstallPath);
-                        element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath").SetValue(physicalPath);
+                        element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath")
+                            .SetValue(physicalPath);
 
                     }
-                    if (string.IsNullOrEmpty(strWebsitesFolder) || string.IsNullOrWhiteSpace(strWebsitesFolder))
+                    if (string.IsNullOrEmpty(_strWebsitesFolder) || string.IsNullOrWhiteSpace(_strWebsitesFolder))
                     {
 
                     }
                     else
                     {
-                         physicalPath = element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath").Value;
-                        physicalPath = strWebsitesFolder + ":" + physicalPath.Split(':')[1];
-                        element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath").SetValue(physicalPath);
+                        physicalPath = element.Element(ns + "application").Element("virtualDirectory")
+                            .Attribute("physicalPath").Value;
+                        physicalPath = _strWebsitesFolder + ":" + physicalPath.Split(':')[1];
+                        element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath")
+                            .SetValue(physicalPath);
                     }
                 }
-                root.Save(xmlPath + "\\WebApps_" + pWebSiteName + "_ToImport.xml");
+                root.Save(_xmlPath + "\\WebApps_" + pWebSiteName + "_ToImport.xml");
             }
             catch (Exception ex)
             {
-                LogShortErrorMsg("Exception occured while genrating Delta of WebApps to be Imported, please check log file for details.");
+                LogShortErrorMsg(
+                    "Exception occured while genrating Delta of WebApps to be Imported, please check log file for details.");
                 LogException(ex);
                 throw;
             }
@@ -4943,7 +5554,7 @@ namespace BizTalkAdminOperations
         private void UpdateWebSiteXml()
         {
             //split website xml into indivudual websites with new ID value for each website.
-            string[] dstLines = File.ReadAllLines(xmlPath + "\\DstWebSiteList.txt");
+            string[] dstLines = File.ReadAllLines(_xmlPath + "\\DstWebSiteList.txt");
             int dstSiteCount = dstLines.Length; //get count of websites existing in Dst
             int i = 1;
             string srcBTSInstallPath = string.Empty;
@@ -4955,79 +5566,86 @@ namespace BizTalkAdminOperations
             {
 
                 //Reading the Src BTSInstallPath
-                if (File.Exists(xmlPath + "\\" + "SrcBTSInstallPath.txt"))
+                if (File.Exists(_xmlPath + "\\" + "SrcBTSInstallPath.txt"))
                 {
-                    string[] srcBTSInstall = File.ReadAllLines(xmlPath + @"\srcBTSInstallPath.txt");
+                    string[] srcBTSInstall = File.ReadAllLines(_xmlPath + @"\srcBTSInstallPath.txt");
 
-                    for (int j = 0; j < srcBTSInstall.Length; j++)
+                    foreach (string srcBTS in srcBTSInstall)
                     {
-                        srcDrive = srcBTSInstall[j].Split('=')[1].Split(':')[0];
-                        srcBTSInstallPath = srcDrive.ToLower() + ":" + srcBTSInstall[j].Split('=')[1].Split(':')[1];
-                        srcBTSInstallPath1 = srcDrive.ToUpper() + ":" + srcBTSInstall[j].Split('=')[1].Split(':')[1];
+                        srcDrive = srcBTS.Split('=')[1].Split(':')[0];
+                        srcBTSInstallPath = srcDrive.ToLower() + ":" + srcBTS.Split('=')[1].Split(':')[1];
+                        srcBTSInstallPath1 = srcDrive.ToUpper() + ":" + srcBTS.Split('=')[1].Split(':')[1];
                     }
                 }
 
                 //Reading the Dst BTSInstallPath
-                if (File.Exists(xmlPath + "\\" + "DstBTSInstallPath.txt"))
+                if (File.Exists(_xmlPath + "\\" + "DstBTSInstallPath.txt"))
                 {
-                    string[] dstBTSInstall = File.ReadAllLines(xmlPath + @"\DstBTSInstallPath.txt");
+                    string[] dstBTSInstall = File.ReadAllLines(_xmlPath + @"\DstBTSInstallPath.txt");
 
-                    for (int j = 0; j < dstBTSInstall.Length; j++)
+                    foreach (string dstBTS in dstBTSInstall)
                     {
-                        dstDrive = dstBTSInstall[j].Split('=')[1].Split(':')[0];
-                        dstBTSInstallPath = dstDrive.ToUpper() + ":" + dstBTSInstall[j].Split('=')[1].Split(':')[1];
+                        dstDrive = dstBTS.Split('=')[1].Split(':')[0];
+                        dstBTSInstallPath = dstDrive.ToUpper() + ":" + dstBTS.Split('=')[1].Split(':')[1];
                     }
                 }
 
-                XElement root = XElement.Load(xmlPath + "\\WebSites.xml");
+                XElement root = XElement.Load(_xmlPath + "\\WebSites.xml");
                 XNamespace ns = root.GetDefaultNamespace();
 
-                var applicationList = from el in root.Elements(ns + "SITE").Elements(ns + "site").Elements(ns + "application")
-                                      where !el.Attribute("path").Value.Equals("/")
-                                      select el;
+                var applicationList =
+                    from el in root.Elements(ns + "SITE").Elements(ns + "site").Elements(ns + "application")
+                    where !el.Attribute("path").Value.Equals("/")
+                    select el;
                 if (applicationList != null)
                 {
                     applicationList.Remove();
                 }
 
                 var result = from ele in root.Elements(ns + "SITE")
-                             select ele;
-              
-                    foreach (var element in result)
+                    select ele;
+
+                foreach (var element in result)
                 {
                     element.Attribute("SITE.ID").SetValue(dstSiteCount + i);
                     element.Element(ns + "site").Attribute("id").SetValue(dstSiteCount + i);
-                    string physicalPath = element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory").Attribute("physicalPath").Value;
-                    if(physicalPath.Contains(srcBTSInstallPath))
+                    string physicalPath = element.Element(ns + "site").Element(ns + "application")
+                        .Element(ns + "virtualDirectory").Attribute("physicalPath").Value;
+                    if (physicalPath.Contains(srcBTSInstallPath))
                     {
                         physicalPath = physicalPath.Replace(srcBTSInstallPath, dstBTSInstallPath);
-                        element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory").Attribute("physicalPath").SetValue(physicalPath);
+                        element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory")
+                            .Attribute("physicalPath").SetValue(physicalPath);
 
                     }
                     if (physicalPath.Contains(srcBTSInstallPath1))
                     {
                         physicalPath = physicalPath.Replace(srcBTSInstallPath1, dstBTSInstallPath);
-                        element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory").Attribute("physicalPath").SetValue(physicalPath);
+                        element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory")
+                            .Attribute("physicalPath").SetValue(physicalPath);
 
                     }
-                    if (string.IsNullOrEmpty(strWebsitesFolder) || string.IsNullOrWhiteSpace(strWebsitesFolder))
+                    if (string.IsNullOrEmpty(_strWebsitesFolder) || string.IsNullOrWhiteSpace(_strWebsitesFolder))
                     {
 
                     }
                     else
                     {
-                        physicalPath = element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory").Attribute("physicalPath").Value;
-                        physicalPath = strWebsitesFolder.Trim().Substring(0,1) + ":" + physicalPath.Split(':')[1];
-                        element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory").Attribute("physicalPath").SetValue(physicalPath);
+                        physicalPath = element.Element(ns + "site").Element(ns + "application")
+                            .Element(ns + "virtualDirectory").Attribute("physicalPath").Value;
+                        physicalPath = _strWebsitesFolder.Trim().Substring(0, 1) + ":" + physicalPath.Split(':')[1];
+                        element.Element(ns + "site").Element(ns + "application").Element(ns + "virtualDirectory")
+                            .Attribute("physicalPath").SetValue(physicalPath);
                     }
                     XElement rootAppCmd = new XElement("appcmd", element);
-                    rootAppCmd.Save(xmlPath + "\\WebSite_" + element.Attribute("SITE.NAME").Value + "_ToImport.xml");
+                    rootAppCmd.Save(_xmlPath + "\\WebSite_" + element.Attribute("SITE.NAME").Value + "_ToImport.xml");
                     i++;
                 }
             }
             catch (Exception ex)
             {
-                LogShortErrorMsg("Exception occured while genrating Delta for WebSites to be Imported, please check log file for details.");
+                LogShortErrorMsg(
+                    "Exception occured while genrating Delta for WebSites to be Imported, please check log file for details.");
                 LogException(ex);
                 throw;
             }
@@ -5037,41 +5655,47 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                XElement root = XElement.Load(xmlPath + "\\WebSites.xml");
+                XElement root = XElement.Load(_xmlPath + "\\WebSites.xml");
                 XNamespace ns = root.GetDefaultNamespace();
 
-                var applicationList = from el in root.Elements(ns + "SITE").Elements(ns + "site").Elements(ns + "application")
-                                      where !el.Attribute("path").Value.Equals("/")
-                                      select el;
+                var applicationList =
+                    from el in root.Elements(ns + "SITE").Elements(ns + "site").Elements(ns + "application")
+                    where !el.Attribute("path").Value.Equals("/")
+                    select el;
 
                 var result = from ele in root.Elements(ns + "SITE")
-                             select ele;
+                    select ele;
 
                 foreach (var element in result)
                 {
                     XElement rootAppCmd = new XElement("appcmd", element);
-                    rootAppCmd.Save(xmlPath + "\\WebSite_" + element.Attribute("SITE.NAME").Value + "_ToExport.xml");
+                    rootAppCmd.Save(_xmlPath + "\\WebSite_" + element.Attribute("SITE.NAME").Value + "_ToExport.xml");
                 }
             }
             catch (Exception ex)
             {
-                LogShortErrorMsg("Exception occured while genrating Delta for WebSites to be Imported, please check log file for details.");
+                LogShortErrorMsg(
+                    "Exception occured while genrating Delta for WebSites to be Imported, please check log file for details.");
                 LogException(ex);
                 throw;
             }
         }
-      
+
 
         private void UpdateAppXmlFile()
-        {   //this is genrating two file one is DstAppList.txt and second one is AppsToImport.xml            
+        {
+            //this is genrating two file one is DstAppList.txt and second one is AppsToImport.xml            
             //Get all App name from Dst BizTalk Mgmt DB
-            char[] chrSep = { ',' };
+            char[] chrSep = {','};
             try
             {
-                using (var connection = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                using (var connection = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() +
+                                                          ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
                     connection.Open();
-                    using (var sqlCmd = new SqlCommand("SELECT nvcName AS AppName FROM bts_application ORDER BY nvcName ASC;", connection))
+                    using (var sqlCmd =
+                        new SqlCommand("SELECT nvcName AS AppName FROM bts_application ORDER BY nvcName ASC;",
+                            connection))
                     {
                         using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
                         {
@@ -5082,14 +5706,15 @@ namespace BizTalkAdminOperations
                                 ds.Tables[0].TableName = "AppNames";
 
                                 //write all apps in txt file, one app each line.
-                                using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstAppList.txt", false))
+                                using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstAppList.txt", false))
                                 {
                                     foreach (DataRow dRow in ds.Tables["AppNames"].Rows)
                                     {
                                         writer.WriteLine(dRow["AppName"].ToString());
                                     }
 
-                                    string[] arrAppsToIgnore = bizTalkAppToIgnore.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
+                                    string[] arrAppsToIgnore =
+                                        _bizTalkAppToIgnore.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
 
                                     foreach (string appToIgnore in arrAppsToIgnore)
                                     {
@@ -5105,23 +5730,24 @@ namespace BizTalkAdminOperations
                 }
 
                 //remove apps which already existing in destination
-                XElement root = XElement.Load(xmlPath + "\\Apps.xml");
+                XElement root = XElement.Load(_xmlPath + "\\Apps.xml");
                 XNamespace ns = root.GetDefaultNamespace();
-                string[] lines = File.ReadAllLines(xmlPath + @"\DstAppList.txt");
+                string[] lines = File.ReadAllLines(_xmlPath + @"\DstAppList.txt");
                 foreach (var item in lines)
                 {
                     var ActivityList = from el in root.Elements(ns + "BizTalkApplication")
-                                       where el.Attribute("ApplicationName").Value.Equals(item)
-                                       select el;
+                        where el.Attribute("ApplicationName").Value.Equals(item)
+                        select el;
 
                     if (ActivityList != null)
                         ActivityList.Remove();
                 }
-                root.Save(xmlPath + "\\AppsToImport.xml");
+                root.Save(_xmlPath + "\\AppsToImport.xml");
             }
             catch (Exception ex)
             {
-                LogShortErrorMsg("Exception occured while genrating Delta for Assembly list to be Imported, please check log file for details.");
+                LogShortErrorMsg(
+                    "Exception occured while genrating Delta for Assembly list to be Imported, please check log file for details.");
                 LogException(ex);
                 throw;
             }
@@ -5131,14 +5757,14 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                string[] srcBizTalkDllLines = File.ReadAllLines(xmlPath + @"\SrcBizTalkAssemblyList.txt");
-                     if (machineName == strDstNode) //local
+                string[] srcBizTalkDllLines = File.ReadAllLines(_xmlPath + @"\SrcBizTalkAssemblyList.txt");
+                if (_machineName == strDstNode) //local
                 {
-                      string asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
-                      string asmPath2 = @"C:\Windows\assembly\GAC\";
-                      string asmPath3 = @"C:\Windows\assembly\GAC_32\";
-                      string asmPath4 = @"C:\Windows\assembly\GAC_64\";
-                      string asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
+                    string asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
+                    string asmPath2 = @"C:\Windows\assembly\GAC\";
+                    string asmPath3 = @"C:\Windows\assembly\GAC_32\";
+                    string asmPath4 = @"C:\Windows\assembly\GAC_64\";
+                    string asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
                     //Creating DestinationBiztalk Assembly List
                     int dllCount = 0;
@@ -5146,41 +5772,52 @@ namespace BizTalkAdminOperations
                     {
                         string biztalkDllName = srcBizTalkDll.Substring(0, srcBizTalkDll.LastIndexOf('_'));
 
-                        string[] assemblyDll_1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                       string[] assemblyDll_3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                       string[] assemblyDll_4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                      dllCount = dllCount + assemblyDll_1.Length + assemblyDll_2.Length + assemblyDll_3.Length + assemblyDll_4.Length + assemblyDll_5.Length;
+                        string[] assemblyDll1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        dllCount = dllCount + assemblyDll1.Length + assemblyDll2.Length + assemblyDll3.Length +
+                                   assemblyDll4.Length + assemblyDll5.Length;
                     }
                     string[] dllDst = new string[dllCount];
                     int dllLength = 0;
                     foreach (string srcBizTalkDll in srcBizTalkDllLines)
                     {
                         string biztalkDllName = srcBizTalkDll.Substring(0, srcBizTalkDll.LastIndexOf('_'));
-                                             
-                        string[] assemblyDll_1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll", SearchOption.AllDirectories);
-                        string[] assemblyDll_5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll", SearchOption.AllDirectories);
 
-                        assemblyDll_1.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_1.Length;
-                        assemblyDll_2.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_2.Length;
-                        assemblyDll_3.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_3.Length;
-                        assemblyDll_4.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_4.Length;
-                        assemblyDll_5.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll_5.Length;
+                        string[] assemblyDll1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+                        string[] assemblyDll5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories);
+
+                        assemblyDll1.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll1.Length;
+                        assemblyDll2.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll2.Length;
+                        assemblyDll3.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll3.Length;
+                        assemblyDll4.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll4.Length;
+                        assemblyDll5.CopyTo(dllDst, dllLength);
+                        dllLength = dllLength + assemblyDll5.Length;
                     }
                     dllDst = dllDst.Distinct().ToArray();
                     Array.Sort(dllDst);
 
                     //write custom dll paths in txt file
-                    using (StreamWriter writer = new StreamWriter(xmlPath + @"\DstBizTalkAssemblyList.txt", false))
+                    using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstBizTalkAssemblyList.txt", false))
                     {
                         foreach (string filePathDll in dllDst)
                         {
@@ -5193,13 +5830,18 @@ namespace BizTalkAdminOperations
                         }
                     }
                 }
-                     else
+                else
                 {
-                    string appPathUnc = ConvertPathToUncPath(appPath);
-                    string commandArguments = "/C " + "\"\"" + psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + "  \"" +
-                             remoteRootFolder + "\\" + remoteExeName + "\" " + "\"\\\\" + machineName + "\\" + appPathUnc + "\"" + " \"DstDllList\" \"";
+                    string appPathUnc = ConvertPathToUncPath(_appPath);
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
+                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                              "  \"" +
+                                              _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
+                                              _machineName +
+                                              "\\" + appPathUnc + "\"" + " \"DstDllList\" \"";
 
-                    int returnCode = ExecuteCmd("CMD.EXE", commandArguments);    //genrate handler xml and save it back to local
+                    int returnCode =
+                        ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
                     if (returnCode == 0)
                     {
                         LogShortSuccessMsg("Success: Exported Destination Biztalk AssemblyList.");
@@ -5211,14 +5853,15 @@ namespace BizTalkAdminOperations
 
                     }
                 }
-                string[] dstBiztalkDllLines = File.ReadAllLines(xmlPath + @"\DstBizTalkAssemblyList.txt");
+                string[] dstBiztalkDllLines = File.ReadAllLines(_xmlPath + @"\DstBizTalkAssemblyList.txt");
 
                 foreach (string srcFilePath in srcBizTalkDllLines)
                 {
-                    if (Array.IndexOf(dstBiztalkDllLines, srcFilePath) > -1) //if same dll is part of custom DLL then empty that entry in list.                                                    
+                    if (Array.IndexOf(dstBiztalkDllLines, srcFilePath) > -1
+                    ) //if same dll is part of custom DLL then empty that entry in list.                                                    
                         srcBizTalkDllLines[Array.IndexOf(srcBizTalkDllLines, srcFilePath)] = string.Empty;
                 }
-                using (StreamWriter writer = new StreamWriter(xmlPath + @"\BizTalkAssemblyToImport.txt", false))
+                using (StreamWriter writer = new StreamWriter(_xmlPath + @"\BizTalkAssemblyToImport.txt", false))
                 {
                     foreach (string filePathDll in srcBizTalkDllLines)
                     {
@@ -5233,14 +5876,15 @@ namespace BizTalkAdminOperations
 
             }
             catch (Exception ex)
-           {
-               LogShortErrorMsg("Exception occured while genrating Delta for Assembly list to be Imported, please check log file for details.");
-               LogException(ex);
+            {
+                LogShortErrorMsg(
+                    "Exception occured while genrating Delta for Assembly list to be Imported, please check log file for details.");
+                LogException(ex);
                 throw;
-          }
             }
+        }
 
-        
+
 
 
         private void UpdateBamDefFile(string pBamDefXmlFilePath, string pActivityNameTxtFilePath)
@@ -5252,52 +5896,47 @@ namespace BizTalkAdminOperations
                 string[] lines = File.ReadAllLines(pActivityNameTxtFilePath);
                 foreach (var item in lines)
                 {
-                    var ActivityList = from el in root.Elements(ns + "Activity")
-                                       where el.Attribute("Name").Value.Equals(item)
-                                       select el;
+                    var activityList = from el in root.Elements(ns + "Activity")
+                        where el.Attribute("Name").Value.Equals(item)
+                        select el;
 
-                    foreach (var Activity in ActivityList)
+                    foreach (var activity in activityList)
                     {
                         var viewList = from el in root.Elements(ns + "View").Elements(ns + "ActivityView")
-                                       where el.Attribute("ActivityRef").Value.Equals(Activity.Attribute("ID").Value)
-                                       select el.Parent;
+                            where el.Attribute("ActivityRef").Value.Equals(activity.Attribute("ID").Value)
+                            select el.Parent;
 
                         foreach (var view in viewList)
                         {
-                            var ViewRefList = from el in root.Elements(ns + "Alerts").Elements(ns + "ViewAlert").Elements(ns + "ViewRef")
-                                              where el.Value.Equals(view.Attribute("ID").Value)
-                                              select el;
-                            if (ViewRefList != null)
-                                ViewRefList.Ancestors(ns + "ViewAlert").Remove();
+                            var ViewRefList = from el in root.Elements(ns + "Alerts").Elements(ns + "ViewAlert")
+                                    .Elements(ns + "ViewRef")
+                                where el.Value.Equals(view.Attribute("ID").Value)
+                                select el;
+                            ViewRefList.Ancestors(ns + "ViewAlert").Remove();
                             ///////////////////////////////////////////////////////////////
                             var activityViewList = from el in view.Elements(ns + "ActivityView")
-                                                   select el;
+                                select el;
 
                             foreach (var activityView in activityViewList)
                             {
                                 var cubeList = from el in root.Elements(ns + "Cube")
-                                               where el.Attribute("ActivityViewRef").Value.Equals(activityView.Attribute("ID").Value)
-                                               select el;
-
-                                if (cubeList != null)
-                                {
-                                    int i = cubeList.Count();
-                                    cubeList.Remove();
-                                }
+                                    where el.Attribute("ActivityViewRef").Value
+                                        .Equals(activityView.Attribute("ID").Value)
+                                    select el;
+                                cubeList.Remove();
                             }
                         }
 
-                        if (viewList != null)
-                            viewList.Remove();
+                        viewList.Remove();
                     }
-                    if (ActivityList != null)
-                        ActivityList.Remove();
+                    activityList.Remove();
                 }
-                root.Save(xmlPath + "\\BamDefToImport.xml");
+                root.Save(_xmlPath + "\\BamDefToImport.xml");
             }
             catch (Exception ex)
             {
-                LogShortErrorMsg("Exception occured while genrating Delta for BamDef to be Imported, please check log file for details.");
+                LogShortErrorMsg(
+                    "Exception occured while genrating Delta for BamDef to be Imported, please check log file for details.");
                 LogException(ex);
                 throw;
             }
@@ -5307,7 +5946,8 @@ namespace BizTalkAdminOperations
         {
             foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
             {
-                if (!bizTalkAppToIgnore.Contains(app.Name)) //if (!(app.Name == "RosettaNet" || app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
+                if (!_bizTalkAppToIgnore.Contains(app.Name)
+                ) //if (!(app.Name == "RosettaNet" || app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
                 {
                     int i;
                     if (htApps.TryGetValue(app.Name, out i))
@@ -5331,13 +5971,14 @@ namespace BizTalkAdminOperations
             try
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load(msiPath + "\\" + pAppName + specFileExt);
+                doc.Load(_msiPath + "\\" + pAppName + _specFileExt);
                 foreach (XmlNode resources in doc.DocumentElement.ChildNodes)
                 {
-                    int nodeCount = resources.ChildNodes.Count;
                     for (int iNode = 0; iNode < resources.ChildNodes.Count;)
                     {
-                        if (resources.ChildNodes[iNode].Attributes["Type"].Value == "System.BizTalk:BizTalkBinding" || resources.ChildNodes[iNode].Attributes["Type"].Value == "System.BizTalk:Certificate" || resources.ChildNodes[iNode].Attributes["Type"].Value == "System.BizTalk:WebDirectory")
+                        if (resources.ChildNodes[iNode].Attributes["Type"].Value == "System.BizTalk:BizTalkBinding" ||
+                            resources.ChildNodes[iNode].Attributes["Type"].Value == "System.BizTalk:Certificate" ||
+                            resources.ChildNodes[iNode].Attributes["Type"].Value == "System.BizTalk:WebDirectory")
                         {
                             resources.ChildNodes[iNode].ParentNode.RemoveChild(resources.ChildNodes[iNode]);
                             iNode--;
@@ -5345,7 +5986,7 @@ namespace BizTalkAdminOperations
                         iNode++;
                     }
                 }
-                doc.Save(msiPath + "\\" + pAppName + specFileExt);
+                doc.Save(_msiPath + "\\" + pAppName + _specFileExt);
                 return 0;
             }
             catch (Exception ex)
@@ -5355,34 +5996,35 @@ namespace BizTalkAdminOperations
             }
 
         }
+
         private void EnableControls(bool pTrueFalse)
         {
-            if (strServerType == "App" && pTrueFalse) //App
+            if (_strServerType == "App" && pTrueFalse) //App
             {
-                panel12.Enabled = pTrueFalse;
-                panel13.Enabled = pTrueFalse;
-                btnExportOperations.Enabled = pTrueFalse;
-                btnImportOperations.Enabled = pTrueFalse;
-                txtConnectionString.Enabled = pTrueFalse;
-                txtConnectionStringDst.Enabled = pTrueFalse;
-                panel1.Enabled = pTrueFalse;
-                panel2.Enabled = pTrueFalse;
-                panel3.Enabled = pTrueFalse;
-                panel6.Enabled = pTrueFalse;
-                panel7.Enabled = pTrueFalse;
-                panel11.Enabled = pTrueFalse;
-                panel14.Enabled = pTrueFalse;
+                panel12.Enabled = true;
+                panel13.Enabled = true;
+                btnExportOperations.Enabled = true;
+                btnImportOperations.Enabled = true;
+                txtConnectionString.Enabled = true;
+                txtConnectionStringDst.Enabled = true;
+                panel1.Enabled = true;
+                panel2.Enabled = true;
+                panel3.Enabled = true;
+                panel6.Enabled = true;
+                panel7.Enabled = true;
+                panel11.Enabled = true;
+                panel14.Enabled = true;
             }
-            else if (strServerType == "App" && pTrueFalse == false) //App
+            else if (_strServerType == "App" && !pTrueFalse) //App
             {
-                panel4.Enabled = pTrueFalse;
-                panel5.Enabled = pTrueFalse;
-                panel8.Enabled = pTrueFalse;
-                panel9.Enabled = pTrueFalse;
-                panel10.Enabled = pTrueFalse;
+                panel4.Enabled = false;
+                panel5.Enabled = false;
+                panel8.Enabled = false;
+                panel9.Enabled = false;
+                panel10.Enabled = false;
 
             }
-            else if (strServerType == "BizTalk")
+            else if (_strServerType == "BizTalk")
             {
                 panel12.Enabled = pTrueFalse;
                 panel13.Enabled = pTrueFalse;
@@ -5428,26 +6070,16 @@ namespace BizTalkAdminOperations
             }
             return "";
         }
+
         private void MoveWebAppFolders(string pFileName, string pWebSite)
         {
-            string strSrc = "";
-            string strDst = "";
-            string commandArguments = "";
-            string driveInfo = string.Empty;
-            string driveLetter = string.Empty;
-            string pathWithoutDrive = string.Empty, folderPath = string.Empty;
             string webAppConfigFilePath = pFileName;
-            char[] chrSep = { ',' };
             string srcDriveLetter = string.Empty;
-            string scrFileName = string.Empty;
-            string webAppName = string.Empty;
-            string srcPathWithoutDrive = string.Empty;
-            string physicalPath = string.Empty;
-       
+
 
             try
             {
-                
+
                 XPathDocument doc = new XPathDocument(webAppConfigFilePath);
                 XPathNavigator nav = doc.CreateNavigator();
 
@@ -5456,22 +6088,33 @@ namespace BizTalkAdminOperations
                 XPathNodeIterator iterator = nav.Select(expr);
 
                 //string[] srcServer = lblServers.Text.Split(chrSep);
-                if (strToolMode == "Migrate" && strExport == strPerformOperationNo)    // migration = yes, and import = yes
+                string strSrc;
+                string folderPath;
+                string driveLetter;
+                string pathWithoutDrive;
+                string driveInfo;
+                string commandArguments;
+                string strDst;
+                if (_strToolMode == "Migrate" && _strExport == _strPerformOperationNo
+                ) // migration = yes, and import = yes
                 {
+                    string scrFileName;
                     if (pFileName.Contains("WebSite"))
                     {
                         // Reading the Path From Source.xml
                         scrFileName = pFileName.Substring(0, pFileName.LastIndexOf('_')) + "_ToExport.xml";
                         XElement webRoot = XElement.Load(scrFileName);
                         XNamespace ns = webRoot.GetDefaultNamespace();
-                        var webResult = from ele in webRoot.Elements(ns + "SITE").Elements(ns + "site").Elements(ns + "application")
-                                     select ele;
+                        var webResult = from ele in webRoot.Elements(ns + "SITE").Elements(ns + "site")
+                                .Elements(ns + "application")
+                            select ele;
                         foreach (var element in webResult)
                         {
                             if (element.Attribute("path").Value == "/")
                             {
 
-                                string srcFolderPath = element.Element("virtualDirectory").Attribute("physicalPath").Value;
+                                string srcFolderPath =
+                                    element.Element("virtualDirectory").Attribute("physicalPath").Value;
                                 string srcDriveInfo = Path.GetPathRoot(srcFolderPath);
                                 srcDriveLetter = srcDriveInfo.Substring(0, 1);
                             }
@@ -5499,9 +6142,10 @@ namespace BizTalkAdminOperations
 
                             LogInfo("Copy started from: " + strSrc + " To " + strDst);
 
-                            commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
+                            commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst +
+                                               "\" " + "/E /COPYALL /R:1";
                             int returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                            if (returnCode >= strRoboCopySuccessCode)
+                            if (returnCode >= _strRoboCopySuccessCode)
                                 LogShortErrorMsg("Failed: Importing Virtual Directory.");
                         }
                         LogShortSuccessMsg("Success: Imported Virtual Directory.");
@@ -5516,21 +6160,24 @@ namespace BizTalkAdminOperations
 
 
                         var result = from ele in root.Elements(ns + "APP")
-                                     select ele;
+                            select ele;
+                        string physicalPath;
+                        string webAppName;
                         foreach (var element in result)
                         {
                             if (element.Attribute("path").Value != "/")
                             {
 
                                 webAppName = element.Attribute("APP.NAME").Value;
-                                physicalPath = element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath").Value;
+                                physicalPath = element.Element(ns + "application").Element("virtualDirectory")
+                                    .Attribute("physicalPath").Value;
                                 webAppArray.Add(webAppName + "_" + physicalPath);
                             }
                         }
                         XElement importRoot = XElement.Load(webAppConfigFilePath);
                         XNamespace importns = importRoot.GetDefaultNamespace();
                         result = from ele in importRoot.Elements(importns + "APP")
-                                 select ele;
+                            select ele;
                         LogInfo("Copying Virtual directories.");
                         foreach (var element in result)
                         {
@@ -5541,12 +6188,10 @@ namespace BizTalkAdminOperations
                                 {
                                     driveInfo = Path.GetPathRoot(srcWebApp.Split('_')[1]);
                                     srcDriveLetter = driveInfo.Substring(0, 1);
-
-                                    srcPathWithoutDrive = srcWebApp.Split('_')[1].Substring(3, srcWebApp.Split('_')[1].Length - 3);
-
                                 }
                             }
-                            physicalPath = element.Element(ns + "application").Element("virtualDirectory").Attribute("physicalPath").Value;
+                            physicalPath = element.Element(ns + "application").Element("virtualDirectory")
+                                .Attribute("physicalPath").Value;
                             driveInfo = Path.GetPathRoot(physicalPath);
                             driveLetter = driveInfo.Substring(0, 1);
                             pathWithoutDrive = physicalPath.Substring(3, physicalPath.Length - 3);
@@ -5555,9 +6200,10 @@ namespace BizTalkAdminOperations
 
                             LogInfo("Copy started from: " + strSrc + " To " + strDst);
 
-                            commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
+                            commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst +
+                                               "\" " + "/E /COPYALL /R:1";
                             int returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                            if (returnCode >= strRoboCopySuccessCode)
+                            if (returnCode >= _strRoboCopySuccessCode)
                                 LogShortErrorMsg("Failed: Importing Virtual Directory.");
 
                         }
@@ -5565,7 +6211,8 @@ namespace BizTalkAdminOperations
                     }
                 }
 
-                if (strToolMode == "Backup" && strExport == strPerformOperationNo)    // migration = no, and import = yes
+                if (_strToolMode == "Backup" && _strExport == _strPerformOperationNo
+                ) // migration = no, and import = yes
                 {
                     LogInfo("Copying Virtual directories.");
                     while (iterator.MoveNext())
@@ -5574,20 +6221,22 @@ namespace BizTalkAdminOperations
                         driveInfo = Path.GetPathRoot(folderPath);
                         driveLetter = driveInfo.Substring(0, 1);
                         pathWithoutDrive = folderPath.Substring(3, folderPath.Length - 3);
-                        strSrc = vDir + "\\" + pWebSite + "\\" + folderPath.Substring(folderPath.LastIndexOf('\\'));
+                        strSrc = _vDir + "\\" + pWebSite + "\\" + folderPath.Substring(folderPath.LastIndexOf('\\'));
                         strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
 
                         LogInfo("Copy started from: " + strSrc + " To " + strDst);
 
-                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
+                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                           "/E /COPYALL /R:1";
                         int returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                        if (returnCode >= strRoboCopySuccessCode)
+                        if (returnCode >= _strRoboCopySuccessCode)
                             LogShortErrorMsg("Failed: Importing Virtual Directory.");
                     }
                     LogShortSuccessMsg("Success: Imported Virtual Directory.");
                 }
 
-                if (strToolMode == "Backup" && strExport == strPerformOperationYes)    // staging = yes, and export = yes  
+                if (_strToolMode == "Backup" && _strExport == _strPerformOperationYes
+                ) // staging = yes, and export = yes  
                 {
                     LogInfo("Copying Virtual directories.");
                     while (iterator.MoveNext())
@@ -5597,13 +6246,14 @@ namespace BizTalkAdminOperations
                         driveLetter = driveInfo.Substring(0, 1);
                         pathWithoutDrive = folderPath.Substring(3, folderPath.Length - 3);
                         strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
-                        strDst = vDir + "\\" + pWebSite + "\\" + folderPath.Substring(folderPath.LastIndexOf('\\'));
+                        strDst = _vDir + "\\" + pWebSite + "\\" + folderPath.Substring(folderPath.LastIndexOf('\\'));
 
                         LogInfo("Copy started from: " + strSrc + " To " + strDst);
 
-                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
+                        commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
+                                           "/E /COPYALL /R:1";
                         int returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                        if (returnCode >= strRoboCopySuccessCode)
+                        if (returnCode >= _strRoboCopySuccessCode)
                             LogShortErrorMsg("Failed: Exporting Virtual Directory.");
                     }
                     LogShortSuccessMsg("Success: Exported Virtual Directory to local.");
@@ -5637,7 +6287,7 @@ namespace BizTalkAdminOperations
                     p.BeginErrorReadLine();
                     p.WaitForExit();
                     return p.ExitCode;
-             
+
                     //return strSuccess;
                 }
                 catch (Exception ex)
@@ -5652,16 +6302,15 @@ namespace BizTalkAdminOperations
         private void SaveSrcSqlConnection()
         {
             XmlWriter xmlWriterApps = null;
-            Servers srv = null;
-            XmlSerializer configSerializer = null;
 
             try
             {
-                if (File.Exists(serverXmlPath))
+                Servers srv;
+                if (File.Exists(_serverXmlPath))
                 {
-                    XmlTextReader xmlTxtRed = new XmlTextReader(serverXmlPath);
-                    configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers)configSerializer.Deserialize(xmlTxtRed);
+                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
+                    var configSerializer = new XmlSerializer(typeof(Servers));
+                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
                     xmlTxtRed.Close();
                 }
                 else
@@ -5686,7 +6335,7 @@ namespace BizTalkAdminOperations
                 XmlWriterSettings xmlWriterSetting =
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                xmlWriterApps = XmlWriter.Create(serverXmlPath, xmlWriterSetting);
+                xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
             }
 
@@ -5704,18 +6353,16 @@ namespace BizTalkAdminOperations
         private void SaveDstSqlConnection()
         {
             XmlWriter xmlWriterApps = null;
-            Servers srv = null;
-            XmlSerializer configSerializer = null;
 
             try
             {
-                if (File.Exists(serverXmlPath))
+                Servers srv;
+                if (File.Exists(_serverXmlPath))
                 {
-                    XmlTextReader xmlTxtRed = new XmlTextReader(serverXmlPath);
-                    configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers)configSerializer.Deserialize(xmlTxtRed);
+                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
+                    var configSerializer = new XmlSerializer(typeof(Servers));
+                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
                     xmlTxtRed.Close();
-                    configSerializer = null;
                 }
                 else
                     srv = new Servers();
@@ -5738,7 +6385,7 @@ namespace BizTalkAdminOperations
                 XmlWriterSettings xmlWriterSetting =
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                xmlWriterApps = XmlWriter.Create(serverXmlPath, xmlWriterSetting);
+                xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
                 x = null;
             }
@@ -5756,18 +6403,16 @@ namespace BizTalkAdminOperations
         private void SaveAppServers()
         {
             XmlWriter xmlWriterApps = null;
-            Servers srv = null;
-            XmlSerializer configSerializer = null;
 
             try
             {
-                if (File.Exists(serverXmlPath))
+                Servers srv;
+                if (File.Exists(_serverXmlPath))
                 {
-                    XmlTextReader xmlTxtRed = new XmlTextReader(serverXmlPath);
-                    configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers)configSerializer.Deserialize(xmlTxtRed);
+                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
+                    var configSerializer = new XmlSerializer(typeof(Servers));
+                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
                     xmlTxtRed.Close();
-                    configSerializer = null;
                 }
                 else
                     srv = new Servers();
@@ -5783,7 +6428,7 @@ namespace BizTalkAdminOperations
                 XmlWriterSettings xmlWriterSetting =
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                xmlWriterApps = XmlWriter.Create(serverXmlPath, xmlWriterSetting);
+                xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
                 x = null;
             }
@@ -5797,19 +6442,23 @@ namespace BizTalkAdminOperations
                 xmlWriterApps?.Close();
             }
         }
+
         private void TstDstSqlConnection(bool pSaveConnectionInfo)
         {
             try
             {
-                if (strServerType == "BizTalk")
+                if (_strServerType == "BizTalk")
                 {
-                    if (txtConnectionStringDst.Text != "SQL INSTANCE" && txtConnectionStringDst.Text != "" && txtConnectionStringDst.Text != dstSqlInstance)
+                    if (txtConnectionStringDst.Text != "SQL INSTANCE" && txtConnectionStringDst.Text != "" &&
+                        txtConnectionStringDst.Text != _dstSqlInstance)
                     {
                         EnableControls(false);
                         cmbBoxServerDst.Items.Clear();
                         cmbBoxServerDst.Text = "";
                         LogInfo("Validating Sql Instance.");
-                        using (var sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                        using (var sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() +
+                                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI")
+                        )
                         {
                             sqlCon.Open();
 
@@ -5827,7 +6476,7 @@ namespace BizTalkAdminOperations
                         cmbBoxServerDst.Visible = true;
                         LogShortSuccessMsg("Connection Verified.");
 
-                        dstSqlInstance = txtConnectionStringDst.Text;
+                        _dstSqlInstance = txtConnectionStringDst.Text;
                         if (pSaveConnectionInfo)
                             SaveDstSqlConnection();
                     }
@@ -5835,7 +6484,7 @@ namespace BizTalkAdminOperations
                     {
                         if (txtConnectionStringDst.Text == "SQL INSTANCE" || txtConnectionStringDst.Text == "")
                         {
-                            dstSqlInstance = txtConnectionStringDst.Text;
+                            _dstSqlInstance = txtConnectionStringDst.Text;
                             cmbBoxServerDst.Items.Clear();
                             cmbBoxServerDst.Text = "";
                             SaveDstSqlConnection();
@@ -5846,7 +6495,8 @@ namespace BizTalkAdminOperations
                 }
                 else //App
                 {
-                    if (txtConnectionStringDst.Text != "SQL INSTANCE" && txtConnectionStringDst.Text != "" && txtConnectionStringDst.Text != "SERVER NAME")
+                    if (txtConnectionStringDst.Text != "SQL INSTANCE" && txtConnectionStringDst.Text != "" &&
+                        txtConnectionStringDst.Text != "SERVER NAME")
                     {
                         SaveAppServers();
                         strDstNode = txtConnectionStringDst.Text.Trim();
@@ -5862,7 +6512,7 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 EnableControls(true);
-                dstSqlInstance = txtConnectionStringDst.Text;
+                _dstSqlInstance = txtConnectionStringDst.Text;
                 cmbBoxServerDst.Items.Clear();
                 cmbBoxServerDst.Text = "";
                 LogShortErrorMsg(ex.Message);
@@ -5875,16 +6525,19 @@ namespace BizTalkAdminOperations
 
             try
             {
-                if (strServerType == "BizTalk")//BizTalk
+                if (_strServerType == "BizTalk") //BizTalk
                 {
-                    if (txtConnectionString.Text != "SQL INSTANCE" && txtConnectionString.Text != "" && txtConnectionString.Text != srcSqlInstance)
+                    if (txtConnectionString.Text != "SQL INSTANCE" && txtConnectionString.Text != "" &&
+                        txtConnectionString.Text != _srcSqlInstance)
                     {
                         EnableControls(false);
                         cmbBoxServerSrc.Items.Clear();
                         cmbBoxServerSrc.Text = "";
 
                         LogInfo("Validating Sql Instance.");
-                        using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                        using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() +
+                                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI")
+                        )
                         {
                             sqlCon.Open();
 
@@ -5906,13 +6559,13 @@ namespace BizTalkAdminOperations
                         cmbBoxServerSrc.Visible = true;
                         LogShortSuccessMsg("Connection Verified.");
 
-                        srcSqlInstance = txtConnectionString.Text;
+                        _srcSqlInstance = txtConnectionString.Text;
                         if (pSaveConnectionInfo)
                             SaveSrcSqlConnection();
                     }
                     else
                     {
-                        srcSqlInstance = txtConnectionString.Text;
+                        _srcSqlInstance = txtConnectionString.Text;
                         if (txtConnectionString.Text == "SQL INSTANCE" || txtConnectionString.Text == "")
                         {
                             cmbBoxServerSrc.Items.Clear();
@@ -5925,7 +6578,8 @@ namespace BizTalkAdminOperations
                 }
                 else //App
                 {
-                    if (txtConnectionString.Text != "SQL INSTANCE" && txtConnectionString.Text != "" && txtConnectionString.Text != "SERVER NAME")
+                    if (txtConnectionString.Text != "SQL INSTANCE" && txtConnectionString.Text != "" &&
+                        txtConnectionString.Text != "SERVER NAME")
                     {
                         SaveAppServers();
                         strSrcNode = txtConnectionString.Text.Trim();
@@ -5940,7 +6594,7 @@ namespace BizTalkAdminOperations
             catch (Exception ex)
             {
                 EnableControls(true);
-                srcSqlInstance = txtConnectionString.Text;
+                _srcSqlInstance = txtConnectionString.Text;
                 cmbBoxServerSrc.Items.Clear();
                 cmbBoxServerSrc.Text = "";
                 LogShortErrorMsg(ex.Message);
@@ -5952,18 +6606,19 @@ namespace BizTalkAdminOperations
             string configPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string configFile = Path.Combine(configPath, "MigrationTool.exe.config");
             ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
-            System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
-            remoteRootFolder = config.AppSettings.Settings["RemoteRootFolder"].Value;
-            bizTalkAppToIgnore = config.AppSettings.Settings["BizTalkAppToIgnore"].Value;
-            baseBizTalkAppCol = config.AppSettings.Settings["AppToRefer"].Value;
-            strCertPass = config.AppSettings.Settings["CertPass"].Value;
-            strFoldersToCopy = config.AppSettings.Settings["FoldersToCopy"].Value;
-            strFoldersToCopyNoFiles = config.AppSettings.Settings["FoldersToCopyNoFiles"].Value;
-            strCustomDllToInclude = config.AppSettings.Settings["CustomDllToInclude"].Value;
-            strWindowsServiceToIgnore = config.AppSettings.Settings["WindowsServiceToIgnore"].Value;
-            strWebsitesFolder = config.AppSettings.Settings["WebSitesDriveDestination"].Value;
-            strFoldersDrive = config.AppSettings.Settings["FoldersDriveDestination"].Value;
-            strServicesDrive = config.AppSettings.Settings["ServicesDriveDestination"].Value;
+            System.Configuration.Configuration config =
+                ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+            _remoteRootFolder = config.AppSettings.Settings["RemoteRootFolder"].Value;
+            _bizTalkAppToIgnore = config.AppSettings.Settings["BizTalkAppToIgnore"].Value;
+            _baseBizTalkAppCol = config.AppSettings.Settings["AppToRefer"].Value;
+            _strCertPass = config.AppSettings.Settings["CertPass"].Value;
+            _strFoldersToCopy = config.AppSettings.Settings["FoldersToCopy"].Value;
+            _strFoldersToCopyNoFiles = config.AppSettings.Settings["FoldersToCopyNoFiles"].Value;
+            _strCustomDllToInclude = config.AppSettings.Settings["CustomDllToInclude"].Value;
+            _strWindowsServiceToIgnore = config.AppSettings.Settings["WindowsServiceToIgnore"].Value;
+            _strWebsitesFolder = config.AppSettings.Settings["WebSitesDriveDestination"].Value;
+            _strFoldersDrive = config.AppSettings.Settings["FoldersDriveDestination"].Value;
+            _strServicesDrive = config.AppSettings.Settings["ServicesDriveDestination"].Value;
 
         }
 
@@ -5973,10 +6628,12 @@ namespace BizTalkAdminOperations
             {
                 //Getting the List of Policies associated to Application
                 string[] arrBrePolicies;
-                using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                using (var sqlCon = new SqlConnection("Server=" + txtConnectionString.Text.Trim() +
+                                                      ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
                     sqlCon.Open();
-                    string sqlQuery = "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
+                    string sqlQuery =
+                        "Select b.nvcName As ApplicationName,a.sdmType,a.luid,a.properties,a.files From adpl_sat AS a,bts_application AS b where a.sdmType='System.BizTalk:Rules' and b.nID= a.applicationId";
                     using (var sqlDataAd = new SqlDataAdapter(sqlQuery, sqlCon))
                     {
                         using (var ds = new DataSet())
@@ -5985,7 +6642,11 @@ namespace BizTalkAdminOperations
                             arrBrePolicies = new string[ds.Tables[0].Rows.Count];
                             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                             {
-                                arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] + "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[1];
+                                arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." +
+                                                    ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2]
+                                                        .Split('.')[0] + "." +
+                                                    ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2]
+                                                        .Split('.')[1];
                             }
                         }
                     }
@@ -5997,21 +6658,25 @@ namespace BizTalkAdminOperations
                         {
                             while (sqlRed.Read())
                             {
-                                srcBRESqlInstance = sqlRed.GetString(0);
+                                _srcBRESqlInstance = sqlRed.GetString(0);
                             }
                         }
                     }
                 }
                 //Creating Business RuleEngineDB COnnection
-                SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder("Server = " + srcBRESqlInstance + "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
+                SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder(
+                    "Server = " + _srcBRESqlInstance +
+                    "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
                 SqlRuleStore sqlRulesStore = new SqlRuleStore(sqlBRE.ConnectionString);
-                RuleSetDeploymentDriver rulesetDepDriver = new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
+                RuleSetDeploymentDriver rulesetDepDriver =
+                    new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
                 RuleSetInfoCollection rulesetinfos = sqlRulesStore.GetRuleSets(RuleStore.Filter.All);
                 // Creating Folders to Export Polices and Vocabualries
 
                 foreach (RuleSetInfo ruleSetInfo in rulesetinfos)
                 {
-                    string policy = String.Format("{0}.{1}.{2}", ruleSetInfo.Name, ruleSetInfo.MajorRevision, ruleSetInfo.MinorRevision);
+                    string policy = String.Format("{0}.{1}.{2}", ruleSetInfo.Name, ruleSetInfo.MajorRevision,
+                        ruleSetInfo.MinorRevision);
 
                     if (arrBrePolicies.Contains(policy))
                     {
@@ -6024,26 +6689,30 @@ namespace BizTalkAdminOperations
                             try
                             {
                                 //Exporting Policy
-                                var policyName = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", ruleSetInfo.Name, ruleSetInfo.MajorRevision, ruleSetInfo.MinorRevision);
-                                rulesetDepDriver.ExportRuleSetToFileRuleStore(ruleSetInfo, brePath + "/" + policyName);
+                                var policyName = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", ruleSetInfo.Name,
+                                    ruleSetInfo.MajorRevision, ruleSetInfo.MinorRevision);
+                                rulesetDepDriver.ExportRuleSetToFileRuleStore(ruleSetInfo, _brePath + "/" + policyName);
                                 LogInfoInLogFile(ruleSetInfo.Name + "Policy Exported");
                             }
                             catch (Exception ex)
                             {
-                                LogShortErrorMsg("Exception Occured while Exporting " + ruleSetInfo.Name + "please check log file for details.");
+                                LogShortErrorMsg("Exception Occured while Exporting " + ruleSetInfo.Name +
+                                                 "please check log file for details.");
                                 LogInfoSyncronously("Exception while Exporting Policy " + ex.Message);
 
                             }
                             //Exporting vocabularyAssocated to Policy
 
-                            string vocabQuery = "select A.nRuleSetID,A.strName as policyName,B.nVocabularyID,C.nVocabularyID,C.strName as VocabularyName from re_ruleset(nolock) as A,re_ruleset_to_vocabulary_links As B,re_vocabulary As C where A.nRuleSetID = B.nReferingRuleset and B.nVocabularyID = C.nVocabularyID and C.strName not in('Predicates','Functions','Common Values','Common Sets') and A.strName = @strPolicyName";
+                            string vocabQuery =
+                                "select A.nRuleSetID,A.strName as policyName,B.nVocabularyID,C.nVocabularyID,C.strName as VocabularyName from re_ruleset(nolock) as A,re_ruleset_to_vocabulary_links As B,re_vocabulary As C where A.nRuleSetID = B.nReferingRuleset and B.nVocabularyID = C.nVocabularyID and C.strName not in('Predicates','Functions','Common Values','Common Sets') and A.strName = @strPolicyName";
                             using (var sqlVocabad = new SqlDataAdapter(vocabQuery, sqlBRE.ConnectionString))
                             {
                                 sqlVocabad.SelectCommand.Parameters.AddWithValue("@strPolicyName", ruleSetInfo.Name);
                                 using (var dsVocab = new DataSet())
                                 {
                                     sqlVocabad.Fill(dsVocab);
-                                    VocabularyInfoCollection vocabularyInfos = sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
+                                    VocabularyInfoCollection vocabularyInfos =
+                                        sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
                                     foreach (DataRow dr in dsVocab.Tables[0].Rows)
                                     {
                                         string vocabularyName = dr["VocabularyName"].ToString();
@@ -6053,14 +6722,20 @@ namespace BizTalkAdminOperations
                                             {
                                                 if (vocabularyName == vocabularyInfo.Name)
                                                 {
-                                                    var VocabularyName = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", vocabularyInfo.Name, vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
-                                                    rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo, brePath + "/" + VocabularyName);
+                                                    var VocabularyName = String.Format("{0}{1}.{2}.{3}.xml",
+                                                        "Vocabualary_", vocabularyInfo.Name,
+                                                        vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
+                                                    rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo,
+                                                        _brePath + "/" + VocabularyName);
                                                 }
                                             }
                                             catch (Exception ex)
                                             {
-                                                LogShortErrorMsg("Exception Occured while Exporting " + vocabularyInfo.Name + "please check log file for details.");
-                                                LogInfoSyncronously("Exception while Exporting Vocabulary " + ex.Message);
+                                                LogShortErrorMsg(
+                                                    "Exception Occured while Exporting " + vocabularyInfo.Name +
+                                                    "please check log file for details.");
+                                                LogInfoSyncronously(
+                                                    "Exception while Exporting Vocabulary " + ex.Message);
 
                                             }
 
@@ -6071,7 +6746,8 @@ namespace BizTalkAdminOperations
                         }
                         catch (Exception ex)
                         {
-                            LogShortErrorMsg("Exception occured while Exporting Policy or Vocabualry, please check log file for details.");
+                            LogShortErrorMsg(
+                                "Exception occured while Exporting Policy or Vocabualry, please check log file for details.");
                             LogException(ex);
                             throw;
                         }
@@ -6091,7 +6767,8 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                using (var sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() + ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                using (var sqlCon = new SqlConnection("Server=" + txtConnectionStringDst.Text.Trim() +
+                                                      ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                 {
                     sqlCon.Open();
                     using (var sqlcmd = new SqlCommand("SELECT [RuleEngineDBServerName] FROM [adm_Group]", sqlCon))
@@ -6100,19 +6777,22 @@ namespace BizTalkAdminOperations
                         {
                             while (sqlRed.Read())
                             {
-                                dstBRESqlInstance = sqlRed.GetString(0);
+                                _dstBRESqlInstance = sqlRed.GetString(0);
                             }
                         }
                     }
                 }
-                SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder("Server = " + dstBRESqlInstance + "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
+                SqlConnectionStringBuilder sqlBRE = new SqlConnectionStringBuilder(
+                    "Server = " + _dstBRESqlInstance +
+                    "; Initial Catalog = BizTalkRuleEngineDb; Integrated Security = SSPI");
                 SqlRuleStore sqlRulesStore = new SqlRuleStore(sqlBRE.ConnectionString);
-                RuleSetDeploymentDriver rulesetDepDriver = new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
+                RuleSetDeploymentDriver rulesetDepDriver =
+                    new RuleSetDeploymentDriver(sqlBRE.DataSource, "BizTalkRuleEngineDb");
                 RuleSetInfoCollection dstrulesetinfos = sqlRulesStore.GetRuleSets(RuleStore.Filter.All);
                 VocabularyInfoCollection dstvocabularyInfos = sqlRulesStore.GetVocabularies(RuleStore.Filter.All);
 
                 //Importing Vocabualries
-                var files = Directory.GetFiles(brePath, "Vocabualary*.xml");
+                var files = Directory.GetFiles(_brePath, "Vocabualary*.xml");
                 if (files.Length != 0)
                 {
                     string[] vocabualrySet = new string[dstvocabularyInfos.Count];
@@ -6120,7 +6800,8 @@ namespace BizTalkAdminOperations
                     //Creating a Set of Vocabularies which are Present in DstSqlInstance
                     foreach (VocabularyInfo dstvocabularyInfo in dstvocabularyInfos)
                     {
-                        vocabualrySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", dstvocabularyInfo.Name, dstvocabularyInfo.MajorRevision, dstvocabularyInfo.MinorRevision);
+                        vocabualrySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", dstvocabularyInfo.Name,
+                            dstvocabularyInfo.MajorRevision, dstvocabularyInfo.MinorRevision);
                         i++;
                     }
 
@@ -6135,7 +6816,8 @@ namespace BizTalkAdminOperations
                         else
                         {
                             FileRuleStore fileRuleStore = new FileRuleStore(file);
-                            VocabularyInfoCollection vocabularyInfoList = fileRuleStore.GetVocabularies(RuleStore.Filter.All);
+                            VocabularyInfoCollection vocabularyInfoList =
+                                fileRuleStore.GetVocabularies(RuleStore.Filter.All);
 
 
                             foreach (VocabularyInfo vocabularyInfo in vocabularyInfoList)
@@ -6145,7 +6827,8 @@ namespace BizTalkAdminOperations
 
                                 try
                                 {
-                                    VocabularyInfo vi = new VocabularyInfo(vocabularyInfo.Name, vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
+                                    VocabularyInfo vi = new VocabularyInfo(vocabularyInfo.Name,
+                                        vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
                                     Vocabulary oVoc = fileRuleStore.GetVocabulary(vi);
                                     sqlRulesStore.Add(oVoc, true);
                                     LogInfoInLogFile(filename + " Imported");
@@ -6163,7 +6846,7 @@ namespace BizTalkAdminOperations
                     }
                 }
                 //Importing Policies
-                files = Directory.GetFiles(brePath, "Policy*.xml");
+                files = Directory.GetFiles(_brePath, "Policy*.xml");
                 if (files.Length != 0)
                 {
                     string[] policySet = new string[dstrulesetinfos.Count];
@@ -6171,7 +6854,8 @@ namespace BizTalkAdminOperations
                     //Creating Policies Present in DestSQLInstance
                     foreach (RuleSetInfo dstruleSetInfo in dstrulesetinfos)
                     {
-                        policySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", dstruleSetInfo.Name, dstruleSetInfo.MajorRevision, dstruleSetInfo.MinorRevision);
+                        policySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", dstruleSetInfo.Name,
+                            dstruleSetInfo.MajorRevision, dstruleSetInfo.MinorRevision);
                         i++;
                     }
                     foreach (string file in files)
@@ -6218,26 +6902,37 @@ namespace BizTalkAdminOperations
                     {
                         try
                         {
-                            Microsoft.Web.Administration.Configuration config = serverManager.GetApplicationHostConfiguration();
-                            Microsoft.Web.Administration.ConfigurationSection iisClientCertificateMappingAuthenticationSection = config.GetSection("system.webServer/security/authentication/iisClientCertificateMappingAuthentication", site.Name);
-                            Microsoft.Web.Administration.ConfigurationElementCollection oneToOneMappingsCollection = iisClientCertificateMappingAuthenticationSection.GetCollection("oneToOneMappings");
+                            Microsoft.Web.Administration.Configuration config =
+                                serverManager.GetApplicationHostConfiguration();
+                            Microsoft.Web.Administration.ConfigurationSection
+                                iisClientCertificateMappingAuthenticationSection = config.GetSection(
+                                    "system.webServer/security/authentication/iisClientCertificateMappingAuthentication",
+                                    site.Name);
+                            Microsoft.Web.Administration.ConfigurationElementCollection oneToOneMappingsCollection =
+                                iisClientCertificateMappingAuthenticationSection.GetCollection("oneToOneMappings");
                             //Checking whether OneToOneCertifcationMappings are Present
                             if (oneToOneMappingsCollection.Count == 0)
                             {
-                                LogInfoInLogFile(site.Name + " Website:Does not Contain OneToOneCLientCertificateMappings");
+                                LogInfoInLogFile(
+                                    site.Name + " Website:Does not Contain OneToOneCLientCertificateMappings");
                             }
                             else
                             {
-                                using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + site.Name + "_ClientCertMappings.xml"))
+                                using (XmlWriter writer =
+                                    XmlWriter.Create(_xmlPath + @"\" + site.Name + "_ClientCertMappings.xml"))
                                 {
                                     writer.WriteStartElement("OneToOneMappings");
                                     foreach (var onetoone in oneToOneMappingsCollection)
                                     {
                                         writer.WriteStartElement("OneToOneMapping");
-                                        writer.WriteElementString("enabled", onetoone.GetAttributeValue("enabled").ToString());
-                                        writer.WriteElementString("userName", onetoone.GetAttributeValue("userName").ToString());
-                                        writer.WriteElementString("password", Encrypt(onetoone.GetAttributeValue("password").ToString()));
-                                        writer.WriteElementString("certificate", onetoone.GetAttributeValue("certificate").ToString());
+                                        writer.WriteElementString("enabled",
+                                            onetoone.GetAttributeValue("enabled").ToString());
+                                        writer.WriteElementString("userName",
+                                            onetoone.GetAttributeValue("userName").ToString());
+                                        writer.WriteElementString("password",
+                                            Encrypt(onetoone.GetAttributeValue("password").ToString()));
+                                        writer.WriteElementString("certificate",
+                                            onetoone.GetAttributeValue("certificate").ToString());
                                         writer.WriteEndElement();
 
                                     }
@@ -6247,8 +6942,10 @@ namespace BizTalkAdminOperations
                         }
                         catch (Exception ex)
                         {
-                            LogShortErrorMsg("Exception Occured for " + site.Name + ": please check log file for details.");
-                            LogInfoSyncronously("Exception while Exporting IISClientCertificateOneToOneMappings for " + site.Name + ex.Message);
+                            LogShortErrorMsg("Exception Occured for " + site.Name +
+                                             ": please check log file for details.");
+                            LogInfoSyncronously("Exception while Exporting IISClientCertificateOneToOneMappings for " +
+                                                site.Name + ex.Message);
                         }
                     }
                 }
@@ -6268,9 +6965,10 @@ namespace BizTalkAdminOperations
                 {
                     foreach (Site site in serverManager.Sites)
                     {
-                        try {
+                        try
+                        {
                             string websiteMappingFile = site.Name + "_ClientCertMappings.xml";
-                            DirectoryInfo di = new DirectoryInfo(xmlPath);
+                            DirectoryInfo di = new DirectoryInfo(_xmlPath);
                             FileInfo[] files = di.GetFiles(websiteMappingFile);
                             if (files.Length == 0)
                             {
@@ -6279,17 +6977,28 @@ namespace BizTalkAdminOperations
                             else
                             {
                                 XmlDocument xmldoc = new XmlDocument();
-                                FileStream fs = new FileStream(xmlPath + @"\" + websiteMappingFile, FileMode.Open, FileAccess.Read);
+                                FileStream fs = new FileStream(_xmlPath + @"\" + websiteMappingFile, FileMode.Open,
+                                    FileAccess.Read);
                                 xmldoc.Load(fs);
-                                XmlNodeList nodeList = xmldoc.DocumentElement.SelectNodes("/OneToOneMappings/OneToOneMapping");
+                                XmlNodeList nodeList =
+                                    xmldoc.DocumentElement.SelectNodes("/OneToOneMappings/OneToOneMapping");
                                 foreach (XmlNode node in nodeList)
                                 {
-                                    Microsoft.Web.Administration.Configuration config = serverManager.GetApplicationHostConfiguration();
+                                    Microsoft.Web.Administration.Configuration config =
+                                        serverManager.GetApplicationHostConfiguration();
 
-                                    Microsoft.Web.Administration.ConfigurationSection iisClientCertificateMappingAuthenticationSection = config.GetSection("system.webServer/security/authentication/iisClientCertificateMappingAuthentication", site.Name);
+                                    Microsoft.Web.Administration.ConfigurationSection
+                                        iisClientCertificateMappingAuthenticationSection =
+                                            config.GetSection(
+                                                "system.webServer/security/authentication/iisClientCertificateMappingAuthentication",
+                                                site.Name);
                                     iisClientCertificateMappingAuthenticationSection["enabled"] = true;
-                                    iisClientCertificateMappingAuthenticationSection["oneToOneCertificateMappingsEnabled"] = true;
-                                    Microsoft.Web.Administration.ConfigurationElementCollection oneToOneMappingsCollection = iisClientCertificateMappingAuthenticationSection.GetCollection("oneToOneMappings");
+                                    iisClientCertificateMappingAuthenticationSection[
+                                        "oneToOneCertificateMappingsEnabled"] = true;
+                                    Microsoft.Web.Administration.ConfigurationElementCollection
+                                        oneToOneMappingsCollection =
+                                            iisClientCertificateMappingAuthenticationSection.GetCollection(
+                                                "oneToOneMappings");
                                     string[] certificatearray = new string[oneToOneMappingsCollection.Count];
                                     int i = 0;
                                     //Getting All the Certifcates which is already Present in Destination System
@@ -6304,19 +7013,24 @@ namespace BizTalkAdminOperations
                                     }
                                     if (certificatearray.Contains(node.SelectSingleNode("certificate").InnerText))
                                     {
-                                        LogInfoInLogFile(node.SelectSingleNode("certificate").InnerText + " already Exsists in Website: " + site.Name);
+                                        LogInfoInLogFile(node.SelectSingleNode("certificate").InnerText +
+                                                         " already Exsists in Website: " + site.Name);
                                     }
                                     else
                                     {
-                                        Microsoft.Web.Administration.ConfigurationElement addElement = oneToOneMappingsCollection.CreateElement("add");
-                                        addElement["enabled"] = Convert.ToBoolean(node.SelectSingleNode("enabled").InnerText);
+                                        Microsoft.Web.Administration.ConfigurationElement addElement =
+                                            oneToOneMappingsCollection.CreateElement("add");
+                                        addElement["enabled"] =
+                                            Convert.ToBoolean(node.SelectSingleNode("enabled").InnerText);
                                         addElement["userName"] = node.SelectSingleNode("userName").InnerText;
                                         addElement["password"] = Decrypt(node.SelectSingleNode("password").InnerText);
                                         addElement["certificate"] = node.SelectSingleNode("certificate").InnerText;
                                         oneToOneMappingsCollection.Add(addElement);
-                                        Microsoft.Web.Administration.ConfigurationSection accessSection = config.GetSection("system.webServer/security/access", site.Name);
+                                        Microsoft.Web.Administration.ConfigurationSection accessSection =
+                                            config.GetSection("system.webServer/security/access", site.Name);
                                         accessSection["sslFlags"] = @"Ssl, SslNegotiateCert";
-                                        LogInfoInLogFile(node.SelectSingleNode("certificate").InnerText + " added in" + site.Name);
+                                        LogInfoInLogFile(node.SelectSingleNode("certificate").InnerText + " added in" +
+                                                         site.Name);
                                     }
                                 }
                                 serverManager.CommitChanges();
@@ -6326,8 +7040,10 @@ namespace BizTalkAdminOperations
                         }
                         catch (Exception ex)
                         {
-                            LogShortErrorMsg("Exception Occured for " + site.Name + ": please check log file for details.");
-                            LogInfoSyncronously("Exception while Importing IISClientCertificateOneToOneMappings for " + site.Name + ex.Message);
+                            LogShortErrorMsg("Exception Occured for " + site.Name +
+                                             ": please check log file for details.");
+                            LogInfoSyncronously("Exception while Importing IISClientCertificateOneToOneMappings for " +
+                                                site.Name + ex.Message);
                         }
                     }
                 }
@@ -6344,7 +7060,7 @@ namespace BizTalkAdminOperations
             try
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider
+                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
                 {
                     Mode = CipherMode.ECB,
                     Key = keyArray,
@@ -6352,10 +7068,10 @@ namespace BizTalkAdminOperations
                 };
 
 
-                ICryptoTransform DESEncrypt = DES.CreateEncryptor();
-                Byte[] Buffer = Encoding.ASCII.GetBytes(data);
+                ICryptoTransform desEncrypt = des.CreateEncryptor();
+                Byte[] buffer = Encoding.ASCII.GetBytes(data);
 
-                return Convert.ToBase64String(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
+                return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
             }
             catch (Exception ex)
             {
@@ -6370,7 +7086,7 @@ namespace BizTalkAdminOperations
             try
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider
+                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
                 {
                     Mode = CipherMode.ECB,
                     Key = keyArray,
@@ -6378,10 +7094,10 @@ namespace BizTalkAdminOperations
                 };
 
 
-                ICryptoTransform DESEncrypt = DES.CreateDecryptor();
-                Byte[] Buffer = Convert.FromBase64String(data.Replace(" ", "+"));
+                ICryptoTransform desEncrypt = des.CreateDecryptor();
+                Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
 
-                return Encoding.UTF8.GetString(DESEncrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
+                return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
             }
             catch (Exception ex)
             {
@@ -6404,9 +7120,9 @@ namespace BizTalkAdminOperations
 
                 // connection string to the BizTalk management database where the ports will be created
                 HostCollection hosts = btsExp.Hosts;
-                for (int i = 0; i < cmbBoxServerSrc.Items.Count; i++)
+                foreach (object cmbBox in cmbBoxServerSrc.Items)
                 {
-                    using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + "Src_" + cmbBoxServerSrc.Items[i] + "_HostMappings.xml"))
+                    using (XmlWriter writer = XmlWriter.Create(_xmlPath + @"\" + "Src_" + cmbBox + "_HostMappings.xml"))
                     {
                         writer.WriteStartElement("SettingsMap");
                         writer.WriteStartElement("HostMappings");
@@ -6424,12 +7140,12 @@ namespace BizTalkAdminOperations
 
                         HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
                         string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-            
+
                         int j = 0;
                         foreach (HostInstance ht in dstHostInstancesColletion)
                         {
-                        
-                            if (ht.Name.EndsWith(cmbBoxServerSrc.Items[i].ToString())|| ht.Name.EndsWith(cmbBoxServerSrc.Items[i].ToString().ToLower()))
+
+                            if (ht.Name.EndsWith(cmbBox.ToString()) || ht.Name.EndsWith(cmbBox.ToString().ToLower()))
                             {
                                 hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
@@ -6437,13 +7153,14 @@ namespace BizTalkAdminOperations
 
                         }
                         hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                        
+
                         writer.WriteStartElement("HostInstanceMappings");
                         for (j = 0; j < hostInstancesArray.Length; j++)
                         {
                             writer.WriteStartElement("SourceHostInstance");
-                            writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + cmbBoxServerSrc.Items[i]);
-                            writer.WriteElementString("DestinationHostInstances", hostInstancesArray[j] + ":" + "{ServerName}");
+                            writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + cmbBox);
+                            writer.WriteElementString("DestinationHostInstances",
+                                hostInstancesArray[j] + ":" + "{ServerName}");
                             writer.WriteEndElement();
 
                         }
@@ -6466,29 +7183,28 @@ namespace BizTalkAdminOperations
             {
                 LogInfo("Host Mappings: Creating Host Mappings.");
                 XmlDocument xd = new XmlDocument();
-                string[] srcservers = new string[] { };
-                string[] dstservers = new string[] { };
+                string[] srcservers;
                 //Getting the List of Source Servers
-                if (File.Exists(xmlPath + "\\" + "SrcServers.xml"))
+                if (File.Exists(_xmlPath + "\\" + "SrcServers.xml"))
                 {
-                    xd.Load(xmlPath + "\\" + "SrcServers.xml");
+                    xd.Load(_xmlPath + "\\" + "SrcServers.xml");
                     XmlNode srcnodeList = xd.DocumentElement.SelectSingleNode("/Servers");
 
-                    string SrcServerList = srcnodeList.SelectSingleNode("SrcNodes").InnerText;
-                    srcservers = SrcServerList.Split(',');
+                    string srcServerList = srcnodeList.SelectSingleNode("SrcNodes").InnerText;
+                    srcservers = srcServerList.Split(',');
                 }
                 else
                 {
                     throw new Exception("SrcServers xml file is not available.");
                 }
                 //Getting the List of DestinationServers
-                xd.Load(xmlPath + "\\" + "Servers.xml");
+                xd.Load(_xmlPath + "\\" + "Servers.xml");
                 XmlNode dstnodeList = xd.DocumentElement.SelectSingleNode("/Servers");
 
                 string dstServerList = dstnodeList.SelectSingleNode("DstNodes").InnerText;
-                dstservers = dstServerList.Split(',');
+                var dstservers = dstServerList.Split(',');
 
-                String[] files = Directory.GetFiles(xmlPath, "Src_*_HostMappings.xml");
+                String[] files = Directory.GetFiles(_xmlPath, "Src_*_HostMappings.xml");
                 if (files.Length == 0)
                 {
                     throw new Exception(" Source HostMapping xml file is not available.");
@@ -6497,8 +7213,8 @@ namespace BizTalkAdminOperations
                 {
                     for (int i = 0; i < dstservers.Length; i++)
                     {
-                        string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
-                        string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
+                        string srcHostMappingFile = _xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
+                        string dstHostMappingFile = _xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
                         BtsCatalogExplorer btsExp = new BtsCatalogExplorer
                         {
@@ -6524,38 +7240,41 @@ namespace BizTalkAdminOperations
                         j = 0;
                         foreach (HostInstance ht in dstHostInstancesColletion)
                         {
-                            if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i])|| ht.Name.EndsWith(dstservers[i].ToLower())))
+                            if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
                                 hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
                             }
                         }
                         hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                        
+
                         XDocument doc = XDocument.Load(srcHostMappingFile);
                         //Removing SourceHost Which are Not Present in Destination
                         var hostName = from node in doc.Descendants("SourceHost")
-                                       let attr = node.Attribute("Name")
-                                       where attr != null && !hostArray.Contains(attr.Value)
-                                       select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && !hostArray.Contains(attr.Value)
+                            select node;
                         hostName.ToList().ForEach(x => x.Remove());
 
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
-                                                       let attr = node.Attribute("Name")
-                                                       where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
-                                                       select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                            select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination with ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
-                                               let attr = node.Attribute("Name")
-                                               where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
-                                               select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                            select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
-                            
-                            itemElement.Element("DestinationHostInstances").Value = itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" + dstservers[i];
+
+                            itemElement.Element("DestinationHostInstances").Value =
+                                itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" +
+                                dstservers[i];
                         }
                         doc.Save(dstHostMappingFile);
                     }
@@ -6564,8 +7283,8 @@ namespace BizTalkAdminOperations
                 {
                     for (int i = 0; i < dstservers.Length; i++)
                     {
-                        string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
-                        string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
+                        string srcHostMappingFile = _xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
+                        string dstHostMappingFile = _xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
                         BtsCatalogExplorer btsExp = new BtsCatalogExplorer
                         {
@@ -6593,52 +7312,53 @@ namespace BizTalkAdminOperations
                         j = 0;
                         foreach (HostInstance ht in dstHostInstancesColletion)
                         {
-                            if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
+                            if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
                                 hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
                             }
                         }
                         hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                   
+
                         XDocument doc = XDocument.Load(srcHostMappingFile);
                         //Removing SourceHost Which are Not Present in Destination
                         var hostName = from node in doc.Descendants("SourceHost")
-                                       let attr = node.Attribute("Name")
-                                       where attr != null && !hostArray.Contains(attr.Value)
-                                       select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && !hostArray.Contains(attr.Value)
+                            select node;
                         hostName.ToList().ForEach(x => x.Remove());
 
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
-                                                       let attr = node.Attribute("Name")
-                                                       where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
-                                                       select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                            select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination wiht ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
-                                               let attr = node.Attribute("Name")
-                                               where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
-                                               select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                            select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
-                           
-                            itemElement.Element("DestinationHostInstances").Value = itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" + dstservers[i];
+
+                            itemElement.Element("DestinationHostInstances").Value =
+                                itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" +
+                                dstservers[i];
                         }
                         doc.Save(dstHostMappingFile);
                     }
                 }
                 if (dstservers.Length > srcservers.Length)
                 {
-                    string  srcHostMappingFile = string.Empty;
                     for (int i = 0; i < dstservers.Length; i++)
                     {
-                      if(i<srcservers.Length)
-                         srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
-                      else
-                            srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[0] + "_HostMappings.xml";
-                        string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
+                        var srcHostMappingFile = i < srcservers.Length
+                            ? _xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml"
+                            : _xmlPath + @"\" + "Src_" + srcservers[0] + "_HostMappings.xml";
+                        string dstHostMappingFile = _xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
                         BtsCatalogExplorer btsExp = new BtsCatalogExplorer
                         {
@@ -6666,40 +7386,43 @@ namespace BizTalkAdminOperations
                         j = 0;
                         foreach (HostInstance ht in dstHostInstancesColletion)
                         {
-                            if (ht.HostType == HostInstance.HostTypeValues.In_process && (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
+                            if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
                                 hostInstancesArray[j] = ht.Name.Split(' ')[3];
                                 j++;
                             }
                         }
                         hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                        
 
-                        
+
+
                         XDocument doc = XDocument.Load(srcHostMappingFile);
                         //Removing SourceHost Which are Not Present in Destination
                         var hostName = from node in doc.Descendants("SourceHost")
-                                       let attr = node.Attribute("Name")
-                                       where attr != null && !hostArray.Contains(attr.Value)
-                                       select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && !hostArray.Contains(attr.Value)
+                            select node;
                         hostName.ToList().ForEach(x => x.Remove());
 
                         //Removing SourceHostInstances Which are Not Present in DestinationHostInstances
                         var hostInstanceNameToRemove = from node in doc.Descendants("SourceHostInstance")
-                                                       let attr = node.Attribute("Name")
-                                                       where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
-                                                       select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && !hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                            select node;
                         hostInstanceNameToRemove.ToList().ForEach(x => x.Remove());
 
                         //Updating Host Instances of Destination wiht ComputerName
                         var hostInstanceName = from node in doc.Descendants("SourceHostInstance")
-                                               let attr = node.Attribute("Name")
-                                               where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
-                                               select node;
+                            let attr = node.Attribute("Name")
+                            where attr != null && hostInstancesArray.Contains(attr.Value.Split(':')[0])
+                            select node;
                         foreach (XElement itemElement in hostInstanceName)
                         {
-                            
-                            itemElement.Element("DestinationHostInstances").Value = itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" + dstservers[i];
+
+                            itemElement.Element("DestinationHostInstances").Value =
+                                itemElement.Element("DestinationHostInstances").Value.Split(':')[0] + ":" +
+                                dstservers[i];
                         }
                         doc.Save(dstHostMappingFile);
                     }
@@ -6719,23 +7442,26 @@ namespace BizTalkAdminOperations
         {
             //Creating List of SSO Apps
             string fileName = @"C:\Program Files\Common Files\Enterprise Single Sign-On\ssomanage.exe";
-            string commandArguments = "";
-            
-            int returnCode; 
+
             try
             {
-                if (machineName == strSrcNode)//local
+                string commandArguments;
+                if (_machineName == strSrcNode) //local
                 {
-                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listapps />\"" + xmlPath + "\\SrcSSOAppsList.txt" + "\"";
+                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listapps />\"" + _xmlPath +
+                                       "\\SrcSSOAppsList.txt" + "\"";
                 }
                 else
                 {
-                    string xmlPathUNC = ConvertPathToUncPath(xmlPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " " + "\"" + fileName + "\"" + " -listapps />\"" + "\\\\" + machineName + "\\" + xmlPathUNC + "\\SrcSSOAppsList.txt" + "\"";
-         
+                    string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " " +
+                                       "\"" + fileName + "\"" + " -listapps />\"" + "\\\\" + _machineName + "\\" +
+                                       xmlPathUnc + "\\SrcSSOAppsList.txt" + "\"";
+
                 }
 
-                returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                 if (returnCode == 0)
                 {
@@ -6747,12 +7473,14 @@ namespace BizTalkAdminOperations
                     LogShortErrorMsg("Failed: Exporting SSO Affiliate Application List.");
 
                 }
-                if (File.Exists(xmlPath + "\\" + "SrcSSOAppsList.txt"))
+                if (File.Exists(_xmlPath + "\\" + "SrcSSOAppsList.txt"))
                 {
-                    string[] SsoAppsList = File.ReadAllLines(xmlPath + @"\SrcSSOAppsList.txt");
-                    for (int i = 0; i < SsoAppsList.Length; i++)
+                    string[] ssoAppsList = File.ReadAllLines(_xmlPath + @"\SrcSSOAppsList.txt");
+                    foreach (string ssoApps in ssoAppsList)
                     {
-                        if (string.IsNullOrEmpty(SsoAppsList[i]) || string.IsNullOrWhiteSpace(SsoAppsList[i]) || SsoAppsList[i].Contains("Using SSO server") || SsoAppsList[i].Contains("Applications available for") || SsoAppsList[i].Contains("applications available for"))
+                        if (string.IsNullOrEmpty(ssoApps) || string.IsNullOrWhiteSpace(ssoApps) ||
+                            ssoApps.Contains("Using SSO server") || ssoApps.Contains("Applications available for") ||
+                            ssoApps.Contains("applications available for"))
 
                         {
                         }
@@ -6761,18 +7489,23 @@ namespace BizTalkAdminOperations
 
                             try
                             {
-                                string SsoApp = SsoAppsList[i].Split(':')[0].Split(')')[1].Trim();
+                                string ssoApp = ssoApps.Split(':')[0].Split(')')[1].Trim();
                                 //DisplayInforMation of SSOApp
 
-                                if (machineName == strSrcNode)//local
+                                if (_machineName == strSrcNode) //local
                                 {
-                                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -displayapp " + SsoApp + " />\"" + xmlPath + "\\SSOApp_" + SsoApp + ".txt" + "\"";
+                                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -displayapp " + ssoApp +
+                                                       " />\"" + _xmlPath + "\\SSOApp_" + ssoApp + ".txt" + "\"";
 
                                 }
                                 else
                                 {
-                                    string xmlPathUNC = ConvertPathToUncPath(xmlPath);
-                                    commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + fileName + "\"" + " -displayapp " + SsoApp + " />\"" + "\\\\" + machineName + "\\" + xmlPathUNC + "\\SSOApp_" + SsoApp + ".txt" + "\"";
+                                    string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
+                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " +
+                                                       "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                                       " -accepteula" + fileName + "\"" + " -displayapp " + ssoApp +
+                                                       " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
+                                                       "\\SSOApp_" + ssoApp + ".txt" + "\"";
 
                                 }
 
@@ -6780,45 +7513,52 @@ namespace BizTalkAdminOperations
 
                                 if (returnCode == 0)
                                 {
-                                    LogShortSuccessMsg("Success: Exported " + SsoApp + " Affiliate Application Information.");
+                                    LogShortSuccessMsg("Success: Exported " + ssoApp +
+                                                       " Affiliate Application Information.");
 
                                 }
                                 else
                                 {
-                                    LogShortErrorMsg("Failed: Exporting " + SsoApp + " Affiliate Application Information.");
+                                    LogShortErrorMsg("Failed: Exporting " + ssoApp +
+                                                     " Affiliate Application Information.");
                                 }
                                 //ListMappings
-                                if (machineName == strSrcNode)//local
+                                if (_machineName == strSrcNode) //local
                                 {
-                                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listMappings " + SsoApp + " />\"" + xmlPath + "\\SSOMap_" + SsoApp + ".txt" + "\"";
+                                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listMappings " + ssoApp +
+                                                       " />\"" + _xmlPath + "\\SSOMap_" + ssoApp + ".txt" + "\"";
 
                                 }
                                 else
                                 {
-                                    string xmlPathUNC = ConvertPathToUncPath(xmlPath);
-                                    commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\""  + fileName + "\"" + " -accepteula" + " -listMappings " + SsoApp + " />\"" + "\\\\" + machineName + "\\" + xmlPathUNC + "\\SSOMap_" + SsoApp + ".txt" + "\"";
+                                    string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
+                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " +
+                                                       "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                                       fileName + "\"" + " -accepteula" + " -listMappings " + ssoApp +
+                                                       " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
+                                                       "\\SSOMap_" + ssoApp + ".txt" + "\"";
 
                                 }
 
                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
                                 if (returnCode == 0)
                                 {
-                                    LogShortSuccessMsg("Success: Exported " + SsoApp + " Mapping File.");
+                                    LogShortSuccessMsg("Success: Exported " + ssoApp + " Mapping File.");
 
                                 }
                                 else
                                 {
-                                    LogShortErrorMsg("Failed: Exporting " + SsoApp + " Mapping File.");
+                                    LogShortErrorMsg("Failed: Exporting " + ssoApp + " Mapping File.");
                                 }
                                 //
                             }
                             catch (Exception ex)
                             {
-                                LogInfoSyncronously("Exception while Exporting SSO Affiliate Application " + ex.Message);
+                                LogInfoSyncronously("Exception while Exporting SSO Affiliate Application " +
+                                                    ex.Message);
                                 LogException(ex);
                             }
                         }
-
                     }
                 }
                 else
@@ -6826,42 +7566,28 @@ namespace BizTalkAdminOperations
                     throw new Exception("SSO Affiliate Application List is not Present");
                 }
 
-               
-                string[] files = Directory.GetFiles(xmlPath, "SSOApp_*.txt");
+
+                string[] files = Directory.GetFiles(_xmlPath, "SSOApp_*.txt");
                 if (files.Length == 0)
                 {
                     throw new Exception("SSO Information Files are not Present");
                 }
                 else
                 {
-                  
-                  
-                    for (int i = 0; i < files.Length; i++)
+                    foreach (string file in files)
                     {
                         try
                         {
-                            string[] ssoAppInformation = File.ReadAllLines(files[i]);
+                            string[] ssoAppInformation = File.ReadAllLines(file);
                             //Extarcting Inofrmation from TextFile
                             string applicationName = string.Empty;
-                            string applicationType = string.Empty;
-                            string description = string.Empty;
-                            string contactInfo = string.Empty;
-                            string applciationUsersAccount = string.Empty;
-                            string applciationAdministrators = string.Empty;
-                            string ticketTimeOut = string.Empty;
-                            string userID = string.Empty;
+                            string userId = string.Empty;
                             string password = string.Empty;
                             string groupApp = string.Empty;
                             string applicationEnabled = string.Empty;
                             string allowLocalAccounts = string.Empty;
                             string adminAccountSame = string.Empty;
-                            string allowWindowsInitatedSSO = string.Empty;
-                            string disableCredentialCache = string.Empty;
                             string ticketsAllowed = string.Empty;
-                            string allowhostInitatedSSO = string.Empty;
-                            string directPasswordSync = string.Empty;
-                            string windowsCredentials = string.Empty;
-                            string applicationUsersMappings = string.Empty;
                             string validateTickets = string.Empty;
                             string timeoutTickets = string.Empty;
 
@@ -6869,19 +7595,9 @@ namespace BizTalkAdminOperations
                             {
                                 if (line.Contains("Application name"))
                                     applicationName = line.Split(':')[1].Trim();
-                                if (line.Contains("Description"))
-                                    description = line.Split(':')[1].Trim();
-                                if (line.Contains("Application Users account"))
-                                    applciationUsersAccount = line.Split(':')[1].Trim();
-                                if (line.Contains("Application Administrators accou"))
-                                    applciationAdministrators = line.Split(':')[1].Trim();
-                                if (line.Contains("Contact info"))
-                                    contactInfo = line.Split(':')[1].Trim();
-                                if (line.Contains("Ticket timeout (in minutes)"))
-                                    ticketTimeOut = line.Split(':')[1].Trim();
                                 if (line.Contains("User Id"))
                                 {
-                                    userID = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
+                                    userId = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
                                 }
                                 if (line.Contains("Password"))
                                 {
@@ -6908,7 +7624,7 @@ namespace BizTalkAdminOperations
 
                             }
 
-                            string AppName = Path.GetFileNameWithoutExtension(files[i]).Split('_')[1];
+                            string appName = Path.GetFileNameWithoutExtension(file).Split('_')[1];
                             //create SQL COnnection
                             string srcSSOSqlInstance;
                             using (var sqlCon = new SqlConnection(
@@ -6939,7 +7655,7 @@ namespace BizTalkAdminOperations
                                     "SELECT  [ai_app_name],[ai_description],[ai_contact_info],[ai_user_group_name],[ai_admin_group_name],[ai_flags],[ai_num_fields],[ai_purge_id],[ai_audit_id],[ai_ticket_timeout] FROM [SSODB].[dbo].[SSOX_ApplicationInfo] where [ai_app_name] = @AppName";
                                 using (var sqlCmd = new SqlCommand(text, sqlCon))
                                 {
-                                    sqlCmd.Parameters.AddWithValue("@AppName", AppName);
+                                    sqlCmd.Parameters.AddWithValue("@AppName", appName);
                                     using (var ds = new DataSet())
                                     {
                                         using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
@@ -6948,7 +7664,8 @@ namespace BizTalkAdminOperations
                                         }
 
                                         using (XmlWriter writer =
-                                            XmlWriter.Create(xmlPath + @"\" + "SSOApp_" + AppName + "_ToImport" + ".xml"))
+                                            XmlWriter.Create(
+                                                _xmlPath + @"\" + "SSOApp_" + appName + "_ToImport" + ".xml"))
                                         {
                                             writer.WriteStartElement("SSO");
                                             writer.WriteStartElement("application");
@@ -6965,7 +7682,7 @@ namespace BizTalkAdminOperations
                                             writer.WriteStartElement("field");
                                             writer.WriteAttributeString("ordinal", "0");
                                             writer.WriteAttributeString("label", "User Id");
-                                            writer.WriteAttributeString("masked", userID);
+                                            writer.WriteAttributeString("masked", userId);
                                             writer.WriteEndElement();
                                             writer.WriteStartElement("field");
                                             writer.WriteAttributeString("ordinal", "1");
@@ -6975,11 +7692,13 @@ namespace BizTalkAdminOperations
                                             writer.WriteStartElement("flags");
                                             writer.WriteAttributeString("groupApp", groupApp);
                                             writer.WriteAttributeString("adminAccountSame", adminAccountSame.ToLower());
-                                            writer.WriteAttributeString("allowLocalAccounts", allowLocalAccounts.ToLower());
+                                            writer.WriteAttributeString("allowLocalAccounts",
+                                                allowLocalAccounts.ToLower());
                                             writer.WriteAttributeString("enableApp", applicationEnabled.ToLower());
                                             writer.WriteAttributeString("allowTickets", ticketsAllowed.ToLower());
                                             if (validateTickets != string.Empty)
-                                                writer.WriteAttributeString("validateTickets", validateTickets.ToLower());
+                                                writer.WriteAttributeString("validateTickets",
+                                                    validateTickets.ToLower());
                                             if (timeoutTickets != string.Empty)
                                                 writer.WriteAttributeString("timeoutTickets", timeoutTickets.ToLower());
                                             writer.WriteEndElement();
@@ -6992,50 +7711,52 @@ namespace BizTalkAdminOperations
                         }
                         catch (Exception ex)
                         {
-                            LogInfoSyncronously("Exception while Exporting SSO XMl: " + files[i] + ex.Message);
+                            LogInfoSyncronously("Exception while Exporting SSO XMl: " + file + ex.Message);
                             LogException(ex);
                         }
-
                     }
                     LogShortSuccessMsg("Success: Exported SSO Affiliate Apps Xmls");
-
                 }
-                files = Directory.GetFiles(xmlPath, "SSOMap_*.txt");
+                files = Directory.GetFiles(_xmlPath, "SSOMap_*.txt");
                 if (files.Length == 0)
                 {
                     throw new Exception("SSO Mapping Files are not Present");
                 }
                 else
                 {
-                    for (int i = 0; i < files.Length; i++)
+                    foreach (string file in files)
                     {
-                        string[] ssoMappingList = File.ReadAllLines(files[i]);
+                        string[] ssoMappingList = File.ReadAllLines(file);
                         List<string> ssoMapping = new List<string>();
                         try
                         {
-                            for (int j = 0; j < ssoMappingList.Length; j++)
+                            foreach (string ssoMap in ssoMappingList)
                             {
-                                if (string.IsNullOrEmpty(ssoMappingList[j]) || string.IsNullOrWhiteSpace(ssoMappingList[j]) || ssoMappingList[j].Contains("Using SSO server") || ssoMappingList[j].Contains("Existing mappings for application") || ssoMappingList[j].Contains("existing mappings for application"))
+                                if (string.IsNullOrEmpty(ssoMap) || string.IsNullOrWhiteSpace(ssoMap) ||
+                                    ssoMap.Contains("Using SSO server") ||
+                                    ssoMap.Contains("Existing mappings for application") ||
+                                    ssoMap.Contains("existing mappings for application"))
 
                                 {
 
                                 }
                                 else
                                 {
-                                    ssoMapping.Add(ssoMappingList[j]);
+                                    ssoMapping.Add(ssoMap);
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            LogInfoSyncronously("Exception while Reading  SSO Mapping File : " + files[i] + ex.Message);
+                            LogInfoSyncronously("Exception while Reading  SSO Mapping File : " + file + ex.Message);
                             LogException(ex);
                         }
                         if (ssoMapping.Count > 0)
                         {
                             //Creating SSO Mapping FIle
-                            string appName = Path.GetFileNameWithoutExtension(files[i]).Split('_')[1];
-                            using (XmlWriter writer = XmlWriter.Create(xmlPath + @"\" + "SSOMap_" + appName +"_ToImport" + ".xml"))
+                            string appName = Path.GetFileNameWithoutExtension(file).Split('_')[1];
+                            using (XmlWriter writer =
+                                XmlWriter.Create(_xmlPath + @"\" + "SSOMap_" + appName + "_ToImport" + ".xml"))
                             {
                                 writer.WriteStartElement("SSO");
                                 foreach (string mapping in ssoMapping)
@@ -7043,15 +7764,18 @@ namespace BizTalkAdminOperations
                                     try
                                     {
                                         writer.WriteStartElement("mapping");
-                                        writer.WriteElementString("windowsDomain", mapping.Split(':')[0].Split(')')[1].Split('\\')[0].Trim());
-                                        writer.WriteElementString("windowsUserId", mapping.Split(':')[0].Split(')')[1].Split('\\')[1].Trim());
+                                        writer.WriteElementString("windowsDomain",
+                                            mapping.Split(':')[0].Split(')')[1].Split('\\')[0].Trim());
+                                        writer.WriteElementString("windowsUserId",
+                                            mapping.Split(':')[0].Split(')')[1].Split('\\')[1].Trim());
                                         writer.WriteElementString("externalApplication", appName);
                                         writer.WriteElementString("externalUserId", mapping.Split(':')[1].Trim());
                                         writer.WriteEndElement();
                                     }
                                     catch (Exception ex)
                                     {
-                                        LogInfoSyncronously("Exception while Writing into  SSO Mapping File : " + files[i] + ex.Message);
+                                        LogInfoSyncronously("Exception while Writing into  SSO Mapping File : " + file +
+                                                            ex.Message);
                                         LogException(ex);
                                     }
                                 }
@@ -7061,7 +7785,7 @@ namespace BizTalkAdminOperations
 
                         else
                         {
-                            LogInfo("No Mappings are present for  " + files[i]);
+                            LogInfo("No Mappings are present for  " + file);
                         }
                     }
                     LogShortSuccessMsg("Success: Exported SSO Mapping Xmls");
@@ -7079,23 +7803,26 @@ namespace BizTalkAdminOperations
         private void ImportSSOApps()
         {
             string fileName = @"C:\Program Files\Common Files\Enterprise Single Sign-On\ssomanage.exe";
-            string commandArguments = "";
-            int returnCode;
             //Creating the DestinationAppList
             try
             {
-                if (machineName == strDstNode)//local
+                string commandArguments;
+                if (_machineName == strDstNode) //local
                 {
-                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listapps />\"" + xmlPath + "\\DstSSOAppsList.txt" + "\"";
+                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listapps />\"" + _xmlPath +
+                                       "\\DstSSOAppsList.txt" + "\"";
                 }
                 else
                 {
-                    string xmlPathUNC = ConvertPathToUncPath(xmlPath);
-                    commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + fileName + "\"" + " -listapps />\"" + "\\\\" + machineName + "\\" + xmlPathUNC + "\\DstSSOAppsList.txt" + "\"";
+                    string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" +
+                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                       fileName + "\"" + " -listapps />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
+                                       "\\DstSSOAppsList.txt" + "\"";
 
                 }
 
-                returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                 if (returnCode == 0)
                 {
@@ -7108,29 +7835,31 @@ namespace BizTalkAdminOperations
 
                 }
                 List<string> dstSsoApps = new List<string>();
-                if (File.Exists(xmlPath + "\\" + "DstSSOAppsList.txt"))
+                if (File.Exists(_xmlPath + "\\" + "DstSSOAppsList.txt"))
                 {
-                    string[] dstSsoAppsList = File.ReadAllLines(xmlPath + @"\DstSSOAppsList.txt");
-                    
-                    for (int i = 0; i < dstSsoAppsList.Length; i++)
+                    string[] dstSsoAppsList = File.ReadAllLines(_xmlPath + @"\DstSSOAppsList.txt");
+
+                    foreach (string ssoApp in dstSsoAppsList)
                     {
-                        if (string.IsNullOrEmpty(dstSsoAppsList[i]) || string.IsNullOrWhiteSpace(dstSsoAppsList[i]) || dstSsoAppsList[i].Contains("Using SSO server") || dstSsoAppsList[i].Contains("Applications available for") || dstSsoAppsList[i].Contains("applications available for"))
+                        if (string.IsNullOrEmpty(ssoApp) || string.IsNullOrWhiteSpace(ssoApp) ||
+                            ssoApp.Contains("Using SSO server") || ssoApp.Contains("Applications available for") ||
+                            ssoApp.Contains("applications available for"))
 
                         {
                         }
                         else
                         {
-                            dstSsoApps.Add(dstSsoAppsList[i].Split(':')[0].Split(')')[1].Trim());
-                            
+                            dstSsoApps.Add(ssoApp.Split(':')[0].Split(')')[1].Trim());
+
                         }
                     }
                 }
-              string[]  files = Directory.GetFiles(xmlPath, "SSOApp_*.xml");
-                if (files.Length>0)
+                string[] files = Directory.GetFiles(_xmlPath, "SSOApp_*.xml");
+                if (files.Length > 0)
                 {
-                    for (int i = 0; i < files.Length; i++)
+                    foreach (string file in files)
                     {
-                        string appName = Path.GetFileNameWithoutExtension(files[i]).Split('_')[1].Split('_')[0];
+                        string appName = Path.GetFileNameWithoutExtension(file).Split('_')[1].Split('_')[0];
                         try
                         {
                             if (dstSsoApps.Contains(appName))
@@ -7141,52 +7870,68 @@ namespace BizTalkAdminOperations
                             {
                                 //Import the App and Mappings associated to App
 
-                                if (machineName == strDstNode)//local
+                                if (_machineName == strDstNode) //local
                                 {
-                                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -createapps \"" + files[i] + "\"";
+                                    commandArguments =
+                                        "/C " + "\"\"" + fileName + "\"" + " -createapps \"" + file + "\"";
                                 }
                                 else
                                 {
-                                    string filePathUnc = ConvertPathToUncPath(files[i]);
-                                    commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + fileName + "\"" + " -createapps \"" + "\\\\" + machineName + "\\" + filePathUnc + "\"";
+                                    string filePathUnc = ConvertPathToUncPath(file);
+                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " +
+                                                       "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                                       " -accepteula" + fileName + "\"" + " -createapps \"" + "\\\\" +
+                                                       _machineName + "\\" + filePathUnc + "\"";
 
                                 }
                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                                 if (returnCode == 0)
                                 {
-                                    LogInfoInLogFile("Success: Created Destination SSO Affiliate Application:"+appName);
+                                    LogInfoInLogFile(
+                                        "Success: Created Destination SSO Affiliate Application:" + appName);
 
                                 }
                                 else
                                 {
-                                    LogInfoInLogFile("Failed: Created Destination SSO Affiliate Application List:"+appName);
+                                    LogInfoInLogFile("Failed: Created Destination SSO Affiliate Application List:" +
+                                                     appName);
 
                                 }
 
-                                string[] mappingFiles = Directory.GetFiles(xmlPath, "SSOMap_" + appName + "_ToImport" + ".xml");
+                                string[] mappingFiles =
+                                    Directory.GetFiles(_xmlPath, "SSOMap_" + appName + "_ToImport" + ".xml");
                                 foreach (string mappingFile in mappingFiles)
                                 {
-                                    if (machineName == strDstNode)//local
+                                    if (_machineName == strDstNode) //local
                                     {
-                                        commandArguments = "/C " + "\"\"" + fileName + "\"" + " -createmappings \"" + mappingFile + "\"";
+                                        commandArguments =
+                                            "/C " + "\"\"" + fileName + "\"" + " -createmappings \"" + mappingFile +
+                                            "\"";
                                     }
                                     else
                                     {
-                                        string mappingFileUNC = ConvertPathToUncPath(mappingFile);
-                                        commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + fileName + "\"" + " -createMappings />\"" + "\\\\" + machineName + "\\" + mappingFileUNC + "\"";
+                                        string mappingFileUnc = ConvertPathToUncPath(mappingFile);
+                                        commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode +
+                                                           " -u " + "\"" + strUserName + "\"" + " -p " + "\"" +
+                                                           strPassword + "\"" + " -accepteula" + fileName + "\"" +
+                                                           " -createMappings />\"" + "\\\\" + _machineName + "\\" +
+                                                           mappingFileUnc + "\"";
 
                                     }
                                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                                     if (returnCode == 0)
                                     {
-                                        LogInfoInLogFile("Success: Created Destination SSO Affiliate Application Mappings:" + mappingFile);
+                                        LogInfoInLogFile(
+                                            "Success: Created Destination SSO Affiliate Application Mappings:" +
+                                            mappingFile);
 
                                     }
                                     else
                                     {
-                                        LogInfoInLogFile("Failed: Created Destination SSO Affiliate Application List:" + mappingFile);
+                                        LogInfoInLogFile("Failed: Created Destination SSO Affiliate Application List:" +
+                                                         mappingFile);
 
                                     }
                                     //Enabling the Mapping
@@ -7197,50 +7942,63 @@ namespace BizTalkAdminOperations
 
                                     foreach (XmlNode node in nodeList)
                                     {
-                                        string windowsAccount = node.SelectSingleNode("windowsDomain").InnerText + "\\" + node.SelectSingleNode("windowsUserId").InnerText;
+                                        string windowsAccount =
+                                            node.SelectSingleNode("windowsDomain").InnerText + "\\" +
+                                            node.SelectSingleNode("windowsUserId").InnerText;
                                         try
                                         {
-                                            if (machineName == strDstNode)//local
+                                            if (_machineName == strDstNode) //local
                                             {
-                                                commandArguments = "/C " + "\"\"" + fileName + "\"" + " -enablemapping \"" + windowsAccount + "\"" +" " +"\""+ appName +"\"";
+                                                commandArguments =
+                                                    "/C " + "\"\"" + fileName + "\"" + " -enablemapping \"" +
+                                                    windowsAccount + "\"" + " " + "\"" + appName + "\"";
                                             }
                                             else
                                             {
-                                                string xmlPathUNC = ConvertPathToUncPath(xmlPath);
-                                                commandArguments = "/C " + "\"\"" + psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + fileName + "\"" + " -enablemapping \"" + windowsAccount + "\"" + appName + "\"";
+                                                commandArguments =
+                                                    "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " +
+                                                    "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                                    " -accepteula" + fileName + "\"" + " -enablemapping \"" +
+                                                    windowsAccount + "\"" + appName + "\"";
 
                                             }
                                             returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                                             if (returnCode == 0)
                                             {
-                                                LogInfoInLogFile("Success: Enabled SSO Affiliate Application Mappings:" + mappingFile);
+                                                LogInfoInLogFile(
+                                                    "Success: Enabled SSO Affiliate Application Mappings:" +
+                                                    mappingFile);
 
                                             }
                                             else
                                             {
-                                                LogInfoInLogFile("Failed: Enabled SSO Affiliate Application List:" + mappingFile);
+                                                LogInfoInLogFile(
+                                                    "Failed: Enabled SSO Affiliate Application List:" + mappingFile);
 
                                             }
                                         }
-                                        catch(Exception ex)
+                                        catch (Exception ex)
                                         {
-                                            LogInfoSyncronously("Exception while Enabling SSO Affiliate Application Mapping " + appName + " :" + ex.Message);
+                                            LogInfoSyncronously(
+                                                "Exception while Enabling SSO Affiliate Application Mapping " +
+                                                appName + " :" + ex.Message);
                                             LogException(ex);
                                         }
                                     }
 
                                 }
-                                LogShortSuccessMsg("Success: Created Destination SSO Affiliate Applications and Mappings.");
+                                LogShortSuccessMsg(
+                                    "Success: Created Destination SSO Affiliate Applications and Mappings.");
                             }
 
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
-                            LogInfoSyncronously("Exception while Importing SSO Affiliate Application " + appName+" :" + ex.Message);
+                            LogInfoSyncronously("Exception while Importing SSO Affiliate Application " + appName +
+                                                " :" + ex.Message);
                             LogException(ex);
                         }
-
                     }
                 }
                 else
@@ -7257,7 +8015,7 @@ namespace BizTalkAdminOperations
             }
         }
 
-            #endregion
+        #endregion
 
-        }
+    }
 }

@@ -598,20 +598,19 @@
             datetime = new DateTime(year, month, day, hour, minute, second, 0);
             datetime = datetime.AddTicks(ticks);
             TimeSpan tickOffset = TimeZone.CurrentTimeZone.GetUtcOffset(datetime);
-            int UTCOffset = 0;
-            int OffsetToBeAdjusted = 0;
-            long OffsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
+            long offsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
             tempString = dmtf.Substring(22, 3);
             if (tempString != "******") {
                 tempString = dmtf.Substring(21, 4);
+                int utcOffset;
                 try {
-                    UTCOffset = int.Parse(tempString);
+                    utcOffset = int.Parse(tempString);
                 }
                 catch (Exception e) {
                     throw new ArgumentOutOfRangeException(null, e.Message);
                 }
-                OffsetToBeAdjusted = (int)(OffsetMins - UTCOffset);
-                datetime = datetime.AddMinutes(OffsetToBeAdjusted);
+                var offsetToBeAdjusted = (int)(offsetMins - utcOffset);
+                datetime = datetime.AddMinutes(offsetToBeAdjusted);
             }
             return datetime;
         }

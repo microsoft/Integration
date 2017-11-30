@@ -598,19 +598,18 @@
             datetime = new DateTime(year, month, day, hour, minute, second, 0);
             datetime = datetime.AddTicks(ticks);
             TimeSpan tickOffset = TimeZone.CurrentTimeZone.GetUtcOffset(datetime);
-            int UTCOffset = 0;
-            int OffsetToBeAdjusted = 0;
-            long OffsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
+            long offsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
             tempString = dmtf.Substring(22, 3);
             if (tempString != "******") {
                 tempString = dmtf.Substring(21, 4);
+                int utcOffset;
                 try {
-                    UTCOffset = int.Parse(tempString);
+                    utcOffset = int.Parse(tempString);
                 }
                 catch (Exception e) {
                     throw new ArgumentOutOfRangeException(null, e.Message);
                 }
-                OffsetToBeAdjusted = (int)(OffsetMins - UTCOffset);
+                var OffsetToBeAdjusted = (int)(offsetMins - utcOffset);
                 datetime = datetime.AddMinutes(OffsetToBeAdjusted);
             }
             return datetime;
@@ -765,13 +764,9 @@
         }
         
         public static HostInstanceCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
-            if (mgmtScope == null) {
-                if (statMgmtScope == null) {
-                    mgmtScope = new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
-                }
-                else {
-                    mgmtScope = statMgmtScope;
-                }
+            if (mgmtScope == null)
+            {
+                mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
             ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_HostInstance", condition, selectedProperties));
             EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
