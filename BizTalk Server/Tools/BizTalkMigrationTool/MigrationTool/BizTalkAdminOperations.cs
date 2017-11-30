@@ -494,8 +494,7 @@ namespace BizTalkAdminOperations
             }
             finally
             {
-                if (xmlWriterApps != null)
-                    xmlWriterApps.Close();
+                xmlWriterApps?.Close();
             }
 
             // Cursor.Current = Cursors.Default;
@@ -921,8 +920,7 @@ namespace BizTalkAdminOperations
             }
             finally
             {
-                if (xmlWriterApps != null)
-                    xmlWriterApps.Close();
+                xmlWriterApps?.Close();
             }
         }
         #endregion
@@ -1192,8 +1190,7 @@ namespace BizTalkAdminOperations
             }
             finally
             {
-                if (xmlWriterApps != null)
-                    xmlWriterApps.Close();
+                xmlWriterApps?.Close();
             }
         }
         private void btnImportApps_Click(object sender, EventArgs e)
@@ -2847,8 +2844,7 @@ namespace BizTalkAdminOperations
             }
             finally
             {
-                if (xmlWriterApps != null)
-                    xmlWriterApps.Close();
+                xmlWriterApps?.Close();
             }
         }
 
@@ -5718,8 +5714,7 @@ namespace BizTalkAdminOperations
             }
             finally
             {
-                if (xmlWriterApps != null)
-                    xmlWriterApps.Close();
+                xmlWriterApps?.Close();
             }
         }
 
@@ -5771,8 +5766,7 @@ namespace BizTalkAdminOperations
             }
             finally
             {
-                if (xmlWriterApps != null)
-                    xmlWriterApps.Close();
+                xmlWriterApps?.Close();
             }
         }
 
@@ -5817,8 +5811,7 @@ namespace BizTalkAdminOperations
             }
             finally
             {
-                if (xmlWriterApps != null)
-                    xmlWriterApps.Close();
+                xmlWriterApps?.Close();
             }
         }
         private void TstDstSqlConnection(bool pSaveConnectionInfo)

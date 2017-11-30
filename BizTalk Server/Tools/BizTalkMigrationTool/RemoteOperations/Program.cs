@@ -1097,8 +1097,7 @@ namespace RemoteOperations
                 }
                 finally
                 {
-                    if (xmlWriterApps != null)
-                        xmlWriterApps.Close();
+                    xmlWriterApps?.Close();
                 }
             }
 
@@ -1181,8 +1180,7 @@ namespace RemoteOperations
                 }
                 finally
                 {
-                    if (xmlWriterApps != null)
-                        xmlWriterApps.Close();
+                    xmlWriterApps?.Close();
                 }
             }
 
@@ -1250,8 +1248,7 @@ namespace RemoteOperations
                 }
                 finally
                 {
-                    if (xmlWriterApps != null)
-                        xmlWriterApps.Close();
+                    xmlWriterApps?.Close();
                 }
             }
 

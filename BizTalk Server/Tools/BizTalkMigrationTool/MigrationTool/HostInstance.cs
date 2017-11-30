@@ -108,13 +108,10 @@
         public string ManagementClassName {
             get {
                 string strRet = CreatedClassName;
-                if (curObj != null) {
-                    if (curObj.ClassPath != null) {
-                        strRet = (string)curObj["__CLASS"];
-                        if (strRet == null 
-                            || strRet == string.Empty) {
-                            strRet = CreatedClassName;
-                        }
+                if (curObj?.ClassPath != null) {
+                    strRet = (string)curObj["__CLASS"];
+                    if (string.IsNullOrEmpty(strRet)) {
+                        strRet = CreatedClassName;
                     }
                 }
                 return strRet;
