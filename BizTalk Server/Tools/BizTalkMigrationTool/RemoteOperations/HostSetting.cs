@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -1528,7 +1529,7 @@ namespace RemoteOperations {
         }
         
         // Enumerator implementation for enumerating instances of the class.
-        public class HostSettingCollection : object, ICollection {
+        public class HostSettingCollection : IReadOnlyCollection<HostSetting> {
             
             private readonly ManagementObjectCollection _privColObj;
             
@@ -1536,56 +1537,19 @@ namespace RemoteOperations {
                 _privColObj = objCollection;
             }
             
-            public virtual int Count {
+            public int Count {
                 get {
                     return _privColObj.Count;
                 }
             }
-            
-            public virtual bool IsSynchronized {
-                get {
-                    return _privColObj.IsSynchronized;
-                }
+
+            public IEnumerator<HostSetting> GetEnumerator() {
+                return _privColObj.Cast<HostSetting>().GetEnumerator();
             }
-            
-            public virtual object SyncRoot {
-                get {
-                    return this;
-                }
-            }
-            
-            public virtual void CopyTo(Array array, int index) {
-                _privColObj.CopyTo(array, index);
-                for (int nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
-                    array.SetValue(new HostSetting((ManagementObject)array.GetValue(nCtr)), nCtr);
-                }
-            }
-            
-            public virtual IEnumerator GetEnumerator() {
-                return new HostSettingEnumerator(_privColObj.GetEnumerator());
-            }
-            
-            public class HostSettingEnumerator : object, IEnumerator {
-                
-                private readonly ManagementObjectCollection.ManagementObjectEnumerator _privObjEnum;
-                
-                public HostSettingEnumerator(ManagementObjectCollection.ManagementObjectEnumerator objEnum) {
-                    _privObjEnum = objEnum;
-                }
-                
-                public virtual object Current {
-                    get {
-                        return new HostSetting((ManagementObject)_privObjEnum.Current);
-                    }
-                }
-                
-                public virtual bool MoveNext() {
-                    return _privObjEnum.MoveNext();
-                }
-                
-                public virtual void Reset() {
-                    _privObjEnum.Reset();
-                }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
             }
         }
         
@@ -1718,7 +1682,7 @@ namespace RemoteOperations {
             }
             
             [Browsable(true)]
-            public string[] Derivation {
+            public IEnumerable<string> Derivation {
                 get {
                     return (string[])_privateLateBoundObject["__DERIVATION"];
                 }

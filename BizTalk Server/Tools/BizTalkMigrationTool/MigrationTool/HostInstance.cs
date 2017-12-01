@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -534,58 +535,55 @@ namespace MigrationTool {
             int second = initializer.Second;
             long ticks = 0;
             string dmtf = dmtfDate;
-            string tempString;
-            if (dmtf == null) {
-                throw new ArgumentOutOfRangeException();
+            if (dmtf == null)
+            {
+                throw new ArgumentNullException(nameof(dmtfDate));
             }
-            if (dmtf.Length == 0) {
-                throw new ArgumentOutOfRangeException();
+            if (dmtf.Length == 0)
+            {
+                throw new ArgumentException("", nameof(dmtfDate));
             }
-            if (dmtf.Length != 25) {
-                throw new ArgumentOutOfRangeException();
+            if (dmtf.Length != 25)
+            {
+                throw new ArgumentException("", nameof(dmtfDate));
             }
-            try {
-                tempString = dmtf.Substring(0, 4);
-                if ("****" != tempString) {
-                    year = int.Parse(tempString);
-                }
-                tempString = dmtf.Substring(4, 2);
-                if ("**" != tempString) {
-                    month = int.Parse(tempString);
-                }
-                tempString = dmtf.Substring(6, 2);
-                if ("**" != tempString) {
-                    day = int.Parse(tempString);
-                }
-                tempString = dmtf.Substring(8, 2);
-                if ("**" != tempString) {
-                    hour = int.Parse(tempString);
-                }
-                tempString = dmtf.Substring(10, 2);
-                if ("**" != tempString) {
-                    minute = int.Parse(tempString);
-                }
-                tempString = dmtf.Substring(12, 2);
-                if ("**" != tempString) {
-                    second = int.Parse(tempString);
-                }
-                tempString = dmtf.Substring(15, 6);
-                if ("******" != tempString) {
-                    ticks = long.Parse(tempString) * (TimeSpan.TicksPerMillisecond / 1000);
-                }
-                if (year < 0 
-                    || month < 0 
-                    || day < 0 
-                    || hour < 0 
-                    || minute < 0 
-                    || minute < 0 
-                    || second < 0 
-                    || ticks < 0) {
-                    throw new ArgumentOutOfRangeException();
-                }
+            var tempString = dmtf.Substring(0, 4);
+            if ("****" != tempString) {
+                year = int.Parse(tempString);
             }
-            catch (Exception e) {
-                throw new ArgumentOutOfRangeException(null, e.Message);
+            tempString = dmtf.Substring(4, 2);
+            if ("**" != tempString) {
+                month = int.Parse(tempString);
+            }
+            tempString = dmtf.Substring(6, 2);
+            if ("**" != tempString) {
+                day = int.Parse(tempString);
+            }
+            tempString = dmtf.Substring(8, 2);
+            if ("**" != tempString) {
+                hour = int.Parse(tempString);
+            }
+            tempString = dmtf.Substring(10, 2);
+            if ("**" != tempString) {
+                minute = int.Parse(tempString);
+            }
+            tempString = dmtf.Substring(12, 2);
+            if ("**" != tempString) {
+                second = int.Parse(tempString);
+            }
+            tempString = dmtf.Substring(15, 6);
+            if ("******" != tempString) {
+                ticks = long.Parse(tempString) * (TimeSpan.TicksPerMillisecond / 1000);
+            }
+            if (year < 0 
+                || month < 0 
+                || day < 0 
+                || hour < 0 
+                || minute < 0 
+                || minute < 0 
+                || second < 0 
+                || ticks < 0) {
+                throw new ArgumentException("", nameof(dmtfDate));
             }
             var datetime = new DateTime(year, month, day, hour, minute, second, 0);
             datetime = datetime.AddTicks(ticks);
@@ -912,7 +910,7 @@ namespace MigrationTool {
         }
         
         // Enumerator implementation for enumerating instances of the class.
-        public class HostInstanceCollection : object, ICollection {
+        public class HostInstanceCollection : IReadOnlyCollection<HostInstance> {
             
             private readonly ManagementObjectCollection _privColObj;
             
@@ -920,56 +918,19 @@ namespace MigrationTool {
                 _privColObj = objCollection;
             }
             
-            public virtual int Count {
+            public int Count {
                 get {
                     return _privColObj.Count;
                 }
             }
-            
-            public virtual bool IsSynchronized {
-                get {
-                    return _privColObj.IsSynchronized;
-                }
+           
+            public IEnumerator<HostInstance> GetEnumerator() {
+                return _privColObj.Cast<HostInstance>().GetEnumerator();
             }
-            
-            public virtual object SyncRoot {
-                get {
-                    return this;
-                }
-            }
-            
-            public virtual void CopyTo(Array array, int index) {
-                _privColObj.CopyTo(array, index);
-                for (int nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
-                    array.SetValue(new HostInstance((ManagementObject)array.GetValue(nCtr)), nCtr);
-                }
-            }
-            
-            public virtual IEnumerator GetEnumerator() {
-                return new HostInstanceEnumerator(_privColObj.GetEnumerator());
-            }
-            
-            public class HostInstanceEnumerator : object, IEnumerator {
-                
-                private readonly ManagementObjectCollection.ManagementObjectEnumerator _privObjEnum;
-                
-                public HostInstanceEnumerator(ManagementObjectCollection.ManagementObjectEnumerator objEnum) {
-                    _privObjEnum = objEnum;
-                }
-                
-                public virtual object Current {
-                    get {
-                        return new HostInstance((ManagementObject)_privObjEnum.Current);
-                    }
-                }
-                
-                public virtual bool MoveNext() {
-                    return _privObjEnum.MoveNext();
-                }
-                
-                public virtual void Reset() {
-                    _privObjEnum.Reset();
-                }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
             }
         }
         
@@ -1102,7 +1063,7 @@ namespace MigrationTool {
             }
             
             [Browsable(true)]
-            public string[] Derivation {
+            public IEnumerable<string> Derivation {
                 get {
                     return (string[])_privateLateBoundObject["__DERIVATION"];
                 }

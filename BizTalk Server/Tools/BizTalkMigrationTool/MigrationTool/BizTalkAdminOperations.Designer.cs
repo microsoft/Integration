@@ -1133,7 +1133,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtConnectionString;
-        public System.Windows.Forms.RichTextBox richTextBoxLogs;
+        private System.Windows.Forms.RichTextBox richTextBoxLogs;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton rbWebsiteYes;
         private System.Windows.Forms.RadioButton rbWebsiteNo;

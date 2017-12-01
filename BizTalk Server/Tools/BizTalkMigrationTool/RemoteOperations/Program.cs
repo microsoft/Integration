@@ -40,181 +40,112 @@ namespace RemoteOperations
                 var certPath = appPath + @"\CERT";
                 RemoteExportImportFunctions expo = new RemoteExportImportFunctions();
 
-                if (args[1] == "ExportCert")
+                switch (args[1])
                 {
-                    if (!Directory.Exists(appPath + "\\Logs"))
-                    {
-                        //recreate
-                        Directory.CreateDirectory(appPath + "\\Logs");
-                        expo.LogInfo("Created log folder", rootPath);
-                    }
+                    case "ExportCert":
+                        if (!Directory.Exists(appPath + "\\Logs"))
+                        {
+                            //recreate
+                            Directory.CreateDirectory(appPath + "\\Logs");
+                            expo.LogInfo("Created log folder", rootPath);
+                        }
 
-                    if (!Directory.Exists(certPath))
-                    {
-                        //recreate                                            
-                        Directory.CreateDirectory(certPath);
-                        expo.LogInfo("Created cert folder", rootPath);
-                    }
+                        if (!Directory.Exists(certPath))
+                        {
+                            //recreate                                            
+                            Directory.CreateDirectory(certPath);
+                            expo.LogInfo("Created cert folder", rootPath);
+                        }
 
-                    expo.btnExportCert_Click(rootPath, args[2]);
-                }
+                        expo.btnExportCert_Click(rootPath, args[2]);
+                        break;
+                    case "ImportCert":
+                        if (!Directory.Exists(appPath + "\\Logs"))
+                        {
+                            //recreate
+                            Directory.CreateDirectory(appPath + "\\Logs");
+                            expo.LogInfo("Created log folder", rootPath);
+                        }
 
-                if (args[1] == "ImportCert")
-                {
-                    if (!Directory.Exists(appPath + "\\Logs"))
-                    {
-                        //recreate
-                        Directory.CreateDirectory(appPath + "\\Logs");
-                        expo.LogInfo("Created log folder", rootPath);
-                    }
+                        if (!Directory.Exists(certPath))
+                        {
+                            //recreate                                            
+                            Directory.CreateDirectory(certPath);
+                            expo.LogInfo("Created cert folder", rootPath);
+                        }
 
-                    if (!Directory.Exists(certPath))
-                    {
-                        //recreate                                            
-                        Directory.CreateDirectory(certPath);
-                        expo.LogInfo("Created cert folder", rootPath);
-                    }
-
-                    expo.btnImportCert_Click(rootPath, args[2]);
-                }
-
-                if (args[1] == "ExportDll")
-                {
-                    string pDllPath = args[2];
-                    string strCustomDllFilter = args[3];
-                    string strCustomDllPath = args[4];
-                    expo.btnExportAssemblies_Click(rootPath, pDllPath, strCustomDllFilter, strCustomDllPath, args[5]);
-                }
-
-                //0 unc path, 1 Operation Name , 2 SqlInstance
-                if (args[1] == "ExportHandler")
-                {
-                    string sqlInstance = args[2];
-                    expo.btnExportAdapterHandlers_Click(rootPath, sqlInstance);
-                }
-
-                //0 unc path, 1 Operation Name , 2 SqlInstance
-                if (args[1] == "ExportAsmList")
-                {
-                    string sqlInstance = args[2];
-                    string appNameCollection = args[3];
-                    expo.btnGetAssembliesList_Click(rootPath, sqlInstance, appNameCollection);
-                }
-
-                //0 unc path, 1 Operation Name , 2 SqlInstance
-                if (args[1] == "ExportAppList")
-                {
-                    string sqlInstance = args[2];
-                    string bizTalkAppToIgnore = args[3];
-                    expo.btnGetApplicationList_Click(rootPath, sqlInstance, bizTalkAppToIgnore);
-                }
-
-
-                if (args[1] == "DstCustomDllList")
-                {
-                    string customDllFilter = args[2];
-                    expo.btnDstCustomDllList_Click(rootPath, customDllFilter);
-                }
-                if (args[1] == "DstDllList")
-                {
-
-                    expo.btnDstDllList_Click(rootPath);
-                }
-
-
-                if (args[1] == "SrcServiceList" || args[1] == "DstServiceList")
-                {
-                    string userNameNoDomain = args[3];
-                    string windowsServiceToIgnore = args[2];
-                    string fileName = args[1];
-                    expo.btnGetServices_Click(rootPath, windowsServiceToIgnore, userNameNoDomain, fileName);
-                }
-                if (args[1] == "ExportBREList")
-                {
-                    string sqlInstance = args[2];
-                    expo.ExportBREPolicyVocabulary(rootPath, sqlInstance);
-                }
-                if (args[1] == "ImportBREList")
-                {
-                    string sqlInstance = args[2];
-                    expo.ImportBREPolicyVocabulary(rootPath, sqlInstance);
-                }
-                if (args[1] == "ExportIISClientCert")
-                {
-
-                    expo.ExportClientCertOnetOneMappings(rootPath);
-                }
-                if (args[1] == "ImportHosts")
-                {
-
-                    string usernameForHost = args[2];
-                    string passwordForHost = args[3];
-                    expo.ImportHostAndHostInstances(rootPath, usernameForHost, passwordForHost);
-                }
-                if (args[1] == "ImportIISClientCert")
-                {
-
-                    expo.ImportClientCertOnetOneMappings(rootPath);
-                }
-                if (args[1] == "ImportAppPool")
-                {
-
-                    expo.ImportAppPools(rootPath);
-                }
-                if (args[1] == "ImportWebSite")
-                {
-                    string websiteName = args[2];
-                    expo.ImportWebsites(rootPath, websiteName);
-                }
-                if (args[1] == "ImportWebApp")
-                {
-                    string websiteName = args[2];
-                    expo.ImportWebApps(rootPath, websiteName);
-                }
-                if (args[1] == "BTSInstallPath")
-                {
-                    string operation = args[2];
-                    expo.BtsInstallPath(rootPath, operation);
-                }
-                if (args[1] == "ExportBamDefinition")
-                {
-                    string sqlInstance = args[2];
-                    expo.ExportBAMDefnition(rootPath, sqlInstance);
-                }
-                if (args[1] == "ImportBamDefinition")
-                {
-                    string sqlInstance = args[2];
-                    expo.ImportBAMDefinition(rootPath, sqlInstance);
-                }
-                if (args[1] == "ExportBAMAccounts")
-                {
-                    string sqlInstance = args[2];
-                    string viewName = args[3];
-                    expo.ExportBAMAccounts(rootPath, sqlInstance, viewName);
-                }
-                if (args[1] == "ImportBAMAccounts")
-                {
-                    string sqlInstance = args[2];
-                    string accountName = args[3];
-                    string viewName = args[4];
-                    expo.AddBAMAccounts(rootPath, sqlInstance, accountName, viewName);
-                }
-                if (args[1] == "ImportBTTList")
-                {
-                    string sqlInstance = args[2];
-                    string bttList = args[3];
-                    expo.ImportBTTDefiniton(rootPath, sqlInstance, bttList);
-                }
-                if (args[1] == "ExportHostMapSettings")
-                {
-                    string sqlInstance = args[2];
-                    string srcServerList = args[3];
-                    expo.ExportHostMapSettings(rootPath, sqlInstance, srcServerList);
-                }
-                if (args[1] == "ImportHostMapSettings")
-                {
-                    string sqlInstance = args[2];
-                    expo.ImportHostMapSettings(rootPath, sqlInstance);
+                        expo.btnImportCert_Click(rootPath, args[2]);
+                        break;
+                    case "ExportDll":
+                        expo.btnExportAssemblies_Click(rootPath, args[2], args[3], args[4], args[5]);
+                        break;
+                    case "ExportHandler":
+                        expo.btnExportAdapterHandlers_Click(rootPath, args[2]);
+                        break;
+                    case "ExportAsmList":
+                        expo.btnGetAssembliesList_Click(rootPath, args[2], args[3]);
+                        break;
+                    case "ExportAppList":
+                        expo.btnGetApplicationList_Click(rootPath, args[2], args[3]);
+                        break;
+                    case "DstCustomDllList":
+                        expo.btnDstCustomDllList_Click(rootPath, args[2]);
+                        break;
+                    case "DstDllList":
+                        expo.btnDstDllList_Click(rootPath);
+                        break;
+                    case "SrcServiceList":
+                    case "DstServiceList":
+                        expo.btnGetServices_Click(rootPath, args[2], args[3], args[1]);
+                        break;
+                    case "ExportBREList":
+                        expo.ExportBREPolicyVocabulary(rootPath, args[2]);
+                        break;
+                    case "ImportBREList":
+                        expo.ImportBREPolicyVocabulary(rootPath, args[2]);
+                        break;
+                    case "ExportIISClientCert":
+                        expo.ExportClientCertOnetOneMappings(rootPath);
+                        break;
+                    case "ImportHosts":
+                        expo.ImportHostAndHostInstances(rootPath, args[2], args[3]);
+                        break;
+                    case "ImportIISClientCert":
+                        expo.ImportClientCertOnetOneMappings(rootPath);
+                        break;
+                    case "ImportAppPool":
+                        expo.ImportAppPools(rootPath);
+                        break;
+                    case "ImportWebSite":
+                        expo.ImportWebsites(rootPath, args[2]);
+                        break;
+                    case "ImportWebApp":
+                        expo.ImportWebApps(rootPath, args[2]);
+                        break;
+                    case "BTSInstallPath":
+                        expo.BtsInstallPath(rootPath, args[2]);
+                        break;
+                    case "ExportBamDefinition":
+                        expo.ExportBAMDefnition(rootPath, args[2]);
+                        break;
+                    case "ImportBamDefinition":
+                        expo.ImportBAMDefinition(rootPath, args[2]);
+                        break;
+                    case "ExportBAMAccounts":
+                        expo.ExportBAMAccounts(rootPath, args[2], args[3]);
+                        break;
+                    case "ImportBAMAccounts":
+                        expo.AddBAMAccounts(rootPath, args[2], args[3], args[4]);
+                        break;
+                    case "ImportBTTList":
+                        expo.ImportBTTDefiniton(rootPath, args[2], args[3]);
+                        break;
+                    case "ExportHostMapSettings":
+                        expo.ExportHostMapSettings(rootPath, args[2], args[3]);
+                        break;
+                    case "ImportHostMapSettings":
+                        expo.ImportHostMapSettings(rootPath, args[2]);
+                        break;
                 }
 
                 return 0;
@@ -383,7 +314,7 @@ namespace RemoteOperations
                     LogInfo("Certificate Export Failed on Server: " + _machineName, pRootPath);
                     LogException(ex, pRootPath);
 
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -618,7 +549,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Certificate Import Failed on Server: " + _machineName, pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -817,7 +748,7 @@ namespace RemoteOperations
                 catch (Exception ex)
                 {
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -902,7 +833,7 @@ namespace RemoteOperations
                 catch (Exception ex)
                 {
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -987,7 +918,7 @@ namespace RemoteOperations
                 catch (Exception ex)
                 {
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
 
             }
@@ -1072,7 +1003,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Adapter Handlers Export:: some Exception, pls check log.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
                 finally
                 {
@@ -1142,7 +1073,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
                 finally
                 {
@@ -1210,7 +1141,7 @@ namespace RemoteOperations
                 catch (Exception ex)
                 {
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
                 finally
                 {
@@ -1291,7 +1222,7 @@ namespace RemoteOperations
                 catch (Exception ex)
                 {
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -1422,7 +1353,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
 
             }
@@ -1556,7 +1487,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
 
             }
@@ -1594,9 +1525,7 @@ namespace RemoteOperations
                             }
                             writer.WriteEndElement();
                             //  Get all the HostInstances of the Destination Server
-                            HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                            var hostInstancesArray = dstHostInstancesColletion
-                                .Cast<HostInstance>()
+                            var hostInstancesArray = HostInstance.GetInstances()
                                 .Where(ht => ht.Name.EndsWith(server) || ht.Name.EndsWith(server.ToLower()))
                                 .Select(ht => ht.Name.Split(' ')[3]).ToList()
                                 .Where(x => !string.IsNullOrEmpty(x)).ToList();
@@ -1619,7 +1548,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -1642,7 +1571,7 @@ namespace RemoteOperations
                     }
                     else
                     {
-                        throw new Exception("SrcServers xml file is not available.");
+                        throw new InvalidOperationException("SrcServers xml file is not available.");
                     }
                     //Getting the List of DestinationServers
                     xd.Load(xmlPath + "\\" + "Servers.xml");
@@ -1654,7 +1583,7 @@ namespace RemoteOperations
                     String[] files = Directory.GetFiles(xmlPath, "Src_*_HostMappings.xml");
                     if (files.Length == 0)
                     {
-                        throw new Exception(" Source HostMapping xml file is not available.");
+                        throw new InvalidOperationException(" Source HostMapping xml file is not available.");
                     }
 
                     if (dstservers.Length == srcservers.Length)
@@ -1673,30 +1602,14 @@ namespace RemoteOperations
 
                             // connection string to the BizTalk management database where the ports will be created
                             //Get the Hosts Present in  Destination
-                            HostCollection dsthostCollection = btsExp.Hosts;
-                            string[] hostArray = new string[dsthostCollection.Count];
-                            int j = 0;
-                            foreach (Host ht in dsthostCollection)
-                            {
-                                hostArray[j] = ht.Name;
-                                j++;
-
-                            }
+                            var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
 
                             //Get all the HostInstances of the Destination Server
-                            HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                            string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-                            j = 0;
-                            foreach (HostInstance ht in dstHostInstancesColletion)
-                            {
-                                if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
+                            var hostInstancesArray = HostInstance.GetInstances()
+                                .Where(ht =>
+                                    ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                     (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
-                                {
-                                    hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                    j++;
-                                }
-                            }
-                            hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                                .Select(ht => ht.Name.Split(' ')[3]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
                             XDocument doc = XDocument.Load(srcHostMappingFile);
                             //Removing SourceHost Which are Not Present in Destination
@@ -1745,30 +1658,14 @@ namespace RemoteOperations
 
                             // connection string to the BizTalk management database where the ports will be created
                             //Get the Hosts Present in  Destination
-                            HostCollection dsthostCollection = btsExp.Hosts;
-                            string[] hostArray = new string[dsthostCollection.Count];
-                            int j = 0;
-                            foreach (Host ht in dsthostCollection)
-                            {
-                                hostArray[j] = ht.Name;
-                                j++;
-
-                            }
+                            var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
 
                             //Get all the HostInstances of the Destination Server
-                            HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                            string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-                            j = 0;
-                            foreach (HostInstance ht in dstHostInstancesColletion)
-                            {
-                                if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
+                            var hostInstancesArray = HostInstance.GetInstances()
+                                .Where(ht =>
+                                    ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                     (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
-                                {
-                                    hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                    j++;
-                                }
-                            }
-                            hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                                .Select(ht => ht.Name.Split(' ')[3]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
                             XDocument doc = XDocument.Load(srcHostMappingFile);
                             //Removing SourceHost Which are Not Present in Destination
@@ -1818,30 +1715,13 @@ namespace RemoteOperations
 
                             // connection string to the BizTalk management database where the ports will be created
                             //Get the Hosts Present in  Destination
-                            HostCollection dsthostCollection = btsExp.Hosts;
-                            string[] hostArray = new string[dsthostCollection.Count];
-                            int j = 0;
-                            foreach (Host ht in dsthostCollection)
-                            {
-                                hostArray[j] = ht.Name;
-
-                                j++;
-
-                            }
+                            var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
                             //Get all the HostInstances of the Destination Server
-                            HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                            string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-                            j = 0;
-                            foreach (HostInstance ht in dstHostInstancesColletion)
-                            {
-                                if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
+                            var hostInstancesArray = HostInstance.GetInstances()
+                                .Where(ht =>
+                                    ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                     (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
-                                {
-                                    hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                    j++;
-                                }
-                            }
-                            hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                                .Select(ht => ht.Name.Split(' ')[3]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
 
                             XDocument doc = XDocument.Load(srcHostMappingFile);
@@ -1880,7 +1760,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -1947,7 +1827,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -2048,7 +1928,7 @@ namespace RemoteOperations
                 {
                     LogInfo("Exception occured, please check log file for details.", pRootPath);
                     LogException(ex, pRootPath);
-                    throw new Exception(ex.Message, ex.InnerException);
+                    throw;
                 }
             }
 
@@ -2060,12 +1940,12 @@ namespace RemoteOperations
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
                 LogInfo("Host: Import started..", pRootPath);
                 if (!File.Exists(xmlPath + @"\HostInstances.xml"))
-                    throw new Exception("HostInstances xml file does not exist.");
+                    throw new InvalidOperationException("HostInstances xml file does not exist.");
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlPath + "\\HostInstances.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("HostInstances xml file is empty.");
+                    throw new InvalidOperationException("HostInstances xml file is empty.");
 
                 //Getting the List of DestinationServers
                 XmlDocument xd = new XmlDocument();
@@ -2259,7 +2139,7 @@ namespace RemoteOperations
                     if (returnCode == 0)
                         LogInfo("Success: BAM Definition Exported.", pRootPath);
                     else
-                        throw new Exception("Failed: BAM Definition Export");
+                        throw new InvalidOperationException("Failed: BAM Definition Export");
                 }
                 catch (Exception ex)
                 {
@@ -2283,7 +2163,7 @@ namespace RemoteOperations
                     if (returnCode == 0)
                         LogInfo("Success: BamDef Imported.", pRootPath);
                     else
-                        throw new Exception("BamDef import failed, hence aborting account import.");
+                        throw new InvalidOperationException("BamDef import failed, hence aborting account import.");
                 }
                 catch (Exception ex)
                 {
@@ -2364,54 +2244,36 @@ namespace RemoteOperations
 
             private string Encrypt(string data)
             {
-                try
+                var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
+                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
                 {
-                    var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                    TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
-                    {
-                        Mode = CipherMode.ECB,
-                        Key = keyArray,
-                        Padding = PaddingMode.PKCS7
-                    };
+                    Mode = CipherMode.ECB,
+                    Key = keyArray,
+                    Padding = PaddingMode.PKCS7
+                };
 
 
-                    ICryptoTransform desEncrypt = des.CreateEncryptor();
-                    Byte[] buffer = Encoding.ASCII.GetBytes(data);
+                ICryptoTransform desEncrypt = des.CreateEncryptor();
+                Byte[] buffer = Encoding.ASCII.GetBytes(data);
 
-                    return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
-                }
-                catch (Exception ex)
-                {
-
-                    throw new Exception(ex.Message, ex.InnerException);
-                }
-
+                return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
             }
 
             private string Decrypt(string data)
             {
-                try
+                var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
+                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
                 {
-                    var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                    TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
-                    {
-                        Mode = CipherMode.ECB,
-                        Key = keyArray,
-                        Padding = PaddingMode.PKCS7
-                    };
+                    Mode = CipherMode.ECB,
+                    Key = keyArray,
+                    Padding = PaddingMode.PKCS7
+                };
 
 
-                    ICryptoTransform desEncrypt = des.CreateDecryptor();
-                    Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
+                ICryptoTransform desEncrypt = des.CreateDecryptor();
+                Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
 
-                    return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
-                }
-                catch (Exception ex)
-                {
-
-                    throw new Exception(ex.Message, ex.InnerException);
-                }
-
+                return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
             }
 
             public void LogInfo(string strMsg, string pPath)

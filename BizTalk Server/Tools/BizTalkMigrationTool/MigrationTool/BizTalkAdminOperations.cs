@@ -211,7 +211,7 @@ namespace MigrationTool
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Error while cleaning file folder, hence aboting folder export " +
+                        throw new InvalidOperationException("Error while cleaning file folder, hence aboting folder export " +
                                             ex.Message + ", " + ex.StackTrace);
                     }
 
@@ -332,7 +332,7 @@ namespace MigrationTool
                 else
                 {
                     if (_strToolMode == "Migrate" && string.IsNullOrEmpty(_strSrcNode))
-                        throw new Exception("Please select source node from dropdown.");
+                        throw new InvalidOperationException("Please select source node from dropdown.");
 
                     string strSrc;
                     string strDst;
@@ -614,12 +614,12 @@ namespace MigrationTool
                 {
                     LogInfo("Host: Import started..");
                     if (!File.Exists(_xmlPath + @"\HostInstances.xml"))
-                        throw new Exception("HostInstances xml file does not exist.");
+                        throw new InvalidOperationException("HostInstances xml file does not exist.");
                     //check file is empty or not
                     XmlDocument doc = new XmlDocument();
                     doc.Load(_xmlPath + "\\HostInstances.xml");
                     if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                        throw new Exception("HostInstances xml file is empty.");
+                        throw new InvalidOperationException("HostInstances xml file is empty.");
 
                     XmlSerializer configSerializer = new XmlSerializer(typeof(Hosts));
                     Hosts input =
@@ -708,7 +708,7 @@ namespace MigrationTool
 
                 if (!File.Exists(_xmlPath + "\\" + "HostSettings.xml"))
                 {
-                    throw new Exception("Host Settings xml is not Present.");
+                    throw new InvalidOperationException("Host Settings xml is not Present.");
                 }
 
                 String[] files = Directory.GetFiles(_xmlPath, "Dst_*_HostMappings.xml");
@@ -857,13 +857,13 @@ namespace MigrationTool
             {
                 LogInfo("Handlers: Import started");
                 if (!File.Exists(_xmlPath + @"\Handlers.xml"))
-                    throw new Exception("Handlers xml file does not exist.");
+                    throw new InvalidOperationException("Handlers xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\Handlers.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("Handlers xml file is empty.");
+                    throw new InvalidOperationException("Handlers xml file is empty.");
 
                 XmlSerializer configSerializer = new XmlSerializer(typeof(RcvSndHandlers));
                 RcvSndHandlers rcvSndHandlers =
@@ -1257,7 +1257,7 @@ namespace MigrationTool
                 catch (Exception ex)
                 {
                     LogException(ex);
-                    throw new Exception("Error while deleting existing Apps.xml file.");
+                    throw new InvalidOperationException("Error while deleting existing Apps.xml file.");
                 }
                 if (_machineName == _strSrcNode) //local
                 {
@@ -1345,13 +1345,13 @@ namespace MigrationTool
             {
                 LogInfo("BizTalk App: Import Started.");
                 if (!File.Exists(_xmlPath + @"\Apps.xml"))
-                    throw new Exception("Apps xml file does not exist.");
+                    throw new InvalidOperationException("Apps xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\Apps.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("Apps xml file is empty.");
+                    throw new InvalidOperationException("Apps xml file is empty.");
 
                 try
                 {
@@ -1363,7 +1363,7 @@ namespace MigrationTool
                 catch (Exception ex)
                 {
                     LogException(ex);
-                    throw new Exception("Error while deleting existing AppsToImport.xml file.");
+                    throw new InvalidOperationException("Error while deleting existing AppsToImport.xml file.");
                 }
 
                 UpdateAppXmlFile();
@@ -1371,7 +1371,7 @@ namespace MigrationTool
                 //check file is empty or not                
                 doc.Load(_xmlPath + "\\AppsToImport.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("AppsToImport xml file is empty.");
+                    throw new InvalidOperationException("AppsToImport xml file is empty.");
 
                 //read new updated App List
                 XElement xelement = XElement.Load(_xmlPath + @"\AppsToImport.xml");
@@ -1628,7 +1628,7 @@ namespace MigrationTool
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Error while cleaning MSI folder, " + ex.Message + ", " + ex.StackTrace);
+                        throw new InvalidOperationException("Error while cleaning MSI folder, " + ex.Message + ", " + ex.StackTrace);
                     }
                     foreach (var appL in appList)
                     {
@@ -1792,7 +1792,7 @@ namespace MigrationTool
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning Policies or Vocabulary folder, hence aborting  export " +
+                    throw new InvalidOperationException("Error while cleaning Policies or Vocabulary folder, hence aborting  export " +
                                         ex.Message + ", " + ex.StackTrace);
                 }
                 if (_machineName == _strSrcNode)
@@ -1844,13 +1844,13 @@ namespace MigrationTool
             {
                 LogInfo("Global Party Binding: Import started.");
                 if (!File.Exists(_xmlPath + @"\GlobalPartyBinding.xml"))
-                    throw new Exception("GlobalPartyBinding xml file does not exist.");
+                    throw new InvalidOperationException("GlobalPartyBinding xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\GlobalPartyBinding.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("GlobalPartyBinding xml file is empty.");
+                    throw new InvalidOperationException("GlobalPartyBinding xml file is empty.");
 
                 string cmdName;
                 if (_machineName == _strDstNode) //local
@@ -1988,12 +1988,12 @@ namespace MigrationTool
             {
                 LogInfo("App Pool: Import started.");
                 if (!File.Exists(_xmlPath + @"\AppPools.xml"))
-                    throw new Exception("AppPools xml file does not exist.");
+                    throw new InvalidOperationException("AppPools xml file does not exist.");
 
                 XmlDocument doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\AppPools.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("AppPools xml file is empty.");
+                    throw new InvalidOperationException("AppPools xml file is empty.");
 
                 //Genrate AppPool List from Dst
                 string commandArguments;
@@ -2023,7 +2023,7 @@ namespace MigrationTool
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception(
+                        throw new InvalidOperationException(
                             "Failed: Creating AppPoolList.txt from Dst." + Environment.NewLine + ex.Message,
                             ex.InnerException);
                     }
@@ -2111,7 +2111,7 @@ namespace MigrationTool
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception(
+                        throw new InvalidOperationException(
                             "Error while cleaning Virtual Directory folder, hence aborting folder export " +
                             ex.Message + ", " + ex.StackTrace);
                     }
@@ -2142,7 +2142,7 @@ namespace MigrationTool
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception(
+                            throw new InvalidOperationException(
                                 "Failed: Creating SrcWebSiteList.txt" + Environment.NewLine + ex.Message,
                                 ex.InnerException);
                         }
@@ -2174,7 +2174,7 @@ namespace MigrationTool
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception(
+                            throw new InvalidOperationException(
                                 "Failed: Creating SrcWebSiteList.txt" + Environment.NewLine + ex.Message,
                                 ex.InnerException);
                         }
@@ -2191,7 +2191,7 @@ namespace MigrationTool
                     LogShortSuccessMsg("Success: Exported WebSites.");
                 else
                 {
-                    throw new Exception("Failed: Exporting WebSites.");
+                    throw new InvalidOperationException("Failed: Exporting WebSites.");
                 }
 
                 //split website xml
@@ -2299,21 +2299,21 @@ namespace MigrationTool
             {
                 LogInfo("Website: Import started.");
                 if (!File.Exists(_xmlPath + @"\WebSites.xml"))
-                    throw new Exception("WebSites xml file does not exist.");
+                    throw new InvalidOperationException("WebSites xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\WebSites.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("WebSites xml file is empty.");
+                    throw new InvalidOperationException("WebSites xml file is empty.");
 
                 if (_strServerType == "BizTalk" &&
                     (cmbBoxServerDst.Items.Count == 0 || cmbBoxServerDst.SelectedItem == null))
-                    throw new Exception("Please select Dst node.");
+                    throw new InvalidOperationException("Please select Dst node.");
 
                 if (_strServerType == "App" && (txtConnectionStringDst.Text == "SERVER NAME" ||
                                                 txtConnectionStringDst.Text.Trim() == ""))
-                    throw new Exception("Please enter Dst App server.");
+                    throw new InvalidOperationException("Please enter Dst App server.");
 
                 //Export Destination BTSInstallPath into txt file
                 string commandArguments;
@@ -2336,7 +2336,7 @@ namespace MigrationTool
                     LogInfoInLogFile("Success: Exported DstBTSInstallPath.");
                 else
                 {
-                    throw new Exception("Failed: Exporting DstBTSInstallPath.");
+                    throw new InvalidOperationException("Failed: Exporting DstBTSInstallPath.");
                 }
                 //Get WebSite Name Only from Destiantion in Txt file
                 if (_machineName == _strDstNode) //local                            
@@ -2364,7 +2364,7 @@ namespace MigrationTool
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Failed: Creating DstWebSiteList.txt" + Environment.NewLine + ex.Message,
+                        throw new InvalidOperationException("Failed: Creating DstWebSiteList.txt" + Environment.NewLine + ex.Message,
                             ex.InnerException);
                     }
                 }
@@ -2449,7 +2449,7 @@ namespace MigrationTool
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Failed: Creating DstWebAppList.txt" + Environment.NewLine + ex.Message,
+                        throw new InvalidOperationException("Failed: Creating DstWebAppList.txt" + Environment.NewLine + ex.Message,
                             ex.InnerException);
                     }
                 }
@@ -2560,7 +2560,7 @@ namespace MigrationTool
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning cert folder, hence aborting CERT export " + ex.Message +
+                    throw new InvalidOperationException("Error while cleaning cert folder, hence aborting CERT export " + ex.Message +
                                         ", " + ex.StackTrace);
                 }
 
@@ -3028,7 +3028,7 @@ namespace MigrationTool
                 if (!File.Exists(_xmlPath + @"\Apps.xml")) //if Apps.xml does not exist then create
                 {
                     if (btnGetApplicationList_Click(sender, e) == 1)
-                        throw new Exception("Failed: Creating Apps.xml");
+                        throw new InvalidOperationException("Failed: Creating Apps.xml");
                 }
 
                 XElement xelement = XElement.Load(_xmlPath + @"\Apps.xml");
@@ -3149,10 +3149,10 @@ namespace MigrationTool
                 if (_strServerType == "BizTalk")
                 {
                     if (btnGetAssembliesList_Click(sender, e) == 1)
-                        throw new Exception("Failed: Creating Assembly List");
+                        throw new InvalidOperationException("Failed: Creating Assembly List");
 
                     if (!File.Exists(_xmlPath + @"\SrcBizTalkAssembly.xml"))
-                        throw new Exception("File: " + _xmlPath +
+                        throw new InvalidOperationException("File: " + _xmlPath +
                                             @"\SrcBizTalkAssembly.xml does not exist, Assembly Export is termintated please check logs for root cause.");
 
                     var configSerializer = new XmlSerializer(typeof(AssemblyList));
@@ -3182,7 +3182,7 @@ namespace MigrationTool
                 catch (Exception ex)
                 {
                     LogException(ex);
-                    throw new Exception("Error while cleaning DLL Folders.");
+                    throw new InvalidOperationException("Error while cleaning DLL Folders.");
                 }
 
                 if (_machineName == _strSrcNode) //local
@@ -3423,7 +3423,7 @@ namespace MigrationTool
                 LogInfo("Assembly: Import started.");
 
                 if (!File.Exists(_xmlPath + @"\SrcBizTalkAssemblyList.txt"))
-                    throw new Exception("SrcBizTalkAssemblyList txt file does not exist.");
+                    throw new InvalidOperationException("SrcBizTalkAssemblyList txt file does not exist.");
 
 
 
@@ -3437,7 +3437,7 @@ namespace MigrationTool
                 catch (Exception ex)
                 {
                     LogException(ex);
-                    throw new Exception("Error while deleting BizTalkAssemblyToImport txt file.");
+                    throw new InvalidOperationException("Error while deleting BizTalkAssemblyToImport txt file.");
                 }
 
                 if (_strServerType == "BizTalk")
@@ -3807,7 +3807,7 @@ namespace MigrationTool
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(
+                    throw new InvalidOperationException(
                         "Error while cleaning Bam Files, please clean them manually and resume operation." +
                         ex.Message);
                 }
@@ -3841,7 +3841,7 @@ namespace MigrationTool
                         LogShortSuccessMsg("Success: BAM Definition Exported.");
                     else
                     {
-                        throw new Exception("Failed: BAM Definition Export");
+                        throw new InvalidOperationException("Failed: BAM Definition Export");
                     }
                 }
                 else
@@ -3859,13 +3859,13 @@ namespace MigrationTool
                             "Success: Triggered BAM Defintion Export Remotely,Please Check Remote operation Log for Further Details.");
                     else
                     {
-                        throw new Exception("Failed: Triggering BAM Defintion Export");
+                        throw new InvalidOperationException("Failed: Triggering BAM Defintion Export");
                     }
                 }
 
 
                 if (!File.Exists(_xmlPath + @"\BamDef.xml"))
-                    throw new Exception("BamDef.xml is not Present");
+                    throw new InvalidOperationException("BamDef.xml is not Present");
 
                 //Get all Views
                 LogInfo("BAM: Get all views.");
@@ -3977,13 +3977,13 @@ namespace MigrationTool
                 LogInfo("BAM: Import started.");
 
                 if (!File.Exists(_xmlPath + @"\BamDef.xml"))
-                    throw new Exception("BamDef xml file does not exist.");
+                    throw new InvalidOperationException("BamDef xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\BamDef.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file is empty.                
-                    throw new Exception("BamDef xml file is empty.");
+                    throw new InvalidOperationException("BamDef xml file is empty.");
 
                 LogInfo("Cleaning already existing Bam Files: BamDefToImport.xml and DstBamActivitiesList.txt.");
                 try //cleaning process before starting import, 2 files have to be deleted which are Generated anew.
@@ -4002,7 +4002,7 @@ namespace MigrationTool
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(
+                    throw new InvalidOperationException(
                         "Error while cleaning Bam Files, please clean them manually and resume operation." +
                         ex.Message);
                 }
@@ -4074,7 +4074,7 @@ namespace MigrationTool
                 doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\BamDefToImport.xml");
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
-                    throw new Exception("BamDefToImport xml file is empty.");
+                    throw new InvalidOperationException("BamDefToImport xml file is empty.");
 
                 LogInfo("Generated BamActivities Delta to be imported.");
 
@@ -4089,7 +4089,7 @@ namespace MigrationTool
                     if (returnCode == 0)
                         LogShortSuccessMsg("Success: BamDef Imported.");
                     else
-                        throw new Exception("BamDef import failed, hence aborting account import.");
+                        throw new InvalidOperationException("BamDef import failed, hence aborting account import.");
                 }
                 else
                 {
@@ -4106,7 +4106,7 @@ namespace MigrationTool
                         LogShortSuccessMsg(
                             "Success: Triggered BamDef Import Remotely,Please check Remote Operations Log for More Details.");
                     else
-                        throw new Exception("Failed: Triggering BamDef Import , hence aborting account import.");
+                        throw new InvalidOperationException("Failed: Triggering BamDef Import , hence aborting account import.");
                 }
 
 
@@ -4126,7 +4126,7 @@ namespace MigrationTool
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception("Could not read file: " + _xmlPath + "\\" + lineViewName + ".txt. " +
+                            throw new InvalidOperationException("Could not read file: " + _xmlPath + "\\" + lineViewName + ".txt. " +
                                                 ex.Message);
                         }
                         for (int i = 6; i < lines.Length; i++)
@@ -4270,7 +4270,7 @@ namespace MigrationTool
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error while cleaning folder, hence aboting folder export " + ex.Message +
+                    throw new InvalidOperationException("Error while cleaning folder, hence aboting folder export " + ex.Message +
                                         ", " + ex.StackTrace);
                 }
 
@@ -4414,7 +4414,7 @@ namespace MigrationTool
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception(ex.Message, ex.InnerException);
+                        throw new InvalidOperationException(ex.Message, ex.InnerException);
                     }
                 }
                 else //remote
@@ -4435,7 +4435,7 @@ namespace MigrationTool
                     else
                     {
                         LogShortErrorMsg("Failed: DstServicesList Export.");
-                        throw new Exception("Service Import aborted as DstServicesList.txt failed to generate.");
+                        throw new InvalidOperationException("Service Import aborted as DstServicesList.txt failed to generate.");
                     }
                 }
 
@@ -4756,7 +4756,7 @@ namespace MigrationTool
                             }
                             else
                             {
-                                throw new Exception(
+                                throw new InvalidOperationException(
                                     "Copying required artifacts to remote machine failed: " + _strSrcNode);
                             }
                         }
@@ -4935,7 +4935,7 @@ namespace MigrationTool
                             }
                             else
                             {
-                                throw new Exception("Copy encountered errors. Remote import can not be triggered.");
+                                throw new InvalidOperationException("Copy encountered errors. Remote import can not be triggered.");
                             }
                         }
 
@@ -7065,7 +7065,6 @@ namespace MigrationTool
                         //  Get all the HostInstances of the Destination Server
 
                         var hostInstancesArray = HostInstance.GetInstances()
-                            .Cast<HostInstance>()
                             .Where(ht =>
                                 ht.Name.EndsWith(cmbBox.ToString()) || ht.Name.EndsWith(cmbBox.ToString().ToLower()))
                             .Select(ht => ht.Name.Split(' ')[3])
@@ -7111,7 +7110,7 @@ namespace MigrationTool
                 }
                 else
                 {
-                    throw new Exception("SrcServers xml file is not available.");
+                    throw new InvalidOperationException("SrcServers xml file is not available.");
                 }
                 //Getting the List of DestinationServers
                 xd.Load(_xmlPath + "\\" + "Servers.xml");
@@ -7123,7 +7122,7 @@ namespace MigrationTool
                 String[] files = Directory.GetFiles(_xmlPath, "Src_*_HostMappings.xml");
                 if (files.Length == 0)
                 {
-                    throw new Exception(" Source HostMapping xml file is not available.");
+                    throw new InvalidOperationException(" Source HostMapping xml file is not available.");
                 }
                 if (dstservers.Length == srcservers.Length)
                 {
@@ -7482,14 +7481,14 @@ namespace MigrationTool
                 }
                 else
                 {
-                    throw new Exception("SSO Affiliate Application List is not Present");
+                    throw new InvalidOperationException("SSO Affiliate Application List is not Present");
                 }
 
 
                 string[] files = Directory.GetFiles(_xmlPath, "SSOApp_*.txt");
                 if (files.Length == 0)
                 {
-                    throw new Exception("SSO Information Files are not Present");
+                    throw new InvalidOperationException("SSO Information Files are not Present");
                 }
                 else
                 {
@@ -7639,7 +7638,7 @@ namespace MigrationTool
                 files = Directory.GetFiles(_xmlPath, "SSOMap_*.txt");
                 if (files.Length == 0)
                 {
-                    throw new Exception("SSO Mapping Files are not Present");
+                    throw new InvalidOperationException("SSO Mapping Files are not Present");
                 }
                 else
                 {
@@ -7923,7 +7922,7 @@ namespace MigrationTool
                 }
                 else
                 {
-                    throw new Exception("No SSO Information Files are present");
+                    throw new InvalidOperationException("No SSO Information Files are present");
                 }
 
             }
