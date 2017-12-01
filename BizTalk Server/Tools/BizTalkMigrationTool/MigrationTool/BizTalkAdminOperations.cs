@@ -22,6 +22,7 @@ using System.Xml.XPath;
 using Microsoft.BizTalk.ExplorerOM;
 using Microsoft.RuleEngine;
 using Microsoft.Web.Administration;
+using ApplicationCollection = Microsoft.BizTalk.ExplorerOM.ApplicationCollection;
 
 namespace MigrationTool
 {
@@ -632,11 +633,8 @@ namespace MigrationTool
                     //Creating DestinationHostList
                     var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
                         "Select * from MSBTS_Host", enumOptions);
-                    foreach (var inst in searchObject.Get())
-                    {
-                        //dstHostList = dstHostList + inst["Name"].ToString().ToUpper() + ",";
-                        dstHostList.Add(inst["Name"].ToString().ToUpper());
-                    }
+                    dstHostList.AddRange(from ManagementBaseObject inst in searchObject.Get()
+                        select inst["Name"].ToString().ToUpper());
                     //Creating DestinationHosts
                     foreach (HostsHost host in input.Host)
                     {
@@ -656,15 +654,12 @@ namespace MigrationTool
                     foreach (object serverDstItem in cmbBoxServerDst.Items)
                     {
 //Creating DestinationHostInstanceListForeachnode
-                        var dstHostInstanceList = new List<string>();
                         searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
                             "Select * from MSBTS_HostInstance", enumOptions);
-                        foreach (var inst in searchObject.Get())
-                        {
-                            if (inst["RunningServer"].ToString().ToUpper() == serverDstItem.ToString())
-                                // dstHostInstanceList = dstHostInstanceList + inst["HostName"].ToString().ToUpper() + ",";
-                                dstHostInstanceList.Add(inst["HostName"].ToString().ToUpper());
-                        }
+                        var dstHostInstanceList = searchObject.Get()
+                            .Cast<ManagementBaseObject>()
+                            .Where(inst => inst["RunningServer"].ToString().ToUpper() == serverDstItem.ToString())
+                            .Select(inst => inst["HostName"].ToString().ToUpper()).ToList();
                         //Create DestinationHostInstance for EachNode
                         foreach (HostsHost host in input.Host)
                         {
@@ -896,22 +891,18 @@ namespace MigrationTool
                 EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
                 var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
                     "Select * from MSBTS_ReceiveHandler", enumOptions);
-                foreach (var inst in searchObject.Get())
-                {
-                    dstRcvHandlerList = dstRcvHandlerList + inst["HostName"].ToString().ToUpper() + "_" +
-                                        inst["AdapterName"].ToString().ToUpper() + ",";
-                }
+                dstRcvHandlerList = searchObject.Get().Cast<ManagementBaseObject>().Aggregate(dstRcvHandlerList,
+                    (current, inst) => current + inst["HostName"].ToString().ToUpper() + "_" +
+                                       inst["AdapterName"].ToString().ToUpper() + ",");
                 string[] dstRcvHandlerArray =
                     dstRcvHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
                 //Get Snd Handler List from Dst                
                 enumOptions.ReturnImmediately = false;
                 searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
                     "Select * from MSBTS_SendHandler2", enumOptions);
-                foreach (var inst in searchObject.Get())
-                {
-                    dstSndHandlerList = dstSndHandlerList + inst["HostName"].ToString().ToUpper() + "_" +
-                                        inst["AdapterName"].ToString().ToUpper() + ",";
-                }
+                dstSndHandlerList = searchObject.Get().Cast<ManagementBaseObject>().Aggregate(dstSndHandlerList,
+                    (current, inst) => current + inst["HostName"].ToString().ToUpper() + "_" +
+                                       inst["AdapterName"].ToString().ToUpper() + ",");
                 string[] dstSndHandlerArray =
                     dstSndHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
                 //
@@ -1000,11 +991,9 @@ namespace MigrationTool
                     // connection string to the BizTalk management database where the ports will be created
 
                     //Get All Handlers
-                    ReceiveHandlerCollection rcvHandCol = btsExp.ReceiveHandlers;
                     LogInfo("Conneceted");
-                    SendHandlerCollection sndHandCol = btsExp.SendHandlers;
 
-                    rcvSndHandlers.RcvSndHandler = rcvHandCol
+                    rcvSndHandlers.RcvSndHandler = btsExp.ReceiveHandlers
                         .Cast<ReceiveHandler>()
                         .Where(rcvHandler =>
                             rcvHandler.Host.Name != "BizTalkServerApplication" &&
@@ -1016,7 +1005,7 @@ namespace MigrationTool
                                 Direction = "0",
                                 HostName = rcvHandler.Host.Name
                             })
-                        .Concat(sndHandCol
+                        .Concat(btsExp.SendHandlers
                             .Cast<SendHandler>()
                             .Where(sndHandler =>
                                 sndHandler.Host.Name != "BizTalkServerApplication" &&
@@ -1048,7 +1037,8 @@ namespace MigrationTool
                     LogInfo("Getting handlers from remote machine.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
                     string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
-                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                              " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\"  \"\\\\" + _machineName +
                                               "\\" + appPathUnc + "\" \"ExportHandler\" \"" +
@@ -1280,7 +1270,7 @@ namespace MigrationTool
                     btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
                                               ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
                     //Get All Applications
-                    Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
+                    ApplicationCollection appCol = btsExp.Applications;
                     LogInfo("Connected.");
 
                     var htApps = new Dictionary<string, int>();
@@ -1316,7 +1306,8 @@ namespace MigrationTool
                     LogInfo("Getting App list from remote machine.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
                     string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
-                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                              " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                               _machineName +
@@ -1399,9 +1390,9 @@ namespace MigrationTool
                 LogInfo("Total Apps: " + appList.Count);
 
                 string msiPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_msiPath);
-                for (int i = 0; i < appList.Count; i++)
+                foreach (var app1 in appList)
                 {
-                    // instantiate new instance of Explorer OM                
+// instantiate new instance of Explorer OM                
                     BtsCatalogExplorer btsExp = new BtsCatalogExplorer
                     {
                         ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
@@ -1409,9 +1400,9 @@ namespace MigrationTool
                     };
                     // connection string to the BizTalk management database where the ports will be created
 
-                    var appName = appList[i].DcodeAppName.Split(charSeprator)[1];
+                    var appName = app1.DcodeAppName.Split(charSeprator)[1];
 
-                    LogInfo(": Current Sequence:" + (i + 1) + ": App Name:" + appName);
+                    LogInfo(": App Name:" + appName);
 
                     int result;
                     string commandArguments;
@@ -1448,7 +1439,7 @@ namespace MigrationTool
                                 try
                                 {
                                     //start adding dependent app Ref
-                                    Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
+                                    ApplicationCollection appCol = btsExp.Applications;
                                     foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
                                     {
                                         if (app.Name == appName)
@@ -1521,7 +1512,7 @@ namespace MigrationTool
                                 LogShortSuccessMsg("Success: Created App.");
                                 try
                                 {
-                                    Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
+                                    ApplicationCollection appCol = btsExp.Applications;
                                     foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
                                     {
                                         if (app.Name == appName)
@@ -1626,9 +1617,7 @@ namespace MigrationTool
                             })
                         .ToList();
 
-                    int appcount = appList.Count;
-
-                    LogInfo("Total Apps: " + appcount);
+                    LogInfo("Total Apps: " + appList.Count);
                     string msiPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_msiPath);
 
                     //clean MSI directory
@@ -1641,11 +1630,11 @@ namespace MigrationTool
                     {
                         throw new Exception("Error while cleaning MSI folder, " + ex.Message + ", " + ex.StackTrace);
                     }
-                    for (int i = 0; i < appcount; i++)
+                    foreach (var appL in appList)
                     {
-                        var appName = appList[i].DcodeAppName.Split(charSeprator)[1];
+                        var appName = appL.DcodeAppName.Split(charSeprator)[1];
 
-                        LogInfo("Current Sequence:" + (i + 1) + ": App Name:" + appName);
+                        LogInfo("App Name:" + appName);
 
                         //get Spec File
                         int result;
@@ -1731,7 +1720,6 @@ namespace MigrationTool
                         else
                             LogShortErrorMsg("Failed: Exporting Binding file.");
                         //Export BRE Policies and Vocabualries which are not Part of MSI
-
                     }
                 }
                 else
@@ -2600,32 +2588,20 @@ namespace MigrationTool
                                     foreach (X509Certificate2 certificate in store.Certificates)
                                     {
                                         // Exporting EnhancedKEyUsage and KeyUsage for Certificates
-                                        string[] enhancedKeyUsage = new string[] { };
+                                        var enhancedKeyUsage = new string[] { };
 
                                         foreach (X509Extension extension in certificate.Extensions)
                                         {
-
-
                                             if (extension.Oid.FriendlyName == "Enhanced Key Usage")
                                             {
                                                 try
                                                 {
-                                                    X509EnhancedKeyUsageExtension ext =
-                                                        (X509EnhancedKeyUsageExtension) extension;
-                                                    OidCollection oids = ext.EnhancedKeyUsages;
-                                                    enhancedKeyUsage = new string[oids.Count];
-                                                    for (int j = 0; j < oids.Count; j++)
-                                                    {
-                                                        if (string.IsNullOrEmpty(oids[j].FriendlyName) ||
-                                                            string.IsNullOrWhiteSpace(oids[j].FriendlyName))
-                                                        {
-                                                            // Do Nothing
-                                                        }
-                                                        else
-
-                                                            enhancedKeyUsage[j] = oids[j].FriendlyName.Trim();
-                                                    }
-
+                                                    enhancedKeyUsage = ((X509EnhancedKeyUsageExtension) extension)
+                                                        .EnhancedKeyUsages.Cast<Oid>()
+                                                        .Where(oid =>
+                                                            !string.IsNullOrEmpty(oid.FriendlyName) &&
+                                                            !string.IsNullOrWhiteSpace(oid.FriendlyName))
+                                                        .Select(oid => oid.FriendlyName.Trim()).ToArray();
                                                 }
                                                 catch (Exception ex)
                                                 {
@@ -2832,11 +2808,7 @@ namespace MigrationTool
 
                 string[] dstCertNameList = File.ReadAllLines(_xmlPath + @"\DstCertList.txt"); //read all cert of Dst
                 //Creating CertificatesList with out StorLocation
-                string[] dstCertList = new string[dstCertNameList.Length];
-                for (int i = 0; i < dstCertNameList.Length; i++)
-                {
-                    dstCertList[i] = dstCertNameList[i].Substring(dstCertNameList[i].IndexOf('_') + 1);
-                }
+                var dstCertList = dstCertNameList.Select(t => t.Substring(t.IndexOf('_') + 1)).ToArray();
                 int certsImported = 0;
                 foreach (string iStoreLocation in Enum.GetNames(typeof(StoreLocation)))
                 {
@@ -3004,7 +2976,8 @@ namespace MigrationTool
                     LogInfo("Certificate Import started on Remote Machine.");
                     //now execute .net exe on remote machine
                     commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
-                                       _strUserNameForHost + " -p " + "\"" + _strPasswordForHost + "\"" + " -accepteula" +
+                                       _strUserNameForHost + " -p " + "\"" + _strPasswordForHost + "\"" +
+                                       " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + _remoteRootFolder +
                                        "\" \"ImportCert\" \"" + _strCertPass + "\"\"";
@@ -3069,29 +3042,40 @@ namespace MigrationTool
                         })
                     .ToList();
 
-                foreach (var app in appList)
-                {
-//appNameCollectionString = appNameCollectionString + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1].ToString();//
-                    appNameCollectionString = appNameCollectionString.TrimStart(',') + ',' +
-                                              app.DcodeAppName.Split(charSeprator)[1];
-                }
+                appNameCollectionString = appList.Aggregate(appNameCollectionString,
+                    (current, app) => current.TrimStart(',') + ',' + app.DcodeAppName.Split(charSeprator)[1]);
 
 
                 if (_machineName == _strSrcNode) //local
                 {
-                    // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
                     LogInfo("Connecting to BizTalkMgmtDb..." + txtConnectionString.Text);
-                    // connection string to the BizTalk management database
-                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
-                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                    // instantiate new instance of Explorer OM
+                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    {
+                        // connection string to the BizTalk management database
+                        ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
+                    };
                     //Get All Applications
-                    Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol = btsExp.Applications;
                     LogInfo("Connected.");
 
                     var asmList = new AssemblyList
                     {
-                        Assembly = GetAssemblyList(appCol, appNameCollectionString).ToArray()
+                        Assembly = btsExp
+                            .Applications
+                            .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
+                            .Where(app => appNameCollectionString.Contains(app.Name))
+                            .SelectMany(app => app
+                                .Assemblies
+                                .Cast<BtsAssembly>()
+                                .Where(btAsm => !btAsm.IsSystem), (app, btAsm) =>
+                                new AssemblyListAssembly
+                                {
+                                    AppName = app.Name,
+                                    AsmVer = btAsm.Version,
+                                    AsmName = btAsm.Name
+                                })
+                            .ToArray()
                     };
 
                     //BEGIN::asm Custom list
@@ -3118,7 +3102,8 @@ namespace MigrationTool
                     LogInfo("Assembly: Getting Assembly list.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
                     string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
-                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                              " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                               _machineName +
@@ -3150,31 +3135,11 @@ namespace MigrationTool
             }
         }
 
-        private IEnumerable<AssemblyListAssembly> GetAssemblyList(
-            Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, string appNameCollectionString)
-        {
-            foreach (var app in appCol
-                .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
-                .Where(app => appNameCollectionString.Contains(app.Name)))
-            {
-                foreach (var btAsm in app.Assemblies.Cast<BtsAssembly>().Where(btAsm => !btAsm.IsSystem))
-                {
-                    yield return new AssemblyListAssembly
-                    {
-                        AppName = app.Name,
-                        AsmVer = btAsm.Version,
-                        AsmName = btAsm.Name
-                    };
-                }
-            }
-        }
-
         private void btnExportAssemblies_Click(object sender, EventArgs e)
         {
             //Cursor.Current = Cursors.WaitCursor;
             AssemblyList asmList = null;
             string[] customDll = null;
-            int asmListCount = 0;
             int customDlls = 0;
             char[] chrSep = {','};
 
@@ -3193,8 +3158,6 @@ namespace MigrationTool
                     var configSerializer = new XmlSerializer(typeof(AssemblyList));
                     asmList = (AssemblyList) configSerializer.Deserialize(
                         new XmlTextReader(_xmlPath + @"\SrcBizTalkAssembly.xml"));
-
-                    asmListCount = asmList.Assembly.Length;
                 }
                 var asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
                 var asmPath2 = @"C:\Windows\assembly\GAC\";
@@ -3285,28 +3248,28 @@ namespace MigrationTool
                     {
                         LogInfo("BizTalk Dll: Export started.");
                         List<string> bizTalkDll = new List<string>();
-                        for (int i = 0; i < asmListCount; i++)
+                        foreach (AssemblyListAssembly assembly in asmList.Assembly)
                         {
                             try
                             {
-                                var findDll = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName + ".dll",
+                                var findDll = Directory.GetFiles(asmPath1, assembly.AsmName + ".dll",
                                     SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath2, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath3, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath4, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath5, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
 
                                 if (findDll.Length == 0)
                                 {
-                                    LogShortErrorMsg("Did not Find Assembly:" + asmList.Assembly[i].AsmName);
+                                    LogShortErrorMsg("Did not Find Assembly:" + assembly.AsmName);
                                 }
                                 else
                                 {
@@ -3425,7 +3388,8 @@ namespace MigrationTool
                     string appPathUnc = ConvertPathToUncPath(_appPath);
                     string asmPathUnc = ConvertPathToUncPath(_asmPath);
                     string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
-                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                              " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
                                               _machineName +
@@ -4291,7 +4255,7 @@ namespace MigrationTool
             string[] serviceName = _strWindowsServiceToIgnore.Split(chrSep);
             string userNameNoDomain =
                 _strUserNameForHost.Substring(_strUserNameForHost.LastIndexOf("\\") +
-                                             1); //userName with out domain like ectest.
+                                              1); //userName with out domain like ectest.
 
             try
             {
@@ -4410,7 +4374,7 @@ namespace MigrationTool
             string[] serviceName = _strWindowsServiceToIgnore.Split(chrSep);
             string userNameNoDomain =
                 _strUserNameForHost.Substring(_strUserNameForHost.LastIndexOf("\\") +
-                                             1); //userName with out domain like ectest.
+                                              1); //userName with out domain like ectest.
 
             try
             {
@@ -4777,9 +4741,10 @@ namespace MigrationTool
                             LogInfo("Copying required artifacts to remote machine: " + _strSrcNode);
 
                             string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
-                            var commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" + " \"" +
-                                                      "\\\\" + _strSrcNode + "\\" + remoteRootFolderUnc + "\" " + "\"" +
-                                                      _remoteExeName + "\"" + " /IS /R:1";
+                            var commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" +
+                                                   " \"" +
+                                                   "\\\\" + _strSrcNode + "\\" + remoteRootFolderUnc + "\" " + "\"" +
+                                                   _remoteExeName + "\"" + " /IS /R:1";
 
                             var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
@@ -4955,7 +4920,8 @@ namespace MigrationTool
 
                             string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
                             string commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" +
-                                                      " \"" + "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + "\" " +
+                                                      " \"" + "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc +
+                                                      "\" " +
                                                       " /IS /R:1";
 
                             var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -5799,7 +5765,8 @@ namespace MigrationTool
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
                     string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strDstNode + " -u " + "\"" +
-                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                              " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
                                               _machineName +
@@ -5907,7 +5874,7 @@ namespace MigrationTool
             }
         }
 
-        private void MsiApp(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, IDictionary<string, int> htApps)
+        private void MsiApp(ApplicationCollection appCol, IDictionary<string, int> htApps)
         {
             foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
             {
@@ -6602,15 +6569,11 @@ namespace MigrationTool
                         using (var ds = new DataSet())
                         {
                             sqlDataAd.Fill(ds);
-                            arrBrePolicies = new string[ds.Tables[0].Rows.Count];
-                            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                            {
-                                arrBrePolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." +
-                                                    ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2]
-                                                        .Split('.')[0] + "." +
-                                                    ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2]
-                                                        .Split('.')[1];
-                            }
+                            arrBrePolicies = ds.Tables[0].Rows.Cast<DataRow>()
+                                .Select(row => row.ItemArray[2].ToString().Split('/')[1] + "." +
+                                               row.ItemArray[2].ToString().Split('/')[2]
+                                                   .Split('.')[0] + "." + row.ItemArray[2].ToString().Split('/')[2]
+                                                   .Split('.')[1]).ToArray();
                         }
                     }
 
@@ -7101,31 +7064,21 @@ namespace MigrationTool
 
                         //  Get all the HostInstances of the Destination Server
 
-                        HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                        string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-
-                        int j = 0;
-                        foreach (HostInstance ht in dstHostInstancesColletion)
-                        {
-
-                            if (ht.Name.EndsWith(cmbBox.ToString()) || ht.Name.EndsWith(cmbBox.ToString().ToLower()))
-                            {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                j++;
-                            }
-
-                        }
-                        hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                        var hostInstancesArray = HostInstance.GetInstances()
+                            .Cast<HostInstance>()
+                            .Where(ht =>
+                                ht.Name.EndsWith(cmbBox.ToString()) || ht.Name.EndsWith(cmbBox.ToString().ToLower()))
+                            .Select(ht => ht.Name.Split(' ')[3])
+                            .Where(x => !string.IsNullOrEmpty(x));
 
                         writer.WriteStartElement("HostInstanceMappings");
-                        for (j = 0; j < hostInstancesArray.Length; j++)
+                        foreach (string hostInstance in hostInstancesArray)
                         {
                             writer.WriteStartElement("SourceHostInstance");
-                            writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + cmbBox);
+                            writer.WriteAttributeString("Name", hostInstance + ":" + cmbBox);
                             writer.WriteElementString("DestinationHostInstances",
-                                hostInstancesArray[j] + ":" + "{ServerName}");
+                                hostInstance + ":" + "{ServerName}");
                             writer.WriteEndElement();
-
                         }
                         writer.WriteEndElement();
                         writer.WriteEndElement();
@@ -7418,7 +7371,8 @@ namespace MigrationTool
                 {
                     string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
                     commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " + "\"" +
-                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" + " " +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
+                                       " " +
                                        "\"" + fileName + "\"" + " -listapps />\"" + "\\\\" + _machineName + "\\" +
                                        xmlPathUnc + "\\SrcSSOAppsList.txt" + "\"";
 
@@ -7464,11 +7418,12 @@ namespace MigrationTool
                                 else
                                 {
                                     string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
-                                                       "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
-                                                       " -accepteula" + fileName + "\"" + " -displayapp " + ssoApp +
-                                                       " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
-                                                       "\\SSOApp_" + ssoApp + ".txt" + "\"";
+                                    commandArguments =
+                                        "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
+                                        "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                        " -accepteula" + fileName + "\"" + " -displayapp " + ssoApp +
+                                        " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
+                                        "\\SSOApp_" + ssoApp + ".txt" + "\"";
 
                                 }
 
@@ -7495,11 +7450,12 @@ namespace MigrationTool
                                 else
                                 {
                                     string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
-                                                       "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
-                                                       fileName + "\"" + " -accepteula" + " -listMappings " + ssoApp +
-                                                       " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
-                                                       "\\SSOMap_" + ssoApp + ".txt" + "\"";
+                                    commandArguments =
+                                        "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
+                                        "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                        fileName + "\"" + " -accepteula" + " -listMappings " + ssoApp +
+                                        " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
+                                        "\\SSOMap_" + ssoApp + ".txt" + "\"";
 
                                 }
 
@@ -7841,10 +7797,11 @@ namespace MigrationTool
                                 else
                                 {
                                     string filePathUnc = ConvertPathToUncPath(file);
-                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode + " -u " +
-                                                       "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
-                                                       " -accepteula" + fileName + "\"" + " -createapps \"" + "\\\\" +
-                                                       _machineName + "\\" + filePathUnc + "\"";
+                                    commandArguments =
+                                        "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode + " -u " +
+                                        "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                        " -accepteula" + fileName + "\"" + " -createapps \"" + "\\\\" +
+                                        _machineName + "\\" + filePathUnc + "\"";
 
                                 }
                                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);

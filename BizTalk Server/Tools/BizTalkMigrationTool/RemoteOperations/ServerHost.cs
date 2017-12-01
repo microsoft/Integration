@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Management;
 
 namespace RemoteOperations {
@@ -20,7 +21,7 @@ namespace RemoteOperations {
         private static readonly string CreatedClassName = "MSBTS_ServerHost";
         
         // Private member variable to hold the ManagementScope which is used by the various methods.
-        private static ManagementScope _statMgmtScope = null;
+        private static ManagementScope _statMgmtScope;
         
         private ManagementSystemProperties _privateSystemProperties;
         
@@ -361,12 +362,8 @@ namespace RemoteOperations {
             else {
                 Array parentClasses = (Array)theObj["__DERIVATION"];
                 if (parentClasses != null) {
-                    int count = 0;
-                    for (count = 0; count < parentClasses.Length; count = count + 1) {
-                        if (string.Compare((string)parentClasses.GetValue(count), ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
-                            return true;
-                        }
-                    }
+                    return parentClasses.Cast<string>().Any(parentClass =>
+                        string.Compare(parentClass, ManagementClassName, true, CultureInfo.InvariantCulture) == 0);
                 }
             }
             return false;
@@ -383,8 +380,7 @@ namespace RemoteOperations {
             int second = initializer.Second;
             long ticks = 0;
             string dmtf = dmtfDate;
-            DateTime datetime = DateTime.MinValue;
-            string tempString = string.Empty;
+            string tempString;
             if (dmtf == null) {
                 throw new ArgumentOutOfRangeException();
             }
@@ -437,7 +433,7 @@ namespace RemoteOperations {
             catch (Exception e) {
                 throw new ArgumentOutOfRangeException(null, e.Message);
             }
-            datetime = new DateTime(year, month, day, hour, minute, second, 0);
+            var datetime = new DateTime(year, month, day, hour, minute, second, 0);
             datetime = datetime.AddTicks(ticks);
             TimeSpan tickOffset = TimeZone.CurrentTimeZone.GetUtcOffset(datetime);
             long offsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
@@ -459,7 +455,7 @@ namespace RemoteOperations {
         
         // Converts a given System.DateTime object to DMTF datetime format.
         static string ToDmtfDateTime(DateTime date) {
-            string utcString = string.Empty;
+            string utcString;
             TimeSpan tickOffset = TimeZone.CurrentTimeZone.GetUtcOffset(date);
             long offsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
             if (Math.Abs(offsetMins) > 999) {
@@ -635,8 +631,7 @@ namespace RemoteOperations {
         
         public uint ForceUnmap() {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("ForceUnmap", inParams, null);
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("ForceUnmap", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -646,8 +641,7 @@ namespace RemoteOperations {
         
         public uint Map() {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Map", inParams, null);
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Map", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -657,8 +651,7 @@ namespace RemoteOperations {
         
         public uint Unmap() {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Unmap", inParams, null);
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Unmap", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -695,8 +688,7 @@ namespace RemoteOperations {
             
             public virtual void CopyTo(Array array, int index) {
                 _privColObj.CopyTo(array, index);
-                int nCtr;
-                for (nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
+                for (int nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
                     array.SetValue(new ServerHost((ManagementObject)array.GetValue(nCtr)), nCtr);
                 }
             }
@@ -785,11 +777,6 @@ namespace RemoteOperations {
                 if (_baseType.BaseType == typeof(Enum)) {
                     if (value.GetType() == destinationType) {
                         return value;
-                    }
-                    if (value == null 
-                        && context != null 
-                        && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
-                        return  "NULL_ENUM_VALUE" ;
                     }
                     return _baseConverter.ConvertTo(context, culture, value, destinationType);
                 }

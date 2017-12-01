@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace MigrationTool
@@ -26,8 +28,8 @@ namespace MigrationTool
         #region Events
         private void Settings_Load(object sender, EventArgs e)
         {
-             _appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            _configFile = System.IO.Path.Combine(_appPath, "MigrationTool.exe.config");
+             _appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _configFile = Path.Combine(_appPath, "MigrationTool.exe.config");
             ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = _configFile};
             Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
             txtAppToRefer.Text = config.AppSettings.Settings["AppToRefer"].Value;
@@ -51,8 +53,8 @@ namespace MigrationTool
                 
                 //biztalkAdminOperations.LogInfoInLogFile("Settings:Update Started");
 
-                 _appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                 _configFile = System.IO.Path.Combine(_appPath, "MigrationTool.exe.config");
+                 _appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                 _configFile = Path.Combine(_appPath, "MigrationTool.exe.config");
                 ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap {ExeConfigFilename = _configFile};
                 Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
                 config.AppSettings.Settings["AppToRefer"].Value = txtAppToRefer.Text;

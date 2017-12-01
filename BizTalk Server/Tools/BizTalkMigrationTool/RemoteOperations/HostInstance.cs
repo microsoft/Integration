@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Management;
 
 namespace RemoteOperations {
@@ -493,12 +494,8 @@ namespace RemoteOperations {
             else {
                 Array parentClasses = (Array)theObj["__DERIVATION"];
                 if (parentClasses != null) {
-                    int count = 0;
-                    for (count = 0; count < parentClasses.Length; count = count + 1) {
-                        if (string.Compare((string)parentClasses.GetValue(count), ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
-                            return true;
-                        }
-                    }
+                    return parentClasses.Cast<string>().Any(parentClass =>
+                        string.Compare(parentClass, ManagementClassName, true, CultureInfo.InvariantCulture) == 0);
                 }
             }
             return false;
@@ -536,8 +533,7 @@ namespace RemoteOperations {
             int second = initializer.Second;
             long ticks = 0;
             string dmtf = dmtfDate;
-            DateTime datetime = DateTime.MinValue;
-            string tempString = string.Empty;
+            string tempString;
             if (dmtf == null) {
                 throw new ArgumentOutOfRangeException();
             }
@@ -590,7 +586,7 @@ namespace RemoteOperations {
             catch (Exception e) {
                 throw new ArgumentOutOfRangeException(null, e.Message);
             }
-            datetime = new DateTime(year, month, day, hour, minute, second, 0);
+            var datetime = new DateTime(year, month, day, hour, minute, second, 0);
             datetime = datetime.AddTicks(ticks);
             TimeSpan tickOffset = TimeZone.CurrentTimeZone.GetUtcOffset(datetime);
             long offsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
@@ -612,7 +608,7 @@ namespace RemoteOperations {
         
         // Converts a given System.DateTime object to DMTF datetime format.
         static string ToDmtfDateTime(DateTime date) {
-            string utcString = string.Empty;
+            string utcString;
             TimeSpan tickOffset = TimeZone.CurrentTimeZone.GetUtcOffset(date);
             long offsetMins = tickOffset.Ticks / TimeSpan.TicksPerMinute;
             if (Math.Abs(offsetMins) > 999) {
@@ -802,8 +798,7 @@ namespace RemoteOperations {
         
         public uint GetState(out uint state) {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("GetState", inParams, null);
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("GetState", null, null);
                 state = Convert.ToUInt32(outParams.Properties["State"].Value);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
@@ -815,8 +810,7 @@ namespace RemoteOperations {
         
         public uint Install(bool grantLogOnAsService, string logon, string password) {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                inParams = _privateLateBoundObject.GetMethodParameters("Install");
+                var inParams = _privateLateBoundObject.GetMethodParameters("Install");
                 inParams["GrantLogOnAsService"] = grantLogOnAsService;
                 inParams["Logon"] = logon;
                 inParams["Password"] = password;
@@ -830,8 +824,7 @@ namespace RemoteOperations {
         
         public uint Start() {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Start", inParams, null);
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Start", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -841,8 +834,7 @@ namespace RemoteOperations {
         
         public uint Stop() {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Stop", inParams, null);
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Stop", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -852,8 +844,7 @@ namespace RemoteOperations {
         
         public uint Uninstall() {
             if (_isEmbedded == false) {
-                ManagementBaseObject inParams = null;
-                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Uninstall", inParams, null);
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Uninstall", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -948,8 +939,7 @@ namespace RemoteOperations {
             
             public virtual void CopyTo(Array array, int index) {
                 _privColObj.CopyTo(array, index);
-                int nCtr;
-                for (nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
+                for (int nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
                     array.SetValue(new HostInstance((ManagementObject)array.GetValue(nCtr)), nCtr);
                 }
             }
@@ -1035,16 +1025,11 @@ namespace RemoteOperations {
             }
             
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
-                if (_baseType.BaseType == typeof(Enum)) {
-                    if (value.GetType() == destinationType) {
-                        return value;
-                    }
-                    if (value == null 
-                        && context != null 
-                        && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
-                        return  "NULL_ENUM_VALUE" ;
-                    }
-                    return _baseConverter.ConvertTo(context, culture, value, destinationType);
+                if (_baseType.BaseType == typeof(Enum))
+                {
+                    return value.GetType() == destinationType
+                        ? value
+                        : _baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
                 if (_baseType == typeof(bool) 
                     && _baseType.BaseType == typeof(ValueType)) {

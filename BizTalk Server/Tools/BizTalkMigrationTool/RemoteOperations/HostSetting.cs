@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Management;
 
 namespace RemoteOperations {
@@ -1055,12 +1056,8 @@ namespace RemoteOperations {
             else {
                 Array parentClasses = (Array)theObj["__DERIVATION"];
                 if (parentClasses != null) {
-                    int count = 0;
-                    for (count = 0; count < parentClasses.Length; count = count + 1) {
-                        if (string.Compare((string)parentClasses.GetValue(count), ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
-                            return true;
-                        }
-                    }
+                    return parentClasses.Cast<string>().Any(parentClass =>
+                        string.Compare(parentClass, ManagementClassName, true, CultureInfo.InvariantCulture) == 0);
                 }
             }
             return false;
@@ -1559,8 +1556,7 @@ namespace RemoteOperations {
             
             public virtual void CopyTo(Array array, int index) {
                 _privColObj.CopyTo(array, index);
-                int nCtr;
-                for (nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
+                for (int nCtr = 0; nCtr < array.Length; nCtr = nCtr + 1) {
                     array.SetValue(new HostSetting((ManagementObject)array.GetValue(nCtr)), nCtr);
                 }
             }
@@ -1646,16 +1642,11 @@ namespace RemoteOperations {
             }
             
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
-                if (_baseType.BaseType == typeof(Enum)) {
-                    if (value.GetType() == destinationType) {
-                        return value;
-                    }
-                    if (value == null 
-                        && context != null 
-                        && context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false) {
-                        return  "NULL_ENUM_VALUE" ;
-                    }
-                    return _baseConverter.ConvertTo(context, culture, value, destinationType);
+                if (_baseType.BaseType == typeof(Enum))
+                {
+                    return value.GetType() == destinationType
+                        ? value
+                        : _baseConverter.ConvertTo(context, culture, value, destinationType);
                 }
                 if (_baseType == typeof(bool) 
                     && _baseType.BaseType == typeof(ValueType)) {

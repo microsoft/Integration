@@ -16,6 +16,7 @@ using Microsoft.RuleEngine;
 using Microsoft.Web.Administration;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using Application = Microsoft.BizTalk.ExplorerOM.Application;
 using ApplicationCollection = Microsoft.BizTalk.ExplorerOM.ApplicationCollection;
 
 namespace RemoteOperations
@@ -256,7 +257,7 @@ namespace RemoteOperations
                                     foreach (X509Certificate2 certificate in store.Certificates)
                                     {
                                         // Exporting EnhancedKEyUsage for Certificates
-                                        string[] enhancedKeyUsage = new string[] { };
+                                        var enhancedKeyUsage = new string[] {};
                                         foreach (X509Extension extension in certificate.Extensions)
                                         {
                                             //Console.WriteLine(ex.Oid.FriendlyName + "(" + ex.Oid.Value + ")");
@@ -264,21 +265,14 @@ namespace RemoteOperations
                                             {
                                                 try
                                                 {
-                                                    X509EnhancedKeyUsageExtension ext =
-                                                        (X509EnhancedKeyUsageExtension) extension;
-                                                    OidCollection oids = ext.EnhancedKeyUsages;
-                                                    enhancedKeyUsage = new string[oids.Count];
-                                                    for (int j = 0; j < oids.Count; j++)
-                                                    {
-                                                        if (string.IsNullOrEmpty(oids[j].FriendlyName) ||
-                                                            string.IsNullOrWhiteSpace(oids[j].FriendlyName))
-                                                        {
-                                                            // Do Nothing
-                                                        }
-                                                        else
-
-                                                            enhancedKeyUsage[j] = oids[j].FriendlyName.Trim();
-                                                    }
+                                                    enhancedKeyUsage = ((X509EnhancedKeyUsageExtension) extension)
+                                                        .EnhancedKeyUsages
+                                                        .Cast<Oid>()
+                                                        .Where(oid =>
+                                                            !string.IsNullOrEmpty(oid.FriendlyName) &&
+                                                            !string.IsNullOrWhiteSpace(oid.FriendlyName))
+                                                        .Select(oid => oid.FriendlyName.Trim())
+                                                        .ToArray();
                                                 }
                                                 catch (Exception ex)
                                                 {
@@ -446,11 +440,7 @@ namespace RemoteOperations
 
                     string[] dstCertNameList = File.ReadAllLines(appPath + @"\DstCertList.txt"); //read all cert of Dst
                     //Creating CertificatesList with out StorLocation
-                    string[] dstCertList = new string[dstCertNameList.Length];
-                    for (int i = 0; i < dstCertNameList.Length; i++)
-                    {
-                        dstCertList[i] = dstCertNameList[i].Substring(dstCertNameList[i].IndexOf('_') + 1);
-                    }
+                    var dstCertList = dstCertNameList.Select(t => t.Substring(t.IndexOf('_') + 1)).ToArray();
                     int certsImported = 0;
                     LogInfo("Calling Import Cert Function.", pRootPath);
 
@@ -638,9 +628,7 @@ namespace RemoteOperations
                 AssemblyList asmList = null;
                 string[] customDll = null;
                 string appPath = pRootPath;
-                string asmPath = appPath + "\\ExportedData\\DLL";
                 string xmlPath = appPath + "\\ExportedData\\XMLFiles";
-                int asmListCount = 0;
                 int customDlls = 0;
                 char[] chrSep = {','};
                 try
@@ -650,12 +638,10 @@ namespace RemoteOperations
                         var configSerializer = new XmlSerializer(typeof(AssemblyList));
                         asmList = (AssemblyList) configSerializer.Deserialize(
                             new XmlTextReader(xmlPath + @"\SrcBizTalkAssembly.xml"));
-                        asmListCount = asmList.Assembly.Length;
+                        var asmListCount = asmList.Assembly.Length;
                         LogInfo("Total Biztalk Assemblies: " + asmListCount, pRootPath);
                     }
                     LogInfo("Custom DLL Filter:" + pCustomDllToInclude, pRootPath);
-
-                    string appName = string.Empty;
 
                     var asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
                     var asmPath2 = @"C:\Windows\assembly\GAC\";
@@ -711,35 +697,32 @@ namespace RemoteOperations
                     if (pServerType == "BizTalk")
                     {
                         List<string> bizTalkDll = new List<string>();
-                        for (int i = 0; i < asmListCount; i++)
+                        foreach (AssemblyListAssembly assembly in asmList.Assembly)
                         {
                             try
                             {
-                                var findDll = Directory.GetFiles(asmPath1, asmList.Assembly[i].AsmName + ".dll",
+                                var findDll = Directory.GetFiles(asmPath1, assembly.AsmName + ".dll",
                                     SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath2, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath2, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath3, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath3, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath4, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath4, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
-                                    findDll = Directory.GetFiles(asmPath5, asmList.Assembly[i].AsmName + ".dll",
+                                    findDll = Directory.GetFiles(asmPath5, assembly.AsmName + ".dll",
                                         SearchOption.AllDirectories);
                                 if (findDll.Length == 0)
                                 {
-                                    LogInfo("Did not Find Assembly:" + asmList.Assembly[i].AsmName, pRootPath);
+                                    LogInfo("Did not Find Assembly:" + assembly.AsmName, pRootPath);
                                 }
                                 else
                                 {
-                                    int fileCount = 0;
-
                                     foreach (string filePath in findDll)
                                     {
-                                        fileCount++;
                                         try
                                         {
                                             if (pCustomDllToInclude != string.Empty)
@@ -840,10 +823,7 @@ namespace RemoteOperations
 
             public void btnDstCustomDllList_Click(string pRootPath, string pCustomDllToInclude)
             {
-                string ver = string.Empty;
-                string dir = string.Empty;
                 string appPath = pRootPath;
-                string asmPath = appPath + "\\ExportedData\\DLL";
                 string xmlPath = appPath + "\\ExportedData\\XMLFiles";
                 char[] chrSep = {','};
                 try
@@ -1108,8 +1088,6 @@ namespace RemoteOperations
                 string xmlPath = appPath + "\\ExportedData\\XMLFiles";
                 try
                 {
-                    BizTalkApplications bizTalkApps = new BizTalkApplications();
-
                     // instantiate new instance of Explorer OM
                     BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
                     LogInfo("Connecting to BizTalkMgmtDb..." + pSqlServerInstanceName, pRootPath);
@@ -1119,24 +1097,13 @@ namespace RemoteOperations
                     //Get All Applications
                     var appCol = btsExp.Applications;
                     LogInfo("Connected.", pRootPath);
-                    int asmCount = 0;
-                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
-                    {
-                        if (pAppNameCollection.Contains(app.Name))
-                        {
-                            BtsAssemblyCollection asmCol = app.Assemblies;
-                            foreach (BtsAssembly btAsm in asmCol)
-                            {
-                                if (!btAsm.IsSystem)
-                                {
-                                    asmCount++;
-                                }
-                            }
-                        }
-                    }
+                    int asmCount = appCol.Cast<Application>()
+                        .Where(app => pAppNameCollection.Contains(app.Name))
+                        .Select(app => app.Assemblies)
+                        .Select(asmCol => asmCol.Cast<BtsAssembly>().Count(btAsm => !btAsm.IsSystem)).Sum();
                     var asmList = new AssemblyList {Assembly = new AssemblyListAssembly[asmCount]};
                     int i = 0;
-                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                    foreach (Application app in appCol)
                     {
                         if (pAppNameCollection.Contains(app.Name))
                         {
@@ -1212,7 +1179,7 @@ namespace RemoteOperations
 
                     bizTalkApps.BizTalkApplication = new BizTalkApplicationsBizTalkApplication[htApps.Count];
 
-                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                    foreach (Application app in appCol)
                     {
                         if (!pBizTalkAppToIgnore.Contains(app.Name)
                         ) //if (!(app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
@@ -1254,7 +1221,7 @@ namespace RemoteOperations
             private void Msiapp(ApplicationCollection appCol, IDictionary<string, int> htApps,
                 string pBizTalkAppToIgnore)
             {
-                foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                foreach (Application app in appCol)
                 {
                     if (!pBizTalkAppToIgnore.Contains(app.Name)
                     ) //if (!(app.Name == "RosettaNet" || app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
@@ -1346,14 +1313,10 @@ namespace RemoteOperations
                             using (var ds = new DataSet())
                             {
                                 sqlDataAd.Fill(ds);
-                                arrBREPolicies = new string[ds.Tables[0].Rows.Count];
-                                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                                {
-                                    arrBREPolicies[i] = ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[1] + "." +
-                                                        ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[0] +
-                                                        "." + ds.Tables[0].Rows[i].ItemArray[2].ToString().Split('/')[2].Split('.')[
-                                                            1];
-                                }
+                                arrBREPolicies = ds.Tables[0].Rows.Cast<DataRow>().Select(row =>
+                                    row.ItemArray[2].ToString().Split('/')[1] + "." +
+                                    row.ItemArray[2].ToString().Split('/')[2].Split('.')[0] + "." +
+                                    row.ItemArray[2].ToString().Split('/')[2].Split('.')[1]).ToArray();
                             }
                         }
 
@@ -1632,30 +1595,20 @@ namespace RemoteOperations
                             writer.WriteEndElement();
                             //  Get all the HostInstances of the Destination Server
                             HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                            string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-
-                            int j = 0;
-                            foreach (HostInstance ht in dstHostInstancesColletion)
-                            {
-                                if (ht.Name.EndsWith(server) || ht.Name.EndsWith(server.ToLower()))
-                                {
-
-                                    hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                    j++;
-                                }
-
-                            }
-                            hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                            var hostInstancesArray = dstHostInstancesColletion
+                                .Cast<HostInstance>()
+                                .Where(ht => ht.Name.EndsWith(server) || ht.Name.EndsWith(server.ToLower()))
+                                .Select(ht => ht.Name.Split(' ')[3]).ToList()
+                                .Where(x => !string.IsNullOrEmpty(x)).ToList();
 
                             writer.WriteStartElement("HostInstanceMappings");
-                            for (j = 0; j < hostInstancesArray.Length; j++)
+                            foreach (string hostInstance in hostInstancesArray)
                             {
                                 writer.WriteStartElement("SourceHostInstance");
-                                writer.WriteAttributeString("Name", hostInstancesArray[j] + ":" + server);
+                                writer.WriteAttributeString("Name", hostInstance + ":" + server);
                                 writer.WriteElementString("DestinationHostInstances",
-                                    hostInstancesArray[j] + ":" + "{ServerName}");
+                                    hostInstance + ":" + "{ServerName}");
                                 writer.WriteEndElement();
-
                             }
                             writer.WriteEndElement();
                             writer.WriteEndElement();
@@ -2104,7 +2057,6 @@ namespace RemoteOperations
             {
 
                 //string dstHostList = string.Empty, dstHostInstanceList = string.Empty;
-                List<string> dstHostList = new List<string>();
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
                 LogInfo("Host: Import started..", pRootPath);
                 if (!File.Exists(xmlPath + @"\HostInstances.xml"))
@@ -2133,11 +2085,9 @@ namespace RemoteOperations
                 //Creating DestinationHostList
                 var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host",
                     enumOptions);
-                foreach (var inst in searchObject.Get())
-                {
-                    //dstHostList = dstHostList + inst["Name"].ToString().ToUpper() + ",";
-                    dstHostList.Add(inst["Name"].ToString().ToUpper());
-                }
+                List<string> dstHostList = searchObject.Get()
+                    .Cast<ManagementBaseObject>()
+                    .Select(inst => inst["Name"].ToString().ToUpper()).ToList();
                 //Creating DestinationHosts
                 foreach (HostsHost host in input.Host)
                 {
@@ -2157,15 +2107,12 @@ namespace RemoteOperations
                 foreach (string server in dstservers)
                 {
 //Creating DestinationHostInstanceListForeachnode
-                    var dstHostInstanceList = new List<string>();
                     searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
                         "Select * from MSBTS_HostInstance", enumOptions);
-                    foreach (var inst in searchObject.Get())
-                    {
-                        if (inst["RunningServer"].ToString().ToUpper() == server)
-                            // dstHostInstanceList = dstHostInstanceList + inst["HostName"].ToString().ToUpper() + ",";
-                            dstHostInstanceList.Add(inst["HostName"].ToString().ToUpper());
-                    }
+                    var dstHostInstanceList = searchObject.Get()
+                        .Cast<ManagementObject>()
+                        .Where(inst => inst["RunningServer"].ToString().ToUpper() == server)
+                        .Select(inst => inst["HostName"].ToString().ToUpper()).ToList();
                     //Create DestinationHostInstance for EachNode
                     foreach (HostsHost host in input.Host)
                     {
