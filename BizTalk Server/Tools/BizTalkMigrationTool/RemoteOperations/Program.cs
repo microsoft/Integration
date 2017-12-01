@@ -16,7 +16,6 @@ using Microsoft.RuleEngine;
 using Microsoft.Web.Administration;
 using System.Security.Cryptography;
 using System.Xml.Linq;
-using Microsoft.BizTalk.Management;
 using ApplicationCollection = Microsoft.BizTalk.ExplorerOM.ApplicationCollection;
 
 namespace RemoteOperations
@@ -1737,7 +1736,7 @@ namespace RemoteOperations
                             j = 0;
                             foreach (HostInstance ht in dstHostInstancesColletion)
                             {
-                                if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                     (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                                 {
                                     hostInstancesArray[j] = ht.Name.Split(' ')[3];
@@ -1809,7 +1808,7 @@ namespace RemoteOperations
                             j = 0;
                             foreach (HostInstance ht in dstHostInstancesColletion)
                             {
-                                if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                     (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                                 {
                                     hostInstancesArray[j] = ht.Name.Split(' ')[3];
@@ -1882,7 +1881,7 @@ namespace RemoteOperations
                             j = 0;
                             foreach (HostInstance ht in dstHostInstancesColletion)
                             {
-                                if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                                if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                     (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                                 {
                                     hostInstancesArray[j] = ht.Name.Split(' ')[3];
@@ -2146,7 +2145,7 @@ namespace RemoteOperations
                     {
                         CreateHost(host.name,
                             host.inProcess
-                                ? HostSetting.HostTypeValues.In_process
+                                ? HostSetting.HostTypeValues.InProcess
                                 : HostSetting.HostTypeValues.Isolated, host.ntGroupName, host.authenticationTrusted,
                             host.hostTracking, host.is32bit,
                             host.isDefaultHost, pRootPath);
@@ -2193,7 +2192,7 @@ namespace RemoteOperations
 
                     myHostSetting.Name = name;
                     myHostSetting.HostType = hostType;
-                    myHostSetting.NTGroupName = ntGroupName;
+                    myHostSetting.NtGroupName = ntGroupName;
                     myHostSetting.AuthTrusted = authTrusted;
                     myHostSetting.IsHost32BitOnly = is32Bit;
                     myHostSetting.HostTracking = hostTracking;

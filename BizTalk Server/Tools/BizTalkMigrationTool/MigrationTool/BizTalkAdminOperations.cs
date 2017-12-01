@@ -1,31 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Data.SqlClient;
+using System.Management;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.XPath;
-using System.Windows.Forms;
-using System.Management;
 using Microsoft.BizTalk.ExplorerOM;
-using Microsoft.BizTalk.Management;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using System.Reflection;
-using System.Security.Principal;
-using MigrationTool;
-using System.Configuration;
 using Microsoft.RuleEngine;
 using Microsoft.Web.Administration;
-using System.Security.Cryptography;
 
-namespace BizTalkAdminOperations
+namespace MigrationTool
 {
     public partial class BizTalkAdminOperations : Form
     {
@@ -53,16 +51,15 @@ namespace BizTalkAdminOperations
         private readonly int _strRoboCopySuccessCode;
 
         //user account will be used in WMI remoting  or PsExec remoting, while service account will be used for host instance.
-        public string strUserName,
-            strUserNameForWMI,
-            strPassword,
-            strDomain,
-            strFromPanel10,
-            strSrcNode,
-            strDstNode,
-            strIsUtilCopied;
+        private string _strUserName,
+            _strUserNameForWMI,
+            _strPassword,
+            _strDomain,
+            _strSrcNode,
+            _strDstNode,
+            _strIsUtilCopied;
 
-        public string strUserNameForHost, strPasswordForHost
+        private string _strUserNameForHost, _strPasswordForHost
             ; //this will act as service account, while other one will work as user account
 
         private readonly string _fileFolderPath,
@@ -159,7 +156,7 @@ namespace BizTalkAdminOperations
             _isHostExecuted = _strPerformOperationYes;
             _isHandlerExecuted = _strPerformOperationYes;
             _isBizTalkAppExecuted = _strPerformOperationYes;
-            strIsUtilCopied = _strPerformOperationNo;
+            _strIsUtilCopied = _strPerformOperationNo;
 
             _remoteRootFolder =
                 ConfigurationManager.AppSettings
@@ -197,7 +194,7 @@ namespace BizTalkAdminOperations
                 {
                     LogShortErrorMsg("Please mention Src Sql Instance and select node from DropDown.");
                 }
-                else if (_strServerType == "App" && strSrcNode == string.Empty)
+                else if (_strServerType == "App" && _strSrcNode == string.Empty)
                 {
                     LogShortErrorMsg("Please mention Src App Server.");
                 }
@@ -239,7 +236,7 @@ namespace BizTalkAdminOperations
                                     string driveLetter = driveInfo.Substring(0, 1);
                                     string pathWithoutDrive =
                                         folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
-                                    strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                    strSrc = "\\\\" + _strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                     strDst = _fileFolderPath + "\\" +
                                              folderPathTrimed.Substring(
                                                  folderPath.LastIndexOf(
@@ -278,7 +275,7 @@ namespace BizTalkAdminOperations
                                     string driveLetter = driveInfo.Substring(0, 1);
                                     string pathWithoutDrive =
                                         folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
-                                    strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                    strSrc = "\\\\" + _strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                     strDst = _fileFolderPath + "\\" +
                                              folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
                                     LogInfo("Copy started from: " + strSrc + " To: " + strDst);
@@ -327,13 +324,13 @@ namespace BizTalkAdminOperations
                 {
                     LogShortErrorMsg("Please mention Dst Sql Instance and select node from DropDown.");
                 }
-                else if (_strServerType == "App" && strDstNode == string.Empty)
+                else if (_strServerType == "App" && _strDstNode == string.Empty)
                 {
                     LogShortErrorMsg("Please mention Dst App Server.");
                 }
                 else
                 {
-                    if (_strToolMode == "Migrate" && string.IsNullOrEmpty(strSrcNode))
+                    if (_strToolMode == "Migrate" && string.IsNullOrEmpty(_strSrcNode))
                         throw new Exception("Please select source node from dropdown.");
 
                     string strSrc;
@@ -359,15 +356,15 @@ namespace BizTalkAdminOperations
 
                                 if (_strToolMode == "Migrate"
                                 ) //if mirgration then source will be Src otherwise it will be local
-                                    strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                    strSrc = "\\\\" + _strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                 else
                                     strSrc = _fileFolderPath + "\\" +
                                              folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
                                 if (string.IsNullOrEmpty(_strFoldersDrive) ||
                                     string.IsNullOrWhiteSpace(_strFoldersDrive))
-                                    strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                    strDst = "\\\\" + _strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                 else
-                                    strDst = "\\\\" + strDstNode + "\\" + _strFoldersDrive.Trim().Substring(0, 1) +
+                                    strDst = "\\\\" + _strDstNode + "\\" + _strFoldersDrive.Trim().Substring(0, 1) +
                                              "$\\" + pathWithoutDrive;
                                 LogInfo("Copy started from: " + strSrc + " To " + strDst);
                                 commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
@@ -404,13 +401,13 @@ namespace BizTalkAdminOperations
                                 string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
 
                                 if (_strToolMode == "Migrate")
-                                    strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                    strSrc = "\\\\" + _strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                                 else
                                     strSrc = _fileFolderPath + "\\" +
                                              folderPathTrimed.Substring(folderPath.LastIndexOf('\\'));
 
 
-                                strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                                strDst = "\\\\" + _strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
 
                                 LogInfo("Copy started from: " + strSrc + " To " + strDst);
                                 commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst +
@@ -518,7 +515,7 @@ namespace BizTalkAdminOperations
                 string commandArguments;
                 string xmlPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_xmlPath);
                 int result;
-                if (_machineName == strSrcNode)
+                if (_machineName == _strSrcNode)
                 {
                     commandArguments = "ExportSettings -Destination:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" +
                                        " -Server:\"" + txtConnectionString.Text.Trim() + "\" -Database:\"" +
@@ -528,8 +525,8 @@ namespace BizTalkAdminOperations
                 }
                 else
                 {
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        " BTSTASK ExportSettings -Destination:\"" + xmlPathUnc + "\\" +
                                        "HostSettings.xml\"" + " -Server:\"" + txtConnectionString.Text.Trim() +
                                        "\" -Database:\"" + "BizTalkMgmtDb\"";
@@ -548,7 +545,7 @@ namespace BizTalkAdminOperations
                     File.Delete(file);
                 }
                 XmlDocument xd = new XmlDocument();
-                if (_machineName == strSrcNode)
+                if (_machineName == _strSrcNode)
                 {
                     LogInfo("Host Mappings: Export started.");
 
@@ -562,8 +559,8 @@ namespace BizTalkAdminOperations
                     XmlNode srcnodeList = xd.DocumentElement.SelectSingleNode("/Servers");
                     string srcServerList = srcnodeList.SelectSingleNode("SrcNodes").InnerText;
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
@@ -612,7 +609,7 @@ namespace BizTalkAdminOperations
             List<string> dstHostList = new List<string>();
             try
             {
-                if (_machineName == strDstNode)
+                if (_machineName == _strDstNode)
                 {
                     LogInfo("Host: Import started..");
                     if (!File.Exists(_xmlPath + @"\HostInstances.xml"))
@@ -629,12 +626,11 @@ namespace BizTalkAdminOperations
 
                     //get all HostInstances of 'InProcess' type.
 
-                    ManagementObjectSearcher searchObject = null;
                     EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
 
                     //Creating DestinationHostList
-                    searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
+                    var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
                         "Select * from MSBTS_Host", enumOptions);
                     foreach (var inst in searchObject.Get())
                     {
@@ -648,7 +644,7 @@ namespace BizTalkAdminOperations
                         {
                             CreateHost(host.name,
                                 host.inProcess
-                                    ? HostSetting.HostTypeValues.In_process
+                                    ? HostSetting.HostTypeValues.InProcess
                                     : HostSetting.HostTypeValues.Isolated, host.ntGroupName, host.authenticationTrusted,
                                 host.hostTracking, host.is32bit,
                                 host.isDefaultHost);
@@ -657,16 +653,15 @@ namespace BizTalkAdminOperations
                             LogInfo("Host already exist: " + host.name);
                     }
 
-                    int i = 0;
-                    for (i = 0; i < cmbBoxServerDst.Items.Count; i++)
+                    foreach (object serverDstItem in cmbBoxServerDst.Items)
                     {
-                        //Creating DestinationHostInstanceListForeachnode
+//Creating DestinationHostInstanceListForeachnode
                         var dstHostInstanceList = new List<string>();
                         searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
                             "Select * from MSBTS_HostInstance", enumOptions);
                         foreach (var inst in searchObject.Get())
                         {
-                            if (inst["RunningServer"].ToString().ToUpper() == cmbBoxServerDst.Items[i].ToString())
+                            if (inst["RunningServer"].ToString().ToUpper() == serverDstItem.ToString())
                                 // dstHostInstanceList = dstHostInstanceList + inst["HostName"].ToString().ToUpper() + ",";
                                 dstHostInstanceList.Add(inst["HostName"].ToString().ToUpper());
                         }
@@ -675,12 +670,12 @@ namespace BizTalkAdminOperations
                         {
                             if (!dstHostInstanceList.Contains(host.name.ToUpper()))
                             {
-                                CreateHostInstance(cmbBoxServerDst.Items[i].ToString(), host.name, strUserName,
-                                    strPassword);
+                                CreateHostInstance(serverDstItem.ToString(), host.name, _strUserName,
+                                    _strPassword);
                             }
                             else
                                 LogInfo("Host Instance already exist: " + host.name + " on " +
-                                        cmbBoxServerDst.Items[i]);
+                                        serverDstItem);
                         }
                     }
 
@@ -691,13 +686,13 @@ namespace BizTalkAdminOperations
 
                     string appPathUnc = ConvertPathToUncPath(_appPath);
 
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
-                                       appPathUnc + "\" \"ImportHosts\" \"" + strUserNameForHost + "\" \"" +
-                                       strPasswordForHost + "\"\"";
+                                       appPathUnc + "\" \"ImportHosts\" \"" + _strUserNameForHost + "\" \"" +
+                                       _strPasswordForHost + "\"\"";
                     int returnCode =
                         ExecuteCmd("CMD.EXE",
                             commandArguments); //dlls will be copied and pasted back to Local machine, hence machineName used in commandArgument.
@@ -726,7 +721,7 @@ namespace BizTalkAdminOperations
                 {
                     File.Delete(file);
                 }
-                if (_machineName == strDstNode)
+                if (_machineName == _strDstNode)
                 {
                     ImportHostMapSettings();
                 }
@@ -734,8 +729,8 @@ namespace BizTalkAdminOperations
                 {
 
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\"  \"\\\\" + _machineName + "\\" +
                                        appPathUnc + "\" \"ImportHostMapSettings\" \"" +
@@ -757,7 +752,7 @@ namespace BizTalkAdminOperations
                         string xmlPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_xmlPath);
                         string filePathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(file);
                         int result;
-                        if (_machineName == strDstNode)
+                        if (_machineName == _strDstNode)
                         {
                             commandArguments = "ImportSettings -Source:\"" + xmlPathUnc + "\\" + "HostSettings.xml\"" +
                                                " -Map:\"" + filePathUnc + "\" -Server:\"" +
@@ -768,8 +763,8 @@ namespace BizTalkAdminOperations
                         }
                         else //Remote
                         {
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode + " -u " + "\"" +
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                " -accepteula" + " BTSTASK ImportSettings -Source:\"" + xmlPathUnc +
                                                "\\" + "HostSettings.xml\"" + " -Map:\"" + filePathUnc +
                                                "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
@@ -800,15 +795,15 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                var myHostSetting = _machineName == strDstNode
+                var myHostSetting = _machineName == _strDstNode
                     ? HostSetting.CreateInstance()
-                    : HostSetting.CreateInstance(strDstNode, strUserNameForWMI, strPassword, strDomain);
+                    : HostSetting.CreateInstance(_strDstNode, _strUserNameForWMI, _strPassword, _strDomain);
 
                 myHostSetting.AutoCommit = false;
 
                 myHostSetting.Name = name;
                 myHostSetting.HostType = hostType;
-                myHostSetting.NTGroupName = ntGroupName;
+                myHostSetting.NtGroupName = ntGroupName;
                 myHostSetting.AuthTrusted = authTrusted;
                 myHostSetting.IsHost32BitOnly = is32Bit;
                 myHostSetting.HostTracking = hostTracking;
@@ -830,20 +825,20 @@ namespace BizTalkAdminOperations
         {
             try
             {
-                var myServerHost = _machineName == strDstNode
+                var myServerHost = _machineName == _strDstNode
                     ? ServerHost.CreateInstance()
-                    : ServerHost.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
+                    : ServerHost.CreateInstance(serverName, _strUserNameForWMI, _strPassword, _strDomain);
 
                 myServerHost.ServerName = serverName;
                 myServerHost.HostName = name;
                 myServerHost.Map();
 
-                var myHostInstance = _machineName == strDstNode
+                var myHostInstance = _machineName == _strDstNode
                     ? HostInstance.CreateInstance()
-                    : HostInstance.CreateInstance(serverName, strUserNameForWMI, strPassword, strDomain);
+                    : HostInstance.CreateInstance(serverName, _strUserNameForWMI, _strPassword, _strDomain);
 
                 myHostInstance.Name = "Microsoft BizTalk Server " + name + " " + serverName;
-                myHostInstance.Install(true, strUserNameForHost, strPasswordForHost);
+                myHostInstance.Install(true, _strUserNameForHost, _strPasswordForHost);
 
                 LogShortSuccessMsg("Host Instance created successfully: " + name + ", " + serverName);
             }
@@ -881,7 +876,7 @@ namespace BizTalkAdminOperations
 
                 ManagementClass objSndHandlerClass;
                 ManagementClass objRcvHandlerClass;
-                if (_machineName == strDstNode) //local 
+                if (_machineName == _strDstNode) //local 
                 {
                     objRcvHandlerClass =
                         new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null);
@@ -890,9 +885,9 @@ namespace BizTalkAdminOperations
                 }
                 else //remote
                 {
-                    objRcvHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer",
+                    objRcvHandlerClass = new ManagementClass("\\\\" + _strDstNode + "\\root\\MicrosoftBizTalkServer",
                         "MSBTS_ReceiveHandler", null);
-                    objSndHandlerClass = new ManagementClass("\\\\" + strDstNode + "\\root\\MicrosoftBizTalkServer",
+                    objSndHandlerClass = new ManagementClass("\\\\" + _strDstNode + "\\root\\MicrosoftBizTalkServer",
                         "MSBTS_SendHandler2", null);
                 }
                 PutOptions options = new PutOptions {Type = PutType.CreateOnly};
@@ -990,7 +985,7 @@ namespace BizTalkAdminOperations
             try
             {
                 LogInfo("Handlers: Export started.");
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     LogInfo("Connecting to BizTalkMgmtdb...." + txtConnectionString.Text);
                     RcvSndHandlers rcvSndHandlers = new RcvSndHandlers();
@@ -1052,8 +1047,8 @@ namespace BizTalkAdminOperations
                 {
                     LogInfo("Getting handlers from remote machine.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
-                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\"  \"\\\\" + _machineName +
                                               "\\" + appPathUnc + "\" \"ExportHandler\" \"" +
@@ -1274,7 +1269,7 @@ namespace BizTalkAdminOperations
                     LogException(ex);
                     throw new Exception("Error while deleting existing Apps.xml file.");
                 }
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     BizTalkApplications bizTalkApps = new BizTalkApplications();
 
@@ -1289,7 +1284,7 @@ namespace BizTalkAdminOperations
                     LogInfo("Connected.");
 
                     var htApps = new Dictionary<string, int>();
-                    MSIAPP(appCol, htApps);
+                    MsiApp(appCol, htApps);
 
                     bizTalkApps.BizTalkApplication = appCol
                         .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
@@ -1320,8 +1315,8 @@ namespace BizTalkAdminOperations
                 {
                     LogInfo("Getting App list from remote machine.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
-                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                               _machineName +
@@ -1399,14 +1394,12 @@ namespace BizTalkAdminOperations
                         })
                     .ToList();
 
-                int appcount = appList.Count;
-
                 char[] charSeprator = {','};
 
-                LogInfo("Total Apps: " + appcount);
+                LogInfo("Total Apps: " + appList.Count);
 
                 string msiPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_msiPath);
-                for (int i = 0; i < appcount; i++)
+                for (int i = 0; i < appList.Count; i++)
                 {
                     // instantiate new instance of Explorer OM                
                     BtsCatalogExplorer btsExp = new BtsCatalogExplorer
@@ -1422,7 +1415,7 @@ namespace BizTalkAdminOperations
 
                     int result;
                     string commandArguments;
-                    if (_machineName == strDstNode) //local
+                    if (_machineName == _strDstNode) //local
                     {
                         if (File.Exists(_msiPath + "\\" + appName + ".msi"))
                         {
@@ -1493,9 +1486,9 @@ namespace BizTalkAdminOperations
                         if (File.Exists(_msiPath + "\\" + appName + ".msi"))
                         {
                             //Import MSI, Set arguments for BTSTask.exe               
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
                                                "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword
                                                + "\"" + " -accepteula" + " BTSTask ImportApp -Package:\"" + msiPathUnc +
                                                "\\" + appName + ".msi\"" + " -ApplicationName:\"" +
                                                appName + "\" -Overwrite -Server:\"" +
@@ -1514,9 +1507,9 @@ namespace BizTalkAdminOperations
                         {
                             //Create App                            
                             LogInfo("MSI file does not exist for: " + appName);
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
                                                "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword
                                                + "\"" + " -accepteula" + " BTSTask addapp -ApplicationName:\"" +
                                                appName + "\" -Description:\"BizTalk application for " + appName
                                                + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
@@ -1570,7 +1563,7 @@ namespace BizTalkAdminOperations
                     }
                     else //import Binding
                     {
-                        if (_machineName == strDstNode) //local
+                        if (_machineName == _strDstNode) //local
                         {
                             commandArguments = "ImportBindings  -Source:\"" + msiPathUnc + "\\" + appName +
                                                "_Binding.xml\"" + " -ApplicationName:\"" +
@@ -1581,9 +1574,9 @@ namespace BizTalkAdminOperations
                         }
                         else //remote
                         {
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
                                                "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword
                                                + "\"" + " -accepteula" + " BTSTask ImportBindings  -Source:\"" +
                                                msiPathUnc + "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" +
                                                appName + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
@@ -1657,7 +1650,7 @@ namespace BizTalkAdminOperations
                         //get Spec File
                         int result;
                         string commandArguments;
-                        if (_machineName == strSrcNode)
+                        if (_machineName == _strSrcNode)
                         {
                             commandArguments = "ListApp -ApplicationName:\"" + appName + "\" -ResourceSpec:\"" +
                                                msiPathUnc + "\\" + appName + _specFileExt + "\"" + " -Server:\"" +
@@ -1666,8 +1659,8 @@ namespace BizTalkAdminOperations
                         }
                         else
                         {
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " + "\"" +
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                " -accepteula" + " BTSTASK ListApp -ApplicationName:\"" + appName +
                                                "\" -ResourceSpec:\"" +
                                                msiPathUnc + "\\" + appName + _specFileExt + "\"" + " -Server:\"" +
@@ -1683,10 +1676,10 @@ namespace BizTalkAdminOperations
 
 
                         // edit resource file 
-                        result = UpdateResourceSpecFile(appName);
+                        UpdateResourceSpecFile(appName);
 
                         //export MSI using spec file.    
-                        if (_machineName == strSrcNode)
+                        if (_machineName == _strSrcNode)
                         {
                             commandArguments = "ExportApp -ApplicationName:\"" + appName + "\" -Package:\"" +
                                                msiPathUnc + "\\" + appName + ".msi\"" + " -ResourceSpec:\"" +
@@ -1696,8 +1689,8 @@ namespace BizTalkAdminOperations
                         }
                         else
                         {
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " + "\"" +
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                " -accepteula" + " BTSTASK ExportApp -ApplicationName:\"" + appName +
                                                "\" -Package:\"" +
                                                msiPathUnc + "\\" + appName + ".msi\"" + " -ResourceSpec:\"" +
@@ -1713,7 +1706,7 @@ namespace BizTalkAdminOperations
                             LogShortErrorMsg("Failed: Exporting MSI file.");
 
                         //export Binding   
-                        if (_machineName == strSrcNode)
+                        if (_machineName == _strSrcNode)
                         {
                             commandArguments = "ExportBindings -Destination:\"" + msiPathUnc + "\\" + appName +
                                                "_Binding.xml\"" + " -ApplicationName:\"" + appName + "\"" +
@@ -1723,8 +1716,8 @@ namespace BizTalkAdminOperations
                         }
                         else
                         {
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " + "\"" +
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                " -accepteula" + " BTSTASK ExportBindings -Destination:\"" + msiPathUnc +
                                                "\\" + appName + "_Binding.xml\"" + " -ApplicationName:\"" + appName +
                                                "\"" +
@@ -1764,7 +1757,7 @@ namespace BizTalkAdminOperations
 
             string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
 
-            if (_machineName == strSrcNode) //local
+            if (_machineName == _strSrcNode) //local
             {
                 cmdName = "BTSTASK.exe";
                 LogInfo("Global PartyBinding: Export started.");
@@ -1776,9 +1769,9 @@ namespace BizTalkAdminOperations
             {
                 cmdName = "CMD.EXE";
                 LogInfo("Global PartyBinding: Export started from remote server.");
-                commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
-                                   strUserName +
-                                   "\"" + " -p " + "\"" + strPassword
+                commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " + "\"" +
+                                   _strUserName +
+                                   "\"" + " -p " + "\"" + _strPassword
                                    + "\"" + " -accepteula" + " BTSTask ExportBindings -Destination:\"" + "\\\\" +
                                    _machineName + "\\" + xmlPathUnc + "\\" +
                                    "GlobalPartyBinding.xml\"  -GlobalParties " + " -Server:\"" +
@@ -1814,7 +1807,7 @@ namespace BizTalkAdminOperations
                     throw new Exception("Error while cleaning Policies or Vocabulary folder, hence aborting  export " +
                                         ex.Message + ", " + ex.StackTrace);
                 }
-                if (_machineName == strSrcNode)
+                if (_machineName == _strSrcNode)
                 {
                     LogInfo("BRE: Export started.");
                     ExportBrePolicyVocabulary();
@@ -1824,8 +1817,8 @@ namespace BizTalkAdminOperations
                 {
                     LogInfo("BRE: Export started.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
@@ -1872,7 +1865,7 @@ namespace BizTalkAdminOperations
                     throw new Exception("GlobalPartyBinding xml file is empty.");
 
                 string cmdName;
-                if (_machineName == strDstNode) //local
+                if (_machineName == _strDstNode) //local
                 {
                     cmdName = "BTSTASK.exe";
                     commandArguments = "ImportBindings -Source:\"" + _xmlPath + "\\" + "GlobalPartyBinding.xml\"" +
@@ -1882,8 +1875,8 @@ namespace BizTalkAdminOperations
                 else //remote
                 {
                     cmdName = "CMD.EXE";
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        " BTSTask ImportBindings -Source:\"" + "\\\\" + _machineName + "\\" +
                                        xmlPathUnc +
                                        "\\" + "GlobalPartyBinding.xml\"" +
@@ -1907,7 +1900,7 @@ namespace BizTalkAdminOperations
             }
             try
             {
-                if (_machineName == strDstNode) //local
+                if (_machineName == _strDstNode) //local
                 {
                     LogInfo("BRE: Import Started.");
                     ImportBrePolicyVocabulary();
@@ -1917,8 +1910,8 @@ namespace BizTalkAdminOperations
                 {
                     LogInfo("BRE: Import Started.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
@@ -1959,12 +1952,12 @@ namespace BizTalkAdminOperations
 
             string commandArguments;
 
-            if (_machineName == strSrcNode) //local            
+            if (_machineName == _strSrcNode) //local            
                 commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /config /xml /> \"" +
                                    _xmlPath + "\\AppPools.xml" + "\"";
             else //remote            
-                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
-                                   strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strSrcNode + " -u " + "\"" +
+                                   _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /config /xml /> \"" +
                                    _xmlPath + "\\AppPools.xml" + "\"\"";
 
@@ -2016,13 +2009,13 @@ namespace BizTalkAdminOperations
 
                 //Genrate AppPool List from Dst
                 string commandArguments;
-                if (_machineName == strDstNode) //local                
+                if (_machineName == _strDstNode) //local                
                     commandArguments =
                         "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /text:APPPOOL.NAME  > \"" +
                         _xmlPath + "\\AppPoolList.txt" + "\"";
                 else //remote                
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                        + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apppool /text:APPPOOL.NAME  > \"" +
                                        _xmlPath + "\\AppPoolList.txt" + "\"\"";
                 //execute
@@ -2070,7 +2063,7 @@ namespace BizTalkAdminOperations
 
 
                     //actual AppPool Import
-                    if (_machineName == strDstNode) //local                
+                    if (_machineName == _strDstNode) //local                
                         commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add apppool /in /xml < \"" +
                                            _xmlPath + "\\AppPoolToImport.xml" + "\"";
                     else //remote 
@@ -2078,8 +2071,8 @@ namespace BizTalkAdminOperations
                         //commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
                         //    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe add apppool /in /xml < \"" + xmlPath + "\\AppPoolToImport.xml" + "\"\"";
                         string appPathUnc = ConvertPathToUncPath(_appPath);
-                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
-                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " + "\"" +
+                                           _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                            "  \"" +
                                            _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
                                            "\\" + appPathUnc + "\"" + " \"ImportAppPool\"\"";
@@ -2139,7 +2132,7 @@ namespace BizTalkAdminOperations
                 //export website list in txt file
                 string commandArguments;
                 int returnCode;
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     //get list of Website in txt file, one line one website                
                     commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
@@ -2173,8 +2166,8 @@ namespace BizTalkAdminOperations
                 }
                 else //remote
                 {
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                        + " C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
                                        _xmlPath + "\\SrcWebSiteList.txt" + "\"\"";
                     returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -2198,8 +2191,8 @@ namespace BizTalkAdminOperations
                                 ex.InnerException);
                         }
                     }
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                        + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list site /config /xml /> \"" +
                                        _xmlPath + "\\WebSites.xml" + "\"\"";
                 }
@@ -2228,7 +2221,7 @@ namespace BizTalkAdminOperations
 
                     //split and export web app per website   
                     LogInfo("Web App: Export started.");
-                    if (_machineName == strSrcNode) //local                         
+                    if (_machineName == _strSrcNode) //local                         
                     {
                         commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list apps /site.name:\"" +
                                            webSiteName + "\" /config /xml /> \""
@@ -2236,8 +2229,8 @@ namespace BizTalkAdminOperations
                     }
                     else //remote                           
                     {
-                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
-                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strSrcNode + " -u " + "\"" +
+                                           _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                            + "  C:\\windows\\system32\\inetsrv\\appcmd.exe list apps /site.name:\"" +
                                            webSiteName + "\" /config /xml /> \""
                                            + _xmlPath + "\\WebApps_" + webSiteName + "_ToExport.xml" + "\"\"";
@@ -2250,7 +2243,7 @@ namespace BizTalkAdminOperations
                         LogShortErrorMsg("Failed: Exporting WebApps.");
                 }
 
-                if (_machineName == strSrcNode) //local  
+                if (_machineName == _strSrcNode) //local  
                 {
                     LogInfo("IISClientCertMappings: Export started.");
                     ExportClientCertOnetOneMappings();
@@ -2260,8 +2253,8 @@ namespace BizTalkAdminOperations
                 {
                     LogInfo("IISClientCertMappings: Export started.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
                                        "\\" +
@@ -2282,15 +2275,15 @@ namespace BizTalkAdminOperations
                 }
                 LogInfoInLogFile("SrcBTSInstallPath:Export Started.");
                 //Export BTSInstallPath into txt file
-                if (_machineName == strSrcNode) //local  
+                if (_machineName == _strSrcNode) //local  
                 {
                     commandArguments = "/C SET BTSINSTALLPATH > \"" + _xmlPath + "\\SrcBTSInstallPath.txt" + "\"";
                 }
                 else //Remote
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
@@ -2336,15 +2329,15 @@ namespace BizTalkAdminOperations
 
                 //Export Destination BTSInstallPath into txt file
                 string commandArguments;
-                if (_machineName == strDstNode) //local  
+                if (_machineName == _strDstNode) //local  
                 {
                     commandArguments = "/C SET BTSINSTALLPATH > \"" + _xmlPath + "\\DstBTSInstallPath.txt" + "\"";
                 }
                 else
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
@@ -2358,12 +2351,12 @@ namespace BizTalkAdminOperations
                     throw new Exception("Failed: Exporting DstBTSInstallPath.");
                 }
                 //Get WebSite Name Only from Destiantion in Txt file
-                if (_machineName == strDstNode) //local                            
+                if (_machineName == _strDstNode) //local                            
                     commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
                                        _xmlPath + "\\DstWebSiteList.txt" + "\"";
                 else //remote            
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                        + " C:\\windows\\system32\\inetsrv\\appcmd.exe list site /text:name /> \"" +
                                        _xmlPath + "\\DstWebSiteList.txt" + "\"\"";
 
@@ -2408,7 +2401,7 @@ namespace BizTalkAdminOperations
                     ) //if no match which mean website is not existing in dest then create website in dest
                     {
                         //actual web site import.
-                        if (_machineName == strDstNode) //local
+                        if (_machineName == _strDstNode) //local
                         {
                             MoveWebAppFolders(_xmlPath + "\\WebSite_" + srcLine + "_ToImport.xml",
                                 srcLine); //while mvoing DstWebSite Folders subfolders which correspond to App folders, might also move, need to stop that
@@ -2421,9 +2414,9 @@ namespace BizTalkAdminOperations
                             //commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
                             //    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" + xmlPath + "\\WebSite_" + srcLines[srcLineCount] + "_ToImport.xml" + "\"\"";
                             string appPathUnc = ConvertPathToUncPath(_appPath);
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
                                                "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                " -accepteula" + "  \"" +
                                                _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                                _machineName + "\\" + appPathUnc + "\" \"ImportWebSite\" \"" + srcLine +
@@ -2443,12 +2436,12 @@ namespace BizTalkAdminOperations
 
                 //Generate DstWebAppList
                 LogInfo("WebApp: Import started.");
-                if (_machineName == strDstNode) //local                
+                if (_machineName == _strDstNode) //local                
                     commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe list app /text:app.name /> \"" +
                                        _xmlPath + "\\DstWebAppList.txt" + "\"";
                 else //remote                
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                        + " C:\\windows\\system32\\inetsrv\\appcmd.exe list app /text:app.name /> \"" +
                                        _xmlPath + "\\DstWebAppList.txt" + "\"\"";
 
@@ -2489,7 +2482,7 @@ namespace BizTalkAdminOperations
                     {
                         LogInfo("Generated Delta of WebApps to be imported.");
                         //actual web app import
-                        if (_machineName == strDstNode) //local
+                        if (_machineName == _strDstNode) //local
                         {
                             MoveWebAppFolders(_xmlPath + "\\WebApps_" + webSiteName + "_ToImport.xml", webSiteName);
                             commandArguments = "/C C:\\windows\\system32\\inetsrv\\appcmd.exe add app /in /xml /< \"" +
@@ -2501,9 +2494,9 @@ namespace BizTalkAdminOperations
                             //commandArguments = "/C " + "\"\"" + psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
                             //    + "  C:\\windows\\system32\\inetsrv\\appcmd.exe add site /in /xml /< \"" + "\\WebApps_" + webSiteName + "_ToImport.xml" + "\"\"";
                             string appPathUnc = ConvertPathToUncPath(_appPath);
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
                                                "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                " -accepteula" + "  \"" +
                                                _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                                _machineName + "\\" + appPathUnc + "\" \"ImportWebApp\" \"" +
@@ -2520,7 +2513,7 @@ namespace BizTalkAdminOperations
                         LogInfo("WebAppsToImport.xml is empty.");
                 }
 
-                if (_machineName == strDstNode) //local
+                if (_machineName == _strDstNode) //local
                 {
                     LogInfo("IISClientCertMappings: Import started.");
                     ImportClientCertOnetOneMappings();
@@ -2530,8 +2523,8 @@ namespace BizTalkAdminOperations
                 {
                     LogInfo("IISClientCertMappings: Import Started.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
                                        "\\" +
@@ -2540,12 +2533,12 @@ namespace BizTalkAdminOperations
                         ExecuteCmd("CMD.EXE", commandArguments); //genrate handler xml and save it back to local
                     if (returnCode == 0)
                     {
-                        LogShortSuccessMsg("Success: Imported IISClientCertMappings on " + strDstNode + " Server.");
+                        LogShortSuccessMsg("Success: Imported IISClientCertMappings on " + _strDstNode + " Server.");
 
                     }
                     else
                     {
-                        LogShortErrorMsg("Failed: Importing IISClientCertMappings on " + strDstNode + " Server.");
+                        LogShortErrorMsg("Failed: Importing IISClientCertMappings on " + _strDstNode + " Server.");
 
                     }
                 }
@@ -2585,7 +2578,7 @@ namespace BizTalkAdminOperations
 
                 int returnCode;
                 string commandArguments;
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     int i = 0;
                     foreach (string iStoreLocation in Enum.GetNames(typeof(StoreLocation)))
@@ -2734,8 +2727,8 @@ namespace BizTalkAdminOperations
                 {
                     //export cert on remote machine, locally       
                     LogInfo("CERT: Exporting from Remote Machine.");
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserNameForHost + "\"" + " -p " + "\"" + strPasswordForHost + "\"" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserNameForHost + "\"" + " -p " + "\"" + _strPasswordForHost + "\"" +
                                        " -accepteula" + "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + _remoteRootFolder +
                                        "\" \"ExportCert\" \"" + _strCertPass + "\"\"";
@@ -2746,17 +2739,16 @@ namespace BizTalkAdminOperations
                     {
                         LogShortSuccessMsg("Success: Exported Cert.");
 
-                        LogInfo("Moving cert files to local: " + _machineName + " from remote: " + strSrcNode);
+                        LogInfo("Moving cert files to local: " + _machineName + " from remote: " + _strSrcNode);
                         //bring back that cert folder to local machine                
                         string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
-                        var strSrc = "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + _certFolderName;
+                        var strSrc = "\\\\" + _strSrcNode + "\\" + remoteRootFolderUnc + _certFolderName;
                         commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + _certPath + "\" " +
                                            "/MOVE /R:1";
-                        returnCode =
-                            ExecuteCmd("CMD.EXE", commandArguments); //copy Cert Folder to Remote destination server
+                        ExecuteCmd("CMD.EXE", commandArguments); //copy Cert Folder to Remote destination server
 
 
-                        strSrc = "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + "\\Logs";
+                        strSrc = "\\\\" + _strSrcNode + "\\" + remoteRootFolderUnc + "\\Logs";
                         var strDst = _logPath;
                         commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
                                            "/MOVE /R:1";
@@ -2785,7 +2777,7 @@ namespace BizTalkAdminOperations
             int returnCode;
             string commandArguments;
 
-            if (_machineName == strDstNode) //local
+            if (_machineName == _strDstNode) //local
             {
                 LogInfo("CERT: Import started.");
                 //BEGIN::new code for delta, get all cert name and write them in txt file,
@@ -2998,11 +2990,11 @@ namespace BizTalkAdminOperations
             else //remote
             {
                 LogInfo("CERT: Import started.");
-                LogInfo("Copying certificates to remote Machine: " + strDstNode);
+                LogInfo("Copying certificates to remote Machine: " + _strDstNode);
                 //copy cert from local to remote
                 string strSrc = _certPath;
                 string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
-                string strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _certFolderName;
+                string strDst = "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + _certFolderName;
                 commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/E /COPYALL /R:1";
                 returnCode = ExecuteCmd("CMD.EXE", commandArguments); //copy cert Folder to Remote destination server
 
@@ -3011,8 +3003,8 @@ namespace BizTalkAdminOperations
                     LogShortSuccessMsg("Success: Certificates copied to remote.");
                     LogInfo("Certificate Import started on Remote Machine.");
                     //now execute .net exe on remote machine
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
-                                       strUserNameForHost + " -p " + "\"" + strPasswordForHost + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
+                                       _strUserNameForHost + " -p " + "\"" + _strPasswordForHost + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + _remoteRootFolder +
                                        "\" \"ImportCert\" \"" + _strCertPass + "\"\"";
@@ -3027,7 +3019,7 @@ namespace BizTalkAdminOperations
                 else
                     LogShortErrorMsg("Failed: Certificate copy to remote.");
 
-                strSrc = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + "\\Logs";
+                strSrc = "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + "\\Logs";
                 strDst = _logPath;
                 commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " + "/MOVE /R:1";
                 returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -3077,17 +3069,15 @@ namespace BizTalkAdminOperations
                         })
                     .ToList();
 
-                int appcount = appList.Count;
-
-                for (int iAppCount = 0; iAppCount < appcount; iAppCount++)
+                foreach (var app in appList)
                 {
-                    //appNameCollectionString = appNameCollectionString + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1].ToString();//
+//appNameCollectionString = appNameCollectionString + ',' + appList[iAppCount].DcodeAppName.Split(charSeprator)[1].ToString();//
                     appNameCollectionString = appNameCollectionString.TrimStart(',') + ',' +
-                                              appList[iAppCount].DcodeAppName.Split(charSeprator)[1];
+                                              app.DcodeAppName.Split(charSeprator)[1];
                 }
 
 
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     // instantiate new instance of Explorer OM
                     BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
@@ -3127,8 +3117,8 @@ namespace BizTalkAdminOperations
                 {
                     LogInfo("Assembly: Getting Assembly list.");
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
-                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                               _machineName +
@@ -3232,7 +3222,7 @@ namespace BizTalkAdminOperations
                     throw new Exception("Error while cleaning DLL Folders.");
                 }
 
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     if (_strCustomDllToInclude != string.Empty) //if custom Dll filter not empty
                     {
@@ -3434,8 +3424,8 @@ namespace BizTalkAdminOperations
                     string customDllPathUnc = "\\\\" + _machineName + "\\" + ConvertPathToUncPath(_customDllPath);
                     string appPathUnc = ConvertPathToUncPath(_appPath);
                     string asmPathUnc = ConvertPathToUncPath(_asmPath);
-                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
-                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
                                               _machineName +
@@ -3498,7 +3488,7 @@ namespace BizTalkAdminOperations
                 if (_strCustomDllToInclude != string.Empty)
                 {
                     // BEGIN::custom DLL Code::Get  "DstCustomAssemblyList.txt"
-                    if (_machineName == strDstNode) //local
+                    if (_machineName == _strDstNode) //local
                     {
                         string asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
                         string asmPath2 = @"C:\Windows\assembly\GAC\";
@@ -3576,8 +3566,8 @@ namespace BizTalkAdminOperations
                     else //remote, get list of Custom Dlls from Dst
                     {
                         string appPathUnc = ConvertPathToUncPath(_appPath);
-                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
-                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strDstNode + " -u " + "\"" +
+                                           _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                            "  \"" +
                                            _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
                                            "\\" + appPathUnc + "\"" + " \"DstCustomDllList\" \"" +
@@ -3626,7 +3616,7 @@ namespace BizTalkAdminOperations
                 }
                 //actual gacing code
                 //remote copy 
-                if (_machineName != strDstNode
+                if (_machineName != _strDstNode
                 ) //if gacing has to be done on remote box then copy BizTalk DLL and Custom Dll folder on remote
                 {
                     string strSrc, strDst;
@@ -3636,7 +3626,7 @@ namespace BizTalkAdminOperations
                         //copy BizTalk Dll Folder
                         strSrc = _asmPath;
 
-                        strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _asmFolderName;
+                        strDst = "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + _asmFolderName;
                         commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
                                            "/E /COPYALL /R:1";
                         returnCode =
@@ -3648,7 +3638,7 @@ namespace BizTalkAdminOperations
                     }
                     //custom Dll Folder
                     strSrc = _customDllPath;
-                    strDst = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _customDllFolderName;
+                    strDst = "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + _customDllFolderName;
                     commandArguments = @"/C robocopy " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
                                        "/E /COPYALL /R:1";
                     returnCode =
@@ -3675,7 +3665,7 @@ namespace BizTalkAdminOperations
                                 string dllName = srcLine.Substring(0, srcLine.LastIndexOf("_"));
                                 string dllNameRemote = srcLine + "\\" + dllName + ".dll";
                                 filePath = _customDllPath + "\\" + srcLine + "\\" + dllName + ".dll";
-                                if (_machineName == strDstNode) //local
+                                if (_machineName == _strDstNode) //local
                                 {
                                     if (File.Exists(filePath))
                                     {
@@ -3685,8 +3675,8 @@ namespace BizTalkAdminOperations
                                 else //remote, Custom DLL folder already copied above, now just execute gacutil using PsExec
                                 {
                                     commandArguments =
-                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
-                                        strUserName + "\"" + " -p " + "\"" + strPassword + "\" " + " -accepteula" +
+                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                        _strUserName + "\"" + " -p " + "\"" + _strPassword + "\" " + " -accepteula" +
                                         " " +
                                         _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
                                         _customDllFolderName + "\\" + dllNameRemote + "\"\"";
@@ -3731,7 +3721,7 @@ namespace BizTalkAdminOperations
                                 string dllNameRemote = srcLine + "\\" + dllName + ".dll";
                                 filePath = _asmPath + "\\" + srcLine + "\\" + dllName + ".dll";
 
-                                if (_machineName == strDstNode) //local
+                                if (_machineName == _strDstNode) //local
                                 {
                                     if (File.Exists(filePath))
                                     {
@@ -3741,8 +3731,8 @@ namespace BizTalkAdminOperations
                                 else //remote 
                                 {
                                     commandArguments =
-                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
-                                        strUserName + "\"" + " -p " + "\"" + strPassword + "\" " + " -accepteula" +
+                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                        _strUserName + "\"" + " -p " + "\"" + _strPassword + "\" " + " -accepteula" +
                                         " " +
                                         _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
                                         _asmFolderName + "\\" + dllNameRemote + "\"\"";
@@ -3769,15 +3759,15 @@ namespace BizTalkAdminOperations
                     else
                         LogShortSuccessMsg("Success: BizTalk Assemblies Imported");
                 }
-                if (_machineName != strDstNode)
+                if (_machineName != _strDstNode)
                 {
                     //Delete Folders
                     try
                     {
                         string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
-                        string asmFolder = "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _asmFolderName;
+                        string asmFolder = "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + _asmFolderName;
                         string customDllFolder =
-                            "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + _customDllFolderName;
+                            "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + _customDllFolderName;
                         if (Directory.Exists(asmFolder))
                         {
                             Directory.Delete(asmFolder, true);
@@ -3878,7 +3868,7 @@ namespace BizTalkAdminOperations
                 LogInfo("Connecting to BamPrimaryImport...." + _srcBAMSqlInstance);
                 string commandArguments;
                 int returnCode;
-                if (_machineName == strSrcNode)
+                if (_machineName == _strSrcNode)
                 {
                     commandArguments = " get-defxml -FileName:\"" + _xmlPath + "\\BamDef.xml\" -Server:" +
                                        _srcBAMSqlInstance + " -Database:BAMPrimaryImport";
@@ -3893,8 +3883,8 @@ namespace BizTalkAdminOperations
                 else
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
@@ -3947,7 +3937,7 @@ namespace BizTalkAdminOperations
                                 foreach (DataRow dRow in ds.Tables["BamViews"].Rows)
                                 {
                                     LogInfoInLogFile("BAM: Get Accounts for View: " + dRow["ViewName"]);
-                                    if (_machineName == strSrcNode)
+                                    if (_machineName == _strSrcNode)
                                     {
                                         commandArguments =
                                             "/C " + "\"\"" + _bamExePath + "\"" + " get-accounts -View:\"" +
@@ -3966,8 +3956,8 @@ namespace BizTalkAdminOperations
                                     {
                                         string appPathUnc = ConvertPathToUncPath(_appPath);
                                         commandArguments =
-                                            "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strSrcNode + " -u " + "\"" +
-                                            strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                                            "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strSrcNode + " -u " + "\"" +
+                                            _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                             "  \"" +
                                             _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                             _machineName +
@@ -4126,7 +4116,7 @@ namespace BizTalkAdminOperations
 
 
                 //Now import Bam Def xml
-                if (_machineName == strDstNode)
+                if (_machineName == _strDstNode)
                 {
                     commandArguments = " deploy-all -DefinitionFile:\"" + _xmlPath + "\\BamDefToImport.xml\" -Server:" +
                                        _dstBAMSqlInstance
@@ -4140,8 +4130,8 @@ namespace BizTalkAdminOperations
                 else
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" + _machineName +
                                        "\\" +
@@ -4177,7 +4167,7 @@ namespace BizTalkAdminOperations
                         }
                         for (int i = 6; i < lines.Length; i++)
                         {
-                            if (_machineName == strDstNode)
+                            if (_machineName == _strDstNode)
                             {
                                 commandArguments = " add-account -AccountName:\"" + lines[i] + "\" -View:\"" +
                                                    lineViewName + "\" -Server:"
@@ -4193,8 +4183,8 @@ namespace BizTalkAdminOperations
                             else
                             {
                                 string appPathUnc = ConvertPathToUncPath(_appPath);
-                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
-                                                   "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
+                                                   "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                    " -accepteula" + "  \"" +
                                                    _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
                                                    _machineName + "\\" + appPathUnc + "\"" +
@@ -4242,7 +4232,7 @@ namespace BizTalkAdminOperations
                                              1); //remove btt_ prefix and get Src Activity Name.
                     if (!dstBttActivities.Contains(srcActName)) //if destination does not have that btt then import
                     {
-                        if (_machineName == strDstNode)
+                        if (_machineName == _strDstNode)
                         {
                             commandArguments = " /mgdb \"" + _dstSqlInstance + "\\BizTalkMgmtDb" + "\" \"" + bttFile +
                                                "\"";
@@ -4258,9 +4248,9 @@ namespace BizTalkAdminOperations
                         {
                             string appPathUnc = ConvertPathToUncPath(_appPath);
                             string bttFileUnc = ConvertPathToUncPath(bttFile);
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + strDstNode + " -u " +
+                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
                                                "\"" +
-                                               strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                               _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                " -accepteula" + "  \"" +
                                                _remoteRootFolder + "\\" + _remoteExeName + "\" \"" + "\\\\" +
                                                _machineName + "\\" + appPathUnc + "\" \"ImportBTTList\" \"" +
@@ -4300,7 +4290,7 @@ namespace BizTalkAdminOperations
             char[] chrSep = {','};
             string[] serviceName = _strWindowsServiceToIgnore.Split(chrSep);
             string userNameNoDomain =
-                strUserNameForHost.Substring(strUserNameForHost.LastIndexOf("\\") +
+                _strUserNameForHost.Substring(_strUserNameForHost.LastIndexOf("\\") +
                                              1); //userName with out domain like ectest.
 
             try
@@ -4322,7 +4312,7 @@ namespace BizTalkAdminOperations
 
                 int returnCode;
                 string commandArguments;
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     SelectQuery query =
                         new SelectQuery("select name, startname, pathname, displayname from Win32_Service");
@@ -4360,8 +4350,8 @@ namespace BizTalkAdminOperations
                 else //remote
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
                                        "\\" +
@@ -4392,7 +4382,7 @@ namespace BizTalkAdminOperations
                         string driveInfo = Path.GetPathRoot(folderPathTrimed);
                         string driveLetter = driveInfo.Substring(0, 1);
                         string pathWithoutDrive = folderPathTrimed.Substring(3, folderPathTrimed.Length - 3);
-                        var strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                        var strSrc = "\\\\" + _strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                         var strDst = _serviceFolderPath + "\\" +
                                      folderPathTrimed.Substring(folderPathTrimed.LastIndexOf('\\'));
                         LogInfo("Copy started from:" + strSrc + " To " + strDst);
@@ -4419,14 +4409,14 @@ namespace BizTalkAdminOperations
             char[] chrSep = {','};
             string[] serviceName = _strWindowsServiceToIgnore.Split(chrSep);
             string userNameNoDomain =
-                strUserNameForHost.Substring(strUserNameForHost.LastIndexOf("\\") +
+                _strUserNameForHost.Substring(_strUserNameForHost.LastIndexOf("\\") +
                                              1); //userName with out domain like ectest.
 
             try
             {
                 int returnCode;
                 string commandArguments;
-                if (_machineName == strDstNode) //local
+                if (_machineName == _strDstNode) //local
                 {
                     try
                     {
@@ -4466,8 +4456,8 @@ namespace BizTalkAdminOperations
                 else //remote
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        "  \"" +
                                        _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" + _machineName +
                                        "\\" +
@@ -4509,15 +4499,15 @@ namespace BizTalkAdminOperations
 
                         string strSrc;
                         if (_strToolMode == "Migrate")
-                            strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                            strSrc = "\\\\" + _strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                         else
                             strSrc = _serviceFolderPath + "\\" +
                                      folderPathTrimed.Substring(folderPathTrimed.LastIndexOf('\\'));
                         string strDst;
                         if (string.IsNullOrEmpty(_strServicesDrive) || string.IsNullOrWhiteSpace(_strServicesDrive))
-                            strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                            strDst = "\\\\" + _strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                         else
-                            strDst = "\\\\" + strDstNode + "\\" + _strServicesDrive.Trim().Substring(0, 1) + "$\\" +
+                            strDst = "\\\\" + _strDstNode + "\\" + _strServicesDrive.Trim().Substring(0, 1) + "$\\" +
                                      pathWithoutDrive;
                         LogInfo("Copy started from: " + strSrc + " To " + strDst);
                         commandArguments = @"/C robocopy /xc /xn /xo " + "\"" + strSrc + "\"" + " \"" + strDst + "\" " +
@@ -4527,19 +4517,19 @@ namespace BizTalkAdminOperations
                         {
                             LogShortSuccessMsg("Success: Imported Service Folders/Files.");
                             //copy successful hence create Service
-                            if (strDstNode == _machineName) //local
+                            if (_strDstNode == _machineName) //local
                                 commandArguments = @"/C sc create " + "\"" + srvDetails[0] + "\" DisplayName=\"" +
                                                    srvDetails[2] + "\" binPath=\"" + srvDetails[1] +
-                                                   "\" start=auto obj=\"" + strUserNameForHost + "\" password=\"" +
-                                                   strPasswordForHost + "\"";
+                                                   "\" start=auto obj=\"" + _strUserNameForHost + "\" password=\"" +
+                                                   _strPasswordForHost + "\"";
                             else //remote
-                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " +
-                                                   "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " +
+                                                   "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                    " -accepteula"
                                                    + " sc create " + "\"" + srvDetails[0] + "\" DisplayName=\"" +
                                                    srvDetails[2] + "\" binPath=\"" + srvDetails[1] +
-                                                   "\" start=auto obj=\"" + strUserNameForHost + "\" password=\"" +
-                                                   strPasswordForHost + "\"\"";
+                                                   "\" start=auto obj=\"" + _strUserNameForHost + "\" password=\"" +
+                                                   _strPasswordForHost + "\"\"";
 
                             returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
@@ -4659,10 +4649,10 @@ namespace BizTalkAdminOperations
                 }
 
                 if (txtConnectionString.Text != string.Empty && txtConnectionString.Text != "SERVER NAME")
-                    strSrcNode = txtConnectionString.Text;
+                    _strSrcNode = txtConnectionString.Text;
 
                 if (txtConnectionStringDst.Text != string.Empty && txtConnectionStringDst.Text != "SERVER NAME")
-                    strDstNode = txtConnectionStringDst.Text;
+                    _strDstNode = txtConnectionStringDst.Text;
             }
             else //BizTalk
             {
@@ -4779,31 +4769,30 @@ namespace BizTalkAdminOperations
                     {
                         #region PreRequisite Check
 
-                        if (_machineName != strSrcNode && strIsUtilCopied == _strPerformOperationNo
+                        if (_machineName != _strSrcNode && _strIsUtilCopied == _strPerformOperationNo
                         ) //remote, hence exe has to be copied.
                         {
                             LogInfo("Its Remote Export.");
-                            string commandArguments = "/C sc.exe \\\\" + strSrcNode + " delete psexesvc";
 
-                            LogInfo("Copying required artifacts to remote machine: " + strSrcNode);
+                            LogInfo("Copying required artifacts to remote machine: " + _strSrcNode);
 
                             string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
-                            commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" + " \"" +
-                                               "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc + "\" " + "\"" +
-                                               _remoteExeName + "\"" + " /IS /R:1";
+                            var commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" + " \"" +
+                                                      "\\\\" + _strSrcNode + "\\" + remoteRootFolderUnc + "\" " + "\"" +
+                                                      _remoteExeName + "\"" + " /IS /R:1";
 
                             var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
 
                             if (returnCode < _strRoboCopySuccessCode) //robocopy errorcode 1 means success
                             {
                                 LogShortSuccessMsg("Copy completed from: " + _appPath + _gacUtilFolderName + " To " +
-                                                   "\\\\" + strSrcNode + "\\" + remoteRootFolderUnc);
-                                strIsUtilCopied = _strPerformOperationYes;
+                                                   "\\\\" + _strSrcNode + "\\" + remoteRootFolderUnc);
+                                _strIsUtilCopied = _strPerformOperationYes;
                             }
                             else
                             {
                                 throw new Exception(
-                                    "Copying required artifacts to remote machine failed: " + strSrcNode);
+                                    "Copying required artifacts to remote machine failed: " + _strSrcNode);
                             }
                         }
 
@@ -4811,7 +4800,7 @@ namespace BizTalkAdminOperations
 
                         EnableControls(false);
 
-                        if (string.IsNullOrEmpty(strUserName) && _machineName != strSrcNode) //remote operation
+                        if (string.IsNullOrEmpty(_strUserName) && _machineName != _strSrcNode) //remote operation
                         {
                             panelLoginDialog.Visible = true;
                             _loginOperationName = "useraccount";
@@ -4824,8 +4813,8 @@ namespace BizTalkAdminOperations
                         }
 
                         if ((_strHostInstance == _strPerformOperationYes ||
-                             _strCertificate == _strPerformOperationYes && _machineName != strSrcNode ||
-                             _strServices == _strPerformOperationYes) && string.IsNullOrEmpty(strUserNameForHost))
+                             _strCertificate == _strPerformOperationYes && _machineName != _strSrcNode ||
+                             _strServices == _strPerformOperationYes) && string.IsNullOrEmpty(_strUserNameForHost))
                         {
                             panelLoginDialog.Visible = true;
                             _loginOperationName = "serviceaccount";
@@ -4837,7 +4826,7 @@ namespace BizTalkAdminOperations
                             goto Outer;
                         }
 
-                        if (_strCertificate == _strPerformOperationYes && _machineName == strSrcNode)
+                        if (_strCertificate == _strPerformOperationYes && _machineName == _strSrcNode)
                         {
                             MessageBox.Show(
                                 "To Export the Service Account Certificates, Login Server with Service Account and rerun the Tool.");
@@ -4958,15 +4947,15 @@ namespace BizTalkAdminOperations
                     {
                         #region PreRequisite Check
 
-                        if (_machineName != strDstNode && strIsUtilCopied == _strPerformOperationNo
+                        if (_machineName != _strDstNode && _strIsUtilCopied == _strPerformOperationNo
                         ) //remote, hence exe has to be copied.
                         {
                             LogInfo("Its Remote Import.");
-                            LogInfo("Copying required artifacts to remote machine: " + strDstNode);
+                            LogInfo("Copying required artifacts to remote machine: " + _strDstNode);
 
                             string remoteRootFolderUnc = ConvertPathToUncPath(_remoteRootFolder);
                             string commandArguments = @"/C robocopy " + "\"" + _appPath + _gacUtilFolderName + "\"" +
-                                                      " \"" + "\\\\" + strDstNode + "\\" + remoteRootFolderUnc + "\" " +
+                                                      " \"" + "\\\\" + _strDstNode + "\\" + remoteRootFolderUnc + "\" " +
                                                       " /IS /R:1";
 
                             var returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -4974,9 +4963,9 @@ namespace BizTalkAdminOperations
                             if (returnCode < _strRoboCopySuccessCode) //robocopy returnCode 1 means success
                             {
                                 LogShortSuccessMsg("RemoteOperations EXE Copy completed from: " + _appPath +
-                                                   _gacUtilFolderName + " To " + "\\\\" + strDstNode + "\\" +
+                                                   _gacUtilFolderName + " To " + "\\\\" + _strDstNode + "\\" +
                                                    remoteRootFolderUnc);
-                                strIsUtilCopied = _strPerformOperationYes;
+                                _strIsUtilCopied = _strPerformOperationYes;
                             }
                             else
                             {
@@ -4989,8 +4978,8 @@ namespace BizTalkAdminOperations
                         EnableControls(false);
 
                         if ((_strHostInstance == _strPerformOperationYes ||
-                             _strCertificate == _strPerformOperationYes && _machineName != strDstNode ||
-                             _strServices == _strPerformOperationYes) && string.IsNullOrEmpty(strUserNameForHost))
+                             _strCertificate == _strPerformOperationYes && _machineName != _strDstNode ||
+                             _strServices == _strPerformOperationYes) && string.IsNullOrEmpty(_strUserNameForHost))
                         {
                             _strExport = _strPerformOperationNo;
                             panelLoginDialog.Visible = true;
@@ -5002,13 +4991,13 @@ namespace BizTalkAdminOperations
                             goto Outer;
                         }
 
-                        if (_strCertificate == _strPerformOperationYes && _machineName == strDstNode)
+                        if (_strCertificate == _strPerformOperationYes && _machineName == _strDstNode)
                         {
                             MessageBox.Show(
                                 "To Import the Service Account Certificates, Login Server with Service Account and rerun the Tool.");
                         }
 
-                        if (_machineName != strDstNode && string.IsNullOrEmpty(strUserName)) //remote operation
+                        if (_machineName != _strDstNode && string.IsNullOrEmpty(_strUserName)) //remote operation
                         {
                             panelLoginDialog.Visible = true;
                             _loginOperationName = "useraccount";
@@ -5148,11 +5137,6 @@ namespace BizTalkAdminOperations
             }
         }
 
-        private void btnExportWebSites_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
         private void BizTalkAdminOperations_Load(object sender, EventArgs e)
         {
             if (!Directory.Exists(_exportedDataPath))
@@ -5188,14 +5172,11 @@ namespace BizTalkAdminOperations
             if (File.Exists(_serverXmlPath))
             {
                 char[] chrSep = {','};
-                Servers srv = null;
-                XmlSerializer configSerializer = null;
 
                 XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
-                configSerializer = new XmlSerializer(typeof(Servers));
-                srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
+                var configSerializer = new XmlSerializer(typeof(Servers));
+                var srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
                 xmlTxtRed.Close();
-                configSerializer = null;
 
                 if (srv.SrcSqlInstance != null)
                 {
@@ -5250,15 +5231,15 @@ namespace BizTalkAdminOperations
             {
                 if (_loginOperationName == "useraccount") //for remote WMI, remote BizTalkApp 
                 {
-                    strUserName = txtUserName.Text.Trim();
-                    strUserNameForWMI = txtUserName.Text.Split(chrSep)[1];
-                    strPassword = txtPassword.Text.Trim();
-                    strDomain = txtUserName.Text.Split(chrSep)[0];
+                    _strUserName = txtUserName.Text.Trim();
+                    _strUserNameForWMI = txtUserName.Text.Split(chrSep)[1];
+                    _strPassword = txtPassword.Text.Trim();
+                    _strDomain = txtUserName.Text.Split(chrSep)[0];
                 }
                 else //Host
                 {
-                    strUserNameForHost = txtUserName.Text.Trim();
-                    strPasswordForHost = txtPassword.Text.Trim();
+                    _strUserNameForHost = txtUserName.Text.Trim();
+                    _strPasswordForHost = txtPassword.Text.Trim();
                 }
 
                 panelLoginDialog.Visible = false;
@@ -5272,12 +5253,12 @@ namespace BizTalkAdminOperations
 
         private void cmbBoxServerSrc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            strSrcNode = cmbBoxServerSrc.SelectedItem.ToString();
+            _strSrcNode = cmbBoxServerSrc.SelectedItem.ToString();
         }
 
         private void cmbBoxServerDst_SelectedIndexChanged(object sender, EventArgs e)
         {
-            strDstNode = cmbBoxServerDst.SelectedItem.ToString();
+            _strDstNode = cmbBoxServerDst.SelectedItem.ToString();
         }
 
         private void txtPassword_KeyDown(object sender, KeyEventArgs e)
@@ -5288,7 +5269,7 @@ namespace BizTalkAdminOperations
 
         private void txtConnectionString_Validating(object sender, CancelEventArgs e)
         {
-            if (_strServerType == "App" && strSrcNode != txtConnectionString.Text.Trim() &&
+            if (_strServerType == "App" && _strSrcNode != txtConnectionString.Text.Trim() &&
                 txtConnectionString.Text.Trim() != "SERVER NAME" && txtConnectionString.Text.Trim() != "SQL INSTANCE")
                 TstSrcSqlConnection(true);
 
@@ -5299,7 +5280,7 @@ namespace BizTalkAdminOperations
 
         private void txtConnectionStringDst_Validating(object sender, CancelEventArgs e)
         {
-            if (_strServerType == "App" && strDstNode != txtConnectionStringDst.Text.Trim() &&
+            if (_strServerType == "App" && _strDstNode != txtConnectionStringDst.Text.Trim() &&
                 txtConnectionStringDst.Text.Trim() != "SERVER NAME" &&
                 txtConnectionStringDst.Text.Trim() != "SQL INSTANCE")
                 TstDstSqlConnection(true);
@@ -5336,15 +5317,15 @@ namespace BizTalkAdminOperations
                 {
                     string folderName = folderPath.Trim().Substring(folderPath.LastIndexOf('\\') + 1);
                     string commandArguments;
-                    if (_machineName == strSrcNode) //local
+                    if (_machineName == _strSrcNode) //local
                     {
                         commandArguments = "/C net share " + "\"\"" + folderName + " > \"" + _xmlPath +
                                            "\\SharePermission_" + folderName + ".txt\"\"";
                     }
                     else //remote
                     {
-                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strSrcNode + " -u " + "\"" +
-                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strSrcNode + " -u " + "\"" +
+                                           _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                            + "  net share  \"" + folderName + "\" > \"" + _xmlPath +
                                            "\\SharePermission_" + folderName + ".txt\"\"";
                     }
@@ -5405,7 +5386,7 @@ namespace BizTalkAdminOperations
                         }
                     }
                     string commandArguments;
-                    if (_machineName == strDstNode) //local
+                    if (_machineName == _strDstNode) //local
                     {
                         commandArguments = "/C net share " + folderName + "=\"" + dstFolderPath.Trim() + "\"" +
                                            grantString;
@@ -5413,8 +5394,8 @@ namespace BizTalkAdminOperations
                     }
                     else //remote
                     {
-                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + strDstNode + " -u " + "\"" +
-                                           strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula"
+                        commandArguments = "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                           _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula"
                                            + " net share " + folderName + "=\"" + dstFolderPath.Trim() + "\"" +
                                            grantString.TrimEnd();
                     }
@@ -5462,8 +5443,6 @@ namespace BizTalkAdminOperations
         {
             string srcBTSInstallPath = string.Empty;
             string dstBTSInstallPath = string.Empty;
-            string srcDrive = string.Empty;
-            string dstDrive = string.Empty;
             string srcBTSInstallPath1 = string.Empty;
             //delete existing WebApps from Xml which are there in Dst
             try
@@ -5475,7 +5454,7 @@ namespace BizTalkAdminOperations
 
                     foreach (string srcBTS in srcBTSInstall)
                     {
-                        srcDrive = srcBTS.Split('=')[1].Split(':')[0];
+                        var srcDrive = srcBTS.Split('=')[1].Split(':')[0];
                         srcBTSInstallPath = srcDrive.ToLower() + ":" + srcBTS.Split('=')[1].Split(':')[1];
                         srcBTSInstallPath1 = srcDrive.ToUpper() + ":" + srcBTS.Split('=')[1].Split(':')[1];
                     }
@@ -5488,7 +5467,7 @@ namespace BizTalkAdminOperations
 
                     foreach (string dstBTS in dstBTSInstall)
                     {
-                        dstDrive = dstBTS.Split('=')[1].Split(':')[0];
+                        var dstDrive = dstBTS.Split('=')[1].Split(':')[0];
                         dstBTSInstallPath = dstDrive.ToUpper() + ":" + dstBTS.Split('=')[1].Split(':')[1];
                     }
                 }
@@ -5502,10 +5481,7 @@ namespace BizTalkAdminOperations
                         //where el.Attribute("path").Value.Equals(item)
                         where el.Attribute("APP.NAME").Value.Equals(item)
                         select el;
-                    if (applicationList != null)
-                    {
-                        applicationList.Remove();
-                    }
+                    applicationList.Remove();
                 }
                 var result = from ele in root.Elements(ns + "APP")
                     select ele;
@@ -5558,8 +5534,6 @@ namespace BizTalkAdminOperations
             int dstSiteCount = dstLines.Length; //get count of websites existing in Dst
             int i = 1;
             string srcBTSInstallPath = string.Empty;
-            string srcDrive = string.Empty;
-            string dstDrive = string.Empty;
             string srcBTSInstallPath1 = string.Empty;
             string dstBTSInstallPath = string.Empty;
             try
@@ -5572,7 +5546,7 @@ namespace BizTalkAdminOperations
 
                     foreach (string srcBTS in srcBTSInstall)
                     {
-                        srcDrive = srcBTS.Split('=')[1].Split(':')[0];
+                        var srcDrive = srcBTS.Split('=')[1].Split(':')[0];
                         srcBTSInstallPath = srcDrive.ToLower() + ":" + srcBTS.Split('=')[1].Split(':')[1];
                         srcBTSInstallPath1 = srcDrive.ToUpper() + ":" + srcBTS.Split('=')[1].Split(':')[1];
                     }
@@ -5585,7 +5559,7 @@ namespace BizTalkAdminOperations
 
                     foreach (string dstBTS in dstBTSInstall)
                     {
-                        dstDrive = dstBTS.Split('=')[1].Split(':')[0];
+                        var dstDrive = dstBTS.Split('=')[1].Split(':')[0];
                         dstBTSInstallPath = dstDrive.ToUpper() + ":" + dstBTS.Split('=')[1].Split(':')[1];
                     }
                 }
@@ -5597,10 +5571,7 @@ namespace BizTalkAdminOperations
                     from el in root.Elements(ns + "SITE").Elements(ns + "site").Elements(ns + "application")
                     where !el.Attribute("path").Value.Equals("/")
                     select el;
-                if (applicationList != null)
-                {
-                    applicationList.Remove();
-                }
+                applicationList.Remove();
 
                 var result = from ele in root.Elements(ns + "SITE")
                     select ele;
@@ -5657,11 +5628,6 @@ namespace BizTalkAdminOperations
             {
                 XElement root = XElement.Load(_xmlPath + "\\WebSites.xml");
                 XNamespace ns = root.GetDefaultNamespace();
-
-                var applicationList =
-                    from el in root.Elements(ns + "SITE").Elements(ns + "site").Elements(ns + "application")
-                    where !el.Attribute("path").Value.Equals("/")
-                    select el;
 
                 var result = from ele in root.Elements(ns + "SITE")
                     select ele;
@@ -5735,12 +5701,11 @@ namespace BizTalkAdminOperations
                 string[] lines = File.ReadAllLines(_xmlPath + @"\DstAppList.txt");
                 foreach (var item in lines)
                 {
-                    var ActivityList = from el in root.Elements(ns + "BizTalkApplication")
+                    var activityList = from el in root.Elements(ns + "BizTalkApplication")
                         where el.Attribute("ApplicationName").Value.Equals(item)
                         select el;
 
-                    if (ActivityList != null)
-                        ActivityList.Remove();
+                    activityList.Remove();
                 }
                 root.Save(_xmlPath + "\\AppsToImport.xml");
             }
@@ -5758,7 +5723,7 @@ namespace BizTalkAdminOperations
             try
             {
                 string[] srcBizTalkDllLines = File.ReadAllLines(_xmlPath + @"\SrcBizTalkAssemblyList.txt");
-                if (_machineName == strDstNode) //local
+                if (_machineName == _strDstNode) //local
                 {
                     string asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
                     string asmPath2 = @"C:\Windows\assembly\GAC\";
@@ -5823,8 +5788,8 @@ namespace BizTalkAdminOperations
                         {
                             if (filePathDll != string.Empty)
                             {
-                                string DllVer = AssemblyName.GetAssemblyName(filePathDll).Version.ToString();
-                                writer.WriteLine(Path.GetFileNameWithoutExtension(filePathDll) + "_" + DllVer);
+                                string dllVer = AssemblyName.GetAssemblyName(filePathDll).Version.ToString();
+                                writer.WriteLine(Path.GetFileNameWithoutExtension(filePathDll) + "_" + dllVer);
                             }
 
                         }
@@ -5833,8 +5798,8 @@ namespace BizTalkAdminOperations
                 else
                 {
                     string appPathUnc = ConvertPathToUncPath(_appPath);
-                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + strDstNode + " -u " + "\"" +
-                                              strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    string commandArguments = "/C " + "\"\"" + _psExecPath + "\" \\\\" + _strDstNode + " -u " + "\"" +
+                                              _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                               "  \"" +
                                               _remoteRootFolder + "\\" + _remoteExeName + "\" " + "\"\\\\" +
                                               _machineName +
@@ -5908,11 +5873,11 @@ namespace BizTalkAdminOperations
 
                         foreach (var view in viewList)
                         {
-                            var ViewRefList = from el in root.Elements(ns + "Alerts").Elements(ns + "ViewAlert")
+                            var viewRefList = from el in root.Elements(ns + "Alerts").Elements(ns + "ViewAlert")
                                     .Elements(ns + "ViewRef")
                                 where el.Value.Equals(view.Attribute("ID").Value)
                                 select el;
-                            ViewRefList.Ancestors(ns + "ViewAlert").Remove();
+                            viewRefList.Ancestors(ns + "ViewAlert").Remove();
                             ///////////////////////////////////////////////////////////////
                             var activityViewList = from el in view.Elements(ns + "ActivityView")
                                 select el;
@@ -5942,7 +5907,7 @@ namespace BizTalkAdminOperations
             }
         }
 
-        private void MSIAPP(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, IDictionary<string, int> htApps)
+        private void MsiApp(Microsoft.BizTalk.ExplorerOM.ApplicationCollection appCol, IDictionary<string, int> htApps)
         {
             foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
             {
@@ -5960,7 +5925,7 @@ namespace BizTalkAdminOperations
                         htApps.Add(app.Name, 1);
                     }
                     if (app.References.Count > 1)
-                        MSIAPP(app.References, htApps);
+                        MsiApp(app.References, htApps);
                 }
             }
         }
@@ -6137,8 +6102,8 @@ namespace BizTalkAdminOperations
                             driveInfo = Path.GetPathRoot(folderPath);
                             driveLetter = driveInfo.Substring(0, 1);
                             pathWithoutDrive = folderPath.Substring(3, folderPath.Length - 3);
-                            strSrc = "\\\\" + strSrcNode + "\\" + srcDriveLetter + "$\\" + pathWithoutDrive;
-                            strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                            strSrc = "\\\\" + _strSrcNode + "\\" + srcDriveLetter + "$\\" + pathWithoutDrive;
+                            strDst = "\\\\" + _strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
 
                             LogInfo("Copy started from: " + strSrc + " To " + strDst);
 
@@ -6195,8 +6160,8 @@ namespace BizTalkAdminOperations
                             driveInfo = Path.GetPathRoot(physicalPath);
                             driveLetter = driveInfo.Substring(0, 1);
                             pathWithoutDrive = physicalPath.Substring(3, physicalPath.Length - 3);
-                            strSrc = "\\\\" + strSrcNode + "\\" + srcDriveLetter + "$\\" + pathWithoutDrive;
-                            strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                            strSrc = "\\\\" + _strSrcNode + "\\" + srcDriveLetter + "$\\" + pathWithoutDrive;
+                            strDst = "\\\\" + _strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
 
                             LogInfo("Copy started from: " + strSrc + " To " + strDst);
 
@@ -6222,7 +6187,7 @@ namespace BizTalkAdminOperations
                         driveLetter = driveInfo.Substring(0, 1);
                         pathWithoutDrive = folderPath.Substring(3, folderPath.Length - 3);
                         strSrc = _vDir + "\\" + pWebSite + "\\" + folderPath.Substring(folderPath.LastIndexOf('\\'));
-                        strDst = "\\\\" + strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                        strDst = "\\\\" + _strDstNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
 
                         LogInfo("Copy started from: " + strSrc + " To " + strDst);
 
@@ -6245,7 +6210,7 @@ namespace BizTalkAdminOperations
                         driveInfo = Path.GetPathRoot(folderPath);
                         driveLetter = driveInfo.Substring(0, 1);
                         pathWithoutDrive = folderPath.Substring(3, folderPath.Length - 3);
-                        strSrc = "\\\\" + strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
+                        strSrc = "\\\\" + _strSrcNode + "\\" + driveLetter + "$\\" + pathWithoutDrive;
                         strDst = _vDir + "\\" + pWebSite + "\\" + folderPath.Substring(folderPath.LastIndexOf('\\'));
 
                         LogInfo("Copy started from: " + strSrc + " To " + strDst);
@@ -6387,7 +6352,6 @@ namespace BizTalkAdminOperations
 
                 xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
-                x = null;
             }
             catch (Exception ex)
             {
@@ -6430,7 +6394,6 @@ namespace BizTalkAdminOperations
 
                 xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
                 x.Serialize(xmlWriterApps, srv, ns);
-                x = null;
             }
             catch (Exception ex)
             {
@@ -6499,11 +6462,11 @@ namespace BizTalkAdminOperations
                         txtConnectionStringDst.Text != "SERVER NAME")
                     {
                         SaveAppServers();
-                        strDstNode = txtConnectionStringDst.Text.Trim();
+                        _strDstNode = txtConnectionStringDst.Text.Trim();
                     }
                     else
                     {
-                        strDstNode = string.Empty;
+                        _strDstNode = string.Empty;
                         SaveAppServers();
                     }
                 }
@@ -6582,11 +6545,11 @@ namespace BizTalkAdminOperations
                         txtConnectionString.Text != "SERVER NAME")
                     {
                         SaveAppServers();
-                        strSrcNode = txtConnectionString.Text.Trim();
+                        _strSrcNode = txtConnectionString.Text.Trim();
                     }
                     else
                     {
-                        strSrcNode = string.Empty;
+                        _strSrcNode = string.Empty;
                         SaveAppServers();
                     }
                 }
@@ -6722,11 +6685,11 @@ namespace BizTalkAdminOperations
                                             {
                                                 if (vocabularyName == vocabularyInfo.Name)
                                                 {
-                                                    var VocabularyName = String.Format("{0}{1}.{2}.{3}.xml",
+                                                    var vocabularyFileName = String.Format("{0}{1}.{2}.{3}.xml",
                                                         "Vocabualary_", vocabularyInfo.Name,
                                                         vocabularyInfo.MajorRevision, vocabularyInfo.MinorRevision);
                                                     rulesetDepDriver.ExportVocabularyToFileRuleStore(vocabularyInfo,
-                                                        _brePath + "/" + VocabularyName);
+                                                        _brePath + "/" + vocabularyFileName);
                                                 }
                                             }
                                             catch (Exception ex)
@@ -7240,7 +7203,7 @@ namespace BizTalkAdminOperations
                         j = 0;
                         foreach (HostInstance ht in dstHostInstancesColletion)
                         {
-                            if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                            if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                 (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
                                 hostInstancesArray[j] = ht.Name.Split(' ')[3];
@@ -7312,7 +7275,7 @@ namespace BizTalkAdminOperations
                         j = 0;
                         foreach (HostInstance ht in dstHostInstancesColletion)
                         {
-                            if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                            if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                 (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
                                 hostInstancesArray[j] = ht.Name.Split(' ')[3];
@@ -7386,7 +7349,7 @@ namespace BizTalkAdminOperations
                         j = 0;
                         foreach (HostInstance ht in dstHostInstancesColletion)
                         {
-                            if (ht.HostType == HostInstance.HostTypeValues.In_process &&
+                            if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                 (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
                             {
                                 hostInstancesArray[j] = ht.Name.Split(' ')[3];
@@ -7446,7 +7409,7 @@ namespace BizTalkAdminOperations
             try
             {
                 string commandArguments;
-                if (_machineName == strSrcNode) //local
+                if (_machineName == _strSrcNode) //local
                 {
                     commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listapps />\"" + _xmlPath +
                                        "\\SrcSSOAppsList.txt" + "\"";
@@ -7454,8 +7417,8 @@ namespace BizTalkAdminOperations
                 else
                 {
                     string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" + " " +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" + " " +
                                        "\"" + fileName + "\"" + " -listapps />\"" + "\\\\" + _machineName + "\\" +
                                        xmlPathUnc + "\\SrcSSOAppsList.txt" + "\"";
 
@@ -7492,7 +7455,7 @@ namespace BizTalkAdminOperations
                                 string ssoApp = ssoApps.Split(':')[0].Split(')')[1].Trim();
                                 //DisplayInforMation of SSOApp
 
-                                if (_machineName == strSrcNode) //local
+                                if (_machineName == _strSrcNode) //local
                                 {
                                     commandArguments = "/C " + "\"\"" + fileName + "\"" + " -displayapp " + ssoApp +
                                                        " />\"" + _xmlPath + "\\SSOApp_" + ssoApp + ".txt" + "\"";
@@ -7501,8 +7464,8 @@ namespace BizTalkAdminOperations
                                 else
                                 {
                                     string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " +
-                                                       "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
+                                                       "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                        " -accepteula" + fileName + "\"" + " -displayapp " + ssoApp +
                                                        " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
                                                        "\\SSOApp_" + ssoApp + ".txt" + "\"";
@@ -7523,7 +7486,7 @@ namespace BizTalkAdminOperations
                                                      " Affiliate Application Information.");
                                 }
                                 //ListMappings
-                                if (_machineName == strSrcNode) //local
+                                if (_machineName == _strSrcNode) //local
                                 {
                                     commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listMappings " + ssoApp +
                                                        " />\"" + _xmlPath + "\\SSOMap_" + ssoApp + ".txt" + "\"";
@@ -7532,8 +7495,8 @@ namespace BizTalkAdminOperations
                                 else
                                 {
                                     string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strSrcNode + " -u " +
-                                                       "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
+                                                       "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                        fileName + "\"" + " -accepteula" + " -listMappings " + ssoApp +
                                                        " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
                                                        "\\SSOMap_" + ssoApp + ".txt" + "\"";
@@ -7807,7 +7770,7 @@ namespace BizTalkAdminOperations
             try
             {
                 string commandArguments;
-                if (_machineName == strDstNode) //local
+                if (_machineName == _strDstNode) //local
                 {
                     commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listapps />\"" + _xmlPath +
                                        "\\DstSSOAppsList.txt" + "\"";
@@ -7815,8 +7778,8 @@ namespace BizTalkAdminOperations
                 else
                 {
                     string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " + "\"" +
-                                       strUserName + "\"" + " -p " + "\"" + strPassword + "\"" + " -accepteula" +
+                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode + " -u " + "\"" +
+                                       _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" + " -accepteula" +
                                        fileName + "\"" + " -listapps />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
                                        "\\DstSSOAppsList.txt" + "\"";
 
@@ -7870,7 +7833,7 @@ namespace BizTalkAdminOperations
                             {
                                 //Import the App and Mappings associated to App
 
-                                if (_machineName == strDstNode) //local
+                                if (_machineName == _strDstNode) //local
                                 {
                                     commandArguments =
                                         "/C " + "\"\"" + fileName + "\"" + " -createapps \"" + file + "\"";
@@ -7878,8 +7841,8 @@ namespace BizTalkAdminOperations
                                 else
                                 {
                                     string filePathUnc = ConvertPathToUncPath(file);
-                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " +
-                                                       "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                    commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode + " -u " +
+                                                       "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                        " -accepteula" + fileName + "\"" + " -createapps \"" + "\\\\" +
                                                        _machineName + "\\" + filePathUnc + "\"";
 
@@ -7903,7 +7866,7 @@ namespace BizTalkAdminOperations
                                     Directory.GetFiles(_xmlPath, "SSOMap_" + appName + "_ToImport" + ".xml");
                                 foreach (string mappingFile in mappingFiles)
                                 {
-                                    if (_machineName == strDstNode) //local
+                                    if (_machineName == _strDstNode) //local
                                     {
                                         commandArguments =
                                             "/C " + "\"\"" + fileName + "\"" + " -createmappings \"" + mappingFile +
@@ -7912,9 +7875,9 @@ namespace BizTalkAdminOperations
                                     else
                                     {
                                         string mappingFileUnc = ConvertPathToUncPath(mappingFile);
-                                        commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode +
-                                                           " -u " + "\"" + strUserName + "\"" + " -p " + "\"" +
-                                                           strPassword + "\"" + " -accepteula" + fileName + "\"" +
+                                        commandArguments = "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode +
+                                                           " -u " + "\"" + _strUserName + "\"" + " -p " + "\"" +
+                                                           _strPassword + "\"" + " -accepteula" + fileName + "\"" +
                                                            " -createMappings />\"" + "\\\\" + _machineName + "\\" +
                                                            mappingFileUnc + "\"";
 
@@ -7947,7 +7910,7 @@ namespace BizTalkAdminOperations
                                             node.SelectSingleNode("windowsUserId").InnerText;
                                         try
                                         {
-                                            if (_machineName == strDstNode) //local
+                                            if (_machineName == _strDstNode) //local
                                             {
                                                 commandArguments =
                                                     "/C " + "\"\"" + fileName + "\"" + " -enablemapping \"" +
@@ -7956,8 +7919,8 @@ namespace BizTalkAdminOperations
                                             else
                                             {
                                                 commandArguments =
-                                                    "/C " + "\"\"" + _psExecPath + "\"  \\\\" + strDstNode + " -u " +
-                                                    "\"" + strUserName + "\"" + " -p " + "\"" + strPassword + "\"" +
+                                                    "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strDstNode + " -u " +
+                                                    "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
                                                     " -accepteula" + fileName + "\"" + " -enablemapping \"" +
                                                     windowsAccount + "\"" + appName + "\"";
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace BizTalkAdminOperations
+namespace MigrationTool
 {
     static class Program
     {

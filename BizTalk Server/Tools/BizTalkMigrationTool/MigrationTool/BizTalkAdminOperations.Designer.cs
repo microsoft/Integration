@@ -1,4 +1,4 @@
-﻿namespace BizTalkAdminOperations
+﻿namespace MigrationTool
 {
     partial class BizTalkAdminOperations
     {

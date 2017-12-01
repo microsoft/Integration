@@ -1,11 +1,10 @@
-﻿namespace Microsoft.BizTalk.Management {
-    using System;
-    using System.ComponentModel;
-    using System.Management;
-    using System.Collections;
-    using System.Globalization;
+﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Globalization;
+using System.Management;
 
-
+namespace MigrationTool {
     // Functions ShouldSerialize<PropertyName> are functions used by VS property browser to check if a particular property has to be serialized. These functions are added for all ValueType properties ( properties of type Int32, BOOL etc.. which cannot be set to null). These functions use Is<PropertyName>Null function. These functions are also used in the TypeConverter implementation for the properties to check for NULL value of property so that an empty value can be shown in Property browser in case of Drag and Drop in Visual studio.
     // Functions Is<PropertyName>Null() are used to check if a property is NULL.
     // Functions Reset<PropertyName> are added for Nullable Read/Write properties. These functions are used by VS designer in property browser to set a property to NULL.
@@ -21,24 +20,23 @@
         private static readonly string CreatedClassName = "MSBTS_ServerHost";
         
         // Private member variable to hold the ManagementScope which is used by the various methods.
-        private static ManagementScope statMgmtScope = null;
+        private static ManagementScope _statMgmtScope;
         
-        private ManagementSystemProperties PrivateSystemProperties;
+        private ManagementSystemProperties _privateSystemProperties;
         
         // Underlying lateBound WMI object.
-        private ManagementObject PrivateLateBoundObject;
+        private ManagementObject _privateLateBoundObject;
         
         // Member variable to store the 'automatic commit' behavior for the class.
-        private bool AutoCommitProp;
+        private bool _autoCommitProp;
         
         // Private variable to hold the embedded property representing the instance.
-        private readonly ManagementBaseObject embeddedObj;
-        
+
         // The current WMI object used
-        private ManagementBaseObject curObj;
+        private ManagementBaseObject _curObj;
         
         // Flag to indicate if the instance is an embedded object.
-        private bool isEmbedded;
+        private bool _isEmbedded;
         
         // Below are different overloads of constructors to initialize an instance of the class with a WMI object.
         public ServerHost() {
@@ -72,9 +70,9 @@
         public ServerHost(ManagementObject theObject) {
             Initialize();
             if (CheckIfProperClass(theObject)) {
-                PrivateLateBoundObject = theObject;
-                PrivateSystemProperties = new ManagementSystemProperties(PrivateLateBoundObject);
-                curObj = PrivateLateBoundObject;
+                _privateLateBoundObject = theObject;
+                _privateSystemProperties = new ManagementSystemProperties(_privateLateBoundObject);
+                _curObj = _privateLateBoundObject;
             }
             else {
                 throw new ArgumentException("Class name does not match.");
@@ -84,10 +82,9 @@
         public ServerHost(ManagementBaseObject theObject) {
             Initialize();
             if (CheckIfProperClass(theObject)) {
-                embeddedObj = theObject;
-                PrivateSystemProperties = new ManagementSystemProperties(theObject);
-                curObj = embeddedObj;
-                isEmbedded = true;
+                _privateSystemProperties = new ManagementSystemProperties(theObject);
+                _curObj = theObject;
+                _isEmbedded = true;
             }
             else {
                 throw new ArgumentException("Class name does not match.");
@@ -108,8 +105,8 @@
         public string ManagementClassName {
             get {
                 string strRet = CreatedClassName;
-                if (curObj?.ClassPath != null) {
-                    strRet = (string)curObj["__CLASS"];
+                if (_curObj?.ClassPath != null) {
+                    strRet = (string)_curObj["__CLASS"];
                     if (string.IsNullOrEmpty(strRet)) {
                         strRet = CreatedClassName;
                     }
@@ -123,7 +120,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ManagementSystemProperties SystemProperties {
             get {
-                return PrivateSystemProperties;
+                return _privateSystemProperties;
             }
         }
         
@@ -132,7 +129,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ManagementBaseObject LateBoundObject {
             get {
-                return curObj;
+                return _curObj;
             }
         }
         
@@ -141,16 +138,16 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ManagementScope Scope {
             get {
-                if (isEmbedded == false) {
-                    return PrivateLateBoundObject.Scope;
+                if (_isEmbedded == false) {
+                    return _privateLateBoundObject.Scope;
                 }
                 else {
                     return null;
                 }
             }
             set {
-                if (isEmbedded == false) {
-                    PrivateLateBoundObject.Scope = value;
+                if (_isEmbedded == false) {
+                    _privateLateBoundObject.Scope = value;
                 }
             }
         }
@@ -160,10 +157,10 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool AutoCommit {
             get {
-                return AutoCommitProp;
+                return _autoCommitProp;
             }
             set {
-                AutoCommitProp = value;
+                _autoCommitProp = value;
             }
         }
         
@@ -171,19 +168,19 @@
         [Browsable(true)]
         public ManagementPath Path {
             get {
-                if (isEmbedded == false) {
-                    return PrivateLateBoundObject.Path;
+                if (_isEmbedded == false) {
+                    return _privateLateBoundObject.Path;
                 }
                 else {
                     return null;
                 }
             }
             set {
-                if (isEmbedded == false) {
+                if (_isEmbedded == false) {
                     if (CheckIfProperClass(null, value, null) != true) {
                         throw new ArgumentException("Class name does not match.");
                     }
-                    PrivateLateBoundObject.Path = value;
+                    _privateLateBoundObject.Path = value;
                 }
             }
         }
@@ -193,10 +190,10 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static ManagementScope StaticScope {
             get {
-                return statMgmtScope;
+                return _statMgmtScope;
             }
             set {
-                statMgmtScope = value;
+                _statMgmtScope = value;
             }
         }
         
@@ -205,7 +202,7 @@
         [Description("The Caption property is a short description (one-line string) of the object.")]
         public string Caption {
             get {
-                return (string)curObj["Caption"];
+                return (string)_curObj["Caption"];
             }
         }
         
@@ -214,7 +211,7 @@
         [Description("The Description property provides a description of the object. ")]
         public string Description {
             get {
-                return (string)curObj["Description"];
+                return (string)_curObj["Description"];
             }
         }
         
@@ -224,12 +221,12 @@
             " is 80 characters.")]
         public string HostName {
             get {
-                return (string)curObj["HostName"];
+                return (string)_curObj["HostName"];
             }
 
             set
             {
-                curObj["HostName"] = value;
+                _curObj["HostName"] = value;
             }
         }
         
@@ -237,7 +234,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsInstallDateNull {
             get {
-                if (curObj["InstallDate"] == null) {
+                if (_curObj["InstallDate"] == null) {
                     return true;
                 }
                 else {
@@ -253,8 +250,8 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public DateTime InstallDate {
             get {
-                if (curObj["InstallDate"] != null) {
-                    return ToDateTime((string)curObj["InstallDate"]);
+                if (_curObj["InstallDate"] != null) {
+                    return ToDateTime((string)_curObj["InstallDate"]);
                 }
                 else {
                     return DateTime.MinValue;
@@ -266,7 +263,7 @@
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsIsMappedNull {
             get {
-                if (curObj["IsMapped"] == null) {
+                if (_curObj["IsMapped"] == null) {
                     return true;
                 }
                 else {
@@ -281,10 +278,10 @@
         [TypeConverter(typeof(WMIValueTypeConverter))]
         public bool IsMapped {
             get {
-                if (curObj["IsMapped"] == null) {
+                if (_curObj["IsMapped"] == null) {
                     return Convert.ToBoolean(0);
                 }
-                return (bool)curObj["IsMapped"];
+                return (bool)_curObj["IsMapped"];
             }
         }
         
@@ -295,7 +292,7 @@
             "name. Max length for this property is 123 characters.")]
         public string MgmtDbNameOverride {
             get {
-                return (string)curObj["MgmtDbNameOverride"];
+                return (string)_curObj["MgmtDbNameOverride"];
             }
         }
         
@@ -306,7 +303,7 @@
             "80 characters.")]
         public string MgmtDbServerOverride {
             get {
-                return (string)curObj["MgmtDbServerOverride"];
+                return (string)_curObj["MgmtDbServerOverride"];
             }
         }
         
@@ -316,11 +313,11 @@
             ", the Name property can be overridden to be a Key property.")]
         public string Name {
             get {
-                return (string)curObj["Name"];
+                return (string)_curObj["Name"];
             }
             set
             {
-                curObj["Name"] = value;
+                _curObj["Name"] = value;
             }
         }
         
@@ -330,12 +327,12 @@
             " characters.")]
         public string ServerName {
             get {
-                return (string)curObj["ServerName"];
+                return (string)_curObj["ServerName"];
             }
 
             set
             {
-                curObj["ServerName"] = value;
+                _curObj["ServerName"] = value;
             }
         }
         
@@ -344,17 +341,17 @@
         [Description(@"The Status property is a string indicating the current status of the object. Various operational and non-operational statuses can be defined. Operational statuses are ""OK"", ""Degraded"" and ""Pred Fail"". ""Pred Fail"" indicates that an element may be functioning properly but predicting a failure in the near future. An example is a SMART-enabled hard drive. Non-operational statuses can also be specified. These are ""Error"", ""Starting"", ""Stopping"" and ""Service"". The latter, ""Service"", could apply during mirror-resilvering of a disk, reload of a user permissions list, or other administrative work. Not all such work is on-line, yet the managed element is neither ""OK"" nor in one of the other states.")]
         public string Status {
             get {
-                return (string)curObj["Status"];
+                return (string)_curObj["Status"];
             }
         }
         
-        private bool CheckIfProperClass(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions OptionsParam) {
+        private bool CheckIfProperClass(ManagementScope mgmtScope, ManagementPath path, ObjectGetOptions optionsParam) {
             if (path != null 
                 && string.Compare(path.ClassName, ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                 return true;
             }
             else {
-                return CheckIfProperClass(new ManagementObject(mgmtScope, path, OptionsParam));
+                return CheckIfProperClass(new ManagementObject(mgmtScope, path, optionsParam));
             }
         }
         
@@ -516,21 +513,21 @@
         
         [Browsable(true)]
         public void CommitObject() {
-            if (isEmbedded == false) {
-                PrivateLateBoundObject.Put();
+            if (_isEmbedded == false) {
+                _privateLateBoundObject.Put();
             }
         }
         
         [Browsable(true)]
         public void CommitObject(PutOptions putOptions) {
-            if (isEmbedded == false) {
-                PrivateLateBoundObject.Put(putOptions);
+            if (_isEmbedded == false) {
+                _privateLateBoundObject.Put(putOptions);
             }
         }
         
         private void Initialize() {
-            AutoCommitProp = true;
-            isEmbedded = false;
+            _autoCommitProp = true;
+            _isEmbedded = false;
         }
         
         private static string ConstructPath(string keyHostName, string keyMgmtDbNameOverride, string keyMgmtDbServerOverride, string keyServerName) {
@@ -549,9 +546,9 @@
                     throw new ArgumentException("Class name does not match.");
                 }
             }
-            PrivateLateBoundObject = new ManagementObject(mgmtScope, path, getOptions);
-            PrivateSystemProperties = new ManagementSystemProperties(PrivateLateBoundObject);
-            curObj = PrivateLateBoundObject;
+            _privateLateBoundObject = new ManagementObject(mgmtScope, path, getOptions);
+            _privateSystemProperties = new ManagementSystemProperties(_privateLateBoundObject);
+            _curObj = _privateLateBoundObject;
         }
         
         // Different overloads of GetInstances() help in enumerating instances of the WMI class.
@@ -574,7 +571,7 @@
         public static ServerHostCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
             if (mgmtScope == null)
             {
-                mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
+                mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
             ManagementPath pathObj = new ManagementPath
             {
@@ -599,7 +596,7 @@
         public static ServerHostCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
             if (mgmtScope == null)
             {
-                mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
+                mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
             ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_ServerHost", condition, selectedProperties));
             EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
@@ -609,7 +606,7 @@
         
         [Browsable(true)]
         public static ServerHost CreateInstance() {
-            var mgmtScope = statMgmtScope ?? new ManagementScope {Path = {NamespacePath = CreatedWmiNamespace}};
+            var mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = CreatedWmiNamespace}};
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
             ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
             return new ServerHost(tmpMgmtClass.CreateInstance());
@@ -619,7 +616,7 @@
         public static ServerHost CreateInstance(string pServer, string pUserName,string pPassword, string pDomain)
         {
             ManagementScope mgmtScope;
-            if (statMgmtScope == null)
+            if (_statMgmtScope == null)
             {
                 mgmtScope = new ManagementScope
                 {
@@ -636,7 +633,7 @@
             }
             else
             {
-                mgmtScope = statMgmtScope;
+                mgmtScope = _statMgmtScope;
             }
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
             ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
@@ -645,12 +642,12 @@
         
         [Browsable(true)]
         public void Delete() {
-            PrivateLateBoundObject.Delete();
+            _privateLateBoundObject.Delete();
         }
         
         public uint ForceUnmap() {
-            if (isEmbedded == false) {
-                ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("ForceUnmap", null, null);
+            if (_isEmbedded == false) {
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("ForceUnmap", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -659,8 +656,8 @@
         }
         
         public uint Map() {
-            if (isEmbedded == false) {
-                ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("Map", null, null);
+            if (_isEmbedded == false) {
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Map", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -669,8 +666,8 @@
         }
         
         public uint Unmap() {
-            if (isEmbedded == false) {
-                ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("Unmap", null, null);
+            if (_isEmbedded == false) {
+                ManagementBaseObject outParams = _privateLateBoundObject.InvokeMethod("Unmap", null, null);
                 return Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
             }
             else {
@@ -826,79 +823,79 @@
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public class ManagementSystemProperties {
             
-            private readonly ManagementBaseObject PrivateLateBoundObject;
+            private readonly ManagementBaseObject _privateLateBoundObject;
             
-            public ManagementSystemProperties(ManagementBaseObject ManagedObject) {
-                PrivateLateBoundObject = ManagedObject;
+            public ManagementSystemProperties(ManagementBaseObject managedObject) {
+                _privateLateBoundObject = managedObject;
             }
             
             [Browsable(true)]
-            public int GENUS {
+            public int Genus {
                 get {
-                    return (int)PrivateLateBoundObject["__GENUS"];
+                    return (int)_privateLateBoundObject["__GENUS"];
                 }
             }
             
             [Browsable(true)]
-            public string CLASS {
+            public string Class {
                 get {
-                    return (string)PrivateLateBoundObject["__CLASS"];
+                    return (string)_privateLateBoundObject["__CLASS"];
                 }
             }
             
             [Browsable(true)]
-            public string SUPERCLASS {
+            public string Superclass {
                 get {
-                    return (string)PrivateLateBoundObject["__SUPERCLASS"];
+                    return (string)_privateLateBoundObject["__SUPERCLASS"];
                 }
             }
             
             [Browsable(true)]
-            public string DYNASTY {
+            public string Dynasty {
                 get {
-                    return (string)PrivateLateBoundObject["__DYNASTY"];
+                    return (string)_privateLateBoundObject["__DYNASTY"];
                 }
             }
             
             [Browsable(true)]
-            public string RELPATH {
+            public string Relpath {
                 get {
-                    return (string)PrivateLateBoundObject["__RELPATH"];
+                    return (string)_privateLateBoundObject["__RELPATH"];
                 }
             }
             
             [Browsable(true)]
-            public int PROPERTY_COUNT {
+            public int PropertyCount {
                 get {
-                    return (int)PrivateLateBoundObject["__PROPERTY_COUNT"];
+                    return (int)_privateLateBoundObject["__PROPERTY_COUNT"];
                 }
             }
             
             [Browsable(true)]
-            public string[] DERIVATION {
+            public string[] Derivation {
                 get {
-                    return (string[])PrivateLateBoundObject["__DERIVATION"];
+                    return (string[])_privateLateBoundObject["__DERIVATION"];
                 }
             }
             
             [Browsable(true)]
-            public string SERVER {
+            public string Server {
                 get {
-                    return (string)PrivateLateBoundObject["__SERVER"];
+                    return (string)_privateLateBoundObject["__SERVER"];
                 }
             }
             
             [Browsable(true)]
-            public string NAMESPACE {
+            public string Namespace {
                 get {
-                    return (string)PrivateLateBoundObject["__NAMESPACE"];
+                    return (string)_privateLateBoundObject["__NAMESPACE"];
                 }
             }
             
             [Browsable(true)]
-            public string PATH {
+            public string Path {
                 get {
-                    return (string)PrivateLateBoundObject["__PATH"];
+                    return (string)_privateLateBoundObject["__PATH"];
                 }
             }
         }
