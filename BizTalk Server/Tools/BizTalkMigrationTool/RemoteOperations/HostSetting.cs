@@ -1435,23 +1435,23 @@ namespace RemoteOperations {
         }
         
         // Different overloads of GetInstances() help in enumerating instances of the WMI class.
-        public static HostSettingCollection GetInstances() {
+        public static IEnumerable<HostSetting> GetInstances() {
             return GetInstances(null, null, null);
         }
         
-        public static HostSettingCollection GetInstances(string condition) {
+        public static IEnumerable<HostSetting> GetInstances(string condition) {
             return GetInstances(null, condition, null);
         }
         
-        public static HostSettingCollection GetInstances(String [] selectedProperties) {
+        public static IEnumerable<HostSetting> GetInstances(String [] selectedProperties) {
             return GetInstances(null, null, selectedProperties);
         }
         
-        public static HostSettingCollection GetInstances(string condition, String [] selectedProperties) {
+        public static IEnumerable<HostSetting> GetInstances(string condition, String [] selectedProperties) {
             return GetInstances(null, condition, selectedProperties);
         }
         
-        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
+        public static IEnumerable<HostSetting> GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
             if (mgmtScope == null)
             {
                 mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
@@ -1465,18 +1465,18 @@ namespace RemoteOperations {
             if (enumOptions == null) {
                 enumOptions = new EnumerationOptions {EnsureLocatable = true};
             }
-            return new HostSettingCollection(clsObject.GetInstances(enumOptions));
+            return clsObject.GetInstances(enumOptions).Cast<HostSetting>();
         }
         
-        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, string condition) {
+        public static IEnumerable<HostSetting> GetInstances(ManagementScope mgmtScope, string condition) {
             return GetInstances(mgmtScope, condition, null);
         }
         
-        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, String [] selectedProperties) {
+        public static IEnumerable<HostSetting> GetInstances(ManagementScope mgmtScope, String [] selectedProperties) {
             return GetInstances(mgmtScope, null, selectedProperties);
         }
         
-        public static HostSettingCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
+        public static IEnumerable<HostSetting> GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
             if (mgmtScope == null)
             {
                 mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
@@ -1486,7 +1486,7 @@ namespace RemoteOperations {
             {
                 Options = new EnumerationOptions {EnsureLocatable = true}
             };
-            return new HostSettingCollection(objectSearcher.Get());
+            return objectSearcher.Get().Cast<HostSetting>();
         }
         
         [Browsable(true)]
@@ -1526,31 +1526,6 @@ namespace RemoteOperations {
             Isolated = 2,
             
             NullEnumValue = 0,
-        }
-        
-        // Enumerator implementation for enumerating instances of the class.
-        public class HostSettingCollection : IReadOnlyCollection<HostSetting> {
-            
-            private readonly ManagementObjectCollection _privColObj;
-            
-            public HostSettingCollection(ManagementObjectCollection objCollection) {
-                _privColObj = objCollection;
-            }
-            
-            public int Count {
-                get {
-                    return _privColObj.Count;
-                }
-            }
-
-            public IEnumerator<HostSetting> GetEnumerator() {
-                return _privColObj.Cast<HostSetting>().GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
         
         // TypeConverter to handle null values for ValueType properties

@@ -544,23 +544,23 @@ namespace RemoteOperations {
         }
         
         // Different overloads of GetInstances() help in enumerating instances of the WMI class.
-        public static ServerHostCollection GetInstances() {
+        public static IEnumerable<ServerHost> GetInstances() {
             return GetInstances(null, null, null);
         }
         
-        public static ServerHostCollection GetInstances(string condition) {
+        public static IEnumerable<ServerHost> GetInstances(string condition) {
             return GetInstances(null, condition, null);
         }
         
-        public static ServerHostCollection GetInstances(String [] selectedProperties) {
+        public static IEnumerable<ServerHost> GetInstances(String [] selectedProperties) {
             return GetInstances(null, null, selectedProperties);
         }
         
-        public static ServerHostCollection GetInstances(string condition, String [] selectedProperties) {
+        public static IEnumerable<ServerHost> GetInstances(string condition, String [] selectedProperties) {
             return GetInstances(null, condition, selectedProperties);
         }
         
-        public static ServerHostCollection GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
+        public static IEnumerable<ServerHost> GetInstances(ManagementScope mgmtScope, EnumerationOptions enumOptions) {
             if (mgmtScope == null)
             {
                 mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
@@ -574,18 +574,18 @@ namespace RemoteOperations {
             if (enumOptions == null) {
                 enumOptions = new EnumerationOptions {EnsureLocatable = true};
             }
-            return new ServerHostCollection(clsObject.GetInstances(enumOptions));
+            return clsObject.GetInstances(enumOptions).Cast<ServerHost>();
         }
         
-        public static ServerHostCollection GetInstances(ManagementScope mgmtScope, string condition) {
+        public static IEnumerable<ServerHost> GetInstances(ManagementScope mgmtScope, string condition) {
             return GetInstances(mgmtScope, condition, null);
         }
         
-        public static ServerHostCollection GetInstances(ManagementScope mgmtScope, String [] selectedProperties) {
+        public static IEnumerable<ServerHost> GetInstances(ManagementScope mgmtScope, String [] selectedProperties) {
             return GetInstances(mgmtScope, null, selectedProperties);
         }
         
-        public static ServerHostCollection GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
+        public static IEnumerable<ServerHost> GetInstances(ManagementScope mgmtScope, string condition, String [] selectedProperties) {
             if (mgmtScope == null)
             {
                 mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
@@ -593,7 +593,7 @@ namespace RemoteOperations {
             ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_ServerHost", condition, selectedProperties));
             EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
             objectSearcher.Options = enumOptions;
-            return new ServerHostCollection(objectSearcher.Get());
+            return objectSearcher.Get().Cast<ServerHost>();
         }
         
         [Browsable(true)]
@@ -654,31 +654,6 @@ namespace RemoteOperations {
             }
             else {
                 return Convert.ToUInt32(0);
-            }
-        }
-        
-        // Enumerator implementation for enumerating instances of the class.
-        public class ServerHostCollection : IReadOnlyCollection<ServerHost> {
-            
-            private readonly ManagementObjectCollection _privColObj;
-            
-            public ServerHostCollection(ManagementObjectCollection objCollection) {
-                _privColObj = objCollection;
-            }
-            
-            public int Count {
-                get {
-                    return _privColObj.Count;
-                }
-            }
-            
-            public IEnumerator<ServerHost> GetEnumerator() {
-                return _privColObj.Cast<ServerHost>().GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
             }
         }
         

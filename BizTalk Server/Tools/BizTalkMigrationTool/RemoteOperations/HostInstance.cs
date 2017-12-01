@@ -862,7 +862,7 @@ namespace RemoteOperations
             {
                 enumOptions = new EnumerationOptions {EnsureLocatable = true};
             }
-            return new HostInstanceCollection(clsObject.GetInstances(enumOptions));
+            return clsObject.GetInstances(enumOptions).Cast<HostInstance>();
         }
 
         public static IEnumerable<HostInstance> GetInstances(ManagementScope mgmtScope, string condition)
@@ -887,7 +887,7 @@ namespace RemoteOperations
                 new SelectQuery("MSBTS_HostInstance", condition, selectedProperties));
             EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
             objectSearcher.Options = enumOptions;
-            return new HostInstanceCollection(objectSearcher.Get());
+            return objectSearcher.Get().Cast<HostInstance>();
         }
 
         [Browsable(true)]
@@ -1054,32 +1054,6 @@ namespace RemoteOperations
             Unknown0 = 8,
 
             NullEnumValue = 0,
-        }
-
-        // Enumerator implementation for enumerating instances of the class.
-        public class HostInstanceCollection : IReadOnlyCollection<HostInstance>
-        {
-            private readonly ManagementObjectCollection _privColObj;
-
-            public HostInstanceCollection(ManagementObjectCollection objCollection)
-            {
-                _privColObj = objCollection;
-            }
-
-            public int Count
-            {
-                get { return _privColObj.Count; }
-            }
-
-            public IEnumerator<HostInstance> GetEnumerator()
-            {
-                return _privColObj.Cast<HostInstance>().GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
 
         // TypeConverter to handle null values for ValueType properties

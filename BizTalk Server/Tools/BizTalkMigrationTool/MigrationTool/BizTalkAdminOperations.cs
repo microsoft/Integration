@@ -22,6 +22,7 @@ using System.Xml.XPath;
 using Microsoft.BizTalk.ExplorerOM;
 using Microsoft.RuleEngine;
 using Microsoft.Web.Administration;
+using Application = Microsoft.BizTalk.ExplorerOM.Application;
 using ApplicationCollection = Microsoft.BizTalk.ExplorerOM.ApplicationCollection;
 
 namespace MigrationTool
@@ -445,7 +446,6 @@ namespace MigrationTool
         private void btnGetHost_Click(object sender, EventArgs e)
         {
             //Cursor.Current = Cursors.WaitCursor;
-            XmlWriter xmlWriterApps = null;
             try
             {
                 LogInfo("Host Instances: Export started.");
@@ -502,13 +502,15 @@ namespace MigrationTool
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new XmlSerializer(hosts.GetType());
+                XmlSerializer xmlSerializer = new XmlSerializer(hosts.GetType());
                 XmlWriterSettings xmlWriterSetting =
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
 
-                xmlWriterApps = XmlWriter.Create(_xmlPath + @"\HostInstances.xml", xmlWriterSetting);
-                x.Serialize(xmlWriterApps, hosts, ns);
+                using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\HostInstances.xml", xmlWriterSetting))
+                {
+                    xmlSerializer.Serialize(xmlWriterApps, hosts, ns);
+                }
 
                 LogShortSuccessMsg("Success: Exported Host Instances.");
                 //Exporting HostSettings
@@ -594,12 +596,6 @@ namespace MigrationTool
             {
                 LogException(ex);
             }
-            finally
-            {
-                xmlWriterApps?.Close();
-            }
-
-            // Cursor.Current = Cursors.Default;
         }
 
         private void btnSetHostAndHostInstances_Click(object sender, EventArgs e)
@@ -972,7 +968,6 @@ namespace MigrationTool
 
         private void btnExportAdapterHandlers_Click(object sender, EventArgs e)
         {
-            XmlWriter xmlWriterApps = null;
             try
             {
                 LogInfo("Handlers: Export started.");
@@ -1023,13 +1018,15 @@ namespace MigrationTool
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    XmlSerializer x = new XmlSerializer(rcvSndHandlers.GetType());
+                    XmlSerializer xmlSerializer = new XmlSerializer(rcvSndHandlers.GetType());
                     XmlWriterSettings xmlWriterSetting =
                         new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
 
-                    xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Handlers.xml", xmlWriterSetting);
-                    x.Serialize(xmlWriterApps, rcvSndHandlers, ns);
+                    using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Handlers.xml", xmlWriterSetting))
+                    {
+                        xmlSerializer.Serialize(xmlWriterApps, rcvSndHandlers, ns);
+                    }
                     LogShortSuccessMsg("Success: Exported Handlers.");
                 }
                 else //remote
@@ -1055,10 +1052,6 @@ namespace MigrationTool
             catch (Exception ex)
             {
                 LogException(ex);
-            }
-            finally
-            {
-                xmlWriterApps?.Close();
             }
         }
 
@@ -1242,7 +1235,6 @@ namespace MigrationTool
 
         private int btnGetApplicationList_Click(object sender, EventArgs e)
         {
-            XmlWriter xmlWriterApps = null;
             try
             {
                 LogInfo("BizTalk App: Getting List.");
@@ -1277,7 +1269,7 @@ namespace MigrationTool
                     MsiApp(appCol, htApps);
 
                     bizTalkApps.BizTalkApplication = appCol
-                        .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
+                        .Cast<Application>()
                         .Where(app => !_bizTalkAppToIgnore.Contains(app.Name))
                         .Select(app =>
                             new BizTalkApplicationsBizTalkApplication
@@ -1292,12 +1284,14 @@ namespace MigrationTool
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    var x = new XmlSerializer(bizTalkApps.GetType());
+                    var xmlSerializer = new XmlSerializer(bizTalkApps.GetType());
                     XmlWriterSettings xmlWriterSetting =
                         new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                    xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Apps.xml", xmlWriterSetting);
-                    x.Serialize(xmlWriterApps, bizTalkApps, ns);
+                    using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Apps.xml", xmlWriterSetting))
+                    {
+                        xmlSerializer.Serialize(xmlWriterApps, bizTalkApps, ns);
+                    }
                     LogInfo("Success: Created Apps.xml.");
                     return 0;
                 }
@@ -1332,10 +1326,6 @@ namespace MigrationTool
             {
                 LogException(ex);
                 return 1;
-            }
-            finally
-            {
-                xmlWriterApps?.Close();
             }
         }
 
@@ -1440,23 +1430,19 @@ namespace MigrationTool
                                 {
                                     //start adding dependent app Ref
                                     ApplicationCollection appCol = btsExp.Applications;
-                                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                                    foreach (Application app in appCol)
                                     {
                                         if (app.Name == appName)
                                         {
                                             string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
                                                 StringSplitOptions.RemoveEmptyEntries);
-                                            foreach (string baseBTSApp in baseBizTalkApp)
+                                            foreach (Application baseApp in from baseBTSApp in baseBizTalkApp
+                                                from Application baseApp in appCol
+                                                where baseApp.Name.Equals(baseBTSApp.Trim())
+                                                select baseApp)
                                             {
-                                                foreach (Microsoft.BizTalk.ExplorerOM.Application baseApp in appCol)
-                                                {
-                                                    if (baseApp.Name.Equals(baseBTSApp.Trim())
-                                                    ) //Update function for compare value//
-                                                    {
-                                                        app.AddReference(baseApp);
-                                                        LogInfo("Success: Added reference of: " + baseApp.Name);
-                                                    }
-                                                }
+                                                app.AddReference(baseApp);
+                                                LogInfo("Success: Added reference of: " + baseApp.Name);
                                             }
                                         }
                                     }
@@ -1513,22 +1499,19 @@ namespace MigrationTool
                                 try
                                 {
                                     ApplicationCollection appCol = btsExp.Applications;
-                                    foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+                                    foreach (Application app in appCol)
                                     {
                                         if (app.Name == appName)
                                         {
                                             string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
                                                 StringSplitOptions.RemoveEmptyEntries);
-                                            foreach (string baseBTSApp in baseBizTalkApp)
+                                            foreach (Application baseApp in from baseBTSApp in baseBizTalkApp
+                                                from Application baseApp in appCol
+                                                where baseApp.Name == baseBTSApp.Trim()
+                                                select baseApp)
                                             {
-                                                foreach (Microsoft.BizTalk.ExplorerOM.Application baseApp in appCol)
-                                                {
-                                                    if (baseApp.Name == baseBTSApp.Trim())
-                                                    {
-                                                        app.AddReference(baseApp);
-                                                        LogInfo("Success: Added reffernce of: " + baseApp);
-                                                    }
-                                                }
+                                                app.AddReference(baseApp);
+                                                LogInfo("Success: Added reffernce of: " + baseApp);
                                             }
                                         }
                                     }
@@ -1630,10 +1613,8 @@ namespace MigrationTool
                     {
                         throw new InvalidOperationException("Error while cleaning MSI folder, " + ex.Message + ", " + ex.StackTrace);
                     }
-                    foreach (var appL in appList)
+                    foreach (var appName in appList.Select(appL => appL.DcodeAppName.Split(charSeprator)[1]))
                     {
-                        var appName = appL.DcodeAppName.Split(charSeprator)[1];
-
                         LogInfo("App Name:" + appName);
 
                         //get Spec File
@@ -1719,7 +1700,6 @@ namespace MigrationTool
                             LogShortSuccessMsg("Success: Exported Binding file.");
                         else
                             LogShortErrorMsg("Failed: Exporting Binding file.");
-                        //Export BRE Policies and Vocabualries which are not Part of MSI
                     }
                 }
                 else
@@ -2379,10 +2359,9 @@ namespace MigrationTool
                 foreach (string srcLine in srcLines)
                 {
                     int matches = 0;
-                    foreach (string dstLine in dstLines)
+                    if(dstLines.Any(dstLine => dstLine == srcLine))
                     {
-                        if (dstLine == srcLine)
-                            matches = 1;
+                        matches = 1;
                     }
 
                     if (matches != 1
@@ -2590,29 +2569,25 @@ namespace MigrationTool
                                         // Exporting EnhancedKEyUsage and KeyUsage for Certificates
                                         var enhancedKeyUsage = new string[] { };
 
-                                        foreach (X509Extension extension in certificate.Extensions)
+                                        foreach (X509Extension extension in certificate.Extensions.Cast<X509Extension>()
+                                            .Where(extension => extension.Oid.FriendlyName == "Enhanced Key Usage"))
                                         {
-                                            if (extension.Oid.FriendlyName == "Enhanced Key Usage")
+                                            try
                                             {
-                                                try
-                                                {
-                                                    enhancedKeyUsage = ((X509EnhancedKeyUsageExtension) extension)
-                                                        .EnhancedKeyUsages.Cast<Oid>()
-                                                        .Where(oid =>
-                                                            !string.IsNullOrEmpty(oid.FriendlyName) &&
-                                                            !string.IsNullOrWhiteSpace(oid.FriendlyName))
-                                                        .Select(oid => oid.FriendlyName.Trim()).ToArray();
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    LogInfo("Exception Occured when Extracting Enhanced Key Usage: " +
-                                                            _certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
-                                                            certificate.Thumbprint);
-                                                    LogException(ex);
-                                                }
-
+                                                enhancedKeyUsage = ((X509EnhancedKeyUsageExtension) extension)
+                                                    .EnhancedKeyUsages.Cast<Oid>()
+                                                    .Where(oid =>
+                                                        !string.IsNullOrEmpty(oid.FriendlyName) &&
+                                                        !string.IsNullOrWhiteSpace(oid.FriendlyName))
+                                                    .Select(oid => oid.FriendlyName.Trim()).ToArray();
                                             }
-
+                                            catch (Exception ex)
+                                            {
+                                                LogInfo("Exception Occured when Extracting Enhanced Key Usage: " +
+                                                        _certPath + @"\" + iStoreLocation + "_" + iStoreName + "_" +
+                                                        certificate.Thumbprint);
+                                                LogException(ex);
+                                            }
                                         }
 
                                         if (enhancedKeyUsage.Contains("ITG Smartcard") ||
@@ -3012,7 +2987,6 @@ namespace MigrationTool
 
         private int btnGetAssembliesList_Click(object sender, EventArgs e)
         {
-            XmlWriter xmlWriterApps = null;
             string appNameCollectionString = string.Empty;
             char[] charSeprator = {','};
 
@@ -3063,7 +3037,7 @@ namespace MigrationTool
                     {
                         Assembly = btsExp
                             .Applications
-                            .Cast<Microsoft.BizTalk.ExplorerOM.Application>()
+                            .Cast<Application>()
                             .Where(app => appNameCollectionString.Contains(app.Name))
                             .SelectMany(app => app
                                 .Assemblies
@@ -3088,12 +3062,14 @@ namespace MigrationTool
                     //Add lib namespace with empty prefix
                     ns.Add("", "");
 
-                    var x = new XmlSerializer(asmList.GetType());
+                    var xmlSerializer = new XmlSerializer(asmList.GetType());
                     XmlWriterSettings xmlWriterSetting =
                         new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                    xmlWriterApps = XmlWriter.Create(_xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting);
-                    x.Serialize(xmlWriterApps, asmList, ns);
+                    using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting))
+                    {
+                        xmlSerializer.Serialize(xmlWriterApps, asmList, ns);
+                    }
                     LogInfo("Success: Created SrcBizTalkAssembly.xml.");
                     return 0;
                 }
@@ -3129,17 +3105,13 @@ namespace MigrationTool
                 LogException(ex);
                 return 1;
             }
-            finally
-            {
-                xmlWriterApps?.Close();
-            }
         }
 
         private void btnExportAssemblies_Click(object sender, EventArgs e)
         {
             //Cursor.Current = Cursors.WaitCursor;
             AssemblyList asmList = null;
-            string[] customDll = null;
+            List<string> customDll = null;
             int customDlls = 0;
             char[] chrSep = {','};
 
@@ -3189,57 +3161,20 @@ namespace MigrationTool
                 {
                     if (_strCustomDllToInclude != string.Empty) //if custom Dll filter not empty
                     {
-                        string[] customDllFilters =
-                            _strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
-                        int customDllCount = 0;
-                        foreach (string customDllFilter in customDllFilters)
+                        customDll = new List<string>();
+                        foreach (string customDllFilter in _strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries))
                         {
-//BEGIN::custom asm list code                         
-                            string[] customDll1 =
-                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll2 =
-                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll3 =
-                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll4 =
-                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll5 =
-                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
-                            customDllCount = customDllCount + customDll1.Length + customDll2.Length +
-                                             customDll3.Length + customDll4.Length + customDll5.Length;
+                            //BEGIN::custom asm list code                         
+                            customDll.AddRange(Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories));
+                            customDll.AddRange(Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories));
+                            customDll.AddRange(Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories));
+                            customDll.AddRange(Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories));
+                            customDll.AddRange(Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories));
                         }
+                        LogInfo("Initial Custom Assembly count: " + customDll.Count);
 
-                        customDll = new string[customDllCount];
-                        LogInfo("Initial Custom Assembly count: " + customDll.Length);
-                        int customDllLength = 0;
-                        foreach (string customDllFilter in customDllFilters)
-                        {
-//BEGIN::custom asm list code                         
-                            string[] customDll1 =
-                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll2 =
-                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll3 =
-                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll4 =
-                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll5 =
-                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
-
-                            customDll1.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll1.Length;
-                            customDll2.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll2.Length;
-                            customDll3.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll3.Length;
-                            customDll4.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll4.Length;
-                            customDll5.CopyTo(customDll, customDllLength);
-                            customDllLength = customDllLength + customDll5.Length;
-                        }
-
-                        customDll = customDll.Distinct().ToArray();
-                        Array.Sort(customDll);
+                        customDll = customDll.Distinct().ToList();
+                        customDll.Sort();
 
                         //END::custom asm list code
                     }
@@ -3281,11 +3216,11 @@ namespace MigrationTool
                                             ) //if custom Dll fileter not empty
                                             {
                                                 //BEGIN::custom asm list code
-                                                while (Array.IndexOf(customDll, filePath) > -1
+                                                while (customDll.Contains(filePath)
                                                 ) //if same dll is part of custom DLL then empty that entry in list.
                                                 {
 
-                                                    customDll[Array.IndexOf(customDll, filePath)] = string.Empty;
+                                                    customDll[customDll.IndexOf(filePath)] = string.Empty;
                                                     customDlls++;
                                                 }
                                                 //END::custom asm list code
@@ -3332,7 +3267,7 @@ namespace MigrationTool
 
                     if (_strCustomDllToInclude != string.Empty) //if custom Dll fileter not empty
                     {
-                        LogInfo("Final Custom Assembly count: " + (customDll.Length - customDlls));
+                        LogInfo("Final Custom Assembly count: " + (customDll.Count - customDlls));
                         LogInfo("Custom Dll: Export started.");
                         //write custom dll paths in txt file
                         try
@@ -3460,56 +3395,20 @@ namespace MigrationTool
                         string asmPath4 = @"C:\Windows\assembly\GAC_64\";
                         string asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
-                        string[] customDllFilters =
-                            _strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
-                        int customDllCount = 0;
-                        foreach (string customDllFilter in customDllFilters)
+                        var customDllDst = new List<string>();
+                        foreach (string customDllFilter in _strCustomDllToInclude.Split(chrSep, StringSplitOptions.RemoveEmptyEntries))
                         {
 //BEGIN::custom asm list code                         
-                            string[] customDll1 =
-                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll2 =
-                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll3 =
-                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll4 =
-                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll5 =
-                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
-                            customDllCount = customDllCount + customDll1.Length + customDll2.Length +
-                                             customDll3.Length + customDll4.Length + customDll5.Length;
+
+                            customDllDst.AddRange(Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories));
+                            customDllDst.AddRange(Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories));
+                            customDllDst.AddRange(Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories));
+                            customDllDst.AddRange(Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories));
+                            customDllDst.AddRange(Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories));
                         }
 
-                        var customDllDst = new string[customDllCount];
-                        int customDllLength = 0;
-                        foreach (string customDllFilter in customDllFilters)
-                        {
-//BEGIN::custom asm list code                         
-                            string[] customDll1 =
-                                Directory.GetFiles(asmPath1, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll2 =
-                                Directory.GetFiles(asmPath2, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll3 =
-                                Directory.GetFiles(asmPath3, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll4 =
-                                Directory.GetFiles(asmPath4, customDllFilter, SearchOption.AllDirectories);
-                            string[] customDll5 =
-                                Directory.GetFiles(asmPath5, customDllFilter, SearchOption.AllDirectories);
-
-                            customDll1.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll1.Length;
-                            customDll2.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll2.Length;
-                            customDll3.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll3.Length;
-                            customDll4.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll4.Length;
-                            customDll5.CopyTo(customDllDst, customDllLength);
-                            customDllLength = customDllLength + customDll5.Length;
-                        }
-
-                        customDllDst = customDllDst.Distinct().ToArray();
-                        Array.Sort(customDllDst);
+                        customDllDst = customDllDst.Distinct().ToList();
+                        customDllDst.Sort();
 
                         //write custom dll paths in txt file
                         using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstCustomAssemblyList.txt", false))
@@ -3557,22 +3456,15 @@ namespace MigrationTool
                     string[] srcLines = File.ReadAllLines(_xmlPath + @"\SrcCustomAssemblyList.txt");
                     string[] dstLines = File.ReadAllLines(_xmlPath + @"\DstCustomAssemblyList.txt");
 
-                    foreach (string srcFilePath in srcLines)
+                    foreach (string srcFilePath in srcLines.Where(srcFilePath => Array.IndexOf(dstLines, srcFilePath) > -1))
                     {
-                        if (Array.IndexOf(dstLines, srcFilePath) > -1
-                        ) //if same dll is part of custom DLL then empty that entry in list.                                                    
-                            srcLines[Array.IndexOf(srcLines, srcFilePath)] = string.Empty;
+                        srcLines[Array.IndexOf(srcLines, srcFilePath)] = string.Empty;
                     }
                     using (StreamWriter writer = new StreamWriter(_xmlPath + @"\CustomAssemblyToImport.txt", false))
                     {
-                        foreach (string filePathDll in srcLines)
+                        foreach (string filePathDll in srcLines.Where(filePathDll => filePathDll != string.Empty))
                         {
-                            if (filePathDll != string.Empty)
-                            {
-                                //string CustomDllVer = AssemblyName.GetAssemblyName(filePathDll).Version.ToString();
-                                writer.WriteLine(filePathDll);
-                            }
-
+                            writer.WriteLine(filePathDll);
                         }
                     }
 
@@ -3619,47 +3511,44 @@ namespace MigrationTool
                     string[] srcLines = File.ReadAllLines(_xmlPath + @"\CustomAssemblyToImport.txt");
                     int flagCustomDllExists = 0;
                     LogInfo("Custom Dll Import Started.");
-                    foreach (string srcLine in srcLines)
+                    foreach (string srcLine in srcLines.Where(srcLine => srcLine != string.Empty))
                     {
-                        if (srcLine != string.Empty)
+                        flagCustomDllExists++;
+                        try
                         {
-                            flagCustomDllExists++;
-                            try
+                            string dllName = srcLine.Substring(0, srcLine.LastIndexOf("_"));
+                            string dllNameRemote = srcLine + "\\" + dllName + ".dll";
+                            filePath = _customDllPath + "\\" + srcLine + "\\" + dllName + ".dll";
+                            if (_machineName == _strDstNode) //local
                             {
-                                string dllName = srcLine.Substring(0, srcLine.LastIndexOf("_"));
-                                string dllNameRemote = srcLine + "\\" + dllName + ".dll";
-                                filePath = _customDllPath + "\\" + srcLine + "\\" + dllName + ".dll";
-                                if (_machineName == _strDstNode) //local
+                                if (File.Exists(filePath))
                                 {
-                                    if (File.Exists(filePath))
-                                    {
-                                        returnCode = ExecuteCmd(_gacUtilPath, String.Format("/i \"{0}\"", filePath));
-                                    }
+                                    returnCode = ExecuteCmd(_gacUtilPath, String.Format("/i \"{0}\"", filePath));
                                 }
-                                else //remote, Custom DLL folder already copied above, now just execute gacutil using PsExec
-                                {
-                                    commandArguments =
-                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
-                                        _strUserName + "\"" + " -p " + "\"" + _strPassword + "\" " + " -accepteula" +
-                                        " " +
-                                        _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
-                                        _customDllFolderName + "\\" + dllNameRemote + "\"\"";
-                                    returnCode = ExecuteCmd("CMD.EXE", commandArguments); //gac dll remotely
-                                }
+                            }
+                            else //remote, Custom DLL folder already copied above, now just execute gacutil using PsExec
+                            {
+                                commandArguments =
+                                    "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                    _strUserName + "\"" + " -p " + "\"" + _strPassword + "\" " + " -accepteula" +
+                                    " " +
+                                    _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
+                                    _customDllFolderName + "\\" + dllNameRemote + "\"\"";
+                                returnCode = ExecuteCmd("CMD.EXE", commandArguments); //gac dll remotely
+                            }
 
-                                if (returnCode == 0)
-                                {
-                                    LogInfo("Gaced Assembly: " + srcLine);
-
-                                }
-                                else
-                                    LogShortErrorMsg("Failed: Gac Assembly: " + srcLine);
+                            if (returnCode == 0)
+                            {
+                                LogInfo("Gaced Assembly: " + srcLine);
 
                             }
-                            catch (Exception ex)
-                            {
-                                LogException(ex);
-                            }
+                            else
+                                LogShortErrorMsg("Failed: Gac Assembly: " + srcLine);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            LogException(ex);
                         }
                     }
                     if (flagCustomDllExists == 0)
@@ -3674,48 +3563,45 @@ namespace MigrationTool
                     string[] srcLines = File.ReadAllLines(_xmlPath + @"\BizTalkAssemblyToImport.txt");
                     int flagBizTalkDllExists = 0;
                     LogInfo("BizTalk Assembly Import Started.");
-                    foreach (string srcLine in srcLines)
+                    foreach (string srcLine in srcLines.Where(srcLine => srcLine != string.Empty))
                     {
-                        if (srcLine != string.Empty)
+                        flagBizTalkDllExists++;
+                        try
                         {
-                            flagBizTalkDllExists++;
-                            try
+                            string dllName = srcLine.Substring(0, srcLine.LastIndexOf("_"));
+                            string dllNameRemote = srcLine + "\\" + dllName + ".dll";
+                            filePath = _asmPath + "\\" + srcLine + "\\" + dllName + ".dll";
+
+                            if (_machineName == _strDstNode) //local
                             {
-                                string dllName = srcLine.Substring(0, srcLine.LastIndexOf("_"));
-                                string dllNameRemote = srcLine + "\\" + dllName + ".dll";
-                                filePath = _asmPath + "\\" + srcLine + "\\" + dllName + ".dll";
-
-                                if (_machineName == _strDstNode) //local
+                                if (File.Exists(filePath))
                                 {
-                                    if (File.Exists(filePath))
-                                    {
-                                        returnCode = ExecuteCmd(_gacUtilPath, String.Format("/i \"{0}\"", filePath));
-                                    }
+                                    returnCode = ExecuteCmd(_gacUtilPath, String.Format("/i \"{0}\"", filePath));
                                 }
-                                else //remote 
-                                {
-                                    commandArguments =
-                                        "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
-                                        _strUserName + "\"" + " -p " + "\"" + _strPassword + "\" " + " -accepteula" +
-                                        " " +
-                                        _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
-                                        _asmFolderName + "\\" + dllNameRemote + "\"\"";
-                                    returnCode = ExecuteCmd("CMD.EXE", commandArguments); //gac dll remotely
-                                }
+                            }
+                            else //remote 
+                            {
+                                commandArguments =
+                                    "/C " + "\"\"" + _psExecPath + "\" -s \\\\" + _strDstNode + " -u " + "\"" +
+                                    _strUserName + "\"" + " -p " + "\"" + _strPassword + "\" " + " -accepteula" +
+                                    " " +
+                                    _remoteRootFolder + "\\GacUtil.exe -i " + " \"" + _remoteRootFolder +
+                                    _asmFolderName + "\\" + dllNameRemote + "\"\"";
+                                returnCode = ExecuteCmd("CMD.EXE", commandArguments); //gac dll remotely
+                            }
 
-                                if (returnCode == 0)
-                                {
-                                    LogInfo("Gaced Assembly: " + srcLine);
-
-                                }
-                                else
-                                    LogShortErrorMsg("Failed: Gac Assembly: " + srcLine);
+                            if (returnCode == 0)
+                            {
+                                LogInfo("Gaced Assembly: " + srcLine);
 
                             }
-                            catch (Exception ex)
-                            {
-                                LogException(ex);
-                            }
+                            else
+                                LogShortErrorMsg("Failed: Gac Assembly: " + srcLine);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            LogException(ex);
                         }
                     }
                     if (flagBizTalkDllExists == 0)
@@ -4291,15 +4177,7 @@ namespace MigrationTool
                                     (service["startname"].ToString().ToLower().Contains(userNameNoDomain) ||
                                      service["startname"].ToString().ToLower().Contains(userNameNoDomain.ToLower())))
                                 {
-                                    bool blFound = true;
-                                    foreach (string name in serviceName)
-                                    {
-                                        if (service["name"].ToString().Contains(name))
-                                        {
-                                            blFound = false;
-                                        }
-                                    }
-                                    if (blFound)
+                                    if (!serviceName.Any(name => service["name"].ToString().Contains(name)))
                                     {
                                         string strPathName = service["pathname"].ToString();
                                         writer.WriteLine(service["name"] + "," + strPathName.Trim('"') + "," +
@@ -4390,24 +4268,19 @@ namespace MigrationTool
                             using (ManagementObjectSearcher searcher =
                                 new ManagementObjectSearcher(query))
                             {
-                                foreach (var service in searcher.Get())
-                                {
-                                    if (service["startname"] != null &&
+                                foreach (var service in searcher.Get()
+                                    .Cast<ManagementBaseObject>()
+                                    .Where(service =>
+                                        service["startname"] != null &&
                                         (service["startname"].ToString().ToLower().Contains(userNameNoDomain) ||
-                                         service["startname"].ToString().ToLower()
+                                         service["startname"]
+                                             .ToString()
+                                             .ToLower()
                                              .Contains(userNameNoDomain.ToLower())))
-                                    {
-                                        bool blFound = true;
-                                        foreach (string name in serviceName)
-                                        {
-                                            if (service["name"].ToString().Contains(name))
-                                            {
-                                                blFound = false;
-                                            }
-                                        }
-                                        if (blFound)
-                                            writer.WriteLine(service["name"] + "," + service["pathname"]);
-                                    }
+                                    .Where(service =>
+                                        !serviceName.Any(name => service["name"].ToString().Contains(name))))
+                                {
+                                    writer.WriteLine(service["name"] + "," + service["pathname"]);
                                 }
                             }
                         }
@@ -4445,15 +4318,9 @@ namespace MigrationTool
 
                 foreach (string srcLine in srcLines)
                 {
-                    bool found = false;
                     string[] srvDetails = srcLine.Split(chrSep);
-                    foreach (string dstLine in dstLines)
-                    {
-                        if (dstLine.Contains(srvDetails[0]))
-                            found = true;
-                    }
 
-                    if (found == false) //not found in Destination Machine, then copy folder and create service.
+                    if (!dstLines.Any(dstLine => dstLine.Contains(srvDetails[0]))) //not found in Destination Machine, then copy folder and create service.
                     {
                         //copy folder
                         string folderPathTrimed = srvDetails[1].Substring(0, srvDetails[1].LastIndexOf("\\"));
@@ -4603,10 +4470,12 @@ namespace MigrationTool
 
                 if (File.Exists(_serverXmlPath)) //reloading BizTalk Connection Info
                 {
-                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
-                    var configSerializer = new XmlSerializer(typeof(Servers));
-                    var srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    xmlTxtRed.Close();
+                    Servers srv;
+                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
+                    {
+                        var configSerializer = new XmlSerializer(typeof(Servers));
+                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
+                    }
 
                     txtConnectionString.Text = srv.SrcAppNode;
                     txtConnectionStringDst.Text = srv.DstAppNode;
@@ -4637,10 +4506,12 @@ namespace MigrationTool
                 {
                     char[] chrSep = {','};
 
-                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
-                    var configSerializer = new XmlSerializer(typeof(Servers));
-                    var srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    xmlTxtRed.Close();
+                    Servers srv;
+                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
+                    {
+                        var configSerializer = new XmlSerializer(typeof(Servers));
+                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
+                    }
                     cmbBoxServerSrc.Items.Clear();
                     cmbBoxServerDst.Items.Clear();
                     if (srv.SrcSqlInstance != null)
@@ -5139,10 +5010,12 @@ namespace MigrationTool
             {
                 char[] chrSep = {','};
 
-                XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
-                var configSerializer = new XmlSerializer(typeof(Servers));
-                var srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                xmlTxtRed.Close();
+                Servers srv;
+                using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
+                {
+                    var configSerializer = new XmlSerializer(typeof(Servers));
+                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
+                }
 
                 if (srv.SrcSqlInstance != null)
                 {
@@ -5279,9 +5152,8 @@ namespace MigrationTool
             {
                 string[] arrFoldersToCopyNoFiles =
                     _strFoldersToCopyNoFiles.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string folderPath in arrFoldersToCopyNoFiles)
+                foreach (string folderName in arrFoldersToCopyNoFiles.Select(folderPath => folderPath.Trim().Substring(folderPath.LastIndexOf('\\') + 1)))
                 {
-                    string folderName = folderPath.Trim().Substring(folderPath.LastIndexOf('\\') + 1);
                     string commandArguments;
                     if (_machineName == _strSrcNode) //local
                     {
@@ -5387,11 +5259,9 @@ namespace MigrationTool
                 XNamespace ns = root.GetDefaultNamespace();
                 string[] lines = File.ReadAllLines(_xmlPath + "\\AppPoolList.txt");
 
-                foreach (var item in lines)
+                foreach (var applicationList in lines.Select(item => root.Elements(ns + "APPPOOL")
+                    .Where(el => el.Attribute("APPPOOL.NAME").Value.Equals(item))))
                 {
-                    var applicationList = from el in root.Elements(ns + "APPPOOL")
-                        where el.Attribute("APPPOOL.NAME").Value.Equals(item)
-                        select el;
                     applicationList.Remove();
                 }
                 root.Save(_xmlPath + "\\AppPoolToImport.xml");
@@ -5441,12 +5311,10 @@ namespace MigrationTool
                 XNamespace ns = root.GetDefaultNamespace();
                 string[] lines = File.ReadAllLines(_xmlPath + "\\DstWebAppList.txt");
 
-                foreach (var item in lines)
+                foreach (var applicationList in lines.Select(item => (from el in root.Elements(ns + "APP")
+                    where el.Attribute("APP.NAME").Value.Equals(item)
+                    select el)))
                 {
-                    var applicationList = from el in root.Elements(ns + "APP")
-                        //where el.Attribute("path").Value.Equals(item)
-                        where el.Attribute("APP.NAME").Value.Equals(item)
-                        select el;
                     applicationList.Remove();
                 }
                 var result = from ele in root.Elements(ns + "APP")
@@ -5648,12 +5516,13 @@ namespace MigrationTool
                                     string[] arrAppsToIgnore =
                                         _bizTalkAppToIgnore.Split(chrSep, StringSplitOptions.RemoveEmptyEntries);
 
-                                    foreach (string appToIgnore in arrAppsToIgnore)
+                                    foreach (string appToIgnore in (from appToIgnore in arrAppsToIgnore
+                                        let find = "AppName = '" + appToIgnore.Trim() + "'"
+                                        let foundRows = ds.Tables["AppNames"].Select(find)
+                                        where !(foundRows.Length > 0)
+                                        select appToIgnore).ToList())
                                     {
-                                        string find = "AppName = '" + appToIgnore.Trim() + "'";
-                                        DataRow[] foundRows = ds.Tables["AppNames"].Select(find);
-                                        if (!(foundRows.Length > 0))
-                                            writer.WriteLine(appToIgnore.Trim());
+                                        writer.WriteLine(appToIgnore.Trim());
                                     }
                                 }
                             }
@@ -5665,12 +5534,10 @@ namespace MigrationTool
                 XElement root = XElement.Load(_xmlPath + "\\Apps.xml");
                 XNamespace ns = root.GetDefaultNamespace();
                 string[] lines = File.ReadAllLines(_xmlPath + @"\DstAppList.txt");
-                foreach (var item in lines)
+                foreach (var activityList in lines.Select(item => (from el in root.Elements(ns + "BizTalkApplication")
+                    where el.Attribute("ApplicationName").Value.Equals(item)
+                    select el)))
                 {
-                    var activityList = from el in root.Elements(ns + "BizTalkApplication")
-                        where el.Attribute("ApplicationName").Value.Equals(item)
-                        select el;
-
                     activityList.Remove();
                 }
                 root.Save(_xmlPath + "\\AppsToImport.xml");
@@ -5698,54 +5565,22 @@ namespace MigrationTool
                     string asmPath5 = @"C:\Windows\assembly\GAC_MSIL\";
 
                     //Creating DestinationBiztalk Assembly List
-                    int dllCount = 0;
-                    foreach (string srcBizTalkDll in srcBizTalkDllLines)
+                    var dllDst = new List<string>();
+                    foreach (string biztalkDllName in srcBizTalkDllLines.Select(srcBizTalkDll => srcBizTalkDll.Substring(0, srcBizTalkDll.LastIndexOf('_'))))
                     {
-                        string biztalkDllName = srcBizTalkDll.Substring(0, srcBizTalkDll.LastIndexOf('_'));
-
-                        string[] assemblyDll1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        dllCount = dllCount + assemblyDll1.Length + assemblyDll2.Length + assemblyDll3.Length +
-                                   assemblyDll4.Length + assemblyDll5.Length;
+                        dllDst.AddRange(Directory.GetFiles(asmPath1, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories));
+                        dllDst.AddRange(Directory.GetFiles(asmPath2, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories));
+                        dllDst.AddRange(Directory.GetFiles(asmPath3, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories));
+                        dllDst.AddRange(Directory.GetFiles(asmPath4, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories));
+                        dllDst.AddRange(Directory.GetFiles(asmPath5, biztalkDllName + "*.dll",
+                            SearchOption.AllDirectories));
                     }
-                    string[] dllDst = new string[dllCount];
-                    int dllLength = 0;
-                    foreach (string srcBizTalkDll in srcBizTalkDllLines)
-                    {
-                        string biztalkDllName = srcBizTalkDll.Substring(0, srcBizTalkDll.LastIndexOf('_'));
-
-                        string[] assemblyDll1 = Directory.GetFiles(asmPath1, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll2 = Directory.GetFiles(asmPath2, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll3 = Directory.GetFiles(asmPath3, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll4 = Directory.GetFiles(asmPath4, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-                        string[] assemblyDll5 = Directory.GetFiles(asmPath5, biztalkDllName + "*.dll",
-                            SearchOption.AllDirectories);
-
-                        assemblyDll1.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll1.Length;
-                        assemblyDll2.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll2.Length;
-                        assemblyDll3.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll3.Length;
-                        assemblyDll4.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll4.Length;
-                        assemblyDll5.CopyTo(dllDst, dllLength);
-                        dllLength = dllLength + assemblyDll5.Length;
-                    }
-                    dllDst = dllDst.Distinct().ToArray();
-                    Array.Sort(dllDst);
+                    dllDst = dllDst.Distinct().ToList();
+                    dllDst.Sort();
 
                     //write custom dll paths in txt file
                     using (StreamWriter writer = new StreamWriter(_xmlPath + @"\DstBizTalkAssemblyList.txt", false))
@@ -5787,22 +5622,16 @@ namespace MigrationTool
                 }
                 string[] dstBiztalkDllLines = File.ReadAllLines(_xmlPath + @"\DstBizTalkAssemblyList.txt");
 
-                foreach (string srcFilePath in srcBizTalkDllLines)
+                foreach (string srcFilePath in srcBizTalkDllLines.Where(srcFilePath => Array.IndexOf(dstBiztalkDllLines, srcFilePath) > -1))
                 {
-                    if (Array.IndexOf(dstBiztalkDllLines, srcFilePath) > -1
-                    ) //if same dll is part of custom DLL then empty that entry in list.                                                    
-                        srcBizTalkDllLines[Array.IndexOf(srcBizTalkDllLines, srcFilePath)] = string.Empty;
+                    srcBizTalkDllLines[Array.IndexOf(srcBizTalkDllLines, srcFilePath)] = string.Empty;
                 }
                 using (StreamWriter writer = new StreamWriter(_xmlPath + @"\BizTalkAssemblyToImport.txt", false))
                 {
-                    foreach (string filePathDll in srcBizTalkDllLines)
+                    foreach (string filePathDll in srcBizTalkDllLines.Where(filePathDll => filePathDll != string.Empty))
                     {
-                        if (filePathDll != string.Empty)
-                        {
-                            //string CustomDllVer = AssemblyName.GetAssemblyName(filePathDll).Version.ToString();
-                            writer.WriteLine(filePathDll);
-                        }
-
+                        //string CustomDllVer = AssemblyName.GetAssemblyName(filePathDll).Version.ToString();
+                        writer.WriteLine(filePathDll);
                     }
                 }
 
@@ -5826,18 +5655,14 @@ namespace MigrationTool
                 XElement root = XElement.Load(pBamDefXmlFilePath);
                 XNamespace ns = root.GetDefaultNamespace();
                 string[] lines = File.ReadAllLines(pActivityNameTxtFilePath);
-                foreach (var item in lines)
+                foreach (var activityList in lines.Select(item => (from el in root.Elements(ns + "Activity")
+                    where el.Attribute("Name").Value.Equals(item)
+                    select el)))
                 {
-                    var activityList = from el in root.Elements(ns + "Activity")
-                        where el.Attribute("Name").Value.Equals(item)
-                        select el;
-
-                    foreach (var activity in activityList)
+                    foreach (var viewList in activityList.Select(activity => (from el in root.Elements(ns + "View").Elements(ns + "ActivityView")
+                        where el.Attribute("ActivityRef").Value.Equals(activity.Attribute("ID").Value)
+                        select el.Parent)))
                     {
-                        var viewList = from el in root.Elements(ns + "View").Elements(ns + "ActivityView")
-                            where el.Attribute("ActivityRef").Value.Equals(activity.Attribute("ID").Value)
-                            select el.Parent;
-
                         foreach (var view in viewList)
                         {
                             var viewRefList = from el in root.Elements(ns + "Alerts").Elements(ns + "ViewAlert")
@@ -5849,12 +5674,11 @@ namespace MigrationTool
                             var activityViewList = from el in view.Elements(ns + "ActivityView")
                                 select el;
 
-                            foreach (var activityView in activityViewList)
+                            foreach (var cubeList in activityViewList.Select(activityView => (from el in root.Elements(ns + "Cube")
+                                where el.Attribute("ActivityViewRef").Value
+                                    .Equals(activityView.Attribute("ID").Value)
+                                select el)))
                             {
-                                var cubeList = from el in root.Elements(ns + "Cube")
-                                    where el.Attribute("ActivityViewRef").Value
-                                        .Equals(activityView.Attribute("ID").Value)
-                                    select el;
                                 cubeList.Remove();
                             }
                         }
@@ -5876,24 +5700,20 @@ namespace MigrationTool
 
         private void MsiApp(ApplicationCollection appCol, IDictionary<string, int> htApps)
         {
-            foreach (Microsoft.BizTalk.ExplorerOM.Application app in appCol)
+            foreach (Application app in appCol.Cast<Application>().Where(app => !_bizTalkAppToIgnore.Contains(app.Name)))
             {
-                if (!_bizTalkAppToIgnore.Contains(app.Name)
-                ) //if (!(app.Name == "RosettaNet" || app.Name == "BizTalk.System" || app.Name == "BizTalk Application 1" || app.Name == "Microsoft.Practices.ESB" || app.Name == "BizTalk EDI Application"))
+                int i;
+                if (htApps.TryGetValue(app.Name, out i))
                 {
-                    int i;
-                    if (htApps.TryGetValue(app.Name, out i))
-                    {
-                        i++;
-                        htApps[app.Name] = i;
-                    }
-                    else
-                    {
-                        htApps.Add(app.Name, 1);
-                    }
-                    if (app.References.Count > 1)
-                        MsiApp(app.References, htApps);
+                    i++;
+                    htApps[app.Name] = i;
                 }
+                else
+                {
+                    htApps.Add(app.Name, 1);
+                }
+                if (app.References.Count > 1)
+                    MsiApp(app.References, htApps);
             }
         }
 
@@ -6040,16 +5860,13 @@ namespace MigrationTool
                         var webResult = from ele in webRoot.Elements(ns + "SITE").Elements(ns + "site")
                                 .Elements(ns + "application")
                             select ele;
-                        foreach (var element in webResult)
+                        foreach (string srcDriveInfo in from element in webResult
+                            where element.Attribute("path").Value == "/"
+                            select element.Element("virtualDirectory").Attribute("physicalPath").Value
+                            into srcFolderPath
+                            select Path.GetPathRoot(srcFolderPath))
                         {
-                            if (element.Attribute("path").Value == "/")
-                            {
-
-                                string srcFolderPath =
-                                    element.Element("virtualDirectory").Attribute("physicalPath").Value;
-                                string srcDriveInfo = Path.GetPathRoot(srcFolderPath);
-                                srcDriveLetter = srcDriveInfo.Substring(0, 1);
-                            }
+                            srcDriveLetter = srcDriveInfo.Substring(0, 1);
                         }
                         //XPathDocument srcDoc = new XPathDocument(scrFileName);
                         //XPathNavigator srcNav = srcDoc.CreateNavigator();
@@ -6095,16 +5912,12 @@ namespace MigrationTool
                             select ele;
                         string physicalPath;
                         string webAppName;
-                        foreach (var element in result)
+                        foreach (var element in result.Where(element => element.Attribute("path").Value != "/"))
                         {
-                            if (element.Attribute("path").Value != "/")
-                            {
-
-                                webAppName = element.Attribute("APP.NAME").Value;
-                                physicalPath = element.Element(ns + "application").Element("virtualDirectory")
-                                    .Attribute("physicalPath").Value;
-                                webAppArray.Add(webAppName + "_" + physicalPath);
-                            }
+                            webAppName = element.Attribute("APP.NAME").Value;
+                            physicalPath = element.Element(ns + "application").Element("virtualDirectory")
+                                .Attribute("physicalPath").Value;
+                            webAppArray.Add(webAppName + "_" + physicalPath);
                         }
                         XElement importRoot = XElement.Load(webAppConfigFilePath);
                         XNamespace importns = importRoot.GetDefaultNamespace();
@@ -6114,13 +5927,10 @@ namespace MigrationTool
                         foreach (var element in result)
                         {
                             webAppName = element.Attribute("APP.NAME").Value;
-                            foreach (string srcWebApp in webAppArray)
+                            foreach (string srcWebApp in webAppArray.Where(srcWebApp => webAppName == srcWebApp.Split('_')[0]))
                             {
-                                if (webAppName == srcWebApp.Split('_')[0])
-                                {
-                                    driveInfo = Path.GetPathRoot(srcWebApp.Split('_')[1]);
-                                    srcDriveLetter = driveInfo.Substring(0, 1);
-                                }
+                                driveInfo = Path.GetPathRoot(srcWebApp.Split('_')[1]);
+                                srcDriveLetter = driveInfo.Substring(0, 1);
                             }
                             physicalPath = element.Element(ns + "application").Element("virtualDirectory")
                                 .Attribute("physicalPath").Value;
@@ -6233,17 +6043,16 @@ namespace MigrationTool
 
         private void SaveSrcSqlConnection()
         {
-            XmlWriter xmlWriterApps = null;
-
             try
             {
                 Servers srv;
                 if (File.Exists(_serverXmlPath))
                 {
-                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
-                    var configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    xmlTxtRed.Close();
+                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
+                    {
+                        var configSerializer = new XmlSerializer(typeof(Servers));
+                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
+                    }
                 }
                 else
                     srv = new Servers();
@@ -6263,12 +6072,14 @@ namespace MigrationTool
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new XmlSerializer(srv.GetType());
+                XmlSerializer xmlSerializer = new XmlSerializer(srv.GetType());
                 XmlWriterSettings xmlWriterSetting =
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
-                x.Serialize(xmlWriterApps, srv, ns);
+                using (var xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting))
+                {
+                    xmlSerializer.Serialize(xmlWriterApps, srv, ns);
+                }
             }
 
             catch (Exception ex)
@@ -6276,25 +6087,20 @@ namespace MigrationTool
                 LogInfoSyncronously("Exception while writing / reading server xml file.  " + ex.Message);
 
             }
-            finally
-            {
-                xmlWriterApps?.Close();
-            }
         }
 
         private void SaveDstSqlConnection()
         {
-            XmlWriter xmlWriterApps = null;
-
             try
             {
                 Servers srv;
                 if (File.Exists(_serverXmlPath))
                 {
-                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
-                    var configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    xmlTxtRed.Close();
+                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
+                    {
+                        var configSerializer = new XmlSerializer(typeof(Servers));
+                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
+                    }
                 }
                 else
                     srv = new Servers();
@@ -6313,37 +6119,34 @@ namespace MigrationTool
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new XmlSerializer(srv.GetType());
+                XmlSerializer xmlSerializer = new XmlSerializer(srv.GetType());
                 XmlWriterSettings xmlWriterSetting =
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
-                x.Serialize(xmlWriterApps, srv, ns);
+                using (var xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting))
+                {
+                    xmlSerializer.Serialize(xmlWriterApps, srv, ns);
+                }
             }
             catch (Exception ex)
             {
                 LogInfoSyncronously("Exception while writing / reading server xml file.  " + ex.Message);
 
             }
-            finally
-            {
-                xmlWriterApps?.Close();
-            }
         }
 
         private void SaveAppServers()
         {
-            XmlWriter xmlWriterApps = null;
-
             try
             {
                 Servers srv;
                 if (File.Exists(_serverXmlPath))
                 {
-                    XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath);
-                    var configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    xmlTxtRed.Close();
+                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
+                    {
+                        var configSerializer = new XmlSerializer(typeof(Servers));
+                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
+                    }
                 }
                 else
                     srv = new Servers();
@@ -6355,21 +6158,19 @@ namespace MigrationTool
                 //Add lib namespace with empty prefix
                 ns.Add("", "");
 
-                XmlSerializer x = new XmlSerializer(srv.GetType());
+                XmlSerializer xmlSerializer = new XmlSerializer(srv.GetType());
                 XmlWriterSettings xmlWriterSetting =
                     new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
 
-                xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting);
-                x.Serialize(xmlWriterApps, srv, ns);
+                using (var xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting))
+                {
+                    xmlSerializer.Serialize(xmlWriterApps, srv, ns);
+                }
             }
             catch (Exception ex)
             {
                 LogInfoSyncronously("Exception while writing / reading server xml file.  " + ex.Message);
 
-            }
-            finally
-            {
-                xmlWriterApps?.Close();
             }
         }
 
@@ -6721,15 +6522,10 @@ namespace MigrationTool
                 var files = Directory.GetFiles(_brePath, "Vocabualary*.xml");
                 if (files.Length != 0)
                 {
-                    string[] vocabualrySet = new string[dstvocabularyInfos.Count];
-                    int i = 0;
+                    var vocabualrySet = dstvocabularyInfos.Cast<VocabularyInfo>()
+                        .Select(dstvocabularyInfo => String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_",
+                            dstvocabularyInfo.Name, dstvocabularyInfo.MajorRevision, dstvocabularyInfo.MinorRevision)).ToArray();
                     //Creating a Set of Vocabularies which are Present in DstSqlInstance
-                    foreach (VocabularyInfo dstvocabularyInfo in dstvocabularyInfos)
-                    {
-                        vocabualrySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Vocabualary_", dstvocabularyInfo.Name,
-                            dstvocabularyInfo.MajorRevision, dstvocabularyInfo.MinorRevision);
-                        i++;
-                    }
 
 
                     foreach (string file in files)
@@ -6775,15 +6571,10 @@ namespace MigrationTool
                 files = Directory.GetFiles(_brePath, "Policy*.xml");
                 if (files.Length != 0)
                 {
-                    string[] policySet = new string[dstrulesetinfos.Count];
-                    int i = 0;
+                    var policySet = dstrulesetinfos.Cast<RuleSetInfo>()
+                        .Select(dstruleSetInfo => String.Format("{0}{1}.{2}.{3}.xml", "Policy_", dstruleSetInfo.Name,
+                            dstruleSetInfo.MajorRevision, dstruleSetInfo.MinorRevision)).ToArray();
                     //Creating Policies Present in DestSQLInstance
-                    foreach (RuleSetInfo dstruleSetInfo in dstrulesetinfos)
-                    {
-                        policySet[i] = String.Format("{0}{1}.{2}.{3}.xml", "Policy_", dstruleSetInfo.Name,
-                            dstruleSetInfo.MajorRevision, dstruleSetInfo.MinorRevision);
-                        i++;
-                    }
                     foreach (string file in files)
                     {
                         string filename = Path.GetFileName(file);
@@ -6925,18 +6716,9 @@ namespace MigrationTool
                                         oneToOneMappingsCollection =
                                             iisClientCertificateMappingAuthenticationSection.GetCollection(
                                                 "oneToOneMappings");
-                                    string[] certificatearray = new string[oneToOneMappingsCollection.Count];
-                                    int i = 0;
+                                    var certificatearray = oneToOneMappingsCollection.Select(onetoone =>
+                                        onetoone.GetAttributeValue("certificate").ToString()).ToArray();
                                     //Getting All the Certifcates which is already Present in Destination System
-                                    if (oneToOneMappingsCollection.Count != 0)
-                                    {
-                                        foreach (var onetoone in oneToOneMappingsCollection)
-                                        {
-
-                                            certificatearray[i] = onetoone.GetAttributeValue("certificate").ToString();
-                                            i++;
-                                        }
-                                    }
                                     if (certificatearray.Contains(node.SelectSingleNode("certificate").InnerText))
                                     {
                                         LogInfoInLogFile(node.SelectSingleNode("certificate").InnerText +
@@ -7139,30 +6921,13 @@ namespace MigrationTool
 
                         // connection string to the BizTalk management database where the ports will be created
                         //Get the Hosts Present in  Destination
-                        HostCollection dsthostCollection = btsExp.Hosts;
-                        string[] hostArray = new string[dsthostCollection.Count];
-                        int j = 0;
-                        foreach (Host ht in dsthostCollection)
-                        {
-                            hostArray[j] = ht.Name;
-
-                            j++;
-
-                        }
+                        var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
                         //Get all the HostInstances of the Destination Server
-                        HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                        string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-                        j = 0;
-                        foreach (HostInstance ht in dstHostInstancesColletion)
-                        {
-                            if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
+                        var hostInstancesArray = HostInstance.GetInstances()
+                            .Where(ht =>
+                                ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                 (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
-                            {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                j++;
-                            }
-                        }
-                        hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                            .Select(ht => ht.Name.Split(' ')[3]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
                         XDocument doc = XDocument.Load(srcHostMappingFile);
                         //Removing SourceHost Which are Not Present in Destination
@@ -7209,32 +6974,15 @@ namespace MigrationTool
 
                         // connection string to the BizTalk management database where the ports will be created
                         //Get the Hosts Present in  Destination
-                        HostCollection dsthostCollection = btsExp.Hosts;
-                        string[] hostArray = new string[dsthostCollection.Count];
-                        int j = 0;
-                        foreach (Host ht in dsthostCollection)
-                        {
-                            hostArray[j] = ht.Name;
-
-                            j++;
-
-                        }
+                        var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToList();
 
                         //Get all the HostInstances of the Destination Server
 
-                        HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                        string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-                        j = 0;
-                        foreach (HostInstance ht in dstHostInstancesColletion)
-                        {
-                            if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
+                        var hostInstancesArray = HostInstance.GetInstances()
+                            .Where(ht =>
+                                ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                 (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
-                            {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                j++;
-                            }
-                        }
-                        hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                            .Select(ht => ht.Name.Split(' ')[3]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
                         XDocument doc = XDocument.Load(srcHostMappingFile);
                         //Removing SourceHost Which are Not Present in Destination
@@ -7283,32 +7031,15 @@ namespace MigrationTool
 
                         // connection string to the BizTalk management database where the ports will be created
                         //Get the Hosts Present in  Destination
-                        HostCollection dsthostCollection = btsExp.Hosts;
-                        string[] hostArray = new string[dsthostCollection.Count];
-                        int j = 0;
-                        foreach (Host ht in dsthostCollection)
-                        {
-                            hostArray[j] = ht.Name;
-
-                            j++;
-
-                        }
+                        var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToList();
 
                         //Get all the HostInstances of the Destination Server
 
-                        HostInstance.HostInstanceCollection dstHostInstancesColletion = HostInstance.GetInstances();
-                        string[] hostInstancesArray = new string[dstHostInstancesColletion.Count];
-                        j = 0;
-                        foreach (HostInstance ht in dstHostInstancesColletion)
-                        {
-                            if (ht.HostType == HostInstance.HostTypeValues.InProcess &&
+                        var hostInstancesArray = HostInstance.GetInstances()
+                            .Where(ht =>
+                                ht.HostType == HostInstance.HostTypeValues.InProcess &&
                                 (ht.Name.EndsWith(dstservers[i]) || ht.Name.EndsWith(dstservers[i].ToLower())))
-                            {
-                                hostInstancesArray[j] = ht.Name.Split(' ')[3];
-                                j++;
-                            }
-                        }
-                        hostInstancesArray = hostInstancesArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                            .Select(ht => ht.Name.Split(' ')[3]).Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
 
 
@@ -7859,11 +7590,9 @@ namespace MigrationTool
                                     xmldoc.Load(fs);
                                     XmlNodeList nodeList = xmldoc.DocumentElement.SelectNodes("/SSO/mapping");
 
-                                    foreach (XmlNode node in nodeList)
+                                    foreach (string windowsAccount in from XmlNode node in nodeList select node.SelectSingleNode("windowsDomain").InnerText + "\\" +
+                                                                                                           node.SelectSingleNode("windowsUserId").InnerText)
                                     {
-                                        string windowsAccount =
-                                            node.SelectSingleNode("windowsDomain").InnerText + "\\" +
-                                            node.SelectSingleNode("windowsUserId").InnerText;
                                         try
                                         {
                                             if (_machineName == _strDstNode) //local
