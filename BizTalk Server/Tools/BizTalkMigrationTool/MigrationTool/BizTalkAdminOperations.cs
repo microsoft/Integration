@@ -3367,7 +3367,7 @@ namespace MigrationTool
                 catch (Exception ex)
                 {
                     LogException(ex);
-                    throw new InvalidOperationException("Error while deleting BizTalkAssemblyToImport txt file.");
+                    throw new InvalidOperationException("Error while deleting BizTalkAssemblyToImport txt file.", ex);
                 }
 
                 if (_strServerType == "BizTalk")
@@ -6853,7 +6853,7 @@ namespace MigrationTool
                 String[] files = Directory.GetFiles(_xmlPath, "Src_*_HostMappings.xml");
                 if (files.Length == 0)
                 {
-                    throw new InvalidOperationException(" Source HostMapping xml file is not available.");
+                    throw new FileNotFoundException(" Source HostMapping xml file is not available.", _xmlPath + "\\" + "Src_*_HostMappings.xml");
                 }
                 if (dstservers.Length == srcservers.Length)
                 {
@@ -7066,90 +7066,77 @@ namespace MigrationTool
                 if (File.Exists(_xmlPath + "\\" + "SrcSSOAppsList.txt"))
                 {
                     string[] ssoAppsList = File.ReadAllLines(_xmlPath + @"\SrcSSOAppsList.txt");
-                    foreach (string ssoApps in ssoAppsList)
+                    foreach (string ssoApps in ssoAppsList.Where(ssoApps => !string.IsNullOrWhiteSpace(ssoApps) &&
+                                                                            !ssoApps.Contains("Using SSO server") && 
+                                                                            !ssoApps.Contains("Applications available for") &&
+                                                                            !ssoApps.Contains("applications available for")))
                     {
-                        if (string.IsNullOrEmpty(ssoApps) || string.IsNullOrWhiteSpace(ssoApps) ||
-                            ssoApps.Contains("Using SSO server") || ssoApps.Contains("Applications available for") ||
-                            ssoApps.Contains("applications available for"))
-
+                        try
                         {
+                            string ssoApp = ssoApps.Split(':')[0].Split(')')[1].Trim();
+                            //DisplayInforMation of SSOApp
+
+                            if (_machineName == _strSrcNode) //local
+                            {
+                                commandArguments = "/C " + "\"\"" + fileName + "\"" + " -displayapp " + ssoApp +
+                                                   " />\"" + _xmlPath + "\\SSOApp_" + ssoApp + ".txt" + "\"";
+                            }
+                            else
+                            {
+                                string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
+                                commandArguments =
+                                    "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
+                                    "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                    " -accepteula" + fileName + "\"" + " -displayapp " + ssoApp +
+                                    " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
+                                    "\\SSOApp_" + ssoApp + ".txt" + "\"";
+                            }
+
+                            returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+
+                            if (returnCode == 0)
+                            {
+                                LogShortSuccessMsg("Success: Exported " + ssoApp +
+                                                   " Affiliate Application Information.");
+                            }
+                            else
+                            {
+                                LogShortErrorMsg("Failed: Exporting " + ssoApp +
+                                                 " Affiliate Application Information.");
+                            }
+                            //ListMappings
+                            if (_machineName == _strSrcNode) //local
+                            {
+                                commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listMappings " + ssoApp +
+                                                   " />\"" + _xmlPath + "\\SSOMap_" + ssoApp + ".txt" + "\"";
+                            }
+                            else
+                            {
+                                string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
+                                commandArguments =
+                                    "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
+                                    "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
+                                    fileName + "\"" + " -accepteula" + " -listMappings " + ssoApp +
+                                    " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
+                                    "\\SSOMap_" + ssoApp + ".txt" + "\"";
+                            }
+
+                            returnCode = ExecuteCmd("CMD.EXE", commandArguments);
+                            if (returnCode == 0)
+                            {
+                                LogShortSuccessMsg("Success: Exported " + ssoApp + " Mapping File.");
+                            }
+                            else
+                            {
+                                LogShortErrorMsg("Failed: Exporting " + ssoApp + " Mapping File.");
+                            }
+                            //
                         }
-                        else
+                        catch (Exception ex)
                         {
-
-                            try
-                            {
-                                string ssoApp = ssoApps.Split(':')[0].Split(')')[1].Trim();
-                                //DisplayInforMation of SSOApp
-
-                                if (_machineName == _strSrcNode) //local
-                                {
-                                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -displayapp " + ssoApp +
-                                                       " />\"" + _xmlPath + "\\SSOApp_" + ssoApp + ".txt" + "\"";
-
-                                }
-                                else
-                                {
-                                    string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                                    commandArguments =
-                                        "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
-                                        "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
-                                        " -accepteula" + fileName + "\"" + " -displayapp " + ssoApp +
-                                        " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
-                                        "\\SSOApp_" + ssoApp + ".txt" + "\"";
-
-                                }
-
-                                returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-
-                                if (returnCode == 0)
-                                {
-                                    LogShortSuccessMsg("Success: Exported " + ssoApp +
-                                                       " Affiliate Application Information.");
-
-                                }
-                                else
-                                {
-                                    LogShortErrorMsg("Failed: Exporting " + ssoApp +
-                                                     " Affiliate Application Information.");
-                                }
-                                //ListMappings
-                                if (_machineName == _strSrcNode) //local
-                                {
-                                    commandArguments = "/C " + "\"\"" + fileName + "\"" + " -listMappings " + ssoApp +
-                                                       " />\"" + _xmlPath + "\\SSOMap_" + ssoApp + ".txt" + "\"";
-
-                                }
-                                else
-                                {
-                                    string xmlPathUnc = ConvertPathToUncPath(_xmlPath);
-                                    commandArguments =
-                                        "/C " + "\"\"" + _psExecPath + "\"  \\\\" + _strSrcNode + " -u " +
-                                        "\"" + _strUserName + "\"" + " -p " + "\"" + _strPassword + "\"" +
-                                        fileName + "\"" + " -accepteula" + " -listMappings " + ssoApp +
-                                        " />\"" + "\\\\" + _machineName + "\\" + xmlPathUnc +
-                                        "\\SSOMap_" + ssoApp + ".txt" + "\"";
-
-                                }
-
-                                returnCode = ExecuteCmd("CMD.EXE", commandArguments);
-                                if (returnCode == 0)
-                                {
-                                    LogShortSuccessMsg("Success: Exported " + ssoApp + " Mapping File.");
-
-                                }
-                                else
-                                {
-                                    LogShortErrorMsg("Failed: Exporting " + ssoApp + " Mapping File.");
-                                }
-                                //
-                            }
-                            catch (Exception ex)
-                            {
-                                LogInfoSyncronously("Exception while Exporting SSO Affiliate Application " +
-                                                    ex.Message);
-                                LogException(ex);
-                            }
+                            LogInfoSyncronously("Exception while Exporting SSO Affiliate Application " +
+                                                ex.Message);
+                            LogException(ex);
                         }
                     }
                 }
@@ -7162,226 +7149,210 @@ namespace MigrationTool
                 string[] files = Directory.GetFiles(_xmlPath, "SSOApp_*.txt");
                 if (files.Length == 0)
                 {
-                    throw new InvalidOperationException("SSO Information Files are not Present");
+                    throw new FileNotFoundException("SSO Information Files are not Present", _xmlPath + "\\" + "SSOApp_*.txt");
                 }
-                else
+                foreach (string file in files)
                 {
-                    foreach (string file in files)
+                    try
                     {
-                        try
+                        string[] ssoAppInformation = File.ReadAllLines(file);
+                        //Extarcting Inofrmation from TextFile
+                        string applicationName = string.Empty;
+                        string userId = string.Empty;
+                        string password = string.Empty;
+                        string groupApp = string.Empty;
+                        string applicationEnabled = string.Empty;
+                        string allowLocalAccounts = string.Empty;
+                        string adminAccountSame = string.Empty;
+                        string ticketsAllowed = string.Empty;
+                        string validateTickets = string.Empty;
+                        string timeoutTickets = string.Empty;
+
+                        foreach (string line in ssoAppInformation)
                         {
-                            string[] ssoAppInformation = File.ReadAllLines(file);
-                            //Extarcting Inofrmation from TextFile
-                            string applicationName = string.Empty;
-                            string userId = string.Empty;
-                            string password = string.Empty;
-                            string groupApp = string.Empty;
-                            string applicationEnabled = string.Empty;
-                            string allowLocalAccounts = string.Empty;
-                            string adminAccountSame = string.Empty;
-                            string ticketsAllowed = string.Empty;
-                            string validateTickets = string.Empty;
-                            string timeoutTickets = string.Empty;
-
-                            foreach (string line in ssoAppInformation)
+                            if (line.Contains("Application name"))
+                                applicationName = line.Split(':')[1].Trim();
+                            if (line.Contains("User Id"))
                             {
-                                if (line.Contains("Application name"))
-                                    applicationName = line.Split(':')[1].Trim();
-                                if (line.Contains("User Id"))
-                                {
-                                    userId = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
-                                }
-                                if (line.Contains("Password"))
-                                {
-                                    password = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
-                                }
-                                if (line.Contains("Application type"))
-                                {
-                                    groupApp = line.Split(':')[1].Trim() == "Group" ? "yes" : "no";
-                                }
-                                if (line.Contains("Application enabled"))
-                                    applicationEnabled = line.Split(':')[1].Trim();
-
-                                if (line.Contains("Allow local accounts"))
-                                    allowLocalAccounts = line.Split(':')[1].Trim();
-                                if (line.Contains("Admin account same"))
-                                    adminAccountSame = line.Split(':')[1].Trim();
-                                if (line.Contains("tickets allowed"))
-                                    ticketsAllowed = line.Split(':')[1].Trim();
-                                if (line.Contains("validate tickets"))
-                                    validateTickets = line.Split(':')[1].Trim();
-                                if (line.Contains("timeout tickets"))
-                                    timeoutTickets = line.Split(':')[1].Trim();
-
-
+                                userId = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
                             }
-
-                            string appName = Path.GetFileNameWithoutExtension(file).Split('_')[1];
-                            //create SQL COnnection
-                            string srcSSOSqlInstance;
-                            using (var sqlCon = new SqlConnection(
-                                "Server=" + txtConnectionString.Text.Trim() +
-                                ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                            if (line.Contains("Password"))
                             {
-                                sqlCon.Open();
-                                using (var sqlcmd = new SqlCommand(
-                                    "select distinct(ServerName) from [dbo].[adm_OtherDatabases] where DefaultDatabaseName = 'SSO' and ServerName not like '%.com%'",
-                                    sqlCon))
-                                {
-                                    using (var sqlRed = sqlcmd.ExecuteReader())
-                                    {
-                                        srcSSOSqlInstance = string.Empty;
-                                        while (sqlRed.Read())
-                                        {
-                                            srcSSOSqlInstance = sqlRed.GetString(0);
-                                        }
-                                    }
-                                }
+                                password = line.Split(':')[1].Trim() == "(Not Masked)" ? "no" : "yes";
                             }
-                            using (var sqlCon = new SqlConnection(
-                                "Server=" + srcSSOSqlInstance +
-                                ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                            if (line.Contains("Application type"))
                             {
-                                sqlCon.Open();
-                                string text =
-                                    "SELECT  [ai_app_name],[ai_description],[ai_contact_info],[ai_user_group_name],[ai_admin_group_name],[ai_flags],[ai_num_fields],[ai_purge_id],[ai_audit_id],[ai_ticket_timeout] FROM [SSODB].[dbo].[SSOX_ApplicationInfo] where [ai_app_name] = @AppName";
-                                using (var sqlCmd = new SqlCommand(text, sqlCon))
-                                {
-                                    sqlCmd.Parameters.AddWithValue("@AppName", appName);
-                                    using (var ds = new DataSet())
-                                    {
-                                        using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
-                                        {
-                                            sqlDataAd.Fill(ds);
-                                        }
+                                groupApp = line.Split(':')[1].Trim() == "Group" ? "yes" : "no";
+                            }
+                            if (line.Contains("Application enabled"))
+                                applicationEnabled = line.Split(':')[1].Trim();
 
-                                        using (XmlWriter writer =
-                                            XmlWriter.Create(
-                                                _xmlPath + @"\" + "SSOApp_" + appName + "_ToImport" + ".xml"))
-                                        {
-                                            writer.WriteStartElement("SSO");
-                                            writer.WriteStartElement("application");
-                                            writer.WriteAttributeString("name", applicationName);
-                                            writer.WriteElementString("description",
-                                                ds.Tables[0].Rows[0].ItemArray[1].ToString());
-                                            writer.WriteElementString("Contact",
-                                                ds.Tables[0].Rows[0].ItemArray[2].ToString());
-                                            writer.WriteElementString("appUserAccount",
-                                                ds.Tables[0].Rows[0].ItemArray[3].ToString());
-                                            writer.WriteElementString("appAdminAccount",
-                                                ds.Tables[0].Rows[0].ItemArray[4].ToString());
-                                            //  writer.WriteElementString("ticketTimeout", ticketTimeOut);
-                                            writer.WriteStartElement("field");
-                                            writer.WriteAttributeString("ordinal", "0");
-                                            writer.WriteAttributeString("label", "User Id");
-                                            writer.WriteAttributeString("masked", userId);
-                                            writer.WriteEndElement();
-                                            writer.WriteStartElement("field");
-                                            writer.WriteAttributeString("ordinal", "1");
-                                            writer.WriteAttributeString("label", "Password");
-                                            writer.WriteAttributeString("masked", password);
-                                            writer.WriteEndElement();
-                                            writer.WriteStartElement("flags");
-                                            writer.WriteAttributeString("groupApp", groupApp);
-                                            writer.WriteAttributeString("adminAccountSame", adminAccountSame.ToLower());
-                                            writer.WriteAttributeString("allowLocalAccounts",
-                                                allowLocalAccounts.ToLower());
-                                            writer.WriteAttributeString("enableApp", applicationEnabled.ToLower());
-                                            writer.WriteAttributeString("allowTickets", ticketsAllowed.ToLower());
-                                            if (validateTickets != string.Empty)
-                                                writer.WriteAttributeString("validateTickets",
-                                                    validateTickets.ToLower());
-                                            if (timeoutTickets != string.Empty)
-                                                writer.WriteAttributeString("timeoutTickets", timeoutTickets.ToLower());
-                                            writer.WriteEndElement();
-                                            writer.WriteEndElement();
-                                            writer.WriteEndElement();
-                                        }
+                            if (line.Contains("Allow local accounts"))
+                                allowLocalAccounts = line.Split(':')[1].Trim();
+                            if (line.Contains("Admin account same"))
+                                adminAccountSame = line.Split(':')[1].Trim();
+                            if (line.Contains("tickets allowed"))
+                                ticketsAllowed = line.Split(':')[1].Trim();
+                            if (line.Contains("validate tickets"))
+                                validateTickets = line.Split(':')[1].Trim();
+                            if (line.Contains("timeout tickets"))
+                                timeoutTickets = line.Split(':')[1].Trim();
+
+
+                        }
+
+                        string appName = Path.GetFileNameWithoutExtension(file).Split('_')[1];
+                        //create SQL COnnection
+                        string srcSSOSqlInstance;
+                        using (var sqlCon = new SqlConnection(
+                            "Server=" + txtConnectionString.Text.Trim() +
+                            ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
+                        {
+                            sqlCon.Open();
+                            using (var sqlcmd = new SqlCommand(
+                                "select distinct(ServerName) from [dbo].[adm_OtherDatabases] where DefaultDatabaseName = 'SSO' and ServerName not like '%.com%'",
+                                sqlCon))
+                            {
+                                using (var sqlRed = sqlcmd.ExecuteReader())
+                                {
+                                    srcSSOSqlInstance = string.Empty;
+                                    while (sqlRed.Read())
+                                    {
+                                        srcSSOSqlInstance = sqlRed.GetString(0);
                                     }
                                 }
                             }
                         }
-                        catch (Exception ex)
+                        using (var sqlCon = new SqlConnection(
+                            "Server=" + srcSSOSqlInstance +
+                            ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"))
                         {
-                            LogInfoSyncronously("Exception while Exporting SSO XMl: " + file + ex.Message);
-                            LogException(ex);
+                            sqlCon.Open();
+                            string text =
+                                "SELECT  [ai_app_name],[ai_description],[ai_contact_info],[ai_user_group_name],[ai_admin_group_name],[ai_flags],[ai_num_fields],[ai_purge_id],[ai_audit_id],[ai_ticket_timeout] FROM [SSODB].[dbo].[SSOX_ApplicationInfo] where [ai_app_name] = @AppName";
+                            using (var sqlCmd = new SqlCommand(text, sqlCon))
+                            {
+                                sqlCmd.Parameters.AddWithValue("@AppName", appName);
+                                using (var ds = new DataSet())
+                                {
+                                    using (var sqlDataAd = new SqlDataAdapter(sqlCmd))
+                                    {
+                                        sqlDataAd.Fill(ds);
+                                    }
+
+                                    using (XmlWriter writer =
+                                        XmlWriter.Create(
+                                            _xmlPath + @"\" + "SSOApp_" + appName + "_ToImport" + ".xml"))
+                                    {
+                                        writer.WriteStartElement("SSO");
+                                        writer.WriteStartElement("application");
+                                        writer.WriteAttributeString("name", applicationName);
+                                        writer.WriteElementString("description",
+                                            ds.Tables[0].Rows[0].ItemArray[1].ToString());
+                                        writer.WriteElementString("Contact",
+                                            ds.Tables[0].Rows[0].ItemArray[2].ToString());
+                                        writer.WriteElementString("appUserAccount",
+                                            ds.Tables[0].Rows[0].ItemArray[3].ToString());
+                                        writer.WriteElementString("appAdminAccount",
+                                            ds.Tables[0].Rows[0].ItemArray[4].ToString());
+                                        //  writer.WriteElementString("ticketTimeout", ticketTimeOut);
+                                        writer.WriteStartElement("field");
+                                        writer.WriteAttributeString("ordinal", "0");
+                                        writer.WriteAttributeString("label", "User Id");
+                                        writer.WriteAttributeString("masked", userId);
+                                        writer.WriteEndElement();
+                                        writer.WriteStartElement("field");
+                                        writer.WriteAttributeString("ordinal", "1");
+                                        writer.WriteAttributeString("label", "Password");
+                                        writer.WriteAttributeString("masked", password);
+                                        writer.WriteEndElement();
+                                        writer.WriteStartElement("flags");
+                                        writer.WriteAttributeString("groupApp", groupApp);
+                                        writer.WriteAttributeString("adminAccountSame", adminAccountSame.ToLower());
+                                        writer.WriteAttributeString("allowLocalAccounts",
+                                            allowLocalAccounts.ToLower());
+                                        writer.WriteAttributeString("enableApp", applicationEnabled.ToLower());
+                                        writer.WriteAttributeString("allowTickets", ticketsAllowed.ToLower());
+                                        if (validateTickets != string.Empty)
+                                            writer.WriteAttributeString("validateTickets",
+                                                validateTickets.ToLower());
+                                        if (timeoutTickets != string.Empty)
+                                            writer.WriteAttributeString("timeoutTickets", timeoutTickets.ToLower());
+                                        writer.WriteEndElement();
+                                        writer.WriteEndElement();
+                                        writer.WriteEndElement();
+                                    }
+                                }
+                            }
                         }
                     }
-                    LogShortSuccessMsg("Success: Exported SSO Affiliate Apps Xmls");
+                    catch (Exception ex)
+                    {
+                        LogInfoSyncronously("Exception while Exporting SSO XMl: " + file + ex.Message);
+                        LogException(ex);
+                    }
                 }
+                LogShortSuccessMsg("Success: Exported SSO Affiliate Apps Xmls");
                 files = Directory.GetFiles(_xmlPath, "SSOMap_*.txt");
                 if (files.Length == 0)
                 {
-                    throw new InvalidOperationException("SSO Mapping Files are not Present");
+                    throw new FileNotFoundException("SSO Mapping Files are not Present", _xmlPath + "\\" + "SSOMap_*.txt");
                 }
-                else
+                foreach (string file in files)
                 {
-                    foreach (string file in files)
+                    string[] ssoMappingList = File.ReadAllLines(file);
+                    List<string> ssoMapping = new List<string>();
+                    try
                     {
-                        string[] ssoMappingList = File.ReadAllLines(file);
-                        List<string> ssoMapping = new List<string>();
-                        try
+                        ssoMapping.AddRange(ssoMappingList.Where(ssoMap =>
+                            !string.IsNullOrEmpty(ssoMap) && !string.IsNullOrWhiteSpace(ssoMap) &&
+                            !ssoMap.Contains("Using SSO server") &&
+                            !ssoMap.Contains("Existing mappings for application") &&
+                            !ssoMap.Contains("existing mappings for application")));
+                    }
+                    catch (Exception ex)
+                    {
+                        LogInfoSyncronously("Exception while Reading  SSO Mapping File : " + file + ex.Message);
+                        LogException(ex);
+                    }
+                    if (ssoMapping.Count > 0)
+                    {
+                        //Creating SSO Mapping FIle
+                        string appName = Path.GetFileNameWithoutExtension(file).Split('_')[1];
+                        using (XmlWriter writer =
+                            XmlWriter.Create(_xmlPath + @"\" + "SSOMap_" + appName + "_ToImport" + ".xml"))
                         {
-                            foreach (string ssoMap in ssoMappingList)
+                            writer.WriteStartElement("SSO");
+                            foreach (string mapping in ssoMapping)
                             {
-                                if (string.IsNullOrEmpty(ssoMap) || string.IsNullOrWhiteSpace(ssoMap) ||
-                                    ssoMap.Contains("Using SSO server") ||
-                                    ssoMap.Contains("Existing mappings for application") ||
-                                    ssoMap.Contains("existing mappings for application"))
-
+                                try
                                 {
-
+                                    writer.WriteStartElement("mapping");
+                                    writer.WriteElementString("windowsDomain",
+                                        mapping.Split(':')[0].Split(')')[1].Split('\\')[0].Trim());
+                                    writer.WriteElementString("windowsUserId",
+                                        mapping.Split(':')[0].Split(')')[1].Split('\\')[1].Trim());
+                                    writer.WriteElementString("externalApplication", appName);
+                                    writer.WriteElementString("externalUserId", mapping.Split(':')[1].Trim());
+                                    writer.WriteEndElement();
                                 }
-                                else
+                                catch (Exception ex)
                                 {
-                                    ssoMapping.Add(ssoMap);
+                                    LogInfoSyncronously("Exception while Writing into  SSO Mapping File : " + file +
+                                                        ex.Message);
+                                    LogException(ex);
                                 }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            LogInfoSyncronously("Exception while Reading  SSO Mapping File : " + file + ex.Message);
-                            LogException(ex);
-                        }
-                        if (ssoMapping.Count > 0)
-                        {
-                            //Creating SSO Mapping FIle
-                            string appName = Path.GetFileNameWithoutExtension(file).Split('_')[1];
-                            using (XmlWriter writer =
-                                XmlWriter.Create(_xmlPath + @"\" + "SSOMap_" + appName + "_ToImport" + ".xml"))
-                            {
-                                writer.WriteStartElement("SSO");
-                                foreach (string mapping in ssoMapping)
-                                {
-                                    try
-                                    {
-                                        writer.WriteStartElement("mapping");
-                                        writer.WriteElementString("windowsDomain",
-                                            mapping.Split(':')[0].Split(')')[1].Split('\\')[0].Trim());
-                                        writer.WriteElementString("windowsUserId",
-                                            mapping.Split(':')[0].Split(')')[1].Split('\\')[1].Trim());
-                                        writer.WriteElementString("externalApplication", appName);
-                                        writer.WriteElementString("externalUserId", mapping.Split(':')[1].Trim());
-                                        writer.WriteEndElement();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        LogInfoSyncronously("Exception while Writing into  SSO Mapping File : " + file +
-                                                            ex.Message);
-                                        LogException(ex);
-                                    }
-                                }
-                                writer.WriteEndElement();
-                            }
-                        }
-
-                        else
-                        {
-                            LogInfo("No Mappings are present for  " + file);
+                            writer.WriteEndElement();
                         }
                     }
-                    LogShortSuccessMsg("Success: Exported SSO Mapping Xmls");
+
+                    else
+                    {
+                        LogInfo("No Mappings are present for  " + file);
+                    }
                 }
+                LogShortSuccessMsg("Success: Exported SSO Mapping Xmls");
             }
             catch (Exception ex)
             {

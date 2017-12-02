@@ -1419,7 +1419,7 @@ namespace RemoteOperations
                     String[] files = Directory.GetFiles(xmlPath, "Src_*_HostMappings.xml");
                     if (files.Length == 0)
                     {
-                        throw new InvalidOperationException(" Source HostMapping xml file is not available.");
+                        throw new FileNotFoundException(" Source HostMapping xml file is not available.", xmlPath + "\\" + "Src_*_HostMappings.xml");
                     }
 
                     if (dstservers.Length == srcservers.Length)

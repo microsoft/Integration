@@ -15,10 +15,10 @@ namespace RemoteOperations {
     public class HostSetting : Component {
         
         // Private property to hold the WMI namespace in which the class resides.
-        private static readonly string CreatedWmiNamespace = "\\ROOT\\MicrosoftBizTalkServer";
+        private const string CreatedWmiNamespace = "\\ROOT\\MicrosoftBizTalkServer";
         
         // Private property to hold the name of WMI class which created this class.
-        private static readonly string CreatedClassName = "MSBTS_HostSetting";
+        private const string CreatedClassName = "MSBTS_HostSetting";
         
         // Private member variable to hold the ManagementScope which is used by the various methods.
         private static ManagementScope _statMgmtScope;
@@ -1550,8 +1550,8 @@ namespace RemoteOperations {
                 _baseType = inBaseType;
             }
             
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type srcType) {
-                return _baseConverter.CanConvertFrom(context, srcType);
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
+                return _baseConverter.CanConvertFrom(context, sourceType);
             }
             
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
@@ -1562,16 +1562,16 @@ namespace RemoteOperations {
                 return _baseConverter.ConvertFrom(context, culture, value);
             }
             
-            public override object CreateInstance(ITypeDescriptorContext context, IDictionary dictionary) {
-                return _baseConverter.CreateInstance(context, dictionary);
+            public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues) {
+                return _baseConverter.CreateInstance(context, propertyValues);
             }
             
             public override bool GetCreateInstanceSupported(ITypeDescriptorContext context) {
                 return _baseConverter.GetCreateInstanceSupported(context);
             }
             
-            public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributeVar) {
-                return _baseConverter.GetProperties(context, value, attributeVar);
+            public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes) {
+                return _baseConverter.GetProperties(context, value, attributes);
             }
             
             public override bool GetPropertiesSupported(ITypeDescriptorContext context) {
