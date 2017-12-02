@@ -617,9 +617,7 @@ namespace MigrationTool
                     if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                         throw new InvalidOperationException("HostInstances xml file is empty.");
 
-                    XmlSerializer configSerializer = new XmlSerializer(typeof(Hosts));
-                    Hosts input =
-                        (Hosts) configSerializer.Deserialize(new XmlTextReader(_xmlPath + @"\HostInstances.xml"));
+                    var input = DeserializeObject<Hosts>(_xmlPath + @"\HostInstances.xml");
 
                     //get all HostInstances of 'InProcess' type.
 
@@ -627,10 +625,11 @@ namespace MigrationTool
 
 
                     //Creating DestinationHostList
-                    var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
-                        "Select * from MSBTS_Host", enumOptions);
-                    dstHostList.AddRange(from ManagementBaseObject inst in searchObject.Get()
-                        select inst["Name"].ToString().ToUpper());
+                    using (var searchObjectHost = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host", enumOptions))
+                    {
+                        dstHostList.AddRange(from ManagementBaseObject inst in searchObjectHost.Get()
+                            select inst["Name"].ToString().ToUpper());
+                    }
                     //Creating DestinationHosts
                     foreach (HostsHost host in input.Host)
                     {
@@ -650,12 +649,15 @@ namespace MigrationTool
                     foreach (object serverDstItem in cmbBoxServerDst.Items)
                     {
 //Creating DestinationHostInstanceListForeachnode
-                        searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
-                            "Select * from MSBTS_HostInstance", enumOptions);
-                        var dstHostInstanceList = searchObject.Get()
-                            .Cast<ManagementBaseObject>()
-                            .Where(inst => inst["RunningServer"].ToString().ToUpper() == serverDstItem.ToString())
-                            .Select(inst => inst["HostName"].ToString().ToUpper()).ToList();
+                        List<string> dstHostInstanceList;
+                        using (var searchObjectHostInstance = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_HostInstance", enumOptions))
+                        {
+                            dstHostInstanceList = searchObjectHostInstance.Get()
+                                .Cast<ManagementBaseObject>()
+                                .Where(inst => inst["RunningServer"].ToString().ToUpper() == serverDstItem.ToString())
+                                .Select(inst => inst["HostName"].ToString().ToUpper())
+                                .ToList();
+                        }
                         //Create DestinationHostInstance for EachNode
                         foreach (HostsHost host in input.Host)
                         {
@@ -781,26 +783,36 @@ namespace MigrationTool
             }
         }
 
+        private T DeserializeObject<T>(string url)
+        {
+            XmlSerializer configSerializer = new XmlSerializer(typeof(T));
+            using (var xmlTextReader = new XmlTextReader(url))
+            {
+                return (T) configSerializer.Deserialize(xmlTextReader);
+            }
+        }
+
         private void CreateHost(string name, HostSetting.HostTypeValues hostType, string ntGroupName, bool authTrusted,
             bool hostTracking, bool is32Bit, bool defaultHost)
         {
             try
             {
-                var myHostSetting = _machineName == _strDstNode
+                using (var myHostSetting = _machineName == _strDstNode
                     ? HostSetting.CreateInstance()
-                    : HostSetting.CreateInstance(_strDstNode, _strUserNameForWMI, _strPassword, _strDomain);
+                    : HostSetting.CreateInstance(_strDstNode, _strUserNameForWMI, _strPassword, _strDomain))
+                {
+                    myHostSetting.AutoCommit = false;
 
-                myHostSetting.AutoCommit = false;
+                    myHostSetting.Name = name;
+                    myHostSetting.HostType = hostType;
+                    myHostSetting.NtGroupName = ntGroupName;
+                    myHostSetting.AuthTrusted = authTrusted;
+                    myHostSetting.IsHost32BitOnly = is32Bit;
+                    myHostSetting.HostTracking = hostTracking;
+                    myHostSetting.IsDefault = defaultHost;
 
-                myHostSetting.Name = name;
-                myHostSetting.HostType = hostType;
-                myHostSetting.NtGroupName = ntGroupName;
-                myHostSetting.AuthTrusted = authTrusted;
-                myHostSetting.IsHost32BitOnly = is32Bit;
-                myHostSetting.HostTracking = hostTracking;
-                myHostSetting.IsDefault = defaultHost;
-
-                myHostSetting.CommitObject();
+                    myHostSetting.CommitObject();
+                }
 
                 LogShortSuccessMsg("Host created successfully: " + name);
             }
@@ -816,20 +828,22 @@ namespace MigrationTool
         {
             try
             {
-                var myServerHost = _machineName == _strDstNode
+                using (var myServerHost = _machineName == _strDstNode
                     ? ServerHost.CreateInstance()
-                    : ServerHost.CreateInstance(serverName, _strUserNameForWMI, _strPassword, _strDomain);
+                    : ServerHost.CreateInstance(serverName, _strUserNameForWMI, _strPassword, _strDomain))
+                {
+                    myServerHost.ServerName = serverName;
+                    myServerHost.HostName = name;
+                    myServerHost.Map();
+                }
 
-                myServerHost.ServerName = serverName;
-                myServerHost.HostName = name;
-                myServerHost.Map();
-
-                var myHostInstance = _machineName == _strDstNode
+                using (var myHostInstance = _machineName == _strDstNode
                     ? HostInstance.CreateInstance()
-                    : HostInstance.CreateInstance(serverName, _strUserNameForWMI, _strPassword, _strDomain);
-
-                myHostInstance.Name = "Microsoft BizTalk Server " + name + " " + serverName;
-                myHostInstance.Install(true, _strUserNameForHost, _strPasswordForHost);
+                    : HostInstance.CreateInstance(serverName, _strUserNameForWMI, _strPassword, _strDomain))
+                {
+                    myHostInstance.Name = "Microsoft BizTalk Server " + name + " " + serverName;
+                    myHostInstance.Install(true, _strUserNameForHost, _strPasswordForHost);
+                }
 
                 LogShortSuccessMsg("Host Instance created successfully: " + name + ", " + serverName);
             }
@@ -861,98 +875,92 @@ namespace MigrationTool
                 if (doc.DocumentElement.ChildNodes.Count == 0) //if file not empty.                
                     throw new InvalidOperationException("Handlers xml file is empty.");
 
-                XmlSerializer configSerializer = new XmlSerializer(typeof(RcvSndHandlers));
-                RcvSndHandlers rcvSndHandlers =
-                    (RcvSndHandlers) configSerializer.Deserialize(new XmlTextReader(_xmlPath + @"\Handlers.xml"));
+                var rcvSndHandlers = DeserializeObject<RcvSndHandlers>(_xmlPath + @"\Handlers.xml");
 
-                ManagementClass objSndHandlerClass;
-                ManagementClass objRcvHandlerClass;
-                if (_machineName == _strDstNode) //local 
+                using (var objRcvHandlerClass = _machineName == _strDstNode
+                    ? new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null)
+                    : new ManagementClass("\\\\" + _strDstNode + "\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null))
                 {
-                    objRcvHandlerClass =
-                        new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_ReceiveHandler", null);
-                    objSndHandlerClass =
-                        new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_SendHandler2", null);
-                }
-                else //remote
-                {
-                    objRcvHandlerClass = new ManagementClass("\\\\" + _strDstNode + "\\root\\MicrosoftBizTalkServer",
-                        "MSBTS_ReceiveHandler", null);
-                    objSndHandlerClass = new ManagementClass("\\\\" + _strDstNode + "\\root\\MicrosoftBizTalkServer",
-                        "MSBTS_SendHandler2", null);
-                }
-                PutOptions options = new PutOptions {Type = PutType.CreateOnly};
-
-                //Get Rcv Handler List from Dst
-                EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
-                var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
-                    "Select * from MSBTS_ReceiveHandler", enumOptions);
-                dstRcvHandlerList = searchObject.Get().Cast<ManagementBaseObject>().Aggregate(dstRcvHandlerList,
-                    (current, inst) => current + inst["HostName"].ToString().ToUpper() + "_" +
-                                       inst["AdapterName"].ToString().ToUpper() + ",");
-                string[] dstRcvHandlerArray =
-                    dstRcvHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
-                //Get Snd Handler List from Dst                
-                enumOptions.ReturnImmediately = false;
-                searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
-                    "Select * from MSBTS_SendHandler2", enumOptions);
-                dstSndHandlerList = searchObject.Get().Cast<ManagementBaseObject>().Aggregate(dstSndHandlerList,
-                    (current, inst) => current + inst["HostName"].ToString().ToUpper() + "_" +
-                                       inst["AdapterName"].ToString().ToUpper() + ",");
-                string[] dstSndHandlerArray =
-                    dstSndHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
-                //
-
-                //create a ManagementClass object and spawn a ManagementObject instance           
-                foreach (RcvSndHandlersRcvSndHandler handler in rcvSndHandlers.RcvSndHandler)
-                {
-                    try
+                    using (var objSndHandlerClass = _machineName == _strDstNode
+                        ? new ManagementClass("\\root\\MicrosoftBizTalkServer", "MSBTS_SendHandler2", null)
+                        : new ManagementClass("\\\\" + _strDstNode + "\\root\\MicrosoftBizTalkServer", "MSBTS_SendHandler2", null))
                     {
-                        var direction = handler.Direction;
-                        hostName = handler.HostName;
-                        adapterName = handler.AdapterName;
+                        PutOptions options = new PutOptions {Type = PutType.CreateOnly};
 
-                        ManagementObject objHandler;
-                        if (direction == "0")
+                        //Get Rcv Handler List from Dst
+                        EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
+                        using (var searchObjectRcv = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_ReceiveHandler", enumOptions))
                         {
-                            if (Array.IndexOf(dstRcvHandlerArray, hostName.ToUpper() + "_" + adapterName.ToUpper()) < 0
-                            ) //!dstRcvHandlerList.Contains(HostName + "_" + AdapterName))
-                            {
-                                objHandler = objRcvHandlerClass.CreateInstance();
-                                //set the properties for the Managementobject
-                                objHandler["AdapterName"] = adapterName;
-                                objHandler["HostName"] = hostName;
-                                //create the Managementobject
-                                objHandler.Put(options);
-                                LogShortSuccessMsg("Success: Receive handler created for: " + adapterName + " and " +
-                                                   hostName);
-                            }
-                            else
-                                LogInfo("Receive handler already exist for: " + adapterName + " and " + hostName);
+                            dstRcvHandlerList = searchObjectRcv.Get().Cast<ManagementBaseObject>().Aggregate(dstRcvHandlerList,
+                                (current, inst) => current + inst["HostName"].ToString().ToUpper() + "_" +
+                                                   inst["AdapterName"].ToString().ToUpper() + ",");
                         }
-                        else
+                        string[] dstRcvHandlerArray =
+                            dstRcvHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
+                        //Get Snd Handler List from Dst                
+                        enumOptions.ReturnImmediately = false;
+                        using (var searchObjectSnd = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_SendHandler2", enumOptions))
                         {
-                            if (Array.IndexOf(dstSndHandlerArray, hostName.ToUpper() + "_" + adapterName.ToUpper()) < 0
-                            ) //if (!dstSndHandlerList.Contains(HostName.ToUpper() + "_" + AdapterName.ToUpper()))
-                            {
-                                objHandler = objSndHandlerClass.CreateInstance();
-                                //set the properties for the Managementobject
-                                objHandler["AdapterName"] = adapterName;
-                                objHandler["HostName"] = hostName;
-                                //create the Managementobject
-                                objHandler.Put(options);
-                                LogShortSuccessMsg("Success: Send handler created for: " + adapterName + " and " +
-                                                   hostName);
-                            }
-                            else
-                                LogInfo("Send handler already exist for: " + adapterName + " and " + hostName);
+                            dstSndHandlerList = searchObjectSnd.Get().Cast<ManagementBaseObject>().Aggregate(dstSndHandlerList,
+                                (current, inst) => current + inst["HostName"].ToString().ToUpper() + "_" +
+                                                   inst["AdapterName"].ToString().ToUpper() + ",");
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        LogShortErrorMsg("Error creating Handler: Adapter Name: " + adapterName + ", HostName: " +
-                                         hostName);
-                        LogException(ex);
+                        string[] dstSndHandlerArray =
+                            dstSndHandlerList.Split(charSeprator, StringSplitOptions.RemoveEmptyEntries);
+                        //
+
+                        //create a ManagementClass object and spawn a ManagementObject instance           
+                        foreach (RcvSndHandlersRcvSndHandler handler in rcvSndHandlers.RcvSndHandler)
+                        {
+                            try
+                            {
+                                var direction = handler.Direction;
+                                hostName = handler.HostName;
+                                adapterName = handler.AdapterName;
+
+                                ManagementObject objHandler;
+                                if (direction == "0")
+                                {
+                                    if (Array.IndexOf(dstRcvHandlerArray, hostName.ToUpper() + "_" + adapterName.ToUpper()) < 0
+                                    ) //!dstRcvHandlerList.Contains(HostName + "_" + AdapterName))
+                                    {
+                                        objHandler = objRcvHandlerClass.CreateInstance();
+                                        //set the properties for the Managementobject
+                                        objHandler["AdapterName"] = adapterName;
+                                        objHandler["HostName"] = hostName;
+                                        //create the Managementobject
+                                        objHandler.Put(options);
+                                        LogShortSuccessMsg("Success: Receive handler created for: " + adapterName + " and " +
+                                                           hostName);
+                                    }
+                                    else
+                                        LogInfo("Receive handler already exist for: " + adapterName + " and " + hostName);
+                                }
+                                else
+                                {
+                                    if (Array.IndexOf(dstSndHandlerArray, hostName.ToUpper() + "_" + adapterName.ToUpper()) < 0
+                                    ) //if (!dstSndHandlerList.Contains(HostName.ToUpper() + "_" + AdapterName.ToUpper()))
+                                    {
+                                        objHandler = objSndHandlerClass.CreateInstance();
+                                        //set the properties for the Managementobject
+                                        objHandler["AdapterName"] = adapterName;
+                                        objHandler["HostName"] = hostName;
+                                        //create the Managementobject
+                                        objHandler.Put(options);
+                                        LogShortSuccessMsg("Success: Send handler created for: " + adapterName + " and " +
+                                                           hostName);
+                                    }
+                                    else
+                                        LogInfo("Send handler already exist for: " + adapterName + " and " + hostName);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                LogShortErrorMsg("Error creating Handler: Adapter Name: " + adapterName + ", HostName: " +
+                                                 hostName);
+                                LogException(ex);
+                            }
+                        }
                     }
                 }
                 _isHandlerExecuted = _strPerformOperationYes;
@@ -977,41 +985,37 @@ namespace MigrationTool
                     RcvSndHandlers rcvSndHandlers = new RcvSndHandlers();
 
                     // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                     {
-                        ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
-                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                    };
+                        btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        LogInfo("Conneceted");
 
-                    // connection string to the BizTalk management database where the ports will be created
-
-                    //Get All Handlers
-                    LogInfo("Conneceted");
-
-                    rcvSndHandlers.RcvSndHandler = btsExp.ReceiveHandlers
-                        .Cast<ReceiveHandler>()
-                        .Where(rcvHandler =>
-                            rcvHandler.Host.Name != "BizTalkServerApplication" &&
-                            rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
-                        .Select(rcvHandler =>
-                            new RcvSndHandlersRcvSndHandler
-                            {
-                                AdapterName = rcvHandler.TransportType.Name,
-                                Direction = "0",
-                                HostName = rcvHandler.Host.Name
-                            })
-                        .Concat(btsExp.SendHandlers
-                            .Cast<SendHandler>()
-                            .Where(sndHandler =>
-                                sndHandler.Host.Name != "BizTalkServerApplication" &&
-                                sndHandler.Host.Name != "BizTalkServerIsolatedHost").Select(sndHandler =>
+                        rcvSndHandlers.RcvSndHandler = btsExp.ReceiveHandlers
+                            .Cast<ReceiveHandler>()
+                            .Where(rcvHandler =>
+                                rcvHandler.Host.Name != "BizTalkServerApplication" &&
+                                rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
+                            .Select(rcvHandler =>
                                 new RcvSndHandlersRcvSndHandler
                                 {
-                                    AdapterName = sndHandler.TransportType.Name,
-                                    Direction = "1",
-                                    HostName = sndHandler.Host.Name
-                                }))
-                        .ToArray();
+                                    AdapterName = rcvHandler.TransportType.Name,
+                                    Direction = "0",
+                                    HostName = rcvHandler.Host.Name
+                                })
+                            .Concat(btsExp.SendHandlers
+                                .Cast<SendHandler>()
+                                .Where(sndHandler =>
+                                    sndHandler.Host.Name != "BizTalkServerApplication" &&
+                                    sndHandler.Host.Name != "BizTalkServerIsolatedHost").Select(sndHandler =>
+                                    new RcvSndHandlersRcvSndHandler
+                                    {
+                                        AdapterName = sndHandler.TransportType.Name,
+                                        Direction = "1",
+                                        HostName = sndHandler.Host.Name
+                                    }))
+                            .ToArray();
+                    }
 
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -1255,29 +1259,29 @@ namespace MigrationTool
                 {
                     BizTalkApplications bizTalkApps = new BizTalkApplications();
 
-                    // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
                     LogInfo("Connecting to BizTalkMgmtdb...." + txtConnectionString.Text);
-                    // connection string to the BizTalk management database where the ports will be created
-                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
-                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
-                    //Get All Applications
-                    ApplicationCollection appCol = btsExp.Applications;
-                    LogInfo("Connected.");
+                    // instantiate new instance of Explorer OM
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
+                    {
+                        btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        var appCol = btsExp.Applications;
+                        LogInfo("Connected.");
 
-                    var htApps = new Dictionary<string, int>();
-                    MsiApp(appCol, htApps);
+                        var htApps = new Dictionary<string, int>();
+                        MsiApp(appCol, htApps);
 
-                    bizTalkApps.BizTalkApplication = appCol
-                        .Cast<Application>()
-                        .Where(app => !_bizTalkAppToIgnore.Contains(app.Name))
-                        .Select(app =>
-                            new BizTalkApplicationsBizTalkApplication
-                            {
-                                DependencyCode = htApps[app.Name].ToString(),
-                                ApplicationName = app.Name
-                            })
-                        .ToArray();
+                        bizTalkApps.BizTalkApplication = appCol
+                            .Cast<Application>()
+                            .Where(app => !_bizTalkAppToIgnore.Contains(app.Name))
+                            .Select(app =>
+                                new BizTalkApplicationsBizTalkApplication
+                                {
+                                    DependencyCode = htApps[app.Name].ToString(),
+                                    ApplicationName = app.Name
+                                })
+                            .ToArray();
+                    }
 
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -1383,147 +1387,146 @@ namespace MigrationTool
                 foreach (var app1 in appList)
                 {
 // instantiate new instance of Explorer OM                
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
-                    {
-                        ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
-                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                    };
-                    // connection string to the BizTalk management database where the ports will be created
-
-                    var appName = app1.DcodeAppName.Split(charSeprator)[1];
-
-                    LogInfo(": App Name:" + appName);
-
+                    string appName;
                     int result;
                     string commandArguments;
-                    if (_machineName == _strDstNode) //local
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                     {
-                        if (File.Exists(_msiPath + "\\" + appName + ".msi"))
-                        {
-                            //Import MSI
-                            commandArguments = "ImportApp -Package:\"" + _msiPath + "\\" + appName + ".msi\"" +
-                                               " -ApplicationName:\"" +
-                                               appName + "\" -Overwrite -Server:\"" +
-                                               txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
-                                               "BizTalkMgmtDb\"";
-                            //Create and start BTSTask.exe process                    
-                            result = ExecuteCmd("BTSTask.exe", commandArguments);
+                        btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        appName = app1.DcodeAppName.Split(charSeprator)[1];
 
-                            if (result == 0)
-                                LogShortSuccessMsg("Success: Imported App.");
-                            else
-                                LogShortErrorMsg("Failed: Importing App.");
-                        }
-                        else
+                        LogInfo(": App Name:" + appName);
+
+                        if (_machineName == _strDstNode) //local
                         {
-                            //Create App
-                            LogInfo("MSI file does not exist for: " + appName);
-                            commandArguments = "addapp -ApplicationName:\"" + appName +
-                                               "\" -Description:\"BizTalk application for " + appName +
-                                               "\" -Server:\"" + txtConnectionStringDst.Text.Trim()
-                                               + "\" -Database:\"" + "BizTalkMgmtDb\"";
-                            result = ExecuteCmd("BTSTask.exe", commandArguments);
-                            if (result == 0) //success
+                            if (File.Exists(_msiPath + "\\" + appName + ".msi"))
                             {
-                                LogShortSuccessMsg("Success: Created App.");
-                                try
-                                {
-                                    //start adding dependent app Ref
-                                    ApplicationCollection appCol = btsExp.Applications;
-                                    foreach (Application app in appCol)
-                                    {
-                                        if (app.Name == appName)
-                                        {
-                                            string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
-                                                StringSplitOptions.RemoveEmptyEntries);
-                                            foreach (Application baseApp in from baseBTSApp in baseBizTalkApp
-                                                from Application baseApp in appCol
-                                                where baseApp.Name.Equals(baseBTSApp.Trim())
-                                                select baseApp)
-                                            {
-                                                app.AddReference(baseApp);
-                                                LogInfo("Success: Added reference of: " + baseApp.Name);
-                                            }
-                                        }
-                                    }
-                                    btsExp.SaveChanges();
-                                }
-                                catch (Exception ex)
-                                {
-                                    LogShortErrorMsg("Failed: Adding reference of dependent Apps." + ex.Message);
-                                }
+                                //Import MSI
+                                commandArguments = "ImportApp -Package:\"" + _msiPath + "\\" + appName + ".msi\"" +
+                                                   " -ApplicationName:\"" +
+                                                   appName + "\" -Overwrite -Server:\"" +
+                                                   txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
+                                                   "BizTalkMgmtDb\"";
+                                //Create and start BTSTask.exe process                    
+                                result = ExecuteCmd("BTSTask.exe", commandArguments);
+
+                                if (result == 0)
+                                    LogShortSuccessMsg("Success: Imported App.");
+                                else
+                                    LogShortErrorMsg("Failed: Importing App.");
                             }
                             else
-                                LogShortErrorMsg("Failed: Creating App.");
-                        }
-
-                    }
-                    else //remote
-                    {
-                        if (File.Exists(_msiPath + "\\" + appName + ".msi"))
-                        {
-                            //Import MSI, Set arguments for BTSTask.exe               
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
-                                               "\"" +
-                                               _strUserName + "\"" + " -p " + "\"" + _strPassword
-                                               + "\"" + " -accepteula" + " BTSTask ImportApp -Package:\"" + msiPathUnc +
-                                               "\\" + appName + ".msi\"" + " -ApplicationName:\"" +
-                                               appName + "\" -Overwrite -Server:\"" +
-                                               txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
-                                               "BizTalkMgmtDb\"\"";
-
-                            //Create and start BTSTask.exe process                    
-                            result = ExecuteCmd("CMD.exe", commandArguments);
-
-                            if (result == 0)
-                                LogShortSuccessMsg("Success: Imported App.");
-                            else
-                                LogShortErrorMsg("Failed: Importing App.");
-                        }
-                        else
-                        {
-                            //Create App                            
-                            LogInfo("MSI file does not exist for: " + appName);
-                            commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
-                                               "\"" +
-                                               _strUserName + "\"" + " -p " + "\"" + _strPassword
-                                               + "\"" + " -accepteula" + " BTSTask addapp -ApplicationName:\"" +
-                                               appName + "\" -Description:\"BizTalk application for " + appName
-                                               + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
-                                               "\" -Database:\"" + "BizTalkMgmtDb\"\"";
-                            //Create and start BTSTask.exe process                    
-                            result = ExecuteCmd("CMD.exe", commandArguments);
-                            if (result == 0) //success
                             {
-                                LogShortSuccessMsg("Success: Created App.");
-                                try
+                                //Create App
+                                LogInfo("MSI file does not exist for: " + appName);
+                                commandArguments = "addapp -ApplicationName:\"" + appName +
+                                                   "\" -Description:\"BizTalk application for " + appName +
+                                                   "\" -Server:\"" + txtConnectionStringDst.Text.Trim()
+                                                   + "\" -Database:\"" + "BizTalkMgmtDb\"";
+                                result = ExecuteCmd("BTSTask.exe", commandArguments);
+                                if (result == 0) //success
                                 {
-                                    ApplicationCollection appCol = btsExp.Applications;
-                                    foreach (Application app in appCol)
+                                    LogShortSuccessMsg("Success: Created App.");
+                                    try
                                     {
-                                        if (app.Name == appName)
+                                        //start adding dependent app Ref
+                                        ApplicationCollection appCol = btsExp.Applications;
+                                        foreach (Application app in appCol)
                                         {
-                                            string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
-                                                StringSplitOptions.RemoveEmptyEntries);
-                                            foreach (Application baseApp in from baseBTSApp in baseBizTalkApp
-                                                from Application baseApp in appCol
-                                                where baseApp.Name == baseBTSApp.Trim()
-                                                select baseApp)
+                                            if (app.Name == appName)
                                             {
-                                                app.AddReference(baseApp);
-                                                LogInfo("Success: Added reffernce of: " + baseApp);
+                                                string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
+                                                    StringSplitOptions.RemoveEmptyEntries);
+                                                foreach (Application baseApp in from baseBTSApp in baseBizTalkApp
+                                                    from Application baseApp in appCol
+                                                    where baseApp.Name.Equals(baseBTSApp.Trim())
+                                                    select baseApp)
+                                                {
+                                                    app.AddReference(baseApp);
+                                                    LogInfo("Success: Added reference of: " + baseApp.Name);
+                                                }
                                             }
                                         }
+                                        btsExp.SaveChanges();
                                     }
-                                    btsExp.SaveChanges();
+                                    catch (Exception ex)
+                                    {
+                                        LogShortErrorMsg("Failed: Adding reference of dependent Apps." + ex.Message);
+                                    }
                                 }
-                                catch (Exception ex)
-                                {
-                                    LogShortErrorMsg("Failed: Adding reference of dependent Apps." + ex.Message);
-                                }
+                                else
+                                    LogShortErrorMsg("Failed: Creating App.");
+                            }
+
+                        }
+                        else //remote
+                        {
+                            if (File.Exists(_msiPath + "\\" + appName + ".msi"))
+                            {
+                                //Import MSI, Set arguments for BTSTask.exe               
+                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
+                                                   "\"" +
+                                                   _strUserName + "\"" + " -p " + "\"" + _strPassword
+                                                   + "\"" + " -accepteula" + " BTSTask ImportApp -Package:\"" + msiPathUnc +
+                                                   "\\" + appName + ".msi\"" + " -ApplicationName:\"" +
+                                                   appName + "\" -Overwrite -Server:\"" +
+                                                   txtConnectionStringDst.Text.Trim() + "\" -Database:\"" +
+                                                   "BizTalkMgmtDb\"\"";
+
+                                //Create and start BTSTask.exe process                    
+                                result = ExecuteCmd("CMD.exe", commandArguments);
+
+                                if (result == 0)
+                                    LogShortSuccessMsg("Success: Imported App.");
+                                else
+                                    LogShortErrorMsg("Failed: Importing App.");
                             }
                             else
-                                LogShortErrorMsg("Failed: Creating App.");
+                            {
+                                //Create App                            
+                                LogInfo("MSI file does not exist for: " + appName);
+                                commandArguments = "/C " + "\"\"" + _psExecPath + "\" -h \\\\" + _strDstNode + " -u " +
+                                                   "\"" +
+                                                   _strUserName + "\"" + " -p " + "\"" + _strPassword
+                                                   + "\"" + " -accepteula" + " BTSTask addapp -ApplicationName:\"" +
+                                                   appName + "\" -Description:\"BizTalk application for " + appName
+                                                   + "\" -Server:\"" + txtConnectionStringDst.Text.Trim() +
+                                                   "\" -Database:\"" + "BizTalkMgmtDb\"\"";
+                                //Create and start BTSTask.exe process                    
+                                result = ExecuteCmd("CMD.exe", commandArguments);
+                                if (result == 0) //success
+                                {
+                                    LogShortSuccessMsg("Success: Created App.");
+                                    try
+                                    {
+                                        ApplicationCollection appCol = btsExp.Applications;
+                                        foreach (Application app in appCol)
+                                        {
+                                            if (app.Name == appName)
+                                            {
+                                                string[] baseBizTalkApp = _baseBizTalkAppCol.Split(charSeprator,
+                                                    StringSplitOptions.RemoveEmptyEntries);
+                                                foreach (Application baseApp in from baseBTSApp in baseBizTalkApp
+                                                    from Application baseApp in appCol
+                                                    where baseApp.Name == baseBTSApp.Trim()
+                                                    select baseApp)
+                                                {
+                                                    app.AddReference(baseApp);
+                                                    LogInfo("Success: Added reffernce of: " + baseApp);
+                                                }
+                                            }
+                                        }
+                                        btsExp.SaveChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        LogShortErrorMsg("Failed: Adding reference of dependent Apps." + ex.Message);
+                                    }
+                                }
+                                else
+                                    LogShortErrorMsg("Failed: Creating App.");
+                            }
                         }
                     }
                     if (result != 0) //error
@@ -3024,33 +3027,27 @@ namespace MigrationTool
                 {
                     LogInfo("Connecting to BizTalkMgmtDb..." + txtConnectionString.Text);
                     // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    AssemblyList asmList;
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                     {
-                        // connection string to the BizTalk management database
-                        ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
-                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                    };
-                    //Get All Applications
-                    LogInfo("Connected.");
+                        btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        LogInfo("Connected.");
 
-                    var asmList = new AssemblyList
-                    {
-                        Assembly = btsExp
-                            .Applications
-                            .Cast<Application>()
-                            .Where(app => appNameCollectionString.Contains(app.Name))
-                            .SelectMany(app => app
-                                .Assemblies
-                                .Cast<BtsAssembly>()
-                                .Where(btAsm => !btAsm.IsSystem), (app, btAsm) =>
-                                new AssemblyListAssembly
+                        asmList = new AssemblyList
+                        {
+                            Assembly = btsExp.Applications.Cast<Application>()
+                                .Where(app => appNameCollectionString.Contains(app.Name))
+                                .SelectMany(app => app.Assemblies.Cast<BtsAssembly>()
+                                    .Where(btAsm => !btAsm.IsSystem), (app, btAsm) => new AssemblyListAssembly
                                 {
                                     AppName = app.Name,
                                     AsmVer = btAsm.Version,
                                     AsmName = btAsm.Name
                                 })
-                            .ToArray()
-                    };
+                                .ToArray()
+                        };
+                    }
 
                     //BEGIN::asm Custom list
 
@@ -3127,9 +3124,7 @@ namespace MigrationTool
                         throw new InvalidOperationException("File: " + _xmlPath +
                                             @"\SrcBizTalkAssembly.xml does not exist, Assembly Export is termintated please check logs for root cause.");
 
-                    var configSerializer = new XmlSerializer(typeof(AssemblyList));
-                    asmList = (AssemblyList) configSerializer.Deserialize(
-                        new XmlTextReader(_xmlPath + @"\SrcBizTalkAssembly.xml"));
+                    asmList = DeserializeObject<AssemblyList>(_xmlPath + @"\SrcBizTalkAssembly.xml");
                 }
                 var asmPath1 = @"C:\Windows\Microsoft.NET\assembly\";
                 var asmPath2 = @"C:\Windows\assembly\GAC\";
@@ -4470,13 +4465,7 @@ namespace MigrationTool
 
                 if (File.Exists(_serverXmlPath)) //reloading BizTalk Connection Info
                 {
-                    Servers srv;
-                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
-                    {
-                        var configSerializer = new XmlSerializer(typeof(Servers));
-                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    }
-
+                    var srv = DeserializeObject<Servers>(_serverXmlPath);
                     txtConnectionString.Text = srv.SrcAppNode;
                     txtConnectionStringDst.Text = srv.DstAppNode;
                 }
@@ -4506,12 +4495,7 @@ namespace MigrationTool
                 {
                     char[] chrSep = {','};
 
-                    Servers srv;
-                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
-                    {
-                        var configSerializer = new XmlSerializer(typeof(Servers));
-                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    }
+                    var srv = DeserializeObject<Servers>(_serverXmlPath);
                     cmbBoxServerSrc.Items.Clear();
                     cmbBoxServerDst.Items.Clear();
                     if (srv.SrcSqlInstance != null)
@@ -5010,12 +4994,7 @@ namespace MigrationTool
             {
                 char[] chrSep = {','};
 
-                Servers srv;
-                using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
-                {
-                    var configSerializer = new XmlSerializer(typeof(Servers));
-                    srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                }
+                var srv = DeserializeObject<Servers>(_serverXmlPath);
 
                 if (srv.SrcSqlInstance != null)
                 {
@@ -5137,8 +5116,10 @@ namespace MigrationTool
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            var settingsForm = new Settings(this);
-            settingsForm.ShowDialog();
+            using (var settingsForm = new Settings(this))
+            {
+                settingsForm.ShowDialog();
+            }
         }
 
         #endregion
@@ -6045,17 +6026,7 @@ namespace MigrationTool
         {
             try
             {
-                Servers srv;
-                if (File.Exists(_serverXmlPath))
-                {
-                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
-                    {
-                        var configSerializer = new XmlSerializer(typeof(Servers));
-                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    }
-                }
-                else
-                    srv = new Servers();
+                Servers srv = File.Exists(_serverXmlPath) ? DeserializeObject<Servers>(_serverXmlPath) : new Servers();
 
                 srv.SrcSqlInstance = txtConnectionString.Text.Trim();
                 string strNodes = "";
@@ -6093,17 +6064,7 @@ namespace MigrationTool
         {
             try
             {
-                Servers srv;
-                if (File.Exists(_serverXmlPath))
-                {
-                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
-                    {
-                        var configSerializer = new XmlSerializer(typeof(Servers));
-                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    }
-                }
-                else
-                    srv = new Servers();
+                Servers srv = File.Exists(_serverXmlPath) ? DeserializeObject<Servers>(_serverXmlPath) : new Servers();
 
                 srv.DstSqlInstance = txtConnectionStringDst.Text.Trim();
                 string strNodes = "";
@@ -6139,17 +6100,7 @@ namespace MigrationTool
         {
             try
             {
-                Servers srv;
-                if (File.Exists(_serverXmlPath))
-                {
-                    using (XmlTextReader xmlTxtRed = new XmlTextReader(_serverXmlPath))
-                    {
-                        var configSerializer = new XmlSerializer(typeof(Servers));
-                        srv = (Servers) configSerializer.Deserialize(xmlTxtRed);
-                    }
-                }
-                else
-                    srv = new Servers();
+                Servers srv = File.Exists(_serverXmlPath) ? DeserializeObject<Servers>(_serverXmlPath) : new Servers();
 
 
                 srv.DstAppNode = txtConnectionStringDst.Text.Trim();
@@ -6694,9 +6645,7 @@ namespace MigrationTool
                             else
                             {
                                 XmlDocument xmldoc = new XmlDocument();
-                                FileStream fs = new FileStream(_xmlPath + @"\" + websiteMappingFile, FileMode.Open,
-                                    FileAccess.Read);
-                                xmldoc.Load(fs);
+                                xmldoc.Load(_xmlPath + @"\" + websiteMappingFile);
                                 XmlNodeList nodeList =
                                     xmldoc.DocumentElement.SelectNodes("/OneToOneMappings/OneToOneMapping");
                                 foreach (XmlNode node in nodeList)
@@ -6768,18 +6717,19 @@ namespace MigrationTool
             try
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
-                    Mode = CipherMode.ECB,
-                    Key = keyArray,
-                    Padding = PaddingMode.PKCS7
-                };
+                    des.Mode = CipherMode.ECB;
+                    des.Key = keyArray;
+                    des.Padding = PaddingMode.PKCS7;
 
+                    using (ICryptoTransform desEncrypt = des.CreateEncryptor())
+                    {
+                        Byte[] buffer = Encoding.ASCII.GetBytes(data);
 
-                ICryptoTransform desEncrypt = des.CreateEncryptor();
-                Byte[] buffer = Encoding.ASCII.GetBytes(data);
-
-                return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                        return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -6794,18 +6744,18 @@ namespace MigrationTool
             try
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
-                    Mode = CipherMode.ECB,
-                    Key = keyArray,
-                    Padding = PaddingMode.PKCS7
-                };
+                    des.Mode = CipherMode.ECB;
+                    des.Key = keyArray;
+                    des.Padding = PaddingMode.PKCS7;
+                    using (var desEncrypt = des.CreateDecryptor())
+                    {
+                        Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
 
-
-                ICryptoTransform desEncrypt = des.CreateDecryptor();
-                Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
-
-                return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                        return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -6819,50 +6769,49 @@ namespace MigrationTool
         {
             try
             {
-
-                BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                 {
-                    ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
-                                       ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                };
-
-                // connection string to the BizTalk management database where the ports will be created
-                HostCollection hosts = btsExp.Hosts;
-                foreach (object cmbBox in cmbBoxServerSrc.Items)
-                {
-                    using (XmlWriter writer = XmlWriter.Create(_xmlPath + @"\" + "Src_" + cmbBox + "_HostMappings.xml"))
+                    btsExp.ConnectionString = "Server=" + txtConnectionString.Text.Trim() +
+                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                    var hosts = btsExp.Hosts;
+                    foreach (object cmbBox in cmbBoxServerSrc.Items)
                     {
-                        writer.WriteStartElement("SettingsMap");
-                        writer.WriteStartElement("HostMappings");
-                        foreach (Host host in hosts)
+                        using (XmlWriter writer =
+                            XmlWriter.Create(_xmlPath + @"\" + "Src_" + cmbBox + "_HostMappings.xml"))
                         {
-                            writer.WriteStartElement("SourceHost");
-                            writer.WriteAttributeString("Name", host.Name);
-                            writer.WriteElementString("DestinationHosts", host.Name);
+                            writer.WriteStartElement("SettingsMap");
+                            writer.WriteStartElement("HostMappings");
+                            foreach (Host host in hosts)
+                            {
+                                writer.WriteStartElement("SourceHost");
+                                writer.WriteAttributeString("Name", host.Name);
+                                writer.WriteElementString("DestinationHosts", host.Name);
+                                writer.WriteEndElement();
+
+                            }
                             writer.WriteEndElement();
 
-                        }
-                        writer.WriteEndElement();
+                            //  Get all the HostInstances of the Destination Server
 
-                        //  Get all the HostInstances of the Destination Server
+                            var hostInstancesArray = HostInstance.GetInstances()
+                                .Where(ht =>
+                                    ht.Name.EndsWith(cmbBox.ToString()) ||
+                                    ht.Name.EndsWith(cmbBox.ToString().ToLower()))
+                                .Select(ht => ht.Name.Split(' ')[3])
+                                .Where(x => !string.IsNullOrEmpty(x));
 
-                        var hostInstancesArray = HostInstance.GetInstances()
-                            .Where(ht =>
-                                ht.Name.EndsWith(cmbBox.ToString()) || ht.Name.EndsWith(cmbBox.ToString().ToLower()))
-                            .Select(ht => ht.Name.Split(' ')[3])
-                            .Where(x => !string.IsNullOrEmpty(x));
-
-                        writer.WriteStartElement("HostInstanceMappings");
-                        foreach (string hostInstance in hostInstancesArray)
-                        {
-                            writer.WriteStartElement("SourceHostInstance");
-                            writer.WriteAttributeString("Name", hostInstance + ":" + cmbBox);
-                            writer.WriteElementString("DestinationHostInstances",
-                                hostInstance + ":" + "{ServerName}");
+                            writer.WriteStartElement("HostInstanceMappings");
+                            foreach (string hostInstance in hostInstancesArray)
+                            {
+                                writer.WriteStartElement("SourceHostInstance");
+                                writer.WriteAttributeString("Name", hostInstance + ":" + cmbBox);
+                                writer.WriteElementString("DestinationHostInstances",
+                                    hostInstance + ":" + "{ServerName}");
+                                writer.WriteEndElement();
+                            }
+                            writer.WriteEndElement();
                             writer.WriteEndElement();
                         }
-                        writer.WriteEndElement();
-                        writer.WriteEndElement();
                     }
                 }
             }
@@ -6913,15 +6862,13 @@ namespace MigrationTool
                         string srcHostMappingFile = _xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                         string dstHostMappingFile = _xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
-                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                        string[] hostArray;
+                        using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                         {
-                            ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
-                                               ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                        };
-
-                        // connection string to the BizTalk management database where the ports will be created
-                        //Get the Hosts Present in  Destination
-                        var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                            btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                                      ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                            hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                        }
                         //Get all the HostInstances of the Destination Server
                         var hostInstancesArray = HostInstance.GetInstances()
                             .Where(ht =>
@@ -6966,15 +6913,13 @@ namespace MigrationTool
                         string srcHostMappingFile = _xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                         string dstHostMappingFile = _xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
-                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                        string[] hostArray;
+                        using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                         {
-                            ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
-                                               ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                        };
-
-                        // connection string to the BizTalk management database where the ports will be created
-                        //Get the Hosts Present in  Destination
-                        var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToList();
+                            btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                                      ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                            hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                        }
 
                         //Get all the HostInstances of the Destination Server
 
@@ -7023,15 +6968,13 @@ namespace MigrationTool
                             : _xmlPath + @"\" + "Src_" + srcservers[0] + "_HostMappings.xml";
                         string dstHostMappingFile = _xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                         // instantiate new instance of Explorer OM
-                        BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                        string[] hostArray;
+                        using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                         {
-                            ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
-                                               ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                        };
-
-                        // connection string to the BizTalk management database where the ports will be created
-                        //Get the Hosts Present in  Destination
-                        var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToList();
+                            btsExp.ConnectionString = "Server=" + txtConnectionStringDst.Text.Trim() +
+                                                      ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                            hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                        }
 
                         //Get all the HostInstances of the Destination Server
 
@@ -7586,8 +7529,7 @@ namespace MigrationTool
                                     }
                                     //Enabling the Mapping
                                     XmlDocument xmldoc = new XmlDocument();
-                                    FileStream fs = new FileStream(mappingFile, FileMode.Open, FileAccess.Read);
-                                    xmldoc.Load(fs);
+                                    xmldoc.Load(mappingFile);
                                     XmlNodeList nodeList = xmldoc.DocumentElement.SelectNodes("/SSO/mapping");
 
                                     foreach (string windowsAccount in from XmlNode node in nodeList select node.SelectSingleNode("windowsDomain").InnerText + "\\" +

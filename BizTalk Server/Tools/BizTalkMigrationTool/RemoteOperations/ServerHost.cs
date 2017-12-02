@@ -350,8 +350,12 @@ namespace RemoteOperations {
                 && string.Compare(path.ClassName, ManagementClassName, true, CultureInfo.InvariantCulture) == 0) {
                 return true;
             }
-            else {
-                return CheckIfProperClass(new ManagementObject(mgmtScope, path, optionsParam));
+            else
+            {
+                using (var managementBaseObject = new ManagementObject(mgmtScope, path, optionsParam))
+                {
+                    return CheckIfProperClass(managementBaseObject);
+                }
             }
         }
         
@@ -570,11 +574,13 @@ namespace RemoteOperations {
                 ClassName = "MSBTS_ServerHost",
                 NamespacePath = "root\\MicrosoftBizTalkServer"
             };
-            ManagementClass clsObject = new ManagementClass(mgmtScope, pathObj, null);
-            if (enumOptions == null) {
-                enumOptions = new EnumerationOptions {EnsureLocatable = true};
+            using (ManagementClass clsObject = new ManagementClass(mgmtScope, pathObj, null))
+            {
+                if (enumOptions == null) {
+                    enumOptions = new EnumerationOptions {EnsureLocatable = true};
+                }
+                return clsObject.GetInstances(enumOptions).Cast<ServerHost>();
             }
-            return clsObject.GetInstances(enumOptions).Cast<ServerHost>();
         }
         
         public static IEnumerable<ServerHost> GetInstances(ManagementScope mgmtScope, string condition) {
@@ -590,18 +596,22 @@ namespace RemoteOperations {
             {
                 mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = "root\\MicrosoftBizTalkServer"}};
             }
-            ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_ServerHost", condition, selectedProperties));
-            EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
-            objectSearcher.Options = enumOptions;
-            return objectSearcher.Get().Cast<ServerHost>();
+            using (ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(mgmtScope, new SelectQuery("MSBTS_ServerHost", condition, selectedProperties)))
+            {
+                EnumerationOptions enumOptions = new EnumerationOptions {EnsureLocatable = true};
+                objectSearcher.Options = enumOptions;
+                return objectSearcher.Get().Cast<ServerHost>();
+            }
         }
         
         [Browsable(true)]
         public static ServerHost CreateInstance() {
             var mgmtScope = _statMgmtScope ?? new ManagementScope {Path = {NamespacePath = CreatedWmiNamespace}};
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
-            ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
-            return new ServerHost(tmpMgmtClass.CreateInstance());
+            using (ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null))
+            {
+                return new ServerHost(tmpMgmtClass.CreateInstance());
+            }
         }
 
         [Browsable(true)]
@@ -618,8 +628,10 @@ namespace RemoteOperations {
                 }
             };
             ManagementPath mgmtPath = new ManagementPath(CreatedClassName);
-            ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null);
-            return new ServerHost(tmpMgmtClass.CreateInstance());
+            using (ManagementClass tmpMgmtClass = new ManagementClass(mgmtScope, mgmtPath, null))
+            {
+                return new ServerHost(tmpMgmtClass.CreateInstance());
+            }
         }
         
         [Browsable(true)]

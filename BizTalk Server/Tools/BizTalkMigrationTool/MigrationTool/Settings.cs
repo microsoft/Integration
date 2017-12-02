@@ -79,8 +79,10 @@ namespace MigrationTool
             }
             catch (Exception ex)
             {
-                BizTalkAdminOperations adminOperations = new BizTalkAdminOperations();
-                adminOperations.LogInfoInLogFile("Error while Updating Settings to ConfigFile " + ex.Message + ", " + ex.StackTrace);
+                using (BizTalkAdminOperations adminOperations = new BizTalkAdminOperations())
+                {
+                    adminOperations.LogInfoInLogFile("Error while Updating Settings to ConfigFile " + ex.Message + ", " + ex.StackTrace);
+                }
                 Close();
             }
         }

@@ -560,9 +560,7 @@ namespace RemoteOperations
                 {
                     if (pServerType == "BizTalk")
                     {
-                        var configSerializer = new XmlSerializer(typeof(AssemblyList));
-                        asmList = (AssemblyList) configSerializer.Deserialize(
-                            new XmlTextReader(xmlPath + @"\SrcBizTalkAssembly.xml"));
+                        asmList = DeserializeObject<AssemblyList>(xmlPath + @"\SrcBizTalkAssembly.xml");
                         var asmListCount = asmList.Assembly.Length;
                         LogInfo("Total Biztalk Assemblies: " + asmListCount, pRootPath);
                     }
@@ -721,6 +719,15 @@ namespace RemoteOperations
                 }
             }
 
+            private T DeserializeObject<T>(string url)
+            {
+                XmlSerializer configSerializer = new XmlSerializer(typeof(T));
+                using (var xmlTextReader = new XmlTextReader(url))
+                {
+                    return (T)configSerializer.Deserialize(xmlTextReader);
+                }
+            }
+
             public void btnDstCustomDllList_Click(string pRootPath, string pCustomDllToInclude)
             {
                 string appPath = pRootPath;
@@ -842,37 +849,33 @@ namespace RemoteOperations
                     RcvSndHandlers rcvSndHandlers = new RcvSndHandlers();
 
                     // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                     {
-                        ConnectionString = "Server=" + pSqlServerInstanceName +
-                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                    };
+                        btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        LogInfo("Conneceted", pRootPath);
 
-                    // connection string to the BizTalk management database where the ports will be created
-
-                    //Get All Handlers
-                    LogInfo("Conneceted", pRootPath);
-
-                    rcvSndHandlers.RcvSndHandler = btsExp.ReceiveHandlers
-                        .Cast<ReceiveHandler>()
-                        .Where(rcvHandler => rcvHandler.Host.Name != "BizTalkServerApplication" &&
-                                             rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
-                        .Select(rcvHandler => new RcvSndHandlersRcvSndHandler
-                        {
-                            AdapterName = rcvHandler.TransportType.Name,
-                            Direction = "0",
-                            HostName = rcvHandler.Host.Name
-                        })
-                        .Concat(btsExp.SendHandlers.Cast<SendHandler>()
-                            .Where(sndHandler => sndHandler.Host.Name != "BizTalkServerApplication" &&
-                                                 sndHandler.Host.Name != "BizTalkServerIsolatedHost")
-                            .Select(sndHandler => new RcvSndHandlersRcvSndHandler
+                        rcvSndHandlers.RcvSndHandler = btsExp.ReceiveHandlers
+                            .Cast<ReceiveHandler>()
+                            .Where(rcvHandler => rcvHandler.Host.Name != "BizTalkServerApplication" &&
+                                                 rcvHandler.Host.Name != "BizTalkServerIsolatedHost")
+                            .Select(rcvHandler => new RcvSndHandlersRcvSndHandler
                             {
-                                AdapterName = sndHandler.TransportType.Name,
-                                Direction = "1",
-                                HostName = sndHandler.Host.Name
-                            }))
-                        .ToArray();
+                                AdapterName = rcvHandler.TransportType.Name,
+                                Direction = "0",
+                                HostName = rcvHandler.Host.Name
+                            })
+                            .Concat(btsExp.SendHandlers.Cast<SendHandler>()
+                                .Where(sndHandler => sndHandler.Host.Name != "BizTalkServerApplication" &&
+                                                     sndHandler.Host.Name != "BizTalkServerIsolatedHost")
+                                .Select(sndHandler => new RcvSndHandlersRcvSndHandler
+                                {
+                                    AdapterName = sndHandler.TransportType.Name,
+                                    Direction = "1",
+                                    HostName = sndHandler.Host.Name
+                                }))
+                            .ToArray();
+                    }
 
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -906,30 +909,30 @@ namespace RemoteOperations
                 string xmlPath = appPath + "\\ExportedData\\XMLFiles";
                 try
                 {
-                    // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
                     LogInfo("Connecting to BizTalkMgmtDb..." + pSqlServerInstanceName, pRootPath);
-                    // connection string to the BizTalk management database where the ports will be created
-                    btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
-                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
-                    //Get All Applications
-                    var appCol = btsExp.Applications;
-                    LogInfo("Connected.", pRootPath);
-
-                    var asmList = new AssemblyList
+                    // instantiate new instance of Explorer OM
+                    AssemblyList asmList;
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                     {
-                        Assembly = (from Application app in appCol
-                            where pAppNameCollection.Contains(app.Name)
-                            let asmCol = app.Assemblies
-                            from BtsAssembly btAsm in asmCol
-                            where !btAsm.IsSystem
-                            select new AssemblyListAssembly
-                            {
-                                AppName = app.Name,
-                                AsmName = btAsm.Name,
-                                AsmVer = btAsm.Version
-                            }).ToArray()
-                    };
+                        btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        LogInfo("Connected.", pRootPath);
+
+                        asmList = new AssemblyList
+                        {
+                            Assembly = (from Application app in btsExp.Applications
+                                where pAppNameCollection.Contains(app.Name)
+                                let asmCol = app.Assemblies
+                                from BtsAssembly btAsm in asmCol
+                                where !btAsm.IsSystem
+                                select new AssemblyListAssembly
+                                {
+                                    AppName = app.Name,
+                                    AsmName = btAsm.Name,
+                                    AsmVer = btAsm.Version
+                                }).ToArray()
+                        };
+                    }
 
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -964,28 +967,28 @@ namespace RemoteOperations
                 {
                     BizTalkApplications bizTalkApps = new BizTalkApplications();
 
-                    // instantiate new instance of Explorer OM
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer();
                     LogInfo("Connecting to BizTalkMgmtdb...." + pSqlServerInstanceName, pRootPath);
-                    // connection string to the BizTalk management database where the ports will be created
-                    btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
-                                              ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
-                    //Get All Applications
-                    var appCol = btsExp.Applications;
-                    LogInfo("Connected.", pRootPath);
+                    // instantiate new instance of Explorer OM
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
+                    {
+                        btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        var appCol = btsExp.Applications;
+                        LogInfo("Connected.", pRootPath);
 
-                    var htApps = new Dictionary<string, int>();
-                    Msiapp(appCol, htApps, pBizTalkAppToIgnore);
+                        var htApps = new Dictionary<string, int>();
+                        Msiapp(appCol, htApps, pBizTalkAppToIgnore);
 
 
-                    bizTalkApps.BizTalkApplication = appCol.Cast<Application>()
-                        .Where(app => !pBizTalkAppToIgnore.Contains(app.Name))
-                        .Select(app => new BizTalkApplicationsBizTalkApplication
-                        {
-                            DependencyCode = htApps[app.Name].ToString(),
-                            ApplicationName = app.Name
-                        }).ToArray();
+                        bizTalkApps.BizTalkApplication = appCol.Cast<Application>()
+                            .Where(app => !pBizTalkAppToIgnore.Contains(app.Name))
+                            .Select(app => new BizTalkApplicationsBizTalkApplication
+                            {
+                                DependencyCode = htApps[app.Name].ToString(),
+                                ApplicationName = app.Name
+                            }).ToArray();
 
+                    }
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
                     //Add lib namespace with empty prefix
@@ -1335,49 +1338,45 @@ namespace RemoteOperations
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
                 try
                 {
-
-                    BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                    using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                     {
-                        ConnectionString = "Server=" + pSqlServerInstanceName +
-                                           ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                    };
-
-                    // connection string to the BizTalk management database where the ports will be created
-                    HostCollection hosts = btsExp.Hosts;
-                    string[] srcServers = srcServerList.Split(',');
-                    foreach (string server in srcServers)
-                    {
-                        using (XmlWriter writer =
-                            XmlWriter.Create(xmlPath + @"\" + "Src_" + server + "_HostMappings.xml"))
+                        btsExp.ConnectionString = "Server=" + pSqlServerInstanceName +
+                                                  ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                        string[] srcServers = srcServerList.Split(',');
+                        foreach (string server in srcServers)
                         {
-                            writer.WriteStartElement("SettingsMap");
-                            writer.WriteStartElement("HostMappings");
-                            foreach (Host host in hosts)
+                            using (XmlWriter writer =
+                                XmlWriter.Create(xmlPath + @"\" + "Src_" + server + "_HostMappings.xml"))
                             {
-                                writer.WriteStartElement("SourceHost");
-                                writer.WriteAttributeString("Name", host.Name);
-                                writer.WriteElementString("DestinationHosts", host.Name);
-                                writer.WriteEndElement();
+                                writer.WriteStartElement("SettingsMap");
+                                writer.WriteStartElement("HostMappings");
+                                foreach (Host host in btsExp.Hosts)
+                                {
+                                    writer.WriteStartElement("SourceHost");
+                                    writer.WriteAttributeString("Name", host.Name);
+                                    writer.WriteElementString("DestinationHosts", host.Name);
+                                    writer.WriteEndElement();
 
-                            }
-                            writer.WriteEndElement();
-                            //  Get all the HostInstances of the Destination Server
-                            var hostInstancesArray = HostInstance.GetInstances()
-                                .Where(ht => ht.Name.EndsWith(server) || ht.Name.EndsWith(server.ToLower()))
-                                .Select(ht => ht.Name.Split(' ')[3]).ToList()
-                                .Where(x => !string.IsNullOrEmpty(x)).ToList();
+                                }
+                                writer.WriteEndElement();
+                                //  Get all the HostInstances of the Destination Server
+                                var hostInstancesArray = HostInstance.GetInstances()
+                                    .Where(ht => ht.Name.EndsWith(server) || ht.Name.EndsWith(server.ToLower()))
+                                    .Select(ht => ht.Name.Split(' ')[3]).ToList()
+                                    .Where(x => !string.IsNullOrEmpty(x)).ToList();
 
-                            writer.WriteStartElement("HostInstanceMappings");
-                            foreach (string hostInstance in hostInstancesArray)
-                            {
-                                writer.WriteStartElement("SourceHostInstance");
-                                writer.WriteAttributeString("Name", hostInstance + ":" + server);
-                                writer.WriteElementString("DestinationHostInstances",
-                                    hostInstance + ":" + "{ServerName}");
+                                writer.WriteStartElement("HostInstanceMappings");
+                                foreach (string hostInstance in hostInstancesArray)
+                                {
+                                    writer.WriteStartElement("SourceHostInstance");
+                                    writer.WriteAttributeString("Name", hostInstance + ":" + server);
+                                    writer.WriteElementString("DestinationHostInstances",
+                                        hostInstance + ":" + "{ServerName}");
+                                    writer.WriteEndElement();
+                                }
+                                writer.WriteEndElement();
                                 writer.WriteEndElement();
                             }
-                            writer.WriteEndElement();
-                            writer.WriteEndElement();
                         }
                     }
                 }
@@ -1430,16 +1429,14 @@ namespace RemoteOperations
                             string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                             string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                             // instantiate new instance of Explorer OM
-                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                            string[] hostArray;
+                            using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                             {
-                                ConnectionString =
+                                btsExp.ConnectionString =
                                     "Server=" + pSqlServerInstanceName +
-                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                            };
-
-                            // connection string to the BizTalk management database where the ports will be created
-                            //Get the Hosts Present in  Destination
-                            var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                                hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                            }
 
                             //Get all the HostInstances of the Destination Server
                             var hostInstancesArray = HostInstance.GetInstances()
@@ -1486,16 +1483,14 @@ namespace RemoteOperations
                             string srcHostMappingFile = xmlPath + @"\" + "Src_" + srcservers[i] + "_HostMappings.xml";
                             string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                             // instantiate new instance of Explorer OM
-                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                            string[] hostArray;
+                            using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                             {
-                                ConnectionString =
+                                btsExp.ConnectionString =
                                     "Server=" + pSqlServerInstanceName +
-                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                            };
-
-                            // connection string to the BizTalk management database where the ports will be created
-                            //Get the Hosts Present in  Destination
-                            var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                                hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                            }
 
                             //Get all the HostInstances of the Destination Server
                             var hostInstancesArray = HostInstance.GetInstances()
@@ -1543,16 +1538,14 @@ namespace RemoteOperations
                                 : xmlPath + @"\" + "Src_" + srcservers[0] + "_HostMappings.xml";
                             string dstHostMappingFile = xmlPath + @"\" + "Dst_" + dstservers[i] + "_HostMappings.xml";
                             // instantiate new instance of Explorer OM
-                            BtsCatalogExplorer btsExp = new BtsCatalogExplorer
+                            string[] hostArray;
+                            using (BtsCatalogExplorer btsExp = new BtsCatalogExplorer())
                             {
-                                ConnectionString =
+                                btsExp.ConnectionString =
                                     "Server=" + pSqlServerInstanceName +
-                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI"
-                            };
-
-                            // connection string to the BizTalk management database where the ports will be created
-                            //Get the Hosts Present in  Destination
-                            var hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                                    ";Initial Catalog=BizTalkMgmtDb;Integrated Security=SSPI";
+                                hostArray = btsExp.Hosts.Cast<Host>().Select(ht => ht.Name).ToArray();
+                            }
                             //Get all the HostInstances of the Destination Server
                             var hostInstancesArray = HostInstance.GetInstances()
                                 .Where(ht =>
@@ -1689,9 +1682,7 @@ namespace RemoteOperations
                                 else
                                 {
                                     XmlDocument xmldoc = new XmlDocument();
-                                    FileStream fs = new FileStream(xmlPath + @"\" + websiteMappingFile, FileMode.Open,
-                                        FileAccess.Read);
-                                    xmldoc.Load(fs);
+                                    xmldoc.Load(xmlPath + @"\" + websiteMappingFile);
                                     XmlNodeList nodeList =
                                         xmldoc.DocumentElement.SelectNodes("/OneToOneMappings/OneToOneMapping");
                                     foreach (XmlNode node in nodeList)
@@ -1782,19 +1773,20 @@ namespace RemoteOperations
 
                 string dstServerList = dstnodeList.SelectSingleNode("DstNodes").InnerText;
                 var dstservers = dstServerList.Split(',');
-                XmlSerializer configSerializer = new XmlSerializer(typeof(Hosts));
-                Hosts input = (Hosts) configSerializer.Deserialize(new XmlTextReader(xmlPath + @"\HostInstances.xml"));
-
+                var input = DeserializeObject<Hosts>(xmlPath + @"\HostInstances.xml");
                 //get all HostInstances of 'InProcess' type.
 
                 EnumerationOptions enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
                 //Creating DestinationHostList
-                var searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host",
-                    enumOptions);
-                List<string> dstHostList = searchObject.Get()
-                    .Cast<ManagementBaseObject>()
-                    .Select(inst => inst["Name"].ToString().ToUpper()).ToList();
+                List<string> dstHostList;
+                using (var searchObjectHost = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_Host", enumOptions))
+                {
+                    dstHostList = searchObjectHost.Get()
+                        .Cast<ManagementBaseObject>()
+                        .Select(inst => inst["Name"].ToString().ToUpper())
+                        .ToList();
+                }
                 //Creating DestinationHosts
                 foreach (HostsHost host in input.Host)
                 {
@@ -1814,12 +1806,15 @@ namespace RemoteOperations
                 foreach (string server in dstservers)
                 {
 //Creating DestinationHostInstanceListForeachnode
-                    searchObject = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",
-                        "Select * from MSBTS_HostInstance", enumOptions);
-                    var dstHostInstanceList = searchObject.Get()
-                        .Cast<ManagementObject>()
-                        .Where(inst => inst["RunningServer"].ToString().ToUpper() == server)
-                        .Select(inst => inst["HostName"].ToString().ToUpper()).ToList();
+                    List<string> dstHostInstanceList;
+                    using (var searchObjectHostInstance = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", "Select * from MSBTS_HostInstance", enumOptions))
+                    {
+                        dstHostInstanceList = searchObjectHostInstance.Get()
+                            .Cast<ManagementObject>()
+                            .Where(inst => inst["RunningServer"].ToString().ToUpper() == server)
+                            .Select(inst => inst["HostName"].ToString().ToUpper())
+                            .ToList();
+                    }
                     //Create DestinationHostInstance for EachNode
                     foreach (HostsHost host in input.Host)
                     {
@@ -1839,20 +1834,20 @@ namespace RemoteOperations
             {
                 try
                 {
+                    using (var myHostSetting = HostSetting.CreateInstance())
+                    {
+                        myHostSetting.AutoCommit = false;
 
-                    var myHostSetting = HostSetting.CreateInstance();
+                        myHostSetting.Name = name;
+                        myHostSetting.HostType = hostType;
+                        myHostSetting.NtGroupName = ntGroupName;
+                        myHostSetting.AuthTrusted = authTrusted;
+                        myHostSetting.IsHost32BitOnly = is32Bit;
+                        myHostSetting.HostTracking = hostTracking;
+                        myHostSetting.IsDefault = defaultHost;
 
-                    myHostSetting.AutoCommit = false;
-
-                    myHostSetting.Name = name;
-                    myHostSetting.HostType = hostType;
-                    myHostSetting.NtGroupName = ntGroupName;
-                    myHostSetting.AuthTrusted = authTrusted;
-                    myHostSetting.IsHost32BitOnly = is32Bit;
-                    myHostSetting.HostTracking = hostTracking;
-                    myHostSetting.IsDefault = defaultHost;
-
-                    myHostSetting.CommitObject();
+                        myHostSetting.CommitObject();
+                    }
 
                     LogInfo("Host created successfully: " + name, pRootPath);
                 }
@@ -1869,18 +1864,19 @@ namespace RemoteOperations
             {
                 try
                 {
+                    using (var myServerHost = ServerHost.CreateInstance())
+                    {
+                        myServerHost.ServerName = serverName;
+                        myServerHost.HostName = name;
+                        myServerHost.Map();
+                    }
 
-                    var myServerHost = ServerHost.CreateInstance();
 
-                    myServerHost.ServerName = serverName;
-                    myServerHost.HostName = name;
-                    myServerHost.Map();
-
-
-                    var myHostInstance = HostInstance.CreateInstance();
-
-                    myHostInstance.Name = "Microsoft BizTalk Server " + name + " " + serverName;
-                    myHostInstance.Install(true, strUserNameForHost, strPasswordForHost);
+                    using (var myHostInstance = HostInstance.CreateInstance())
+                    {
+                        myHostInstance.Name = "Microsoft BizTalk Server " + name + " " + serverName;
+                        myHostInstance.Install(true, strUserNameForHost, strPasswordForHost);
+                    }
 
                     LogInfo("Host Instance created successfully: " + name + ", " + serverName, pRootPath);
                 }
@@ -2072,35 +2068,37 @@ namespace RemoteOperations
             private string Encrypt(string data)
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
-                    Mode = CipherMode.ECB,
-                    Key = keyArray,
-                    Padding = PaddingMode.PKCS7
-                };
+                    des.Mode = CipherMode.ECB;
+                    des.Key = keyArray;
+                    des.Padding = PaddingMode.PKCS7;
 
+                    using (ICryptoTransform desEncrypt = des.CreateEncryptor())
+                    {
+                        Byte[] buffer = Encoding.ASCII.GetBytes(data);
 
-                ICryptoTransform desEncrypt = des.CreateEncryptor();
-                Byte[] buffer = Encoding.ASCII.GetBytes(data);
-
-                return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                        return Convert.ToBase64String(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                    }
+                }
             }
 
             private string Decrypt(string data)
             {
                 var keyArray = Encoding.UTF8.GetBytes("M!grat!onkey1234");
-                TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider
+                using (TripleDESCryptoServiceProvider des = new TripleDESCryptoServiceProvider())
                 {
-                    Mode = CipherMode.ECB,
-                    Key = keyArray,
-                    Padding = PaddingMode.PKCS7
-                };
+                    des.Mode = CipherMode.ECB;
+                    des.Key = keyArray;
+                    des.Padding = PaddingMode.PKCS7;
 
+                    using (ICryptoTransform desEncrypt = des.CreateDecryptor())
+                    {
+                        Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
 
-                ICryptoTransform desEncrypt = des.CreateDecryptor();
-                Byte[] buffer = Convert.FromBase64String(data.Replace(" ", "+"));
-
-                return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                        return Encoding.UTF8.GetString(desEncrypt.TransformFinalBlock(buffer, 0, buffer.Length));
+                    }
+                }
             }
 
             public void LogInfo(string strMsg, string pPath)
