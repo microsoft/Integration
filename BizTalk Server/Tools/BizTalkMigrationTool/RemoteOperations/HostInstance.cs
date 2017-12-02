@@ -291,7 +291,7 @@ namespace RemoteOperations
             {
                 if (_curObj["ConfigurationState"] == null)
                 {
-                    return (ConfigurationStateValues) Convert.ToInt32(0);
+                    return ConfigurationStateValues.NullEnumValue;
                 }
                 return (ConfigurationStateValues) Convert.ToInt32(_curObj["ConfigurationState"]);
             }
@@ -342,7 +342,7 @@ namespace RemoteOperations
             {
                 if (_curObj["HostType"] == null)
                 {
-                    return (HostTypeValues) Convert.ToInt32(0);
+                    return HostTypeValues.NullEnumValue;
                 }
                 return (HostTypeValues) Convert.ToInt32(_curObj["HostType"]);
             }
@@ -513,7 +513,7 @@ namespace RemoteOperations
             {
                 if (_curObj["ServiceState"] == null)
                 {
-                    return (ServiceStateValues) Convert.ToInt32(0);
+                    return ServiceStateValues.NullEnumValue;
                 }
                 return (ServiceStateValues) Convert.ToInt32(_curObj["ServiceState"]);
             }
@@ -1081,9 +1081,9 @@ namespace RemoteOperations
                 _baseType = inBaseType;
             }
 
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type srcType)
             {
-                return _baseConverter.CanConvertFrom(context, sourceType);
+                return _baseConverter.CanConvertFrom(context, srcType);
             }
 
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

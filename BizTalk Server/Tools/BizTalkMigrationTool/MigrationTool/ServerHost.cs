@@ -693,8 +693,8 @@ namespace MigrationTool {
                 _baseType = inBaseType;
             }
             
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
-                return _baseConverter.CanConvertFrom(context, sourceType);
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type srcType) {
+                return _baseConverter.CanConvertFrom(context, srcType);
             }
             
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {

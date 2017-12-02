@@ -496,21 +496,7 @@ namespace MigrationTool
                     }
                 }
 
-
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-                //Add lib namespace with empty prefix
-                ns.Add("", "");
-
-                XmlSerializer xmlSerializer = new XmlSerializer(hosts.GetType());
-                XmlWriterSettings xmlWriterSetting =
-                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-
-                using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\HostInstances.xml", xmlWriterSetting))
-                {
-                    xmlSerializer.Serialize(xmlWriterApps, hosts, ns);
-                }
+                SerializeObject(hosts, _xmlPath + @"\HostInstances.xml");
 
                 LogShortSuccessMsg("Success: Exported Host Instances.");
                 //Exporting HostSettings
@@ -610,7 +596,7 @@ namespace MigrationTool
                 {
                     LogInfo("Host: Import started..");
                     if (!File.Exists(_xmlPath + @"\HostInstances.xml"))
-                        throw new InvalidOperationException("HostInstances xml file does not exist.");
+                        throw new FileNotFoundException("HostInstances xml file does not exist.");
                     //check file is empty or not
                     XmlDocument doc = new XmlDocument();
                     doc.Load(_xmlPath + "\\HostInstances.xml");
@@ -706,7 +692,7 @@ namespace MigrationTool
 
                 if (!File.Exists(_xmlPath + "\\" + "HostSettings.xml"))
                 {
-                    throw new InvalidOperationException("Host Settings xml is not Present.");
+                    throw new FileNotFoundException("Host Settings xml is not Present.");
                 }
 
                 String[] files = Directory.GetFiles(_xmlPath, "Dst_*_HostMappings.xml");
@@ -783,14 +769,31 @@ namespace MigrationTool
             }
         }
 
-        private T DeserializeObject<T>(string url)
+        private static T DeserializeObject<T>(string url)
         {
-            XmlSerializer configSerializer = new XmlSerializer(typeof(T));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             using (var xmlTextReader = new XmlTextReader(url))
             {
-                return (T) configSerializer.Deserialize(xmlTextReader);
+                return (T) xmlSerializer.Deserialize(xmlTextReader);
             }
         }
+
+        private static void SerializeObject(object o, string outputFileName)
+        {
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            //Add lib namespace with empty prefix
+            namespaces.Add("", "");
+
+            XmlSerializer xmlSerializer = new XmlSerializer(o.GetType());
+            XmlWriterSettings xmlWriterSetting =
+                new XmlWriterSettings { NamespaceHandling = NamespaceHandling.OmitDuplicates };
+
+            using (var xmlWriter = XmlWriter.Create(outputFileName, xmlWriterSetting))
+            {
+                xmlSerializer.Serialize(xmlWriter, o, namespaces);
+            }
+        }
+
 
         private void CreateHost(string name, HostSetting.HostTypeValues hostType, string ntGroupName, bool authTrusted,
             bool hostTracking, bool is32Bit, bool defaultHost)
@@ -867,7 +870,7 @@ namespace MigrationTool
             {
                 LogInfo("Handlers: Import started");
                 if (!File.Exists(_xmlPath + @"\Handlers.xml"))
-                    throw new InvalidOperationException("Handlers xml file does not exist.");
+                    throw new FileNotFoundException("Handlers xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
@@ -1017,20 +1020,7 @@ namespace MigrationTool
                             .ToArray();
                     }
 
-                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-                    //Add lib namespace with empty prefix
-                    ns.Add("", "");
-
-                    XmlSerializer xmlSerializer = new XmlSerializer(rcvSndHandlers.GetType());
-                    XmlWriterSettings xmlWriterSetting =
-                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-
-                    using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Handlers.xml", xmlWriterSetting))
-                    {
-                        xmlSerializer.Serialize(xmlWriterApps, rcvSndHandlers, ns);
-                    }
+                    SerializeObject(rcvSndHandlers, _xmlPath + @"\Handlers.xml");
                     LogShortSuccessMsg("Success: Exported Handlers.");
                 }
                 else //remote
@@ -1283,19 +1273,7 @@ namespace MigrationTool
                             .ToArray();
                     }
 
-                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-                    //Add lib namespace with empty prefix
-                    ns.Add("", "");
-
-                    var xmlSerializer = new XmlSerializer(bizTalkApps.GetType());
-                    XmlWriterSettings xmlWriterSetting =
-                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-                    using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\Apps.xml", xmlWriterSetting))
-                    {
-                        xmlSerializer.Serialize(xmlWriterApps, bizTalkApps, ns);
-                    }
+                    SerializeObject(bizTalkApps, _xmlPath + @"\Apps.xml");
                     LogInfo("Success: Created Apps.xml.");
                     return 0;
                 }
@@ -1339,7 +1317,7 @@ namespace MigrationTool
             {
                 LogInfo("BizTalk App: Import Started.");
                 if (!File.Exists(_xmlPath + @"\Apps.xml"))
-                    throw new InvalidOperationException("Apps xml file does not exist.");
+                    throw new FileNotFoundException("Apps xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
@@ -1827,7 +1805,7 @@ namespace MigrationTool
             {
                 LogInfo("Global Party Binding: Import started.");
                 if (!File.Exists(_xmlPath + @"\GlobalPartyBinding.xml"))
-                    throw new InvalidOperationException("GlobalPartyBinding xml file does not exist.");
+                    throw new FileNotFoundException("GlobalPartyBinding xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
@@ -1971,7 +1949,7 @@ namespace MigrationTool
             {
                 LogInfo("App Pool: Import started.");
                 if (!File.Exists(_xmlPath + @"\AppPools.xml"))
-                    throw new InvalidOperationException("AppPools xml file does not exist.");
+                    throw new FileNotFoundException("AppPools xml file does not exist.");
 
                 XmlDocument doc = new XmlDocument();
                 doc.Load(_xmlPath + "\\AppPools.xml");
@@ -2282,7 +2260,7 @@ namespace MigrationTool
             {
                 LogInfo("Website: Import started.");
                 if (!File.Exists(_xmlPath + @"\WebSites.xml"))
-                    throw new InvalidOperationException("WebSites xml file does not exist.");
+                    throw new FileNotFoundException("WebSites xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
@@ -2555,8 +2533,8 @@ namespace MigrationTool
                     {
                         foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                         {
-                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                            StoreLocation storeLoc; Enum.TryParse(iStoreLocation, out storeLoc);
+                            StoreName storeNam; Enum.TryParse(iStoreName, out storeNam);
                             if (storeLoc == StoreLocation.LocalMachine ||
                                 storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My)
                             {
@@ -2742,8 +2720,8 @@ namespace MigrationTool
                     {
                         foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                         {
-                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                            StoreLocation storeLoc; Enum.TryParse(iStoreLocation, out storeLoc);
+                            StoreName storeNam; Enum.TryParse(iStoreName, out storeNam);
 
                             store = new X509Store(storeNam, storeLoc);
 
@@ -2792,8 +2770,8 @@ namespace MigrationTool
                 {
                     foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                     {
-                        StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                        StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                        StoreLocation storeLoc; Enum.TryParse(iStoreLocation, out storeLoc);
+                        StoreName storeNam; Enum.TryParse(iStoreName, out storeNam);
                         //if (storeNam == StoreName.Root && storeLoc == StoreLocation.CurrentUser)
                         //    storeLoc = StoreLocation.LocalMachine;
                         //if (storeNam == StoreName.Disallowed && storeLoc == StoreLocation.CurrentUser)
@@ -3005,7 +2983,7 @@ namespace MigrationTool
                 if (!File.Exists(_xmlPath + @"\Apps.xml")) //if Apps.xml does not exist then create
                 {
                     if (btnGetApplicationList_Click(sender, e) == 1)
-                        throw new InvalidOperationException("Failed: Creating Apps.xml");
+                        throw new FileNotFoundException("Failed: Creating Apps.xml");
                 }
 
                 XElement xelement = XElement.Load(_xmlPath + @"\Apps.xml");
@@ -3054,19 +3032,7 @@ namespace MigrationTool
 
                     //END::asm Custom list
 
-                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-                    //Add lib namespace with empty prefix
-                    ns.Add("", "");
-
-                    var xmlSerializer = new XmlSerializer(asmList.GetType());
-                    XmlWriterSettings xmlWriterSetting =
-                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-                    using (var xmlWriterApps = XmlWriter.Create(_xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting))
-                    {
-                        xmlSerializer.Serialize(xmlWriterApps, asmList, ns);
-                    }
+                    SerializeObject(asmList, _xmlPath + @"\SrcBizTalkAssembly.xml");
                     LogInfo("Success: Created SrcBizTalkAssembly.xml.");
                     return 0;
                 }
@@ -3121,7 +3087,7 @@ namespace MigrationTool
                         throw new InvalidOperationException("Failed: Creating Assembly List");
 
                     if (!File.Exists(_xmlPath + @"\SrcBizTalkAssembly.xml"))
-                        throw new InvalidOperationException("File: " + _xmlPath +
+                        throw new FileNotFoundException("File: " + _xmlPath +
                                             @"\SrcBizTalkAssembly.xml does not exist, Assembly Export is termintated please check logs for root cause.");
 
                     asmList = DeserializeObject<AssemblyList>(_xmlPath + @"\SrcBizTalkAssembly.xml");
@@ -3353,7 +3319,7 @@ namespace MigrationTool
                 LogInfo("Assembly: Import started.");
 
                 if (!File.Exists(_xmlPath + @"\SrcBizTalkAssemblyList.txt"))
-                    throw new InvalidOperationException("SrcBizTalkAssemblyList txt file does not exist.");
+                    throw new FileNotFoundException("SrcBizTalkAssemblyList txt file does not exist.");
 
 
 
@@ -3746,7 +3712,7 @@ namespace MigrationTool
 
 
                 if (!File.Exists(_xmlPath + @"\BamDef.xml"))
-                    throw new InvalidOperationException("BamDef.xml is not Present");
+                    throw new FileNotFoundException("BamDef.xml is not Present");
 
                 //Get all Views
                 LogInfo("BAM: Get all views.");
@@ -3858,7 +3824,7 @@ namespace MigrationTool
                 LogInfo("BAM: Import started.");
 
                 if (!File.Exists(_xmlPath + @"\BamDef.xml"))
-                    throw new InvalidOperationException("BamDef xml file does not exist.");
+                    throw new FileNotFoundException("BamDef xml file does not exist.");
 
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
@@ -4354,7 +4320,7 @@ namespace MigrationTool
                                                    " -accepteula"
                                                    + " sc create " + "\"" + srvDetails[0] + "\" DisplayName=\"" +
                                                    srvDetails[2] + "\" binPath=\"" + srvDetails[1] +
-                                                   "\" start=auto obj=\"" + _strUserNameForHost + "\" password=\"" +
+                                                   "\" start=auto o=\"" + _strUserNameForHost + "\" password=\"" +
                                                    _strPasswordForHost + "\"\"";
 
                             returnCode = ExecuteCmd("CMD.EXE", commandArguments);
@@ -4501,7 +4467,7 @@ namespace MigrationTool
                     if (srv.SrcSqlInstance != null)
                     {
                         txtConnectionString.Text = srv.SrcSqlInstance;
-                        //lblServers.Text = srv.SrcNodes;
+                        //lblServers.Text = obj.SrcNodes;
                         _srcSqlInstance = srv.SrcSqlInstance;
                         string[] srcNodes = srv.SrcNodes.Split(chrSep);
                         foreach (string srcNode in srcNodes)
@@ -4999,7 +4965,7 @@ namespace MigrationTool
                 if (srv.SrcSqlInstance != null)
                 {
                     txtConnectionString.Text = srv.SrcSqlInstance;
-                    //lblServers.Text = srv.SrcNodes;
+                    //lblServers.Text = obj.SrcNodes;
                     _srcSqlInstance = srv.SrcSqlInstance;
                     string[] srcNodes = srv.SrcNodes.Split(chrSep);
                     foreach (string srcNode in srcNodes)
@@ -6039,18 +6005,7 @@ namespace MigrationTool
                 }
                 srv.SrcNodes = strNodes;
 
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                //Add lib namespace with empty prefix
-                ns.Add("", "");
-
-                XmlSerializer xmlSerializer = new XmlSerializer(srv.GetType());
-                XmlWriterSettings xmlWriterSetting =
-                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-                using (var xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting))
-                {
-                    xmlSerializer.Serialize(xmlWriterApps, srv, ns);
-                }
+                SerializeObject(srv, _serverXmlPath);
             }
 
             catch (Exception ex)
@@ -6076,18 +6031,7 @@ namespace MigrationTool
                     strNodes = strNodes + cmbBoxServerDst.Items[i];
                 }
                 srv.DstNodes = strNodes;
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                //Add lib namespace with empty prefix
-                ns.Add("", "");
-
-                XmlSerializer xmlSerializer = new XmlSerializer(srv.GetType());
-                XmlWriterSettings xmlWriterSetting =
-                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-                using (var xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting))
-                {
-                    xmlSerializer.Serialize(xmlWriterApps, srv, ns);
-                }
+                SerializeObject(srv, _serverXmlPath);
             }
             catch (Exception ex)
             {
@@ -6105,18 +6049,7 @@ namespace MigrationTool
 
                 srv.DstAppNode = txtConnectionStringDst.Text.Trim();
                 srv.SrcAppNode = txtConnectionString.Text.Trim();
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                //Add lib namespace with empty prefix
-                ns.Add("", "");
-
-                XmlSerializer xmlSerializer = new XmlSerializer(srv.GetType());
-                XmlWriterSettings xmlWriterSetting =
-                    new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-                using (var xmlWriterApps = XmlWriter.Create(_serverXmlPath, xmlWriterSetting))
-                {
-                    xmlSerializer.Serialize(xmlWriterApps, srv, ns);
-                }
+                SerializeObject(srv, _serverXmlPath);
             }
             catch (Exception ex)
             {

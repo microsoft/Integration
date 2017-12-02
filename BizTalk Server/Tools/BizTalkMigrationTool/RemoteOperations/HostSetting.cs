@@ -480,7 +480,7 @@ namespace RemoteOperations {
         public HostTypeValues HostType {
             get {
                 if (_curObj["HostType"] == null) {
-                    return (HostTypeValues)Convert.ToInt32(0);
+                    return HostTypeValues.NullEnumValue;
                 }
                 return (HostTypeValues)Convert.ToInt32(_curObj["HostType"]);
             }
@@ -1550,8 +1550,8 @@ namespace RemoteOperations {
                 _baseType = inBaseType;
             }
             
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
-                return _baseConverter.CanConvertFrom(context, sourceType);
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type srcType) {
+                return _baseConverter.CanConvertFrom(context, srcType);
             }
             
             public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {

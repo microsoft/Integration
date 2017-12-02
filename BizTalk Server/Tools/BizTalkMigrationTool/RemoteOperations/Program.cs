@@ -173,8 +173,8 @@ namespace RemoteOperations
                     {
                         foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                         {
-                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                            StoreLocation storeLoc; Enum.TryParse(iStoreLocation, out storeLoc);
+                            StoreName storeNam; Enum.TryParse(iStoreName, out storeNam);
                             if (storeLoc == StoreLocation.LocalMachine ||
                                 storeLoc == StoreLocation.CurrentUser && storeNam == StoreName.My)
                             {
@@ -327,9 +327,8 @@ namespace RemoteOperations
                         {
                             foreach (string iStoreName in Enum.GetNames(typeof(StoreName)))
                             {
-                                StoreLocation storeLoc =
-                                    (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                                StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                                StoreLocation storeLoc; Enum.TryParse(iStoreLocation, out storeLoc);
+                                StoreName storeNam; Enum.TryParse(iStoreName, out storeNam);
 
                                 store = new X509Store(storeNam, storeLoc);
 
@@ -375,8 +374,8 @@ namespace RemoteOperations
                         {
                             LogInfo("Inside Cert Loop: StoreLocation: " + iStoreLocation + ", StoreName: " + iStoreName,
                                 pRootPath);
-                            StoreLocation storeLoc = (StoreLocation) Enum.Parse(typeof(StoreLocation), iStoreLocation);
-                            StoreName storeNam = (StoreName) Enum.Parse(typeof(StoreName), iStoreName);
+                            StoreLocation storeLoc; Enum.TryParse(iStoreLocation, out storeLoc);
+                            StoreName storeNam; Enum.TryParse(iStoreName, out storeNam);
                             //if (storeNam == StoreName.Root && storeLoc == StoreLocation.CurrentUser)
                             //    storeLoc = StoreLocation.LocalMachine;
                             //if (storeNam == StoreName.Disallowed && storeLoc == StoreLocation.CurrentUser)
@@ -719,12 +718,28 @@ namespace RemoteOperations
                 }
             }
 
-            private T DeserializeObject<T>(string url)
+            private static T DeserializeObject<T>(string url)
             {
-                XmlSerializer configSerializer = new XmlSerializer(typeof(T));
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
                 using (var xmlTextReader = new XmlTextReader(url))
                 {
-                    return (T)configSerializer.Deserialize(xmlTextReader);
+                    return (T) xmlSerializer.Deserialize(xmlTextReader);
+                }
+            }
+
+            private static void SerializeObject(object o, string outputFileName)
+            {
+                XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+                //Add lib namespace with empty prefix
+                namespaces.Add("", "");
+
+                XmlSerializer xmlSerializer = new XmlSerializer(o.GetType());
+                XmlWriterSettings xmlWriterSetting =
+                    new XmlWriterSettings { NamespaceHandling = NamespaceHandling.OmitDuplicates };
+
+                using (var xmlWriter = XmlWriter.Create(outputFileName, xmlWriterSetting))
+                {
+                    xmlSerializer.Serialize(xmlWriter, o, namespaces);
                 }
             }
 
@@ -877,21 +892,7 @@ namespace RemoteOperations
                             .ToArray();
                     }
 
-                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-                    //Add lib namespace with empty prefix
-                    ns.Add("", "");
-
-                    XmlSerializer x = new XmlSerializer(rcvSndHandlers.GetType());
-                    XmlWriterSettings xmlWriterSetting =
-                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-
-                    using (var xmlWriterApps = XmlWriter.Create(xmlPath + @"\Handlers.xml", xmlWriterSetting))
-                    {
-                        x.Serialize(xmlWriterApps, rcvSndHandlers, ns);
-                    }
-
+                    SerializeObject(rcvSndHandlers, xmlPath + @"\Handlers.xml");
                     LogInfo("Handlers list genrated, please check XML folder", pRootPath);
                 }
                 catch (Exception ex)
@@ -934,19 +935,7 @@ namespace RemoteOperations
                         };
                     }
 
-                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-                    //Add lib namespace with empty prefix
-                    ns.Add("", "");
-
-                    var xmlSerializer = new XmlSerializer(asmList.GetType());
-                    XmlWriterSettings xmlWriterSetting =
-                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-                    using (var xmlWriterApps = XmlWriter.Create(xmlPath + @"\SrcBizTalkAssembly.xml", xmlWriterSetting))
-                    {
-                        xmlSerializer.Serialize(xmlWriterApps, asmList, ns);
-                    }
+                    SerializeObject(asmList, xmlPath + @"\SrcBizTalkAssembly.xml");
                     LogInfo("Asm list genrated in XML folder.", pRootPath);
                 }
                 catch (Exception ex)
@@ -989,19 +978,8 @@ namespace RemoteOperations
                             }).ToArray();
 
                     }
-                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
-                    //Add lib namespace with empty prefix
-                    ns.Add("", "");
-
-                    var xmlSerializer = new XmlSerializer(bizTalkApps.GetType());
-                    XmlWriterSettings xmlWriterSetting =
-                        new XmlWriterSettings {NamespaceHandling = NamespaceHandling.OmitDuplicates};
-
-                    using (var xmlWriterApps = XmlWriter.Create(xmlPath + @"\Apps.xml", xmlWriterSetting))
-                    {
-                        xmlSerializer.Serialize(xmlWriterApps, bizTalkApps, ns);
-                    }
+                    SerializeObject(bizTalkApps, xmlPath + @"\Apps.xml");
                     LogInfo("App list with dependency code genrated in XML folder.", pRootPath);
                 }
                 catch (Exception ex)
@@ -1419,7 +1397,7 @@ namespace RemoteOperations
                     String[] files = Directory.GetFiles(xmlPath, "Src_*_HostMappings.xml");
                     if (files.Length == 0)
                     {
-                        throw new FileNotFoundException(" Source HostMapping xml file is not available.", xmlPath + "\\" + "Src_*_HostMappings.xml");
+                        throw new FileNotFoundException(" Source HostMapping xml file is not available.", "Src_*_HostMappings.xml");
                     }
 
                     if (dstservers.Length == srcservers.Length)
@@ -1758,7 +1736,7 @@ namespace RemoteOperations
                 string xmlPath = pRootPath + "\\ExportedData\\XMLFiles";
                 LogInfo("Host: Import started..", pRootPath);
                 if (!File.Exists(xmlPath + @"\HostInstances.xml"))
-                    throw new InvalidOperationException("HostInstances xml file does not exist.");
+                    throw new FileNotFoundException("HostInstances xml file does not exist.");
                 //check file is empty or not
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlPath + "\\HostInstances.xml");
