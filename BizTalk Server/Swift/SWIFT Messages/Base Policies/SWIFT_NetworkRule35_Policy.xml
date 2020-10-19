@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule35_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule 35" modifiedby="Microsoft" date="2004-01-08T18:30:27.7343552+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+    </bindings>
+    <rule name="Validate_MT644" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY6_MT644' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT644']</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//RelatedReference_A_21</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ToTheAttentionOf_A_29B</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C35</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule35_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT644</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT644</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C1</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 35</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT649" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY6_MT649' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT649']</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//RelatedReference_21</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ToTheAttentionOf_29B</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C35</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule35_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT649</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT649</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C1</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 35</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT646" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY6_MT646' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT646']</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//RelatedReference_A_21</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ToTheAttentionOf_A_29B</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C35</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule35_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT646</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT646</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C6</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 35</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT643" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY6_MT643' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT643']</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//RelatedReference_A_21</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ToTheAttentionOf_A_29B</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C35</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule35_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT643</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT643</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C7</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 35</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

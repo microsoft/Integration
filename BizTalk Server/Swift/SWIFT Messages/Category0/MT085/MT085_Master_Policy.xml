@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="MT085_Master_Policy">
+    <version major="1" minor="0" description="This is a Master Policy for message MT085" modifiedby="Microsoft" date="2004-05-21T07:08:19.7655408+05:30" />
+    <configuration />
+    <bindings>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+    </bindings>
+    <rule name="MT085_PolicyList" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY0_MT085' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category0/MT085']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <!--Empty action list-->
+      </then>
+    </rule>
+  </ruleset>
+</brl>

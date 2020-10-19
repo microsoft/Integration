@@ -1,0 +1,1907 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRuleT75_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule T75" modifiedby="Microsoft" date="2016-07-21T00:27:24.4393664-08:00" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--C:\Windows\assembly\GAC_MSIL\Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions\3.2.0.0__31bf3856ad364e35\Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--C:\Windows\assembly\GAC_MSIL\Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions\3.2.0.0__31bf3856ad364e35\Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_31" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+    </bindings>
+    <rule name="Validate_MT700" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT700' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT700']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="not equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT700</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT700</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT701" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT701' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT701']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                  <decimal>2</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                  <decimal>2</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT701</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT701</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT707" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT707' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT707']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="not equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT707</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT707</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT708" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT708' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT708']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+          <compare operator="less than">
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+            <lhs>
+              <function>
+                <classmember member="ConvertToInteger" sideeffects="true">
+                  <classref ref="CommonFunctions" />
+                  <argument>
+                    <function>
+                      <classmember member="ReturnXPathValue" sideeffects="true">
+                        <classref ref="CommonFunctions" />
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                            <xmldocumentref ref="xml_31" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//SequenceOfTotal_27/Number</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </argument>
+                </classmember>
+              </function>
+            </lhs>
+            <rhs>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                <decimal>2</decimal>
+              </constant>
+            </rhs>
+          </compare>
+          <compare operator="greater than">
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+            <lhs>
+              <function>
+                <classmember member="ConvertToInteger" sideeffects="true">
+                  <classref ref="CommonFunctions" />
+                  <argument>
+                    <function>
+                      <classmember member="ReturnXPathValue" sideeffects="true">
+                        <classref ref="CommonFunctions" />
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_31" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//SequenceOfTotal_27/Number</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </argument>
+                </classmember>
+              </function>
+            </lhs>
+            <rhs>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                <decimal>8</decimal>
+              </constant>
+            </rhs>
+          </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                  <decimal>2</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+          <compare operator="greater than">
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+            <lhs>
+              <function>
+                <classmember member="ConvertToInteger" sideeffects="true">
+                  <classref ref="CommonFunctions" />
+                  <argument>
+                    <function>
+                      <classmember member="ReturnXPathValue" sideeffects="true">
+                        <classref ref="CommonFunctions" />
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_31" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//SequenceOfTotal_27/Number</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </argument>
+                </classmember>
+              </function>
+            </lhs>
+            <rhs>
+              <function>
+                <classmember member="ConvertToInteger" sideeffects="true">
+                  <classref ref="CommonFunctions" />
+                  <argument>
+                    <function>
+                      <classmember member="ReturnXPathValue" sideeffects="true">
+                        <classref ref="CommonFunctions" />
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_31" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//SequenceOfTotal_27/Total</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </argument>
+                </classmember>
+              </function>
+            </rhs>
+          </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT708</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT708</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT710" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT710' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT710']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="not equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT710</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT710</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT711" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT711' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT711']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                  <decimal>2</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                  <decimal>2</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT711</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT711</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT720" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT720' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT720']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="not equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT720</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT720</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT721" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT721' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT721']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                  <decimal>2</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                  <decimal>2</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT721</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT721</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT759" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_31" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT759' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT759']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="less than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="3e0b3962-6864-433a-8614-45537e7ef9a9" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5ae753cf-7be7-421d-96a3-7283fa753e43" />
+                  <decimal>1</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd60f259-d7ef-464e-a4a3-30673d974748" />
+                  <decimal>8</decimal>
+                </constant>
+              </rhs>
+            </compare>
+            <compare operator="greater than">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+              <lhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Number</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <function>
+                  <classmember member="ConvertToInteger" sideeffects="true">
+                    <classref ref="CommonFunctions" />
+                    <argument>
+                      <function>
+                        <classmember member="ReturnXPathValue" sideeffects="true">
+                          <classref ref="CommonFunctions" />
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_31" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//SequenceOfTotal_27/Total</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </argument>
+                  </classmember>
+                </function>
+              </rhs>
+            </compare>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>t75</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRuleT75_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT759</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT759</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule T75</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

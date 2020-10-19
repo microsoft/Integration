@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule212_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule 212" modifiedby="Microsoft" date="2004-01-13T14:45:10.5949056+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_MT103" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103']</string>
+              </constant>
+            </member>
+          </exists>
+          <and>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//RemittanceInformation_70</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//EnvelopeContents_77T</string>
+                </constant>
+              </member>
+            </exists>
+          </and>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>E12</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule212_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT103</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C14</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 212</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT586" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY5_MT586' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT586']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Function</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="d719eabb-b0b8-4b9e-ab11-7d11e72cd52f" />
+                    <string>RMDR</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//Party_A_95Q</string>
+                  </constant>
+                </member>
+              </exists>
+            </and>
+            <and>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="d747a3ec-1043-4c47-a6fe-17c1d99bce91" />
+                    <string>CANC</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Function</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              <or>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3bfa17a4-62a1-41d0-98f3-791772d9efa9" />
+                    <string>CODU</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Subfunction/Subfunction</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="770cc459-b4a8-4670-8a3b-2e65ead5de93" />
+                    <string>COPY</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Subfunction/Subfunction</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1de7cd42-68e1-485d-b4eb-9b19549b3e64" />
+                    <string>DUPL</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Subfunction/Subfunction</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              </or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//Party_A_95Q</string>
+                  </constant>
+                </member>
+              </exists>
+            </and>
+            <and>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="9b9e13f2-9db9-4cc0-b3bf-b66590a3bf5d" />
+                    <string>NEWM</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Function</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              <or>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3bfa17a4-62a1-41d0-98f3-791772d9efa9" />
+                    <string>CODU</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Subfunction/Subfunction</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="770cc459-b4a8-4670-8a3b-2e65ead5de93" />
+                    <string>COPY</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Subfunction/Subfunction</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1de7cd42-68e1-485d-b4eb-9b19549b3e64" />
+                    <string>DUPL</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionOfTheMessage_A_23G/Subfunction/Subfunction</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              </or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="a471e0cf-58ed-423b-a9bf-dffc6aab494a" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//Party_A_95Q</string>
+                  </constant>
+                </member>
+              </exists>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>E12</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule212_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT586</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT586</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C14</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 212</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

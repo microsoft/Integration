@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule239_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule 239" modifiedby="Microsoft" date="2004-03-10T06:00:09.9218750+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_MT362" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY3_MT362' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT362']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//SequenceD</string>
+                  </constant>
+                </member>
+              </exists>
+              <or>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="efebe4eb-d446-4f0b-a9ef-f86e994efed6" />
+                        <string>FIXEDFIXED,FIXEDFLOAT,CAPBUYER,FLOORBUYER,FLOORSLLER,CORRBUYER,VARBUYER,VOLABUYER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//CapRate_D_37V</string>
+                      </constant>
+                    </member>
+                  </exists>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="2fbf7a08-475f-42b0-a447-da4154a22e61" />
+                        <string>CAPSELLER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//CapRate_D_37V</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="e406e9ec-165a-4451-af09-1f7e0370cd3c" />
+                        <string>FIXEDFIXED,FIXEDFLOAT,CAPBUYER,CAPSELLER,FLOORBUYER,CORRBUYER,VARBUYER,VOLABUYER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//FloorRate_D_37G</string>
+                      </constant>
+                    </member>
+                  </exists>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a93fac6e-842c-4655-894b-ec2c4cadcddd" />
+                        <string>FLOORSLLER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//FloorRate_D_37G</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="dadc619d-176d-4287-b18e-b8c5ee92b7d2" />
+                        <string>COLLARBYER,COLLARSLLR</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <and>
+                    <not>
+                      <exists>
+                        <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                        <object>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </object>
+                        <member>
+                          <constant>
+                            <string>//CapRate_D_37V</string>
+                          </constant>
+                        </member>
+                      </exists>
+                    </not>
+                    <not>
+                      <exists>
+                        <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                        <object>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </object>
+                        <member>
+                          <constant>
+                            <string>//FloorRate_D_37G</string>
+                          </constant>
+                        </member>
+                      </exists>
+                    </not>
+                  </and>
+                </and>
+              </or>
+            </and>
+            <and>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </pattern>
+                <input>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="dadc619d-176d-4287-b18e-b8c5ee92b7d2" />
+                    <string>COLLARBYER,COLLARSLLR</string>
+                  </constant>
+                </input>
+              </match>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//SequenceD</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//SequenceB</string>
+                  </constant>
+                </member>
+              </exists>
+              <or>
+                <and>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//CapRate_B_37V</string>
+                      </constant>
+                    </member>
+                  </exists>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//FloorRate_B_37G</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//FloorRate_D_37G</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                </and>
+                <and>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//FloorRate_B_37G</string>
+                      </constant>
+                    </member>
+                  </exists>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//CapRate_B_37V</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//CapRate_D_37V</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                </and>
+              </or>
+            </and>
+            <and>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//SequenceB</string>
+                  </constant>
+                </member>
+              </exists>
+              <or>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3255d6d6-2b26-43b0-9a3b-ef097656e439" />
+                        <string>FIXEDFIXED,FLOATFIXED,CAPSELLER,FLOORBUYER,FLOORSLLER,CORRSELLER,VARSELLER,VOLASELLER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//CapRate_B_37V</string>
+                      </constant>
+                    </member>
+                  </exists>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="cec195de-5247-42b7-a027-f7bc04696fc9" />
+                        <string>CAPBUYER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//CapRate_B_37V</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="4d4538b3-2e0a-48df-a800-f7a1b41d3c73" />
+                        <string>FIXEDFIXED,FLOATFIXED,CAPBUYER,CAPSELLER,FLOORSLLER,CORRSELLER,VARSELLER,VOLASELLER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//FloorRate_B_37G</string>
+                      </constant>
+                    </member>
+                  </exists>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="2ebb973d-e9a7-4ca8-b989-75d3b8a08490" />
+                        <string>FLOORBUYER</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <not>
+                    <exists>
+                      <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                      <object>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </object>
+                      <member>
+                        <constant>
+                          <string>//FloorRate_B_37G</string>
+                        </constant>
+                      </member>
+                    </exists>
+                  </not>
+                </and>
+                <and>
+                  <match>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                    <pattern>
+                      <function>
+                        <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                          <argument>
+                            <reference>
+                              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                              <xmldocumentref ref="xml_0" />
+                            </reference>
+                          </argument>
+                          <argument>
+                            <constant>
+                              <string>//IdentificationOfTheSwap_A_23A/TypeOfSwap</string>
+                            </constant>
+                          </argument>
+                        </classmember>
+                      </function>
+                    </pattern>
+                    <input>
+                      <constant>
+                        <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="dadc619d-176d-4287-b18e-b8c5ee92b7d2" />
+                        <string>COLLARBYER,COLLARSLLR</string>
+                      </constant>
+                    </input>
+                  </match>
+                  <and>
+                    <not>
+                      <exists>
+                        <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                        <object>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </object>
+                        <member>
+                          <constant>
+                            <string>//FloorRate_B_37G</string>
+                          </constant>
+                        </member>
+                      </exists>
+                    </not>
+                    <not>
+                      <exists>
+                        <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                        <object>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </object>
+                        <member>
+                          <constant>
+                            <string>//CapRate_B_37V</string>
+                          </constant>
+                        </member>
+                      </exists>
+                    </not>
+                  </and>
+                </and>
+              </or>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>E39</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule239_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT362</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT362</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C9</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 239</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

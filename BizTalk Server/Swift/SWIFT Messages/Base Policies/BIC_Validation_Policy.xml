@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="BIC_Validation_Policy">
+    <version major="1" minor="0" description="" modifiedby="Microsoft" date="2004-04-14T21:10:41.9987775-07:00" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <class ref="BicValidatorClass" class="BicValidatorClass" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_1" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+    </bindings>
+    <rule name="Validate_BIC_Rule" priority="0" active="true">
+      <if>
+        <predicate>
+          <classmember classref="BicValidatorClass" member="GetBicsFromDocument" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BankIdentifierCode</string>
+              </constant>
+            </argument>
+          </classmember>
+        </predicate>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>T25,T26,T27,T45</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>BIC_validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BIC_Rule</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>BankIdentifierCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <function>
+                <classmember classref="BicValidatorClass" member="get_BicsNotFound" sideeffects="true" />
+              </function>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="BIC_Master_Policy">
+    <version major="1" minor="0" description="" modifiedby="Microsoft" date="2004-04-14T22:49:11.5256333-07:00" />
+    <configuration />
+    <bindings>
+      <class ref="PolicyList" class="PolicyList" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="BIC_Master_Rule" priority="0" active="true">
+      <if>
+        <compare operator="equal">
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+          <lhs>
+            <constant>
+              <string>1</string>
+            </constant>
+          </lhs>
+          <rhs>
+            <constant>
+              <string>1</string>
+            </constant>
+          </rhs>
+        </compare>
+      </if>
+      <then>       
+        <function>
+          <classmember classref="PolicyList" member="set_DatabaseServer" sideeffects="true">
+            <argument>
+              <constant>
+                <string>"SPECIFY SQL SERVER NAME"</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="PolicyList" member="set_Database" sideeffects="true">
+            <argument>
+              <constant>
+                <string>"SPECIFY BIC DATABASE NAME"</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="PolicyList" member="set_Security" sideeffects="true">
+            <argument>
+              <constant>
+                <string>"SPECIFY INTEGRATED SECURITY VALUE"</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule157_Policy">
+     <version major="1" minor="0" description="This is a Network Policy for Network Rule 157" modifiedby="Microsoft" date="2004-01-12T12:51:00.4131250+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_MT320" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY3_MT320' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT320']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22B/Type</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7eefe80-6886-4168-9e65-36e141510f6a" />
+                    <string>MATU</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PartyAsRole_B_17R/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5fe053d3-57f3-44af-b1d6-d68ec00aaa8c" />
+                    <string>L</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="greater than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32H/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+            </and>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22B/Type</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7eefe80-6886-4168-9e65-36e141510f6a" />
+                    <string>MATU</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PartyAsRole_B_17R/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a0793950-1f67-4460-95e1-f7db229a22c3" />
+                    <string>B</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="less than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32H/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>D57</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule157_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT320</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT320</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C4</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 157</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT330" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY3_MT330' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT330']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22B/Type</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3037036f-c07f-4c7e-a680-9e63e7d97da2" />
+                    <string>SETT</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PartyAsRole_B_17R/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5fe053d3-57f3-44af-b1d6-d68ec00aaa8c" />
+                    <string>L</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="greater than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32H/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+            </and>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22B/Type</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3037036f-c07f-4c7e-a680-9e63e7d97da2" />
+                    <string>SETT</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PartyAsRole_B_17R/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a0793950-1f67-4460-95e1-f7db229a22c3" />
+                    <string>B</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="less than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32H/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>D57</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule157_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT330</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT330</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C4</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 157</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT620" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY6_MT620' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT620']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22B/Type</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7eefe80-6886-4168-9e65-36e141510f6a" />
+                    <string>MATU</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PartyAsRole_B_17R/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5fe053d3-57f3-44af-b1d6-d68ec00aaa8c" />
+                    <string>L</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <or>
+              <compare operator="greater than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32H/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="greater than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32R/SignUnitAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+              </or>
+            </and>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22B/Type</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7eefe80-6886-4168-9e65-36e141510f6a" />
+                    <string>MATU</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PartyAsRole_B_17R/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a0793950-1f67-4460-95e1-f7db229a22c3" />
+                    <string>B</string>
+                  </constant>
+                </rhs>
+              </compare>
+             <or>
+              <compare operator="less than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32H/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="less than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="1c177bf4-a970-4669-a768-a74d33af190d" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//AmountToBeSettled_B_32R/SignUnitAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+              </or>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>D57</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule157_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT620</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT620</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C4</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 157</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT370" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY3_MT370' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT370']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//Amount_B_19A/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="not equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//Indicator_B_22H/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7eefe80-6886-4168-9e65-36e141510f6a" />
+                    <string>NOPA</string>
+                  </constant>
+                </rhs>
+              </compare>                            
+            </and>
+            <and>
+              <compare operator="greater than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//Amount_B_19A/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//Indicator_B_22H/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7eefe80-6886-4168-9e65-36e141510f6a" />
+                    <string>NOPA</string>
+                  </constant>
+                </rhs>
+              </compare>
+            </and>
+            <and>
+              <compare operator="less than">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="b276a0f4-12d9-4380-b242-135bbfc5e287" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ConvertToDecimal" sideeffects="true">
+                      <argument>
+                        <function>
+                          <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                            <argument>
+                              <reference>
+                                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                                <xmldocumentref ref="xml_0" />
+                              </reference>
+                            </argument>
+                            <argument>
+                              <constant>
+                                <string>//Amount_B_19A/SignCodeAmount</string>
+                              </constant>
+                            </argument>
+                          </classmember>
+                        </function>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01a8125e-b453-429f-83e7-85cbd13f215e" />
+                    <decimal>0</decimal>
+                  </constant>
+                </rhs>
+              </compare>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//Indicator_B_22H/Indicator</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7eefe80-6886-4168-9e65-36e141510f6a" />
+                    <string>NOPA</string>
+                  </constant>
+                </rhs>
+              </compare>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>D57</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule157_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT370</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT370</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 157</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

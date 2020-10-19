@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="DBConnection_Master_Policy">
+    <version major="1" minor="0" description="" modifiedby="Microsoft" date="2007-09-03T07:20:23.007146-07:00" />
+    <configuration />
+    <bindings>
+      <class ref="PolicyList" class="PolicyList" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--C:\WINDOWS\assembly\GAC_MSIL\Microsoft.Solutions.FinancialServices.SWIFT.MT.MTCommonFunctions\2.0.0.0__31bf3856ad364e35\Microsoft.Solutions.FinancialServices.SWIFT.MT.MTCommonFunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <class ref="SqlConnector" class="SqlConnector" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--C:\WINDOWS\assembly\GAC_MSIL\Microsoft.Solutions.FinancialServices.SWIFT.MT.MTCommonFunctions\2.0.0.0__31bf3856ad364e35\Microsoft.Solutions.FinancialServices.SWIFT.MT.MTCommonFunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Connect_To_DB" priority="0" active="true">
+      <if>
+        <compare operator="equal">
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+          <lhs>
+            <constant>
+              <string>1</string>
+            </constant>
+          </lhs>
+          <rhs>
+            <constant>
+              <string>1</string>
+            </constant>
+          </rhs>
+        </compare>
+      </if>
+      <then>
+        <function>
+        <classmember classref="PolicyList" member="set_Database_CtryCcy" sideeffects="true">         
+            <argument>
+              <constant>
+                <string>"DATABASE NAME"</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+        <classmember classref="PolicyList" member="set_DatabaseServer_CtryCcy" sideeffects="true">    
+          
+            <argument>
+              <constant>
+                <string>"DATABASE SERVER"</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+       <classmember classref="PolicyList" member="set_Security_CtryCcy" sideeffects="true">           
+            <argument>
+              <constant>
+                <string>SSPI</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+         <classmember classref="SqlConnector" member="PopulateHashTables" sideeffects="true">           
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

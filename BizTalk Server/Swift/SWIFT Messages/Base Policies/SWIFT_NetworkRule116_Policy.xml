@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule116_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule 116" modifiedby="Microsoft" date="2007-05-22T10:08:05.6031250+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    
+   
+<rule name="Validate_MT306" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY3_MT306' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT306']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <!--<compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                    <classmember member="ReturnXPathValue" sideeffects="true">
+                      <classref ref="CommonFunctions" />
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22K/TypeOfEvent</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="84847e3f-7b0f-463b-ba14-9ca24ae5d3c5" />
+                    <string>KNIN,KNOT,TRIG</string>
+                  </constant>
+                </rhs>
+              </compare>-->
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                 <pattern>
+                <function>
+                   <!-- <classmember member="ReturnXPathValue" sideeffects="true">
+                      <classref ref="CommonFunctions" />-->
+                       <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22K/TypeOfEvent</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                 </pattern>
+                  
+                <input>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="84847e3f-7b0f-463b-ba14-9ca24ae5d3c5" />
+                    <string>KNIN,KNOT,TRIG</string>
+                  </constant>
+                </input>
+                
+              </match>
+              <!--and>-->
+              <or>
+                <exists>
+                  <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                  <object>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </object>
+                  <member>
+                    <constant>
+                      <string>//SequenceB1/PremiumPaymentDate_B1_30V</string>
+                    </constant>
+                  </member>
+                </exists>
+                <exists>
+                  <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                  <object>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </object>
+                  <member>
+                    <constant>
+                      <string>//SequenceC</string>
+                    </constant>
+                  </member>
+                </exists>
+              <!--</and>-->
+              </or>
+            </and>
+            <and>
+              <compare operator="equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+                <lhs>
+                  <function>
+                   <!-- <classmember member="ReturnXPathValue" sideeffects="true">
+                      <classref ref="CommonFunctions" />-->
+                      <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//TypeOfEvent_A_22K/TypeOfEvent</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="9dbee50a-3f70-4bf7-b5ba-e0e2a5acb41e" />
+                    <string>CONF</string>
+                  </constant>
+                </rhs>
+              </compare>
+              <not>
+                <and>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//SequenceB1/PremiumPaymentDate_B1_30V</string>
+                      </constant>
+                    </member>
+                  </exists>
+                  <exists>
+                    <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                    <object>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </object>
+                    <member>
+                      <constant>
+                        <string>//SequenceC</string>
+                      </constant>
+                    </member>
+                  </exists>
+                </and>
+              </not>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+         <!-- <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />-->
+            <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>D16</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule116_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT306</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C20</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 116</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>
