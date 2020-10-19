@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\build\common.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{9E0CAE17-082A-4E3F-AE14-98869405DD36}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Microsoft.Solutions.FinancialServices.SWIFT.ValidationMessages.ErrorLookup</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ErrorLookupKey.cs" />
+    <Compile Include="ErrorLookupMessage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ErrorResources\ErrorResources.csproj">
+      <Project>{8278b46f-5de5-4a34-bd0e-57978ce63841}</Project>
+      <Name>ErrorResources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

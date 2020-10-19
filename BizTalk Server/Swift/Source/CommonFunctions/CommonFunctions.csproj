@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\build\common.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{7353CB9E-082F-49A5-858F-0C6B65FAEDAA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.BizTalk.Tracing, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Microsoft.RuleEngine, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Common Files\Microsoft BizTalk\Microsoft.RuleEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CommonFunctions.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="ErrorCollection.cs" />
+    <Compile Include="StringResources.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="A4SWIFTResources.resx">
+      <LogicalName>Microsoft.Solutions.FinancialServices.SWIFT.A4SWIFTResources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ErrorLookup\ErrorLookUp.csproj">
+      <Project>{9e0cae17-082a-4e3f-ae14-98869405dd36}</Project>
+      <Name>ErrorLookUp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
