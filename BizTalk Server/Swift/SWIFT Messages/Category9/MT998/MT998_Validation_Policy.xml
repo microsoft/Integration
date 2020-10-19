@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="MT998_Validation_Policy">
+    <version major="1" minor="0" description="This is a Validation Policy for Message MT998" modifiedby="Microsoft" date="2004-03-25T05:51:53.5712500+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_ProprietaryMessage_77E" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//ProprietaryMessage_77E</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ProprietaryMessage_77E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT998_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ProprietaryMessage_77E</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

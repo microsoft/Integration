@@ -1,0 +1,2348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="MT103REMIT_Validation_Policy">
+    <version major="1" minor="0" description="This is validation policy for message MT103REMIT" modifiedby="Microsoft" date="2006-04-20T12:35:10.7987715-07:00" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_SendersCharges_71F_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//SendersCharges_71F</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SendersCharges_71F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_SendersCharges_71F_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CurrencyInstructedAmount_33B_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//CurrencyInstructedAmount_33B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyInstructedAmount_33B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CurrencyInstructedAmount_33B_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ThirdReimbursementInstitution_55B" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ThirdReimbursementInstitution_55B</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ThirdReimbursementInstitution_55B/PartyIdentifier</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ThirdReimbursementInstitution_55B/Location</string>
+                  </constant>
+                </member>
+              </exists>
+            </or>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>A4SWIFT002</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ThirdReimbursementInstitution_55B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>ThirdReimbursementInstitution_55B</string>
+              </constant>
+            </argument>
+            <argument>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//ThirdReimbursementInstitution_55B</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_AccountWithInstitution_57B" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//AccountWithInstitution_57B</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//AccountWithInstitution_57B/PartyIdentifier</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//AccountWithInstitution_57B/Location</string>
+                  </constant>
+                </member>
+              </exists>
+            </or>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>A4SWIFT002</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_AccountWithInstitution_57B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>AccountWithInstitution_57B</string>
+              </constant>
+            </argument>
+            <argument>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//AccountWithInstitution_57B</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_SendersCorrespondent_53B" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//SendersCorrespondent_53B</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//SendersCorrespondent_53B/PartyIdentifier</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//SendersCorrespondent_53B/Location</string>
+                  </constant>
+                </member>
+              </exists>
+            </or>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>A4SWIFT002</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_SendersCorrespondent_53B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SendersCorrespondent_53B</string>
+              </constant>
+            </argument>
+            <argument>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//SendersCorrespondent_53B</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ReceiversCorrespondent_54B" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceiversCorrespondent_54B</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ReceiversCorrespondent_54B/PartyIdentifier</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ReceiversCorrespondent_54B/Location</string>
+                  </constant>
+                </member>
+              </exists>
+            </or>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>A4SWIFT002</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ReceiversCorrespondent_54B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>ReceiversCorrespondent_54B</string>
+              </constant>
+            </argument>
+            <argument>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//ReceiversCorrespondent_54B</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ValueDateCurrencyInterbankSettledAmount_32A_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//ValueDateCurrencyInterbankSettledAmount_32A</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ValueDateCurrencyInterbankSettledAmount_32A</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ValueDateCurrencyInterbankSettledAmount_32A_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ReceiversCharges_71G" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103REMIT' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103REMIT']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceiversCharges_71G</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule157" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceiversCharges_71G</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D57</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ReceiversCharges_71G</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT103REMIT</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ReceiversCharges_71G_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//ReceiversCharges_71G</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceiversCharges_71G</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ReceiversCharges_71G_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ExchangeRate_36_Rate" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//ExchangeRate_36</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckLeadingZeroInElement" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ExchangeRate_36/Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ExchangeRate_36_Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_InstructionCode_23E" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103REMIT' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103REMIT']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule197" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="62c33331-0d8d-49c2-be9d-6cb9c35d556f" />
+                <string>PHON,PHOB,PHOI,TELE,TELB,TELI,HOLD,REPA</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D97</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule246" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="8c0e52da-cbe3-4a1d-8d99-1612d57ddb4a" />
+                <string>SDVA,INTC,REPA,CORT,HOLD,CHQB,PHOB,TELB,PHON,TELE,PHOI,TELI</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>E46</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c5a2993d-9c80-4b74-8c84-54a2baad9f41" />
+                <string>SDVA</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fd475eca-110c-4ed7-b6b3-b13b899ab8e6" />
+                <string>HOLD,CHQB</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="58ff1b8f-cc41-4dba-98f9-ae420b0f8513" />
+                <string>INTC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="83e3a06f-73ef-4bf1-b94c-60ad34e26c11" />
+                <string>HOLD,CHQB</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fa8ff2d7-75e6-46ee-9ca5-beb30fc97f81" />
+                <string>REPA</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a70e4a32-fa50-4715-b3fe-7f7dbbdd2ff2" />
+                <string>HOLD,CHQB,CORT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fbcc79b8-cade-4df4-8de0-4fbf912fb87e" />
+                <string>CORT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="83e3a06f-73ef-4bf1-b94c-60ad34e26c11" />
+                <string>HOLD,CHQB</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c20f15dd-3773-4d24-91b9-8d385918f1b2" />
+                <string>PHOB</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c9f889a1-5201-4cec-bf43-8780cdfdb5e8" />
+                <string>TELB</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1f746925-3d59-4c3f-be81-dfc0422ee203" />
+                <string>PHON</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1d0aa582-1152-4f02-975e-69493f7bcd50" />
+                <string>TELE</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="2605526e-49a1-4808-8bd9-0d046f0f261f" />
+                <string>PHOI</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fff44eb1-835a-455e-a08a-3dc91268f706" />
+                <string>TELI</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule198" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="8c0e52da-cbe3-4a1d-8d99-1612d57ddb4a" />
+                <string>SDVA,INTC,REPA,CORT,HOLD,CHQB,PHOB,TELB,PHON,TELE,PHOI,TELI</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule167" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//InstructionCode_23E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Instruction</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c9d451b7-a6bc-44fb-bb4c-92d1055dd013" />
+                <string>HOLD</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="ba536f8a-a7ce-4733-be6e-6b0524f6ab6b" />
+                <string>CHQB</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D67</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_InstructionCode_23E</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_OrderingCustomer_50a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//OrderingCustomer_50F</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//OrderingCustomer_50K</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//OrderingCustomer_50F,//OrderingCustomer_50K</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_OrderingCustomer_50a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_OrderingInstitution_52D" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//OrderingInstitution_52D</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//OrderingInstitution_52D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_OrderingInstitution_52D</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_SendersCorrespondent_53a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//SendersCorrespondent_53B</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//SendersCorrespondent_53D</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SendersCorrespondent_53B,//SendersCorrespondent_53D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_SendersCorrespondent_53a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ReceiversCorrespondent_54a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceiversCorrespondent_54B</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceiversCorrespondent_54D</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceiversCorrespondent_54B,//ReceiversCorrespondent_54D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ReceiversCorrespondent_54a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ThirdReimbursementInstitution_55a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ThirdReimbursementInstitution_55B</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ThirdReimbursementInstitution_55D</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ThirdReimbursementInstitution_55B,//ThirdReimbursementInstitution_55D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ThirdReimbursementInstitution_55a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_IntermediaryInstitution_56D" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//IntermediaryInstitution_56D</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//IntermediaryInstitution_56D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_IntermediaryInstitution_56D</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_AccountWithInstitution_57a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//AccountWithInstitution_57B</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//AccountWithInstitution_57D</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//AccountWithInstitution_57B,//AccountWithInstitution_57D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_AccountWithInstitution_57a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_BeneficiaryCustomer_59" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//BeneficiaryCustomer_59</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BeneficiaryCustomer_59</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BeneficiaryCustomer_59</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_BeneficiaryCustomer_59F" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//BeneficiaryCustomer_59F</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckRuleT56" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BeneficiaryCustomer_59F/Account</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>CH</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T56</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BeneficiaryCustomer_59F</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_BeneficiaryCustomer_59F_OptionalAccountField" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//BeneficiaryCustomer_59F</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckRuleT56" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BeneficiaryCustomer_59F/OptionalAccount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>CH</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T56</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BeneficiaryCustomer_59F</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_RemittanceInformation_70" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//RemittanceInformation_70</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//RemittanceInformation_70</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_RemittanceInformation_70</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_SenderToReceiverInformation_72" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//SenderToReceiverInformation_72</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SenderToReceiverInformation_72</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_SenderToReceiverInformation_72</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_RegulatoryReporting_77B" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//RegulatoryReporting_77B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//RegulatoryReporting_77B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_RegulatoryReporting_77B</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    
+    <rule name="Validate_OrderingCustomer_50F" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//OrderingCustomer_50F</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckRuleT56" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//OrderingCustomer_50F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="f3adb82f-22bd-480d-9c97-9947315d5974" />
+                <string>ARNU,CCPT,CUST,DRLC,EMPL,NIDN,SOSE,TXID</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T56</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_OrderingCustomer_50F</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckRuleT50" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//OrderingCustomer_50F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T50</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_OrderingCustomer_50F</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    
+    
+    
+  </ruleset>
+</brl>

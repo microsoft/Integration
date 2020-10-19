@@ -1,0 +1,3975 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="MT306_Validation_Policy">
+    <version major="1" minor="0" description="This is a Validation Policy for message MT306" modifiedby="Microsoft" date="2006-05-03T09:58:13.3775920+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_1" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_BrokersCommission_K_71F_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//BrokersCommission_K_71F</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BrokersCommission_K_71F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BrokersCommission_K_71F_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_SpotAveragingWeightingFactor_J1_19Y_Weight" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//SpotAveragingWeightingFactor_J1_19Y</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidWeighingFactor" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SpotAveragingWeightingFactor_J1_19Y</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Weight</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Weight</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_SpotAveragingWeightingFactor_J1_19Y_Weight</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_StrikeAveragingWeightingFactor_J2_19Z_Weight" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//StrikeAveragingWeightingFactor_J2_19Z</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidWeighingFactor" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//StrikeAveragingWeightingFactor_J2_19Z</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Weight</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Weight</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_StrikeAveragingWeightingFactor_J2_19Z_Weight</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_PartyIdentity_83J_Scope" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//Scope_83J</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Scope_83J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DateCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="38c86047-1465-4cb6-8008-bbf3ea41a741" />
+                <string>/ABIC/,/ACCT/,/ADD1/,/ADD2/,/CITY/,/CITY/,/GBSC/,/NAME/,/USCH/,/USFW/</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T78</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_PartyIdentity_83J_Scope</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ExercisingParty_I_85J_Scope" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//Scope_85J</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Scope_85J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DateCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="38c86047-1465-4cb6-8008-bbf3ea41a741" />
+                <string>/ABIC/,/ACCT/,/ADD1/,/ADD2/,/CITY/,/CITY/,/GBSC/,/NAME/,/USCH/,/USFW/</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T78</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ExercisingParty_I_85J_Scope</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_NonExercisingParty_I_88J_Scope" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//Scope_88J</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Scope_88J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DateCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="38c86047-1465-4cb6-8008-bbf3ea41a741" />
+                <string>/ABIC/,/ACCT/,/ADD1/,/ADD2/,/CITY/,/CITY/,/GBSC/,/NAME/,/USCH/,/USFW/</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T78</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_NonExercisingParty_I_88J_Scope</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CalculatingAgent_I_84J_Scope" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//Scope_84J</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Scope_84J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DateCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="38c86047-1465-4cb6-8008-bbf3ea41a741" />
+                <string>/ABIC/,/ACCT/,/ADD1/,/ADD2/,/CITY/,/CITY/,/GBSC/,/NAME/,/USCH/,/USFW/</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T78</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CalculatingAgent_I_84J_Scope</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+
+    <rule name="Validate_CommonReference_A_22C_ReferenceCode" priority="0" active="true">
+      <if>
+        <or>
+          <and>
+            <compare operator="equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="05703dd9-1111-40b8-890d-ad7bfc45a925" />
+              <lhs>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_1" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//OptionStyle_A_12F/OptionStyle</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="77419f1b-d47b-4b70-9e6f-28aa135269eb" />
+                  <string>VANI</string>
+                </constant>
+              </rhs>
+            </compare>
+            <predicate>
+              <classmember classref="CommonFunctions" member="IsValidCommonReference" sideeffects="true">
+                <argument>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_1" />
+                  </reference>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>//CommonReference_A_22C/ReferenceCode</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>//StrikePrice_D_36/Rate</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>T22</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>MT306_Validation_Policy</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <reference>
+                    <classref ref="ErrorCollection" />
+                  </reference>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>Validate_CommonReference_A_22C_ReferenceCode</string>
+                  </constant>
+                </argument>
+              </classmember>
+            </predicate>
+          </and>
+          <and>
+            <compare operator="not equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+              <lhs>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_1" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//OptionStyle_A_12F/OptionStyle</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="77419f1b-d47b-4b70-9e6f-28aa135269eb" />
+                  <string>VANI</string>
+                </constant>
+              </rhs>
+            </compare>
+            <predicate>
+              <classmember classref="CommonFunctions" member="IsValidCommonReference" sideeffects="true">
+                <argument>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_1" />
+                  </reference>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>//CommonReference_A_22C/ReferenceCode</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>//TriggerLevel_G_37U/Rate</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>T22</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>MT306_Validation_Policy</string>
+                  </constant>
+                </argument>
+                <argument>
+                  <reference>
+                    <classref ref="ErrorCollection" />
+                  </reference>
+                </argument>
+                <argument>
+                  <constant>
+                    <string>Validate_CommonReference_A_22C_ReferenceCode</string>
+                  </constant>
+                </argument>
+              </classmember>
+            </predicate>
+          </and>
+        </or>
+      </if>
+      <then>
+        <!--Empty action list-->
+      </then>
+    </rule>
+    <rule name="Validate_PutCurrencyAndAmount_D_32B_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//PutCurrencyAndAmount_D_32B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PutCurrencyAndAmount_D_32B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_PutCurrencyAndAmount_D_32B_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CurrencyAmount_E_33E_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//CurrencyAmount_E_33E</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyAmount_E_33E</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CurrencyAmount_E_33E_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_LowTriggerLevel_G_37P_Rate" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//LowTriggerLevel_G_37P</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckLeadingZeroInElement" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//LowTriggerLevel_G_37P/Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_LowTriggerLevel_G_37P_Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CalculationAgent_B2_84B" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CalculationAgent_B2_84B</string>
+              </constant>
+            </member>
+          </exists>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_1" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//CalculationAgent_B2_84B/PartyIdentifier</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+          <not>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_1" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//CalculationAgent_B2_84B/Location</string>
+                </constant>
+              </member>
+            </exists>
+          </not>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>A4SWIFT002</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CalculationAgent_B2_84B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>CalculationAgent_B2_84B</string>
+              </constant>
+            </argument>
+            <argument>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_1" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//CalculationAgent_B2_84B</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_PremiumPrice_B1_37K" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//PremiumPrice_B1_37K</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidCurrencyAndPriceCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PremiumPrice_B1_37K</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="ebf66fa7-10de-4cc4-bbcb-9631d437031a" />
+                <int>12</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="0bfebd36-1d8d-4575-8674-f1380edab7ea" />
+                <string>PCT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T52</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PremiumPrice_B1_37K/Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_PremiumPrice_B1_37K</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_PremiumCurrencyAndAmount_B1_34B_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//PremiumCurrencyAndAmount_B1_34B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PremiumCurrencyAndAmount_B1_34B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_PremiumCurrencyAndAmount_B1_34B_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CallCurrencyAndAmount_D_33B_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//CallCurrencyAndAmount_D_33B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CallCurrencyAndAmount_D_33B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1007b660-8845-4ddf-ab98-0c5a179049e4" />
+                <int>15</int>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CallCurrencyAndAmount_D_33B_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_StrikePrice_D_36_Rate" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//StrikePrice_D_36</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckLeadingZeroInElement" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//StrikePrice_D_36/Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_StrikePrice_D_36_Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CommonReference_A_22C" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//CommonReference_A_22C</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCommonReference" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CommonReference_A_22C</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T96</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CommonReference_A_22C</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_LowLevelBarrier_F_37L_Rate" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//LowLevelBarrier_F_37L</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckLeadingZeroInElement" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//LowLevelBarrier_F_37L/Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_LowLevelBarrier_F_37L_Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_BarrierLevel_F_37J_Rate" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//BarrierLevel_F_37J</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckLeadingZeroInElement" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BarrierLevel_F_37J/Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BarrierLevel_F_37J_Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_TriggerLevel_G_37U_Rate" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//TriggerLevel_G_37U</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckLeadingZeroInElement" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//TriggerLevel_G_37U/Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_TriggerLevel_G_37U_Rate</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CurrencyPaymentAmount_L_32H_Amount" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//CurrencyPaymentAmount_L_32H</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidSignCurrencyAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyPaymentAmount_L_32H/SignCodeAmount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CurrencyPaymentAmount_L_32H_Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_NumberOfRepetitions_L_18A" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//NumberofRepetitions_L_18A</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidNumberOfSettlements" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//NumberofRepetitions_L_18A</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PaymentDate_L_30F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D96</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_NumberofRepetitions</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>NumberofRepetitions</string>
+              </constant>
+            </argument>
+            <argument>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_1" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//NumberofRepetitions_L_18A</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_AdditionalConditions_A_77D" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//AdditionalConditions_A_77D</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//AdditionalConditions_A_77D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_AdditionalConditions_A_77D</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_PartyA_A_82a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//PartyA_A_82D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//PartyA_A_82J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PartyA_A_82D,//PartyA_A_82J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_PartyA_A_82a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_PartyB_A_87a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//PartyB_A_87D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//PartyB_A_87J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PartyB_A_87D,//PartyB_A_87J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_PartyB_A_87a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_FundOrBeneficiaryCustomer_A_83a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//FundOrBeneficiaryCustomer_A_83D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//FundOrBeneficiaryCustomer_A_83J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//FundOrBeneficiaryCustomer_A_83D,//FundOrBeneficiaryCustomer_A_83J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_FundOrBeneficiaryCustomer_A_83a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CalculationAgent_B2_84a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CalculationAgent_B2_84B</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CalculationAgent_B2_84D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CalculationAgent_B2_84J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CalculationAgent_B2_84B,//CalculationAgent_B2_84D,//CalculationAgent_B2_84J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CalculationAgent_B2_84a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_DeliveryAgent_C_53a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//DeliveryAgent_C_53D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//DeliveryAgent_C_53J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//DeliveryAgent_C_53D,//DeliveryAgent_C_53J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_DeliveryAgent_C_53a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Intermediary2_C_86a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary2_C_86D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary2_C_86J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Intermediary2_C_86D,//Intermediary2_C_86J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Intermediary2_C_86a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Intermediary_C_56a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary_C_56D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary_C_56J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Intermediary_C_56D,//Intermediary_C_56J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Intermediary_C_56a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ReceivingAgent_C_57a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceivingAgent_C_57D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceivingAgent_C_57J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceivingAgent_C_57D,//ReceivingAgent_C_57J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ReceivingAgent_C_57a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_BeneficiaryInstitution_C_58a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//BeneficiaryInstitution_C_58D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//BeneficiaryInstitution_C_58J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BeneficiaryInstitution_C_58D,//BeneficiaryInstitution_C_58J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BeneficiaryInstitution_C_58a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_DeliveryAgent_E_53a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//DeliveryAgent_E_53D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//DeliveryAgent_E_53J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//DeliveryAgent_E_53D,//DeliveryAgent_E_53J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_DeliveryAgent_E_53a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Intermediary2_E_86a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary2_E_86D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary2_E_86J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Intermediary2_E_86D,//Intermediary2_E_86J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Intermediary2_E_86a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Intermediary_E_56a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary_E_56D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary_E_56J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Intermediary_E_56D,//Intermediary_E_56J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Intermediary_E_56a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ReceivingAgent_E_57a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceivingAgent_E_57D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceivingAgent_E_57J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceivingAgent_E_57D,//ReceivingAgent_E_57J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ReceivingAgent_E_57a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_BeneficiaryInstitution_E_58a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//BeneficiaryInstitution_E_58D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//BeneficiaryInstitution_E_58J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BeneficiaryInstitution_E_58D,//BeneficiaryInstitution_E_58J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BeneficiaryInstitution_E_58a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ContactInformation_K_29A" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//ContactInformation_K_29A</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ContactInformation_K_29A</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ContactInformation_K_29A</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_SenderToReceiverInformation_K_72" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//SenderToReceiverInformation_K_72</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SenderToReceiverInformation_K_72</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_SenderToReceiverInformation_K_72</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_BrokerIdentification_K_88D" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//BrokerIdentification_K_88D</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//BrokerIdentification_K_88D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_BrokerIdentification_K_88D</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_DeliveryAgent_L_53a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//DeliveryAgent_L_53D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//DeliveryAgent_L_53J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//DeliveryAgent_L_53D,//DeliveryAgent_L_53J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_DeliveryAgent_L_53a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Intermediary2_L_86a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary2_L_86D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary2_L_86J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Intermediary2_L_86D,//Intermediary2_L_86J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Intermediary2_L_86a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Intermediary_L_56a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary_L_56D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Intermediary_L_56J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Intermediary_L_56D,//Intermediary_L_56J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Intermediary_L_56a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ReceivingAgent_L_57a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceivingAgent_L_57D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceivingAgent_L_57J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceivingAgent_L_57D,//ReceivingAgent_L_57J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ReceivingAgent_L_57a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ExecutionTimestamp_M_98D" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//ExecutionTimestamp_M_98D</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidSignRate" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ExecutionTimestamp_M_98D/DateTimeDecimalsAndUTCIndicator/UTCIndicatorRecord/UTCIndicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T14</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_EExecutionTimestamp_M_98D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Adjustment_J_19C" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//Adjustment_J_19C</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidSignRate" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Adjustment_J_19C/SignAdjustmentFactor</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T40,T14</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Adjustment_J_19C</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CalculationAgent_I_84a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CalculationAgent_I_84B</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CalculationAgent_I_84D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CalculationAgent_I_84J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CalculationAgent_I_84B,//CalculationAgent_I_84D,//CalculationAgent_I_84J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CalculationAgent_I_84a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ExercisingParty_I_85a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ExercisingParty_I_85D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ExercisingParty_I_85J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ExercisingParty_I_85D,//ExercisingParty_I_85J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ExercisingParty_I_85a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_ExercisingParty_I_88a" priority="0" active="true">
+      <if>
+        <or>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ExercisingParty_I_88D</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ExercisingParty_I_88J</string>
+              </constant>
+            </member>
+          </exists>
+        </or>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ExercisingParty_I_88D,//ExercisingParty_I_88J</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_ExercisingParty_I_88a</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_AverageStrikePriceCalculation_J_14B" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//AverageStrikePriceCalculation_J_14B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckSingleMandatoryQualifier" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SequenceJ</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./AverageStrikePriceCalculation_J_14B/Method</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="50109ef9-d364-49b1-91a4-8c6ff721af8b" />
+                <string>AD,PC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T41</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_AverageStrikePriceCalculation_J_14B_Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_CalculationofSettlementAmount_J_23C" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//CalculationofSettlementAmount_J_23C</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckSingleMandatoryQualifier" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SequenceJ</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./CalculationofSettlementAmount_J_23C/SettlementCalculation</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="b19527b6-06f9-417f-9c8d-6c03e0f71dd6" />
+                <string>FLIPPED,INVERSE,NORMAL</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T48</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_CalculationofSettlementAmount_J_23C_SettlementCalculation</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_NumberofSpotAveragingDates_J1_18B" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//NumberofSpotAveragingDates_J1_18B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckOccurencesOfField" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SequenceJ1</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./NumberofSpotAveragingDates_J1_18B/Number</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SpotAveragingDate_J1_30M/Date</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D96</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_NumberofSpotAveragingDates_J1_18B</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="NumberofStrikeAveragingDates_J2_18C" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//NumberofStrikeAveragingDates_J2_18C</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckOccurencesOfField" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SequenceJ2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./NumberofStrikeAveragingDates_J2_18C/Number</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//StrikeAveragingDate_J2_30N/Date</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>D96</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_NumberofStrikeAveragingDates_J2_18C</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_IdentificationOfFinancialInstrument_M_35B" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//IdentificationOfFinancialInstrument_M_35B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidIdentificationOfSecurities" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//IdentificationOfFinancialInstrument_M_35B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T17</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_IdentificationOfFinancialInstrument_M_35B</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Commissionandfees_M_34C_Commissionandfees" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_1" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//Commissionandfees_M_34C</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckValidSignCurrencyAmount" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_1" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Commissionandfees_M_34C/SignCurrencyAmount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <boolean>true</boolean>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C03,T40,T43</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Amount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Commissionandfees_M_34C_Commissionandfees</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT306_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

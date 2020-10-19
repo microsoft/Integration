@@ -1,0 +1,4204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule2_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule 2" modifiedby="Microsoft" date="2004-01-12T12:51:00.4131250+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_MT422" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT422' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT422']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountOfCollection_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountOfCollection_32B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountOfCollection_32K</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT422</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT422</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C3</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT450" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT450' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT450']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ValueDateCurrencyCodeAmount_32A</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT450</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT450</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT103PLUS" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103PLUS' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103PLUS']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ReceiversCharges_71G</string>
+              </constant>
+            </member>
+          </exists>
+          <compare operator="not equal">
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+            <lhs>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//ReceiversCharges_71G/Currency</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </lhs>
+            <rhs>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//ValueDateCurrencyInterbankSettledAmount_32A/Currency</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </rhs>
+          </compare>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT103PLUS</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103PLUS</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C9</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT102PLUS" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY1_MT102PLUS' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT102PLUS']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceiversCharges_B_71G/Currency/text(),//SumOfReceiversCharges_C_71G/Currency/text(),//TransactionAmount_B_32B/Currency/text(),//ValueDateCurrencyCodeAmount_C_32A/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT102PLUS</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT102PLUS</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT210" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY2_MT210' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category2/MT210']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Currency</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT210</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT210</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C3</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT102" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY1_MT102' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT102']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//ReceiversCharges_B_71G/Currency/text(),//SumOfReceiversCharges_C_71G/Currency/text(),//TransactionAmount_B_32B/Currency/text(),//ValueDateCurrencyCodeAmount_C_32A/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT102</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT102</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT204" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY2_MT204' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category2/MT204']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//TransactionAmount_B_32B</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//TransactionAmount_B_32B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFTNetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT204</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT204</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT201" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY2_MT201' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category2/MT201']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CurrencyCodeAmount_32B</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyCodeAmount_32B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFTNetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT201</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT201</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT420" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT420' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT420']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountTraced_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountTraced_32B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountTraced_32K</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT420</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT420</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT416" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT416' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT416']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//SendersCharges_A_71F</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//SendersCharges_B_71F</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//FaceAmountOfFinancialDocuments_B_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//FaceAmountOfFinancialDocuments_B_32B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//FaceAmountOfFinancialDocuments_B_32K</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT416</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT416</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C3</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT110" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT110' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT110']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//Amount_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//Amount_32B</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Amount_32A/Currency/text(),//Amount_32B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT110</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT110</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+   <rule name="Validate_MT103" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103']</string>
+              </constant>
+            </member>
+          </exists>
+          <and>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ReceiversCharges_71G</string>
+                </constant>
+              </member>
+            </exists>
+            <compare operator="not equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+              <lhs>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//ReceiversCharges_71G/Currency</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//ValueDateCurrencyInterbankSettledAmount_32A/Currency</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </rhs>
+            </compare>
+          </and>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT103</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C18</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT103REMIT" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103REMIT' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103REMIT']</string>
+              </constant>
+            </member>
+          </exists>
+          <and>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ReceiversCharges_71G</string>
+                </constant>
+              </member>
+            </exists>
+            <compare operator="not equal">
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+              <lhs>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//ReceiversCharges_71G/Currency</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </lhs>
+              <rhs>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//ValueDateCurrencyInterbankSettledAmount_32A/Currency</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </rhs>
+            </compare>
+          </and>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT103REMIT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C18</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT769" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT769' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT769']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountOutstanding_34B/Currency</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountReducedOrReleased_33B/Currency</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//AmountReducedOrReleased_33B/Currency/text(),//AmountOutstanding_34B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT769</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT769</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C5</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT410" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT410' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT410']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountAcknowledged_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountAcknowledged_32B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountAcknowledged_32K</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT410</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT410</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT412" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT412' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT412']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//MaturityDateCurrencyCodeAmountAccepted_32A</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT412</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT412</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT800" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY8_MT800' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category8/MT800']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SellingAgentAmount_B_34B/Currency/text(),//SettlementAmount_B_32A/Currency/text(),//FaceAmount_A_33B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT800</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT800</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT646" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY6_MT646' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT646']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//TotalPrincipalAmountRepaidPrepaid_C_32A/Currency/text(),//ComputationBaseAmount_B_33B/Currency/text(),//InterestAmount_B_34N/Currency/text(),//NetInterestAmountDueToReceiver_C_34N/Currency/text(),//PrincipalAmountDueToReceiver_C_32N/Currency/text(),//GrossInterestAmountDueToReceiver_C_33N/Currency/text(),//TotalAmountTransferred_C_34P/Currency/text(),//TotalAmountTransferred_C_34R/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT646</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT646</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C7</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT559" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY5_MT559' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT559']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//NetProceeds_34A</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//NetProceeds_34A/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT559</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT559</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C4</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT360" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY3_MT360' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT360']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT360</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT360</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C15</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT364" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY3_MT364' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT364']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//CurrentCurrencyNotionalAmount_A_32B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//NewCurrencyNotionalAmount_A_32G</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//CurrencyPaymentAmount_L_32M</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//CurrencyPaymentAmount_M_32M</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT364</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT364</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C4</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT104" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY1_MT104' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT104']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyAndTransactionAmount_B_32B/Currency,//ReceiversCharges_B_71G/Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyAndSettlementAmount_C_32B,//SumOfReceiversCharges_C_71G</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT104</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT104</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C11</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SendersCharges_B_71F/Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SumOfSendersCharges_C_71F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT104</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT104</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C11</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT350" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY3_MT350' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT350']</string>
+              </constant>
+            </member>
+          </exists>
+          <compare operator="not equal">
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+            <lhs>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//CurrencyAndPrincipalAmount_B_32B/Currency</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </lhs>
+            <rhs>
+              <function>
+                <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                  <argument>
+                    <reference>
+                      <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                      <xmldocumentref ref="xml_0" />
+                    </reference>
+                  </argument>
+                  <argument>
+                    <constant>
+                      <string>//CurrencyAndInterestAmount_B_34B/Currency</string>
+                    </constant>
+                  </argument>
+                </classmember>
+              </function>
+            </rhs>
+          </compare>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT350</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT350</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C4</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT107" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY1_MT107' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT107']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SendersCharges_B_71F/Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SumOfSendersCharges_C_71F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT107</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT107</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C9</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyAndTransactionAmount_B_32B/Currency/text(),//ReceiversCharges_B_71G/Currency/text(),//CurrencyAndSettlementAmount_C_32B/Currency/text(),//SumOfReceiversCharges_C_71G/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT107</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT107</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C9</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT320" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY3_MT320' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT320']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyAndPrincipalAmount_B_32B/Currency,//BrokersCommission_H_71F/Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//AmountToBeSettled_B_32H/SignCodeAmount,//CurrencyAndInterestAmount_B_34E/SignCodeAmount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT320</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT320</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C9</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT330" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY3_MT330' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT330']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyAndBalance_B_32B/Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//AmountToBeSettled_B_32H/SignCodeAmount,//CurrencyAndInterestAmount_B_34E/SignCodeAmount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT330</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT330</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C9</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT734" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT734' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT734']</string>
+              </constant>
+            </member>
+          </exists>
+          <and>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//DateAndAmountOfUtilisation_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//TotalAmountClaimed_33A</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//TotalAmountClaimed_33B</string>
+                  </constant>
+                </member>
+              </exists>
+            </or>
+          </and>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//DateAndAmountOfUtilisation_32A/Currency/text(),//TotalAmountClaimed_33A/Currency/text(),//TotalAmountClaimed_33B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT734</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT734</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT203" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY2_MT203' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category2/MT203']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//CurrencyCodeAmount_32B</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyCodeAmount_32B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFTNetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT203</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT203</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+ <rule name="Validate_MT256" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY2_MT256' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category2/MT256']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SendersCharges_B_71F/Currency/text(),//InterestCharges_B_71G/Currency/text(),//IssuersFinancialInstitutionCharges_B_71H/Currency/text(),//SumOfInterestCharges_C_71J/Currency/text(),//SumOfIssuersFinancialInstitutionCharges_C_71K/Currency/text(),//SumOfSendersCharges_C_71L/Currency/text(),//ValueDateCurrencyCodeAndTotalAmountClaimed_C_32A/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT256</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT256</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C4</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT400" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT400' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT400']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//ProceedsRemitted_33A</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//AmountCollected_32B</string>
+                  </constant>
+                </member>
+              </exists>
+              <compare operator="not equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//ProceedsRemitted_33A/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//AmountCollected_32B/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </rhs>
+              </compare>
+            </and>
+            <and>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//AmountCollected_32A</string>
+                  </constant>
+                </member>
+              </exists>
+              <compare operator="not equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//ProceedsRemitted_33A/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//AmountCollected_32A/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </rhs>
+              </compare>
+            </and>
+            <and>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//AmountCollected_32K</string>
+                  </constant>
+                </member>
+              </exists>
+              <compare operator="not equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//ProceedsRemitted_33A/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//AmountCollected_32K/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </rhs>
+              </compare>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT400</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT400</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT456" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT456' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT456']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//TotalAmountDebited_33D</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//DateAndFaceAmountOfFinancialDocument_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//DateAndFaceAmountOfFinancialDocument_32B</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT456</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT456</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C3</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT750" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT750' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT750']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//TotalAmountToBePaid_34B</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PrincipalAmount_32B/Currency/text(),//TotalAmountToBePaid_34B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT750</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT750</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT600" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY6_MT600' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT600']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//PricePerUnit_A_33G</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//Consideration_B_34P</string>
+                  </constant>
+                </member>
+              </exists>
+              <compare operator="not equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PricePerUnit_A_33G/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//Consideration_B_34P/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </rhs>
+              </compare>
+            </and>
+            <and>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//Consideration_C_34R</string>
+                  </constant>
+                </member>
+              </exists>
+              <compare operator="not equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//PricePerUnit_A_33G/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//Consideration_C_34R/Currency</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </rhs>
+              </compare>
+            </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT600</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT600</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C3</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT752" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT752' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT752']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//TotalAmountAdvised_32B</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//NetAmount_33B</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//TotalAmountAdvised_32B/Currency/text(),//NetAmount_33B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT752</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT752</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C2</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT747" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT747' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT747']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//IncreaseOfDocumentaryCreditAmount_32B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//DecreaseOfDocumentaryCreditAmount_33B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//NewDocumentaryCreditAmountAfterAmendment_34B</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//IncreaseOfDocumentaryCreditAmount_32B/Currency/text(),//DecreaseOfDocumentaryCreditAmount_33B/Currency/text(),//NewDocumentaryCreditAmountAfterAmendment_34B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT747</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT747</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C5</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT801" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY8_MT801' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category8/MT801']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//SellingAgentAmount_34B</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//FaceAmount_33B</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//FaceAmount_33B/Currency/text(),//SellingAgentAmount_34B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT801</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT801</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C1</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT754" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT754' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT754']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//TotalAmountClaimed_34A/Currency</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//TotalAmountClaimed_34B/Currency</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//PrincipalAmountPaid_32A/Currency/text(),//PrincipalAmountPaid_32B/Currency/text(),//TotalAmountClaimed_34A/Currency/text(),//TotalAmountClaimed_34B/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT754</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT754</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C3</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT455" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY4_MT455' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category4/MT455']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ValueDateAndOriginalAmount_32A</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ValueDateAndAdjustmentAmount_33C</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//ValueDateAndAdjustmentAmount_33D</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT455</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT455</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C1</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT756" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT756' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT756']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//TotalAmountClaimed_32B/Currency</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//AmountReimbursedOrPaid_33A/Currency</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//TotalAmountClaimed_32B/Currency/text(),//AmountReimbursedOrPaid_33A/Currency/text()</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT756</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT756</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C1</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT321" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY3_MT321' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category3/MT321']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCurrencyInSignCodeAmount_SRG2005" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Amount_B_19A/SignCodeAmount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT321</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT321</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C8</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT620" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY6_MT620' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category6/MT620']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule2" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//CurrencyAndPrincipalAmount_B_32B/Currency</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//AmountToBeSettled_B_32H/SignCodeAmount</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C02</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule2_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT620</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT620</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C9</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 2</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

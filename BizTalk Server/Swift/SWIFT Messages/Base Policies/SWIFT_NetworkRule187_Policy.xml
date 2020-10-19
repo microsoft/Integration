@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule187_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule 187" modifiedby="Microsoft" date="2004-04-19T06:10:38.5975312+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_MT759" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY7_MT759' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category7/MT759']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <and>
+              <or>
+                <match>
+                  <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                  <pattern>
+                    <constant>
+                      <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a95fc83b-2204-46cd-aeea-c081aa2ea86b" />
+                      <string>ISSUANCE</string>
+                    </constant>
+                  </pattern>
+                  <input>
+                    <function>
+                      <classmember classref="CommonFunctions" member="ReturnXPathValueList" sideeffects="true">
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//FunctionofMessage_23H/Function</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </input>
+                </match>
+                <match>
+                  <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                  <pattern>
+                    <constant>
+                      <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="93d6fd38-8e16-41e0-8cdf-613c1a1cf078" />
+                      <string>REQISSUE</string>
+                    </constant>
+                  </pattern>
+                  <input>
+                    <function>
+                      <classmember classref="CommonFunctions" member="ReturnXPathValueList" sideeffects="true">
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//FunctionofMessage_23H/Function</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </input>
+                </match>
+                <match>
+                  <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                  <pattern>
+                    <constant>
+                      <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01c8279f-8eb8-4679-b3b8-235f2b639ca0" />
+                      <string>REQAMEND</string>
+                    </constant>
+                  </pattern>
+                  <input>
+                    <function>
+                      <classmember classref="CommonFunctions" member="ReturnXPathValueList" sideeffects="true">
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//FunctionofMessage_23H/Function</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </input>
+                </match>
+                <match>
+                  <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                  <pattern>
+                    <constant>
+                      <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c70bb698-787c-4913-9258-5bdd5b4d0975" />
+                      <string>ISSAMEND</string>
+                    </constant>
+                  </pattern>
+                  <input>
+                    <function>
+                      <classmember classref="CommonFunctions" member="ReturnXPathValueList" sideeffects="true">
+                        <argument>
+                          <reference>
+                            <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                            <xmldocumentref ref="xml_0" />
+                          </reference>
+                        </argument>
+                        <argument>
+                          <constant>
+                            <string>//FunctionofMessage_23H/Function</string>
+                          </constant>
+                        </argument>
+                      </classmember>
+                    </function>
+                  </input>
+                </match>
+              </or>
+              <compare operator="not equal">
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="c22af575-9920-417c-a545-67fa0ece9832" />
+                <lhs>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FormofUndertaking_22D/Form</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </lhs>
+                <rhs>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="bd9bbad9-29b2-44a0-a2cb-37a6ef8b1ff8" />
+                    <string>UNDK</string>
+                  </constant>
+                </rhs>
+              </compare>
+            </and>
+            <and>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="8a7f1c1b-383e-4ded-b621-1865c932ee6c" />
+                    <string>TRANSFER</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValueList" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FunctionofMessage_23H/Function</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+              <match>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+                <pattern>
+                  <constant>
+                    <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fea0b9a9-5f95-4921-b9c0-31981c84de53" />
+                    <string>DOCR</string>
+                  </constant>
+                </pattern>
+                <input>
+                  <function>
+                    <classmember classref="CommonFunctions" member="ReturnXPathValueList" sideeffects="true">
+                      <argument>
+                        <reference>
+                          <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                          <xmldocumentref ref="xml_0" />
+                        </reference>
+                      </argument>
+                      <argument>
+                        <constant>
+                          <string>//FormofUndertaking_22D/Form</string>
+                        </constant>
+                      </argument>
+                    </classmember>
+                  </function>
+                </input>
+              </match>
+          </and>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember member="AddError" sideeffects="true">
+            <classref ref="ErrorCollection" />
+            <argument>
+              <constant>
+                <string>D87</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule187_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT759</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT759</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string />
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule C1</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

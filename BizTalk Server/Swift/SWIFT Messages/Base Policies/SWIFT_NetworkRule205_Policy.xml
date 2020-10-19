@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="SWIFT_NetworkRule205_Policy">
+    <version major="1" minor="0" description="This is a Network Policy for Network Rule 205" modifiedby="Microsoft" date="2004-01-13T12:42:28.9093216+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_MT103" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103']</string>
+              </constant>
+            </member>
+          </exists>
+          <and>
+            <match>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+              <pattern>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//BankOperationCode_23B/Type</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </pattern>
+              <input>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="2c329caa-dcd2-4122-a3de-7994ea784db9" />
+                  <string>SSTD,SPRI,SPAY</string>
+                </constant>
+              </input>
+            </match>
+            <or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ReceiversCorrespondent_54B</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ReceiversCorrespondent_54D</string>
+                  </constant>
+                </member>
+              </exists>
+            </or>
+          </and>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>E05</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule205_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT103</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C6</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 205</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_MT103REMIT" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY1_MT103REMIT' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category1/MT103REMIT']</string>
+              </constant>
+            </member>
+          </exists>
+          <and>
+            <match>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="949cabdb-16a5-42cf-a80d-e45fec6d0a62" />
+              <pattern>
+                <function>
+                  <classmember classref="CommonFunctions" member="ReturnXPathValue" sideeffects="true">
+                    <argument>
+                      <reference>
+                        <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                        <xmldocumentref ref="xml_0" />
+                      </reference>
+                    </argument>
+                    <argument>
+                      <constant>
+                        <string>//BankOperationCode_23B/Type</string>
+                      </constant>
+                    </argument>
+                  </classmember>
+                </function>
+              </pattern>
+              <input>
+                <constant>
+                  <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="2c329caa-dcd2-4122-a3de-7994ea784db9" />
+                  <string>SSTD,SPRI,SPAY</string>
+                </constant>
+              </input>
+            </match>
+            <or>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ReceiversCorrespondent_54B</string>
+                  </constant>
+                </member>
+              </exists>
+              <exists>
+                <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+                <object>
+                  <reference>
+                    <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                    <xmldocumentref ref="xml_0" />
+                  </reference>
+                </object>
+                <member>
+                  <constant>
+                    <string>//ReceiversCorrespondent_54D</string>
+                  </constant>
+                </member>
+              </exists>
+            </or>
+          </and>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="ErrorCollection" member="AddError" sideeffects="true">
+            <argument>
+              <constant>
+                <string>E05</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule205_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT103REMIT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT103REMIT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C6</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 205</string>
+              </constant>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+<rule name="Validate_MT564" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>/*[local-name()='SWIFT_CATEGORY5_MT564' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT564']</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="SWIFTNetworkRule205" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Indicator_A_22F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c1afd421-67ed-415f-9f2a-a704a478fd65" />
+                <string>CAMV</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a7920d52-e13a-42c3-8803-0d6e0cf1346d" />
+                <string>CHOS,VOLU</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SequenceE</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./NumberIdentification_E_13A</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>E05</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>SWIFT_NetworkRule205_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_MT564</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT564</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>C8</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Rule 205</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>

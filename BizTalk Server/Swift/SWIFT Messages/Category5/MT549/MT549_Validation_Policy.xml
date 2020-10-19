@@ -1,0 +1,2484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<brl xmlns="http://schemas.microsoft.com/businessruleslanguage/2002">
+  <ruleset name="MT549_Validation_Policy">
+    <version major="1" minor="0" description="This is a Validation Policy for message MT549" modifiedby="Microsoft" date="2005-01-18T06:06:42.2762500+05:30" />
+    <configuration />
+    <bindings>
+      <class ref="ErrorCollection" class="ErrorCollection" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+      <xmldocument ref="xml_0" doctype="A4SWIFTXmlDocument" instances="16" selectivity="1" instance="0">
+        <selector>/</selector>
+        <schema />
+      </xmldocument>
+      <class ref="CommonFunctions" class="CommonFunctions" instance="0" instances="16" selectivity="1">
+        <assembly>Microsoft.Solutions.FinancialServices.SWIFT.CommonFunctions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</assembly>
+        <!--c:\windows\assembly\gac\microsoft.solutions.financialservices.swift.commonfunctions\3.2.0.0__31bf3856ad364e35\microsoft.solutions.financialservices.swift.commonfunctions.dll-->
+        <namespace>Microsoft.Solutions.FinancialServices.SWIFT</namespace>
+      </class>
+    </bindings>
+    <rule name="Validate_Status_B_25D_StatusCode" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY5_MT549' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT549']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3508ef0b-1f23-4421-a1cc-9dd095fcca27" />
+                <string>AFFM</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="df6f14cd-ce59-4a30-ae93-bec29b28312b" />
+                <string>AFFI,NAFI</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="ca6885d5-25be-40b7-baae-aa2afd4cc04a" />
+                <string>EPRC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c0746fe0-93ac-4edb-aeec-c085280c6ee2" />
+                <string>COMP,PEND,RECD</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="9d0f1ba9-8853-43e1-ba08-28c009191952" />
+                <string>IPRC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fc3d5f03-926f-4e3c-89a1-47f8e2d23e78" />
+                <string>CAN1,CAN2,CAN3,CAND,CANO,CANP,CGEN,COSE,CPRC,DFLA,DONE,DONF,EXCH,EXSE,FORC,FUTU,INTE,MPRC,NOTC,OPOD,OVER,PACK,PAFI,PART,PPRC,REJT,REPR,SESE,STIN,SUSP,TREA,UNDE</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="16ebb1d3-a5ec-47bd-8e6f-6d82dc617633" />
+                <string>MTCH</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c268620d-8752-47bd-aa06-ef6a21d0cdfd" />
+                <string>MACH,NMAT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="d3d38496-cb89-40be-ab1f-58b39e29b04d" />
+                <string>INMH</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c268620d-8752-47bd-aa06-ef6a21d0cdfd" />
+                <string>MACH,NMAT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="d22a6e2c-507f-418f-b773-dda85a27d2b8" />
+                <string>SETT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="8436dbdd-9f43-4564-935d-2384777533bd" />
+                <string>PAIN,PEND,PENF,SETT,USET</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="ba276411-4e00-4430-a801-95c9d88e15ac" />
+                <string>CPRC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a0d1889e-7b5e-40fe-b19d-7605f61f5cf6" />
+                <string>CAND,CANP,DEND,EXCH,INTE,PACK,PARF,REJT,REPR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="351be1bd-4a62-49ee-b02a-2a067c9eac4c" />
+                <string>RPRC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="585ee8f4-9d05-49c5-b5cb-2a96ae60affb" />
+                <string>DEND,EXCH,INTE,PACK,PART,PEND,REJT,REPL,REPR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5175dbc3-ab94-4240-8aed-2d859328edb5" />
+                <string>RERC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="87877238-abdd-40d9-8be7-a4620790cd87" />
+                <string>PACK,REJT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="272cf54f-c189-4ad7-a0c9-656529e9fc50" />
+                <string>CALL</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="b048798f-5b4d-4d0c-bb29-f317e8b4f6f9" />
+                <string>DEND,CACK</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="d95de329-aa2e-4cec-8701-d2c7ac0d2c28" />
+                <string>ESTA</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="ae7b0601-1bef-48a3-b7eb-108c9d1e69b2" />
+                <string>PWAL,SUAP,APPD,UNAC,WHOU,CLDE,LAPS</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="852e2a0b-e2b5-4231-ab86-58552a58364b" />
+                <string>ALOC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="28c85049-a9bb-4c3b-8b88-f12a19721b57" />
+                <string>AOLF,AOLP</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="fc724547-be31-4d27-8ba6-d22f6b2e6b1b" />
+                <string>REST</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="0375945d-c223-4a13-b615-64ae05501ad8" />
+                <string>ACCP,ACCT,REJT,SUBR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Status_B_25D</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="9b423ae7-a110-42a2-907f-7742a6c86f51" />
+                <string>TPRC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="6e5e2536-3222-4a38-80d5-0af8dbe8180a" />
+                <string>DEND,MODC,MOPN,PACK,REJT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K25</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Status_B_25D_StatusCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Indicator_A_22F_Qualifier" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY5_MT549' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT549']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Indicator_A_22F</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckNonRepetitiveQualifiers" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SequenceA</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Indicator_A_22F/Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="2d40fb5c-a74d-4ab3-bf4c-19199ae7a3a8" />
+                <string>SFRE,CODE,STTY,STBA</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K22</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Indicator_A_22F_Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Reason_B_24B_ReasonCode" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY5_MT549' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT549']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="535a06c2-5975-4403-b863-bb766eb1aa64" />
+                <string>NMAT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="95ab54fa-db21-4674-8d06-8cebd236ffb5" />
+                <string>ACRU,ADEA,CADE,CHAR,CLAT,CMIS,CPCA,DCMX,DDAT,DDEA,DEAL,DELN,DEPT,DMCT,DMON,DQUA,DSEC,DTRA,DTRD,EXEC,FORF,FRAP,ICAG,ICUS,IEXE,IIND,INPS,INVE,LATE,LEOG,MCAN,MIME,NARR,NCRR,NMAS,PHYS,PLCE,PLIS,PODU,REGD,REPA,REPO,REPP,RERT,RTGS,SAFE,SETR,SETS,TERM,TXST,UNBR,VASU</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="c679a270-9d92-4229-8d1b-b1f5e59f999c" />
+                <string>PEND</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a82c2b46-02ad-435e-a37e-c5f9e72e606c" />
+                <string>ADEA,AUTH,AWMO,AWSH,BATC,BENO,BLOC,BOTH,CAIS,CDLR,CERT,CDLR,CERT,CSDH,CVAL,INBC,CHAS,CLAC,CLHT,CMON,COLL,CONF,CPEC,CSDH,CVAL,CYCL,DENO,DEPO,DISA,DKNY,DOCC,DOCY,DQUA,FLIM,FROZ,FUTU,GLOB,IAAD,INBC,INBC,INCA,IPNC,LAAW,LACK,LALO,LATE,LINK,LIQU,MCER,MINO,MONY,MUNO,NARR,NCON,NEWI,NMAS,NOFX,NPAY,NSEC,PART,PENR,PHCK,PHSE,PRCY,PREA,PRSY,REFS,REGT,REFU,SBLO,SDUT,SETS,TAMM,VLDA,YCOL</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="001c7d9f-3f44-4d20-99a0-fca9bc18c539" />
+                <string>CGEN</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5663f22f-d8b4-4801-8d0a-990862198897" />
+                <string>CLAI,TRAN,SPLI,RODE,THRD,COLL,NARR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="53441010-7678-4e53-89d6-1bce71236f1a" />
+                <string>PENF</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="ff5c8bdd-28c3-4ab0-b0fb-6706f867b44e" />
+                <string>ADEA,AWMO,AWSH,BATC,BENO,BLOC,BOTH,BYIY,CAIS,CANR,CDLR,CERT,CHAS,CLAC,CLAT,CLHT,CMON,COLL,CPEC,CSDH,CVAL,CYCL,DENO,DEPO,DISA,DKNY,DOCC,DOCY,FLIM,FROZ,GLOB,IAAD,INBC,INCA,LAAW,LACK,LALO,LATE,LINK,LIQU,MINO,MLAT,MONY,MUNO,NARR,NCON,NEWI,NOFX,OBJT,PART,PHCK,PHSE,PRCY,PREA,PRSY,REFS,REGT,SBLO,SDUT,STCD,SETS,YCOL</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="e26851cf-efce-4002-889e-ef1a4ec65fa8" />
+                <string>REJT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="500b90d3-06f7-4630-8299-677f4af5e3ca" />
+                <string>ADEA,BATC,BPAR,BREF,BUSE,CADE,CAEV,CANC,CASH,CASY,COMC,CONL,CPTY,DADR,DCAN,DDAT,DDEA,DEPT,DISC,DISE,DMON,DORD,DPRG,DQUA,DSEC,DTRD,EVNM,FEEE,ICAG,ICOL,ICUS,IEXE,IIND,INPS,INIR,INNA,INTV,INVA,INVB,INVE,INVL,INVN,LACK,LATE,MINO,MLEG,MUNO,NARR,NCRR,NMTY,NRGM,NRGN,OPNM,OPTY,OWNT,PHYS,PLCE,PLIS,REFE,REFT,REPA,REPO,REPP,REQM,REQW,TERM,RREA,RTGS,SAFE,SDUT,SETR,SETS,SHAR,SIGN,STAM,STAT,TXST,ULNK,VALR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="67673b57-620b-493a-a5b0-d17198d259f3" />
+                <string>DEND</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="ca697fc0-f1a6-49a3-8c6e-b4523d77ad88" />
+                <string>ADEA,DCAN,DCAL,DFOR,DPRG,DREP,DSET,IPNC,LATE,NARR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="bec1793b-fa09-4d63-8072-28c0dd5bb702" />
+                <string>CAND</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="70148d9f-04a1-4a0d-a47c-8773951c7b16" />
+                <string>CANI,CANO,CANS,CANT,CANZ,CORP,CSUB,CTHP,CREG,EXPI,NARR,SCEX</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="cdbc836b-14ae-4d87-8d0e-4b5e45c801a3" />
+                <string>NAFI</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="847825a6-5148-4590-a4aa-76f0bb66f0b7" />
+                <string>NAFF</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="a6a49ec9-b037-4375-947e-2dcdade29dc8" />
+                <string>PACK</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="0f65b92b-126f-43b8-9038-1e9ad221daf5" />
+                <string>ADEA,LATE,NSTP,RQWV,SMPG,NARR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="2d23cc1e-2512-49bc-971e-76e86e71fea0" />
+                <string>CANP</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="3258804c-d8ba-4556-b9a7-48f59a23c9c2" />
+                <string>ADEA,CDAC,NARR,DQUA,CONF,INBC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="1b7a6881-e8c4-4fa5-8dc6-d196183ec124" />
+                <string>CACK</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="b65a7320-f3c8-4be9-955c-e2fbdb47d7ae" />
+                <string>ADEA,CALP,CALD</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="edb48407-11b4-4f09-b17a-454e162797d5" />
+                <string>REPR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="32f5a871-19bd-4b0f-b5f5-f7f7937462ed" />
+                <string>ADEA,BATC,BUSE,CADE,CAEV,CASH,CASY,COMC,DDAT,DDEA,DEPT,DMON,DQUA,DSEC,DTRD,FEEE,ICAG,ICUS,IEXE,IIND,INPS,INNA,MINO,MUNO,NARR,NCRR,NRGM,NRGN,PHYS,PLCE,REFE,REPA,REPO,REPP,TERM,RTGS,SAFE,SDUT,SETR,SETS,TXST,ULNK</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="88345bd5-5bcb-4f1b-bf31-58697b35ce96" />
+                <string>MOPN</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5616ae2e-bdb7-41f6-bb6f-39dd4ce7d31b" />
+                <string>CONF,NARR</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Reason_B_24B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="e7ae1bd7-fd16-4b0d-a0b8-fce42a24fa0e" />
+                <string>PPRC</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="d5abc6b5-eb75-4f5c-95a1-e00c27e15d35" />
+                <string>ADEA,BLOC,CAIS,CERT,COLL,DENO,DOCY,FLIM,GLOB,LACK,LALO,LIQU,MINO,MONY,MUNO,NARR,NEXT,NOFX,YCOL</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K24</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Reason_B_24B_ReasonCode</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Party_D_95a_Qualifier" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY5_MT549' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT549']</string>
+              </constant>
+            </member>
+          </exists>
+          <or>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//Party_D_95P</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//Party_D_95Q</string>
+                </constant>
+              </member>
+            </exists>
+            <exists>
+              <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+              <object>
+                <reference>
+                  <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                  <xmldocumentref ref="xml_0" />
+                </reference>
+              </object>
+              <member>
+                <constant>
+                  <string>//Party_D_95R</string>
+                </constant>
+              </member>
+            </exists>
+          </or>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckNonRepetitiveQualifiers" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//SequenceD</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Party_D_95P/Qualifier,./Party_D_95Q/Qualifier,./Party_D_95R/Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5532f413-d4d3-4783-b848-7044acca1821" />
+                <string>MEOR,MERE</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT002</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Party_D_95a_Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_IdentificationOfFinancialInstrument_B_35B" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//IdentificationOfFinancialInstrument_B_35B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidIdentificationOfSecurities" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//IdentificationOfFinancialInstrument_B_35B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>T17</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_IdentificationOfSecurities_B_35B</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Indicator_A_22F_Indicator" priority="0" active="true">
+      <if>
+        <and>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>/*[local-name()='SWIFT_CATEGORY5_MT549' and namespace-uri()='http://schemas.microsoft.com/BizTalk/Solutions/FinancialServices/SWIFT/Category5/MT549']</string>
+              </constant>
+            </member>
+          </exists>
+          <exists>
+            <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+            <object>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </object>
+            <member>
+              <constant>
+                <string>//Indicator_A_22F</string>
+              </constant>
+            </member>
+          </exists>
+        </and>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Indicator_A_22F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="01639266-386e-4cfa-ba90-ea552dc45d60" />
+                <string>CODE</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="0ed83bcd-4c55-40c6-9955-d6d348c19912" />
+                <string>COMP,DELT</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K22</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Indicator_A_22F_Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCode" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Indicator_A_22F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="5cc7719a-c0ae-40c8-b75a-189419893224" />
+                <string>SFRE</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="38c40e3f-c2a4-458f-a00d-0b05c55afeec" />
+                <string>DAIL,INDA,MNTH,WEEK,YEAR,ADHO</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K22</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Indicator_A_22F_Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCodeRequestedMessageType" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Indicator_A_22F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="4f77264a-ddca-4b44-8eff-dfc411a1e1c5" />
+                <string>STTY</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="e9d1b8f2-77b2-4159-8ca8-ed9d3a994e80" />
+                <string>ACCT,CUST</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//NumberIdentification_A_13A</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K22</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Indicator_A_22F_Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+        <function>
+          <classmember classref="CommonFunctions" member="IsValidCodeRequestedMessageType" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Indicator_A_22F</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./DataSource/DataSourceScheme</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>./Qualifier</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="4dd42a57-3149-4ca4-b0b7-cb2e5b68377a" />
+                <string>STBA</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <vocabularylink uri="c3775ad7-6935-4ef5-acc1-36ed291418e6" element="91d399ef-3bb6-485a-b75b-eaea38a4089f" />
+                <string>CONT,SETT,TRAD</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>//NumberIdentification_A_13A</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>K22</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Indicator_A_22F_Indicator</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="ValidateRule_IdentificationOfFinancialInstrument_B_35B" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//IdentificationOfFinancialInstrument_B_35B</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//IdentificationOfFinancialInstrument_B_35B</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>ValidateRule_IdentificationOfFinancialInstrument_B_35B</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+    <rule name="Validate_Party_D_95Q" priority="0" active="true">
+      <if>
+        <exists>
+          <vocabularylink uri="3f0e9bcc-6212-4e6a-853c-e517f157a626" element="970c3ffe-de9e-4523-82b8-974a3c1eb686" />
+          <object>
+            <reference>
+              <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+              <xmldocumentref ref="xml_0" />
+            </reference>
+          </object>
+          <member>
+            <constant>
+              <string>//Party_D_95Q</string>
+            </constant>
+          </member>
+        </exists>
+      </if>
+      <then>
+        <function>
+          <classmember classref="CommonFunctions" member="CheckMultilineCharacter" sideeffects="true">
+            <argument>
+              <reference>
+                <vocabularylink uri="37363948-06d0-4c02-b58f-a36ad44b513b" element="5638adbf-6a39-43be-8606-ec81175d30d5" />
+                <xmldocumentref ref="xml_0" />
+              </reference>
+            </argument>
+            <argument>
+              <constant>
+                <string>//Party_D_95Q</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>A4SWIFT001</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>MT549_Validation_Policy</string>
+              </constant>
+            </argument>
+            <argument>
+              <constant>
+                <string>Validate_Party_D_95Q</string>
+              </constant>
+            </argument>
+            <argument>
+              <reference>
+                <classref ref="ErrorCollection" />
+              </reference>
+            </argument>
+          </classmember>
+        </function>
+      </then>
+    </rule>
+  </ruleset>
+</brl>
