@@ -28,13 +28,6 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  
-
-  <!-- Turning off CLS compliance warnings/errors -->
-  <PropertyGroup>    
-    <AssemblyCLSCompliant>false</AssemblyCLSCompliant> 
-  </PropertyGroup>
-
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>

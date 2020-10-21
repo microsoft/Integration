@@ -21,6 +21,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\build\GlobalAssemblyInfo.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CommonFunctions.cs" />
     <Compile Include="Constants.cs" />

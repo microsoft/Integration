@@ -1,12 +1,5 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright (C) 2003 Microsoft Corporation.  All rights reserved.
-//
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
-// KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-// PURPOSE.
-///////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.IO;
@@ -22,7 +15,6 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Reflection;
 using Microsoft.Solutions.FinancialServices.SWIFT.ValidationMessages ; //ENH045 - Namespace for ErrorLookUp dll.
-
 
 namespace Microsoft.Solutions.FinancialServices.SWIFT
 {	
