@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+			          	<xsd:element name="metadata">
+			            		<xsd:complexType>
+			             	 		<xsd:sequence>
+			                			<xsd:element name="value" type="xsd:string" minOccurs="0" />
+			              			</xsd:sequence>
+			              			<xsd:attribute name="name" use="required" type="xsd:string" />
+			              			<xsd:attribute name="type" type="xsd:string" />
+			              			<xsd:attribute name="mimetype" type="xsd:string" />
+			              			<xsd:attribute ref="xml:space" />
+			            		</xsd:complexType>
+			          	</xsd:element>
+			          	<xsd:element name="assembly">
+			            		<xsd:complexType>
+			              			<xsd:attribute name="alias" type="xsd:string" />
+			              			<xsd:attribute name="name" type="xsd:string" />
+			            		</xsd:complexType>
+			          	</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+              						<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="ResMimeType">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="Version">
+		<value>1.0.0.0</value>
+	</resheader>
+	<resheader name="Reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="Writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="ERROR_INVALID_CURRENCY">
+		<value>The currency is not unique.</value>
+	</data>
+	<data name="ERROR_INVALID_EXCHANGERATE92B">
+		<value>The exchange rate contains a currency other than the reporting or transaction currency.</value>
+	</data>
+	<data name="ERROR_EXCHANGERATE92B_USAGERULE">
+		<value>The exchange rate contains the same currencies, but the rate is not equal to one of the currencies.</value>
+	</data>
+	<data name="ERROR_ELEMENTNAME_NOTDEFINED">
+		<value>The element name is not defined.</value>
+	</data>
+	<data name="ERROR_ELEMENTVALUE_NOTDEFINED">
+		<value>The element value is not defined.</value>
+	</data>
+	<data name="Ec_Single_FormatError">
+		<value>The single message of type {0}, whose Interchange ID is {1}, has been marked as A4SWIFT_Failed=True in the MessageBox database by the {2}.</value>
+	</data>
+	<data name="Ec_Batch_FormatError">
+		<value>The fragmented batch message, whose Interchange Id is {0}, whose position in the batch is {1}, and has a BatchId of {2}, has been marked as A4SWIFT_Failed=True in the MessageBox database by the {3}.</value>
+	</data>
+	<data name="Ec_FormatErrorCounts">
+		<value>This message failed with {0} parse errors, {1} XML validation errors, and {2} BRE validation errors.</value>
+	</data>
+	<data name="Ec_FormatErrorSubscribe">
+		<value>Error details can be extracted from the failed message in the MessageBox database by subscribing to messages where A4SWIFT_Failed=True.</value>
+	</data>
+	<data name="Ec_ApplicationErrorException">
+		<value>One or more error parameters have null values.</value>
+	</data>
+	<data name="Ec_Invalid_Error">
+		<value>An error type that is not valid was passed. The arguments accepted are ParseErrors, XmlValidationErrors and BreValidationErrors.</value>
+	</data>
+	<!--Microsoft BizTalk Accelerator for SWIFT-->
+	<data name="SwiftAccelerator">
+		<value>BizTalk Accelerator for SWIFT</value>
+	</data>
+	<data name="ExceptionMessage">
+		<value>An error occurred during application execution. The error message is: {0}</value>
+	</data>
+	<data name="BicMasterPolicyExceptionMessage">
+		<value>An error occurred while executing the BicMasterPolicy. Check the policy for valid values. The error message is: {0}</value>
+	</data>
+	<data name="BreValidationPolicyException">
+		<value>Unable to retrieve or an unexpected error occurred while executing BRE validation policy. If this is unexpected, confirm that the policy has been deployed and try again. Error: {0}</value>
+	</data>
+	<data name="ERROR_ERRORCODE_NOTDEFINED">
+		<value>Error code not defined.</value>
+	</data>
+	<data name="ERROR_INVALID_FIELD_FORMAT">
+		<value>Invalid field format</value>
+	</data>
+	<data name="IBANBICMismatch" xml:space="preserve">
+	   	<value>IBAN count greater than BIC count</value>
+	</data>
+	<data name="IBANBICMismatchDescription" xml:space="preserve">
+	   	<value>IBAN</value>
+	</data>
+	<data name="Ec_FormatMXErrorSubscribe" xml:space="preserve">
+	    	<value>Error details can be extracted from the failed message in the MessageBox database by subscribing to messages where MX_A4SWIFT_Failed=True.</value>
+  	</data>
+	<data name="Ec_Single_MXFormatError" xml:space="preserve">
+	    	<value>The single message of type {0}, whose Interchange ID is {1}, has been marked as MX_A4SWIFT_Failed=True in the MessageBox database by the {2}.</value>
+	</data>
+</root>
